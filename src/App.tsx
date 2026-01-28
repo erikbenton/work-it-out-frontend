@@ -1,15 +1,16 @@
 import './App.css';
-import { Typography } from '@mui/material';
+import Navbar from './components/layout/Navbar';
+import { Routes, Route } from 'react-router-dom';
+import Home from './components/Home/Home';
 
-function App() {
+export default function App() {
 
   return (
     <>
-      <Typography variant="h4" component="h2">
-        Work-It-Out
-      </Typography>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+      </Routes>
     </>
-  )
+  );
 }
-
-export default App
