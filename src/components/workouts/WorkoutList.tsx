@@ -31,7 +31,7 @@ const WorkoutList = () => {
   const workouts: WorkoutSummary[] = result.data ?? [];
 
   return (
-    <>
+    <Box className="w-full md:w-2/3 px-3">
       <Typography variant="h4" component="h2">
         Workouts
       </Typography>
@@ -49,7 +49,7 @@ const WorkoutList = () => {
           Add Workout
         </Button>
       </Box>
-    </>
+    </Box>
   );
 };
 
