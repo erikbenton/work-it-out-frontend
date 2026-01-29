@@ -6,6 +6,7 @@ import type WorkoutSummary from '../../types/workoutSummary';
 import WorkoutListCard from './components/WorkoutListCard';
 import { useQuery } from '@tanstack/react-query';
 import { getWorkoutList } from '../../requests/workouts';
+import LoadingMessage from '../layout/LoadingMessage';
 
 const WorkoutList = () => {
   const { data: workouts, isLoading} = useQuery<WorkoutSummary[]>({
@@ -21,11 +22,7 @@ const WorkoutList = () => {
   };
 
   if (isLoading) {
-    return (
-      <Typography variant="h4" component="h2" sx={{ flexGrow: 1 }}>
-        Loading workouts...
-      </Typography>
-    );
+    return (<LoadingMessage dataName='workouts' />);
   }
 
   return (
