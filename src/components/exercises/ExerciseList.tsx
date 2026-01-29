@@ -3,8 +3,9 @@ import Paper from '@mui/material/Paper';
 import type Exercise from '../../types/exercise';
 import { useQuery } from '@tanstack/react-query';
 import { getExerciseList } from '../../requests/exercises';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { useNavigate, type NavigateFunction } from 'react-router-dom';
+import LoadingMessage from '../layout/LoadingMessage';
 
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1 },
@@ -20,26 +21,20 @@ const handleRowClick = (navigate: NavigateFunction) => {
 
 export default function ExerciseList() {
   const navigate = useNavigate();
-  const result = useQuery<Exercise[]>({
+  const { data: exercises, isLoading } = useQuery<Exercise[]>({
     queryKey: ['exercises'],
     queryFn: getExerciseList
   });
 
-  if (result.isLoading) {
-    return (
-      <Typography variant="h4" component="h2" sx={{ flexGrow: 1 }}>
-        Loading exercises...
-      </Typography>
-    );
+  if (isLoading) {
+    return (<LoadingMessage dataName='workouts' />);
   }
-
-  const exercises = result.data ?? [];
 
   return (
     <Box className="w-full md:w-2/3 px-3">
       <Paper sx={{ width: '100%' }}>
         <DataGrid
-          rows={exercises}
+          rows={exercises ?? []}
           columns={columns}
           autoHeight
           sx={{ border: 0 }}

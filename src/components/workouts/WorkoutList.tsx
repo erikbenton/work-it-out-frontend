@@ -8,7 +8,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getWorkoutList } from '../../requests/workouts';
 
 const WorkoutList = () => {
-  const result = useQuery<WorkoutSummary[]>({
+  const { data: workouts, isLoading} = useQuery<WorkoutSummary[]>({
     queryKey: ['workouts'],
     queryFn: getWorkoutList
   });
@@ -20,7 +20,7 @@ const WorkoutList = () => {
     navigate('/workouts/create');
   };
 
-  if (result.isLoading) {
+  if (isLoading) {
     return (
       <Typography variant="h4" component="h2" sx={{ flexGrow: 1 }}>
         Loading workouts...
@@ -28,14 +28,12 @@ const WorkoutList = () => {
     );
   }
 
-  const workouts: WorkoutSummary[] = result.data ?? [];
-
   return (
     <Box className="w-full md:w-2/3 px-3">
       <Typography variant="h4" component="h2">
         Workouts
       </Typography>
-      {workouts.map((workout) => (
+      {workouts?.map((workout) => (
          <WorkoutListCard key={workout.id} workout={workout} />
       ))}
       <Box className="flex flex-col items-center">

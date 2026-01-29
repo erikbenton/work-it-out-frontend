@@ -10,7 +10,7 @@ import ExerciseDetails from './components/exercises/ExerciseDetails';
 export default function App() {
 
   return (
-    <Box className="flex flex-col items-center">
+    <Box className="flex flex-col items-center h-full">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
