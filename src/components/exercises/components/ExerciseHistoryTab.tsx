@@ -1,7 +1,7 @@
 import List from '@mui/material/List';
 import Box from '@mui/material/Box';
 import type ExerciseHistory from '../../../types/exerciseHistory';
-import ExerciseHistorySetItem from './ExerciseHistorySetItem';
+import ExerciseHistoryItemSet from './ExerciseHistoryItemSet';
 import ExerciseHistoryItemTitle from './ExerciseHistoryItemTitle';
 import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
 
@@ -17,7 +17,7 @@ export default function ExerciseHistoryTab({ history }: Props) {
         <Box className="pb-1" key={`group-history-${group.completedExerciseGroupId}`}>
           <ExerciseHistoryItemTitle group={group} />
           {group.completedExerciseSets.map(set => (
-            <ExerciseHistorySetItem key={`set-history-${set.id}`} set={set} />
+            <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} />
           ))}
           <ExerciseHistoryItemStats group={group} />
         </Box>

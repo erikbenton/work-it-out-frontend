@@ -24,7 +24,7 @@ export default function ExerciseDetails() {
     queryFn: () => getExerciseHistoryById(id)
   });
 
-  const handleChange = (event: React.SyntheticEvent, newTab: number) => {
+  const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
   };
 

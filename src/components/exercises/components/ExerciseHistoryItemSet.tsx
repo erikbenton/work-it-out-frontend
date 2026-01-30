@@ -9,7 +9,7 @@ function displaySetText(set: CompletedExerciseSet) {
   return (set.weight ? `${set.weight} lbs x ${set.reps}` : `${set.reps}`) + ' reps'
 }
 
-export default function ExerciseHistorySetItem({ set }: Props) {
+export default function ExerciseHistoryItemSet({ set }: Props) {
   return (
     <ListItem
       disablePadding

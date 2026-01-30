@@ -1,24 +1,63 @@
-import { Box } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import type Workout from "../../types/Workout";
 import LoadingMessage from "../layout/LoadingMessage";
 import { getWorkoutById } from "../../requests/workouts";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+import WorkoutExerciseGroupCard from "./components/WorkoutExerciseGroupCard";
 
 export default function WorkoutDetails() {
-    const id = Number(useParams().id)
-    const { data: workout, isLoading} = useQuery<Workout>({
+  const id = Number(useParams().id)
+  const { data: workout, isLoading } = useQuery<Workout>({
     queryKey: ['workout'],
     queryFn: () => getWorkoutById(id)
   });
 
-    if (isLoading) {
-      return (<LoadingMessage dataName='workouts' />);
-    }
+  if (isLoading) {
+    return (<LoadingMessage dataName='workouts' />);
+  }
 
   return (
-    <Box>
-      {workout?.name}
+    <Box className="w-full md:w-2/3 px-3">
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" component="h2">
+          {workout?.name}
+        </Typography>
+        <IconButton size="large">
+          <MoreVertIcon />
+        </IconButton>
+      </Stack>
+      <Stack
+        direction="row"
+        spacing={2}
+        className="px-2"
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          // paddingX: '8px'
+        }}
+      >
+        <Typography variant="body1" component="span">
+          {workout?.exerciseGroups.length} Exercises
+        </Typography>
+        <IconButton color="primary">
+          <AddCircleOutlinedIcon fontSize="large" />
+        </IconButton>
+      </Stack>
+      <Stack spacing={1}>
+        {workout?.exerciseGroups.map(group => (
+          <WorkoutExerciseGroupCard key={group.id} exerciseGroup={group} />
+        ))}
+      </Stack>
     </Box>
   )
 }
