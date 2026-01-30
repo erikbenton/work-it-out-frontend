@@ -6,7 +6,7 @@ import LoadingMessage from "../layout/LoadingMessage";
 import { getWorkoutById } from "../../requests/workouts";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import WorkoutExerciseGroupCard from "./components/WorkoutExerciseGroupCard";
+import ExerciseGroupCard from "./components/ExerciseGroupCard";
 
 export default function WorkoutDetails() {
   const id = Number(useParams().id)
@@ -55,7 +55,7 @@ export default function WorkoutDetails() {
       </Stack>
       <Stack spacing={1}>
         {workout?.exerciseGroups.map(group => (
-          <WorkoutExerciseGroupCard key={group.id} exerciseGroup={group} />
+          <ExerciseGroupCard key={group.id} exerciseGroup={group} />
         ))}
       </Stack>
     </Box>
