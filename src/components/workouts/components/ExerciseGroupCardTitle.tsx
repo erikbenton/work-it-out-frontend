@@ -1,7 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import CardHeader from "@mui/material/CardHeader";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from "@mui/material/IconButton";
+import VerticalIconMenu from "../../layout/VerticalIconMenu";
 
 type Props = {
   exerciseName: string,
@@ -11,6 +10,12 @@ type Props = {
 
 export default function ExerciseGroupCardTitle({ exerciseName, bodyPart, numberOfSets }: Props) {
 
+  const menuItems = [
+    { label: "Shift up", handleClick: () => { }, },
+    { label: "Shift down", handleClick: () => { }, },
+    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
+  ];
+
   return (
     <CardHeader
       avatar={
@@ -19,9 +24,10 @@ export default function ExerciseGroupCardTitle({ exerciseName, bodyPart, numberO
         </Avatar>
       }
       action={
-        <IconButton aria-label="exercise group settings">
-          <MoreVertIcon />
-        </IconButton>
+        <VerticalIconMenu
+          buttonId={exerciseName.split(' ').join('-').toLowerCase() + "-group-options"}
+          menuItems={menuItems}
+        />
       }
       title={exerciseName}
       subheader={`${numberOfSets} Sets`}

@@ -1,19 +1,20 @@
 import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import VerticalIconMenu from '../../layout/VerticalIconMenu';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   exerciseName: string
 }
 
 export default function ExerciseDetailsTitle({ exerciseName }: Props) {
-
+  const navigate = useNavigate();
 
   const menuItems = [
-    { label: "New", handleClick: () => {}, },
+    { label: "New", handleClick: () => { navigate("/exercises/create"); }, },
     { label: "Edit", handleClick: () => {}, },
     { label: "Delete", handleClick: () => {}, sx: { color: 'error.main' } },
-  ]
+  ];
 
   return (
     <Stack

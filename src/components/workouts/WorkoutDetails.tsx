@@ -7,6 +7,7 @@ import { getWorkoutById } from "../../requests/workouts";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import ExerciseGroupCard from "./components/ExerciseGroupCard";
+import VerticalIconMenu from "../layout/VerticalIconMenu";
 
 export default function WorkoutDetails() {
   const id = Number(useParams().id)
@@ -14,6 +15,11 @@ export default function WorkoutDetails() {
     queryKey: ['workout'],
     queryFn: () => getWorkoutById(id)
   });
+
+  const menuItems = [
+    { label: "Edit", handleClick: () => { }, },
+    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
+  ];
 
   if (isLoading) {
     return (<LoadingMessage dataName='workouts' />);
@@ -32,9 +38,11 @@ export default function WorkoutDetails() {
         <Typography variant="h4" component="h2">
           {workout?.name}
         </Typography>
-        <IconButton size="large">
-          <MoreVertIcon />
-        </IconButton>
+        <VerticalIconMenu
+          buttonId={"workout-options"}
+          menuItems={menuItems}
+          size="large"
+        />
       </Stack>
       <Stack
         direction="row"
