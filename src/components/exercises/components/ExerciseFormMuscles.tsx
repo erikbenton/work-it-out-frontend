@@ -1,0 +1,45 @@
+import FormLabel from "@mui/material/FormLabel";
+import Paper from "@mui/material/Paper";
+import Stack from "@mui/material/Stack";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import type { ExerciseAction } from "../../../reducers/exerciseReducer";
+import ToggleButton from "@mui/material/ToggleButton";
+import Chip from "@mui/material/Chip";
+
+type Props = {
+  muscles?: string[],
+  dispatch: React.ActionDispatch<[action: ExerciseAction]>
+}
+
+const muscleOptions = ['back', 'cardio', 'chest', 'forearms', 'lower legs',
+  'neck', 'shoulders', 'biceps', 'triceps', 'upper legs', 'core'];
+
+export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
+
+  const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
+    dispatch({ type: 'setMuscles', payload: { muscles: newMuscles } });
+  };
+
+  return (
+    <Paper
+      sx={{ width: '100%', py: 2 }}
+      square={false}
+    >
+      <Stack sx={{ mx: 2 }}>
+        <FormLabel id="exercise-muscle-group-label">Muscles</FormLabel>
+        <ToggleButtonGroup
+          value={muscles ?? []}
+          onChange={handleMuscles}
+          aria-label="Muscles"
+          sx={{ flexWrap: 'wrap' }}
+        >
+          {muscleOptions.map(option => (
+            <ToggleButton key={option} className="rounded-full" value={option} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+              <Chip label={option} variant="outlined" />
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Stack>
+    </Paper>
+  );
+}

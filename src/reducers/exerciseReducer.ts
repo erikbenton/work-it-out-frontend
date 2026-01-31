@@ -1,6 +1,6 @@
 import type Exercise from "../types/exercise";
 
-type Action =
+export type ExerciseAction =
   { type: string, payload: never }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setInstructions', payload: { instructions: string } }
@@ -8,7 +8,7 @@ type Action =
   | { type: 'setMuscles', payload: { muscles: string[] } }
   | { type: 'setEquipment', payload: { equipment: string } };
 
-export default function exerciseReducer(exercise: Exercise, action: Action) {
+export default function exerciseReducer(exercise: Exercise, action: ExerciseAction) {
   switch (action.type) {
     case 'setName':
       return {
