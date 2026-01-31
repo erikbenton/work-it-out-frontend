@@ -3,5 +3,7 @@ export default interface Exercise {
   name: string | null,
   instructions: string | null,
   bodyPart: string | null,
-  equipment: string | null
+  equipment: string | null,
+  muscles?: string[],
+  category?: 'lift' | 'timed' | 'conditioning'
 }

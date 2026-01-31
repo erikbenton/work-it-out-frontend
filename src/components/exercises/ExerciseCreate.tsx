@@ -5,6 +5,9 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import { useState } from "react";
+import type Exercise from "../../types/exercise";
+
+const categories = ['lift', 'timed', 'conditioning'];
 
 const muscleOptions = ['back', 'cardio', 'chest', 'forearms', 'lower legs',
   'neck', 'shoulders', 'biceps', 'triceps', 'upper legs', 'core'];
@@ -15,16 +18,28 @@ const equipmentOptions = ['assisted', 'band', 'barbell', 'body weight', 'cable',
 ];
 
 export default function ExerciseCreate() {
-  const [muscles, setMuscles] = useState<string[]>([]);
-  const [equipment, setEquipment] = useState<string[]>([]);
+  const [exercise, setExercise] = useState<Exercise>({
+    id: 0,
+    name: null,
+    instructions: null,
+    bodyPart: 'back',
+    equipment: 'assisted',
+    muscles: [],
+    category: 'lift'
+  });
 
   const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
-    setMuscles(newMuscles);
+    setExercise(prev => ({ ...prev, muscles: newMuscles }))
   };
 
-  const handleEquipment = (_event: React.MouseEvent<HTMLElement>, newEquipment: string[]) => {
-    setEquipment(newEquipment);
+  const handleEquipment = (_event: React.MouseEvent<HTMLElement>, newEquipment: string) => {
+    setExercise(prev => ({ ...prev, equipment: newEquipment }))
   };
+
+  const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, newCategory: string) => {
+    const castedEquipment = newCategory as 'lift' | 'timed' | 'conditioning';
+    setExercise(prev => ({ ...prev, category: castedEquipment }))
+  }
 
   return (
     <Box className="w-full md:w-2/3 p-3">
@@ -40,6 +55,8 @@ export default function ExerciseCreate() {
                 label="Name"
                 variant="outlined"
                 sx={{ flexGrow: 1 }}
+                value={exercise.name ?? ""}
+                onChange={(e) => setExercise(prev => ({ ...prev, name: e.target.value === "" ? null : e.target.value }))}
               />
               <TextField
                 id="instructions"
@@ -48,6 +65,8 @@ export default function ExerciseCreate() {
                 multiline
                 maxRows={6}
                 sx={{ flexGrow: 1 }}
+                value={exercise.instructions ?? ""}
+                onChange={(e) => setExercise(prev => ({ ...prev, instructions: e.target.value === "" ? null : e.target.value }))}
               />
             </Stack>
           </Paper>
@@ -62,11 +81,12 @@ export default function ExerciseCreate() {
                   row
                   aria-labelledby="exercise-category-group-label"
                   name="exercise-category-group"
-                  defaultValue='lift'
+                  value={exercise.category}
+                  onChange={handleCategory}
                 >
-                  <FormControlLabel value="lift" control={<Radio />} label="Lift" />
-                  <FormControlLabel value="timed" control={<Radio />} label="Timed" />
-                  <FormControlLabel value="conditioning" control={<Radio />} label="Conditioning" />
+                  {categories.map(category => (
+                    <FormControlLabel key={category} value={category} control={<Radio />} label={category} className="capitalize" />
+                  ))}
                 </RadioGroup>
               </FormControl>
             </Stack>
@@ -78,7 +98,7 @@ export default function ExerciseCreate() {
             <Stack sx={{ mx: 2 }}>
               <FormLabel id="exercise-muscle-group-label">Muscles</FormLabel>
               <ToggleButtonGroup
-                value={muscles}
+                value={exercise.muscles ?? []}
                 onChange={handleMuscles}
                 aria-label="Muscles"
                 sx={{ flexWrap: 'wrap' }}
@@ -98,7 +118,7 @@ export default function ExerciseCreate() {
             <Stack sx={{ mx: 2 }}>
               <FormLabel id="exercise-equipment-group-label">Equipment</FormLabel>
               <ToggleButtonGroup
-                value={equipment}
+                value={exercise.equipment}
                 exclusive
                 onChange={handleEquipment}
                 aria-label="Equipment"
