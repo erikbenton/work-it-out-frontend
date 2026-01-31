@@ -4,8 +4,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import { useState } from "react";
-import type Exercise from "../../types/exercise";
+import { useReducer } from "react";
+import exerciseReducer, { initialExercise } from "../../reducers/exerciseReducer";
 
 const categories = ['lift', 'timed', 'conditioning'];
 
@@ -18,27 +18,26 @@ const equipmentOptions = ['assisted', 'band', 'barbell', 'body weight', 'cable',
 ];
 
 export default function ExerciseCreate() {
-  const [exercise, setExercise] = useState<Exercise>({
-    id: 0,
-    name: null,
-    instructions: null,
-    bodyPart: 'back',
-    equipment: 'assisted',
-    muscles: [],
-    category: 'lift'
-  });
+  const [exercise, dispatch] = useReducer(exerciseReducer, initialExercise);
+
+  const handleName = (event: React.ChangeEvent<HTMLInputElement, Element>) => {
+    dispatch({ type: 'setName', payload: { name: event.target.value }});
+  }
+
+  const handleInstructions = (event: React.ChangeEvent<HTMLInputElement, Element>) => {
+    dispatch({ type: 'setInstructions', payload: { instructions: event.target.value }});
+  }
 
   const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
-    setExercise(prev => ({ ...prev, muscles: newMuscles }))
+    dispatch({ type: 'setMuscles', payload: { muscles: newMuscles }});
   };
 
   const handleEquipment = (_event: React.MouseEvent<HTMLElement>, newEquipment: string) => {
-    setExercise(prev => ({ ...prev, equipment: newEquipment }))
+    dispatch({ type: 'setEquipment', payload: { equipment: newEquipment }});
   };
 
   const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, newCategory: string) => {
-    const castedEquipment = newCategory as 'lift' | 'timed' | 'conditioning';
-    setExercise(prev => ({ ...prev, category: castedEquipment }))
+    dispatch({ type: 'setCategory', payload: { category: newCategory }});
   }
 
   return (
@@ -56,7 +55,7 @@ export default function ExerciseCreate() {
                 variant="outlined"
                 sx={{ flexGrow: 1 }}
                 value={exercise.name ?? ""}
-                onChange={(e) => setExercise(prev => ({ ...prev, name: e.target.value === "" ? null : e.target.value }))}
+                onChange={handleName}
               />
               <TextField
                 id="instructions"
@@ -66,7 +65,7 @@ export default function ExerciseCreate() {
                 maxRows={6}
                 sx={{ flexGrow: 1 }}
                 value={exercise.instructions ?? ""}
-                onChange={(e) => setExercise(prev => ({ ...prev, instructions: e.target.value === "" ? null : e.target.value }))}
+                onChange={handleInstructions}
               />
             </Stack>
           </Paper>
