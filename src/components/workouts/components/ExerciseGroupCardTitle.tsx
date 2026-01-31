@@ -5,16 +5,17 @@ import IconButton from "@mui/material/IconButton";
 
 type Props = {
   exerciseName: string,
+  bodyPart: string,
   numberOfSets: number
 }
 
-export default function ExerciseGroupCardTitle({ exerciseName, numberOfSets }: Props) {
+export default function ExerciseGroupCardTitle({ exerciseName, bodyPart, numberOfSets }: Props) {
 
   return (
     <CardHeader
       avatar={
         <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
-          {exerciseName[0]}
+          {bodyPart[0].toUpperCase()}
         </Avatar>
       }
       action={

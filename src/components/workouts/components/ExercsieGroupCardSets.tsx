@@ -10,6 +10,7 @@ import ListItem from "@mui/material/ListItem"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
+import { ListItemButton } from "@mui/material"
 
 type Props = {
   exerciseSets: ExerciseSet[]
@@ -60,14 +61,14 @@ export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
               </IconButton>
             }
           >
-            <ListItemAvatar>
-              <Avatar>
-                {set.sort + 1}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={formattedRepsText(set)}
-            />
+            <ListItemButton disableGutters className="rounded">
+              <ListItemAvatar>
+                <Avatar>
+                  {set.sort + 1}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={formattedRepsText(set)} />
+            </ListItemButton>
           </ListItem>
         ))}
       </List>

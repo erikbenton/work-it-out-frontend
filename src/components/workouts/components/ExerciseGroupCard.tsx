@@ -27,6 +27,7 @@ export default function ExerciseGroupCard({ exerciseGroup }: Props) {
     <Card sx={{ width: '100%' }}>
       <ExerciseGroupCardTitle
         exerciseName={exerciseGroup.exercise.name ?? ""}
+        bodyPart={exerciseGroup.exercise.bodyPart ?? ""}
         numberOfSets={exerciseGroup.exerciseSets.length}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>

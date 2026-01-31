@@ -53,7 +53,7 @@ export default function WorkoutDetails() {
           <AddCircleOutlinedIcon fontSize="large" />
         </IconButton>
       </Stack>
-      <Stack spacing={1}>
+      <Stack spacing={1} className="pb-3" >
         {workout?.exerciseGroups.map(group => (
           <ExerciseGroupCard key={group.id} exerciseGroup={group} />
         ))}
