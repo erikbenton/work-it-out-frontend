@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import type Workout from "../../types/Workout";
 import LoadingMessage from "../layout/LoadingMessage";
 import { getWorkoutById } from "../../requests/workouts";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import ExerciseGroupCard from "./components/ExerciseGroupCard";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
