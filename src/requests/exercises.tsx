@@ -49,3 +49,34 @@ export async function createExercise(newExercise: Exercise): Promise<Exercise> {
 
   return (await response.json()) as Exercise;
 }
+
+export async function updateExercise(exercise: Exercise): Promise<Exercise> {
+  console.log('Updating exercise ' + exercise.id);
+  const config = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(exercise),
+  };
+
+  const response = await fetch(`${baseUrl}/exercises/${exercise.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to update exercise with id: ' + exercise.id);
+  }
+
+  return (await response.json()) as Exercise;
+}
+
+export async function deleteExercise(exercise: Exercise): Promise<void> {
+  console.log('Deleting exercise ' + exercise.id);
+  const config = { method: 'DELETE' };
+
+  const response = await fetch(`${baseUrl}/exercises/${exercise.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to delete exercise with id: ' + exercise.id);
+  }
+}

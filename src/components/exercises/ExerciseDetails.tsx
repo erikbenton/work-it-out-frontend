@@ -10,12 +10,13 @@ import ExerciseHistoryTab from './components/ExerciseHistoryTab';
 import type ExerciseHistory from '../../types/exerciseHistory';
 import LoadingMessage from '../layout/LoadingMessage';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
-import { useExercises } from '../../hooks/useExercises';
+import ErrorMessage from '../layout/ErrorMessage';
+import { useSuspensefulExercises } from '../../hooks/useSuspensefulExercises';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
-  const { exercises, isLoading: exercisesLoading } = useExercises();
+  const { exercises } = useSuspensefulExercises();
   const { data: history, isLoading: historyLoading } = useQuery<ExerciseHistory[]>({
     queryKey: ['exerciseHistory', id],
     staleTime: 1000 * 60 * 5, // 5 minutes
@@ -26,17 +27,20 @@ export default function ExerciseDetails() {
     setActiveTab(newTab);
   };
 
-  if (exercisesLoading || historyLoading ) {
+  if (historyLoading) {
     return (<LoadingMessage dataName='exercise' />);
   }
 
   const exercise = exercises?.find(ex => ex.id === id);
 
   // TODO: No exercise, return Error message
+  if (!exercise) {
+    return (<ErrorMessage message={`No exercise was found with the id: ${id}`} />);
+  }
 
   return (
     <Box className="relative w-full md:w-2/3 border-x border-blue-100 h-full" sx={{ bgcolor: 'background.paper' }}>
-      <ExerciseDetailsTitle exerciseName={exercise?.name ?? ""} />
+      <ExerciseDetailsTitle exercise={exercise} />
       <Tabs value={activeTab}
         onChange={handleChange}
         centered

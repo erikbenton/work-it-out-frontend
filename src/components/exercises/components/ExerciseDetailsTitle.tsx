@@ -2,18 +2,34 @@ import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import VerticalIconMenu from '../../layout/VerticalIconMenu';
 import { useNavigate } from 'react-router-dom';
+import { useExercises } from '../../../hooks/useExercises';
+import type Exercise from '../../../types/exercise';
 
 type Props = {
-  exerciseName: string
+  exercise: Exercise
 }
 
-export default function ExerciseDetailsTitle({ exerciseName }: Props) {
+export default function ExerciseDetailsTitle({ exercise }: Props) {
+  const { services } = useExercises();
   const navigate = useNavigate();
 
   const menuItems = [
-    { label: "New", handleClick: () => { navigate("/exercises/create"); }, },
-    { label: "Edit", handleClick: () => {}, },
-    { label: "Delete", handleClick: () => {}, sx: { color: 'error.main' } },
+    {
+      label: "New",
+      handleClick: () => navigate("/exercises/create"),
+    },
+    {
+      label: "Edit",
+      handleClick: () => navigate(`/exercises/${exercise.id}/edit`),
+    },
+    {
+      label: "Delete",
+      handleClick: () => {
+        services.remove(exercise);
+        navigate('/exercises');
+      },
+      sx: { color: 'error.main' }
+    },
   ];
 
   return (
@@ -26,7 +42,7 @@ export default function ExerciseDetailsTitle({ exerciseName }: Props) {
       }}
     >
       <Typography variant="h4" component="h2">
-        {exerciseName}
+        {exercise.name}
       </Typography>
       <VerticalIconMenu
         buttonId='exercise-menu-button'

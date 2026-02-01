@@ -45,7 +45,10 @@ export default function Navbar() {
   return (
     <AppBar position="static" className="mb-2">
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
+        <Toolbar
+          disableGutters
+          sx={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center' }}
+        >
           {/* Collapsed Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", sm: "none" } }}>
             <IconButton
@@ -87,18 +90,19 @@ export default function Navbar() {
           {/* Expanded Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
             {pages.map((page) => (
-              <Button
-                key={page.text}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                <Link to={page.url}>{page.text}</Link>
-              </Button>
+              <Link to={page.url} key={page.text}>
+                <Button
+                  onClick={handleCloseNavMenu}
+                  sx={{ height: '100%', color: "white", display: "block" }}
+                >
+                  {page.text}
+                </Button>
+              </Link>
             ))}
           </Box>
 
           {/* User Profile menu */}
-          <Box sx={{ flexGrow: 0 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar>U</Avatar>

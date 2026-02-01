@@ -8,6 +8,9 @@ import ExerciseList from './components/exercises/ExerciseList';
 import ExerciseDetails from './components/exercises/ExerciseDetails';
 import WorkoutDetails from './components/workouts/WorkoutDetails';
 import ExerciseCreate from './components/exercises/ExerciseCreate';
+import ExerciseEdit from './components/exercises/ExerciseEdit';
+import { Suspense } from 'react';
+import LoadingMessage from './components/layout/LoadingMessage';
 
 export default function App() {
 
@@ -18,9 +21,22 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/workouts" element={<WorkoutList />} />
         <Route path="/workouts/:id" element={<WorkoutDetails />} />
-        <Route path="/exercises" element={<ExerciseList />} />
+        <Route path="/exercises" element={
+          <Suspense fallback={<LoadingMessage dataName='exercises' />}>
+            <ExerciseList />
+          </Suspense>
+        } />
         <Route path="/exercises/create" element={<ExerciseCreate />} />
-        <Route path="/exercises/:id" element={<ExerciseDetails />} />
+        <Route path="/exercises/:id" element={
+          <Suspense fallback={<LoadingMessage dataName='exercise' />}>
+            <ExerciseDetails />
+          </Suspense>
+        } />
+        <Route path="/exercises/:id/edit" element={
+          <Suspense fallback={<LoadingMessage dataName='exercise' />}>
+            <ExerciseEdit />
+          </Suspense>
+        } />
       </Routes>
     </Box>
   );

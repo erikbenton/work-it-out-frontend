@@ -1,10 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createExercise, deleteExercise, getExerciseList, updateExercise } from "../requests/exercises";
 import type Exercise from "../types/exercise";
 
-export function useExercises() {
+export function useSuspensefulExercises() {
   const queryClient = useQueryClient();
-  const { data: exercises, isLoading, isError } = useQuery<Exercise[]>({
+  const { data: exercises, isError } = useSuspenseQuery<Exercise[]>({
     queryKey: ['exercises'],
     staleTime: 1000 * 60 * 5, // 5 minutes
     queryFn: getExerciseList
@@ -59,7 +59,6 @@ export function useExercises() {
 
   return {
     exercises,
-    isLoading,
     isError,
     services: {
       create,

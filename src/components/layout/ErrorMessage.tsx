@@ -1,13 +1,14 @@
 import { Typography } from "@mui/material";
 
 type Props = {
-  dataName: string
+  message: string
 }
 
-export default function LoadingMessage({ dataName }: Props) {
+export default function ErrorMessage({ message }: Props) {
+
   return (
     <Typography variant="h4" component="h2" sx={{ flexGrow: 1 }}>
-      Loading {dataName}...
+      Error: {message}
     </Typography>
   );
 }
