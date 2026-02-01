@@ -28,12 +28,11 @@ export function useExercises() {
     onSuccess: (savedExercise: Exercise) => {
       try {
         const prevExercises: Exercise[] = queryClient.getQueryData([queryKey]) as Exercise[];
-        // TODO: Re-sort the exercises?
         queryClient.setQueryData(
           [queryKey],
           prevExercises
           ?.concat(savedExercise)
-          .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")))
+          .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }

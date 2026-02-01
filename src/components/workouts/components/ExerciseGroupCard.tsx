@@ -13,10 +13,11 @@ import ExerciseGroupCardTitle from './ExerciseGroupCardTitle';
 import ExpandMoreButton from '../../layout/ExpandMoreButton';
 
 type Props = {
-  exerciseGroup: ExerciseGroup
+  exerciseGroup: ExerciseGroup,
+  isEditing: boolean
 }
 
-export default function ExerciseGroupCard({ exerciseGroup }: Props) {
+export default function ExerciseGroupCard({ exerciseGroup, isEditing }: Props) {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -29,6 +30,7 @@ export default function ExerciseGroupCard({ exerciseGroup }: Props) {
         exerciseName={exerciseGroup.exercise.name ?? ""}
         bodyPart={exerciseGroup.exercise.bodyPart ?? ""}
         numberOfSets={exerciseGroup.exerciseSets.length}
+        isEditing={isEditing}
       />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className='pb-0'>
@@ -59,7 +61,7 @@ export default function ExerciseGroupCard({ exerciseGroup }: Props) {
                 {exerciseGroup.restTime ? exerciseGroup.restTime.slice(exerciseGroup.restTime.search(/[1-9]/)) : ''}
               </Typography>
             </Button>
-            <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} />
+            <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} isEditing={isEditing} />
           </Stack>
         </CardContent>
       </Collapse>

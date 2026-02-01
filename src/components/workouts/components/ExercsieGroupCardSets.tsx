@@ -10,10 +10,11 @@ import ListItem from "@mui/material/ListItem"
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
-import { ListItemButton } from "@mui/material"
+import { Grow, ListItemButton } from "@mui/material"
 
 type Props = {
-  exerciseSets: ExerciseSet[]
+  exerciseSets: ExerciseSet[],
+  isEditing: boolean
 }
 
 function formattedRepsText(set: ExerciseSet): string {
@@ -22,7 +23,7 @@ function formattedRepsText(set: ExerciseSet): string {
     `${set.maxReps ?? ""} Reps`);
 }
 
-export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
+export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props) {
 
   return (
     <>
@@ -34,21 +35,23 @@ export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
         }}
       >
         <Typography>Sets</Typography>
-        <Stack
-          direction='row'
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <IconButton aria-label="add exercise set">
-            <RemoveCircleOutlinedIcon fontSize='small' />
-          </IconButton>
-          {exerciseSets.length}
-          <IconButton aria-label="remove exercise set">
-            <AddCircleOutlinedIcon fontSize='small' />
-          </IconButton>
-        </Stack>
+        <Grow in={isEditing}>
+          <Stack
+            direction='row'
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <IconButton aria-label="add exercise set">
+              <RemoveCircleOutlinedIcon fontSize='small' />
+            </IconButton>
+            {exerciseSets.length}
+            <IconButton aria-label="remove exercise set">
+              <AddCircleOutlinedIcon fontSize='small' />
+            </IconButton>
+          </Stack>
+        </Grow>
       </Stack>
       <List dense={true}>
         {exerciseSets.map(set => (
@@ -56,9 +59,11 @@ export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
             disableGutters
             key={set.id}
             secondaryAction={
-              <IconButton edge="end" aria-label="delete">
-                <MoreVertIcon />
-              </IconButton>
+              <Grow in={isEditing}>
+                <IconButton edge="end" aria-label="delete">
+                  <MoreVertIcon />
+                </IconButton>
+              </Grow>
             }
           >
             <ListItemButton disableGutters className="rounded">
