@@ -11,6 +11,7 @@ import LoadingMessage from '../layout/LoadingMessage';
 const WorkoutList = () => {
   const { data: workouts, isLoading} = useQuery<WorkoutSummary[]>({
     queryKey: ['workouts'],
+    staleTime: 1000 * 60 * 5, // 5 minutes
     queryFn: getWorkoutList
   });
 

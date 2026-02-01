@@ -23,11 +23,12 @@ export default function ExerciseList() {
   const navigate = useNavigate();
   const { data: exercises, isLoading } = useQuery<Exercise[]>({
     queryKey: ['exercises'],
+    staleTime: 1000 * 60 * 5, // 5 minutes
     queryFn: getExerciseList
   });
 
   if (isLoading) {
-    return (<LoadingMessage dataName='workouts' />);
+    return (<LoadingMessage dataName='exercises' />);
   }
 
   return (

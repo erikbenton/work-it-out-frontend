@@ -10,15 +10,13 @@ export default function ExerciseCreate() {
   const [exercise, dispatch] = useReducer(exerciseReducer, initialExercise);
 
   return (
-    <Box className="w-full md:w-2/3 p-3">
-      <form className="w-full">
-        <Stack spacing={2}>
-          <ExerciseFormTextFields name={exercise.name} instructions={exercise.instructions} dispatch={dispatch} />
-          <ExerciseFormCategory category={exercise.category} dispatch={dispatch} />
-          <ExerciseFormMuscles muscles={exercise.muscles} dispatch={dispatch} />
-          <ExerciseFormEquipment equipment={exercise.equipment} dispatch={dispatch} />
-        </Stack>
-      </form>
+    <Box component="form" className="w-full md:w-2/3 p-3">
+      <Stack spacing={2}>
+        <ExerciseFormTextFields name={exercise.name} instructions={exercise.instructions} dispatch={dispatch} />
+        <ExerciseFormCategory category={exercise.category} dispatch={dispatch} />
+        <ExerciseFormMuscles muscles={exercise.muscles} dispatch={dispatch} />
+        <ExerciseFormEquipment equipment={exercise.equipment} dispatch={dispatch} />
+      </Stack>
     </Box>
   );
 }

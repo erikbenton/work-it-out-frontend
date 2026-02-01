@@ -4,7 +4,7 @@ import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getExerciseById, getExerciseHistoryById } from '../../requests/exercises';
+import { getExerciseHistoryById, getExerciseList } from '../../requests/exercises';
 import type Exercise from '../../types/exercise';
 import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
@@ -15,22 +15,28 @@ import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
-  const { data: exercise, isLoading: exerciseLoading } = useQuery<Exercise>({
-    queryKey: ['exercise'],
-    queryFn: () => getExerciseById(id)
+  const { data: exercises, isLoading: exercisesLoading } = useQuery<Exercise[]>({
+    queryKey: ['exercises'],
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    queryFn: getExerciseList
   });
   const { data: history, isLoading: historyLoading } = useQuery<ExerciseHistory[]>({
-    queryKey: ['exerciseHistory'],
-    queryFn: () => getExerciseHistoryById(id)
+    queryKey: ['exerciseHistory', id],
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    queryFn: async () => await getExerciseHistoryById(id)
   });
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
   };
 
-  if (exerciseLoading || historyLoading) {
+  if (exercisesLoading || historyLoading ) {
     return (<LoadingMessage dataName='exercise' />);
   }
+
+  const exercise = exercises?.find(ex => ex.id === id);
+
+  // TODO: No exercise, return Error message
 
   return (
     <Box className="relative w-full md:w-2/3 border-x border-blue-100 h-full" sx={{ bgcolor: 'background.paper' }}>
@@ -39,8 +45,7 @@ export default function ExerciseDetails() {
         onChange={handleChange}
         centered
         variant='fullWidth'
-        className='mb-2'
-        sx={{ position: 'sticky', top: 0 }}
+        sx={{ position: 'sticky', top: 0, mb: 2 }}
       >
         <Tab label="About" />
         <Tab label="History" />
