@@ -1,11 +1,13 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createExercise, deleteExercise, getExerciseList, updateExercise } from "../requests/exercises";
 import type Exercise from "../types/exercise";
 
+const queryKey = 'exercises';
+
 export function useExercises() {
   const queryClient = useQueryClient();
-  const { data: exercises, isLoading, isError } = useQuery<Exercise[]>({
-    queryKey: ['exercises'],
+  const { data: exercises, isError } = useSuspenseQuery<Exercise[]>({
+    queryKey: [queryKey],
     staleTime: 1000 * 60 * 5, // 5 minutes
     queryFn: getExerciseList
   });
@@ -14,11 +16,15 @@ export function useExercises() {
     mutationFn: async (newExercise: Exercise) => createExercise(newExercise),
     onSuccess: (savedExercise: Exercise) => {
       try {
-        const prevExercises: Exercise[] = queryClient.getQueryData(['exercises']) as Exercise[];
+        const prevExercises: Exercise[] = queryClient.getQueryData([queryKey]) as Exercise[];
         // TODO: Re-sort the exercises?
-        queryClient.setQueryData(['exercises'], prevExercises?.concat(savedExercise))
+        queryClient.setQueryData(
+          [queryKey],
+          prevExercises
+          ?.concat(savedExercise)
+          .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")))
       } catch {
-        queryClient.invalidateQueries({ queryKey: ["exercises"] });
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
     }
   }).mutate;
@@ -27,13 +33,13 @@ export function useExercises() {
     mutationFn: async (exercise: Exercise) => updateExercise(exercise),
     onSuccess: (updatedExercise: Exercise) => {
       try {
-        const prevExercises: Exercise[] = queryClient.getQueryData(['exercises']) as Exercise[];
-        queryClient.setQueryData(['exercises'], prevExercises?.map(ex => (
+        const prevExercises: Exercise[] = queryClient.getQueryData([queryKey]) as Exercise[];
+        queryClient.setQueryData([queryKey], prevExercises?.map(ex => (
           ex.id === updatedExercise.id
             ? updatedExercise
             : ex)));
       } catch {
-        queryClient.invalidateQueries({ queryKey: ["exercises"] });
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
     }
   }).mutate;
@@ -48,10 +54,10 @@ export function useExercises() {
     removeMutation(exercise, {
       onSuccess: () => {
         try {
-          const prevExercises: Exercise[] = queryClient.getQueryData(['exercises']) as Exercise[];
-          queryClient.setQueryData(['exercises'], prevExercises.filter(ex => ex.id !== exercise.id))
+          const prevExercises: Exercise[] = queryClient.getQueryData([queryKey]) as Exercise[];
+          queryClient.setQueryData([queryKey], prevExercises.filter(ex => ex.id !== exercise.id))
         } catch {
-          queryClient.invalidateQueries({ queryKey: ["exercises"] });
+          queryClient.invalidateQueries({ queryKey: [queryKey] });
         }
       }
     });
@@ -59,7 +65,6 @@ export function useExercises() {
 
   return {
     exercises,
-    isLoading,
     isError,
     services: {
       create,

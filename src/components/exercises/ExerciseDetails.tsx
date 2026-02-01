@@ -11,12 +11,12 @@ import type ExerciseHistory from '../../types/exerciseHistory';
 import LoadingMessage from '../layout/LoadingMessage';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import ErrorMessage from '../layout/ErrorMessage';
-import { useSuspensefulExercises } from '../../hooks/useSuspensefulExercises';
+import { useExercises } from '../../hooks/useExercises';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
-  const { exercises } = useSuspensefulExercises();
+  const { exercises } = useExercises();
   const { data: history, isLoading: historyLoading } = useQuery<ExerciseHistory[]>({
     queryKey: ['exerciseHistory', id],
     staleTime: 1000 * 60 * 5, // 5 minutes
