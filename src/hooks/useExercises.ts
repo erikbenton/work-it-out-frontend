@@ -12,6 +12,17 @@ export function useExercises() {
     queryFn: getExerciseList
   });
 
+  const getExerciseById = (id: number) => {
+    const exercises = queryClient.getQueryData([queryKey]) as Exercise[];
+    const exercise = exercises.find(ex => ex.id === id);
+
+    if (!exercise) {
+      throw new Error(`Unable to find exercise with id: ${id}.`);
+    }
+
+    return exercise;
+  }
+
   const create = useMutation({
     mutationFn: async (newExercise: Exercise) => createExercise(newExercise),
     onSuccess: (savedExercise: Exercise) => {
@@ -69,7 +80,8 @@ export function useExercises() {
     services: {
       create,
       update,
-      remove
+      remove,
+      getExerciseById
     }
   };
 }
