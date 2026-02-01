@@ -29,3 +29,23 @@ export async function getExerciseHistoryById(id: number): Promise<ExerciseHistor
   }
   return (await response.json()) as ExerciseHistory[];
 }
+
+export async function createExercise(newExercise: Exercise): Promise<Exercise> {
+  console.log('Creating exercise ' + newExercise.name);
+  const config = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newExercise),
+  };
+
+  const response = await fetch(`${baseUrl}/exercises`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to create new exercise with name: ' + (newExercise.name ?? "(no name given)"));
+  }
+
+  return (await response.json()) as Exercise;
+}

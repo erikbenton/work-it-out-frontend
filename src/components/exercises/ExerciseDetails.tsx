@@ -4,22 +4,18 @@ import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getExerciseHistoryById, getExerciseList } from '../../requests/exercises';
-import type Exercise from '../../types/exercise';
+import { getExerciseHistoryById } from '../../requests/exercises';
 import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
 import type ExerciseHistory from '../../types/exerciseHistory';
 import LoadingMessage from '../layout/LoadingMessage';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
+import { useExercises } from '../../hooks/useExercises';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
-  const { data: exercises, isLoading: exercisesLoading } = useQuery<Exercise[]>({
-    queryKey: ['exercises'],
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    queryFn: getExerciseList
-  });
+  const { exercises, isLoading: exercisesLoading } = useExercises();
   const { data: history, isLoading: historyLoading } = useQuery<ExerciseHistory[]>({
     queryKey: ['exerciseHistory', id],
     staleTime: 1000 * 60 * 5, // 5 minutes

@@ -2,6 +2,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
+import { grey } from '@mui/material/colors';
 
 type Props = {
   name: string | null,
@@ -21,7 +22,7 @@ export default function ExerciseFormTextFields({ name, instructions, dispatch }:
 
   return (
     <Paper
-      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2 }}
+      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: grey[50] }}
       square={false}
     >
       <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>

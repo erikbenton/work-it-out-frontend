@@ -6,6 +6,7 @@ import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
+import { grey } from '@mui/material/colors';
 
 const categories = ['lift', 'timed', 'conditioning'];
 
@@ -22,7 +23,7 @@ export default function ExerciseFormCategory({ category, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2 }}
+      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: grey[50] }}
       square={false}
     >
       <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
