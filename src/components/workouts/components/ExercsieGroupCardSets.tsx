@@ -78,5 +78,41 @@ export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props
         ))}
       </List>
     </>
-  )
+  );
 }
+
+// type SetCounterProps = {
+//   exerciseSets: ExerciseSet[]
+// }
+
+// // const SetCounterInputs = forwardRef(function (props: SetCounterProps, ref) {
+
+// //   return (
+// //     <Stack
+// //       ref={ref}
+// //       direction='row'
+// //       sx={{
+// //         justifyContent: "space-between",
+// //         alignItems: "center",
+// //       }}
+// //     >
+// //       <IconButton aria-label="add exercise set">
+// //         <RemoveCircleOutlinedIcon fontSize='small' />
+// //       </IconButton>
+// //       {props.exerciseSets.length}
+// //       <IconButton aria-label="remove exercise set">
+// //         <AddCircleOutlinedIcon fontSize='small' />
+// //       </IconButton>
+// //     </Stack>
+// //   );
+// // });
+
+// // const OptionsButton = forwardRef(function (props, ref) {
+// //   return (
+// //     <Box ref={ref} {...props}>
+// //       <IconButton edge="end" aria-label="delete">
+// //         <MoreVertIcon />
+// //       </IconButton>
+// //     </Box>
+// //   );
+// // });

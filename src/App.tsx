@@ -37,6 +37,7 @@ export default function App() {
             <ExerciseEdit />
           </Suspense>
         } />
+        {/* <Route path='/componentDemo' element={<></>} /> */}
       </Routes>
     </Box>
   );
