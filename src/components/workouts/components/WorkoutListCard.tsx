@@ -4,10 +4,10 @@ import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-import type WorkoutSummary from "../../../types/workoutSummary";
+import type Workout from "../../../types/workout";
 
 type Params = {
-  workout: WorkoutSummary
+  workout: Workout
 }
 
 export default function WorkoutListCard({ workout }: Params) {
@@ -21,7 +21,7 @@ export default function WorkoutListCard({ workout }: Params) {
             </Avatar>
           }
           title={workout.name}
-          subheader={workout.exerciseNames.join(', ')}
+          subheader={workout.description ?? ""}
         />
       </Link>
       <CardActions disableSpacing className="flex flex-col items-center">

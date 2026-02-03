@@ -2,18 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { Stack, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import type WorkoutSummary from '../../types/workoutSummary';
 import WorkoutListCard from './components/WorkoutListCard';
-import { useQuery } from '@tanstack/react-query';
-import { getWorkoutList } from '../../requests/workouts';
-import LoadingMessage from '../layout/LoadingMessage';
+import { useWorkouts } from '../../hooks/useWorkouts';
 
 const WorkoutList = () => {
-  const { data: workouts, isLoading } = useQuery<WorkoutSummary[]>({
-    queryKey: ['workouts'],
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    queryFn: getWorkoutList
-  });
+const { workouts } = useWorkouts();
 
   const navigate = useNavigate();
 
@@ -21,10 +14,6 @@ const WorkoutList = () => {
     //dispatch(resetWorkout());
     navigate('/workouts/create');
   };
-
-  if (isLoading) {
-    return (<LoadingMessage dataName='workouts' />);
-  }
 
   return (
     <Box className="w-full md:w-2/3 px-3">

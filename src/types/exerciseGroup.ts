@@ -1,4 +1,3 @@
-import type Exercise from "./exercise";
 import type ExerciseSet from "./exerciseSet";
 
 export default interface ExerciseGroup {
@@ -7,6 +6,6 @@ export default interface ExerciseGroup {
   note?: string,
   restTime?: string,
   sort: number,
-  exercise: Exercise,
+  exerciseId: number,
   exerciseSets: ExerciseSet[]
 }

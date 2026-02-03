@@ -8,6 +8,7 @@ import ExerciseGroupCardSets from './ExercsieGroupCardSets';
 import ExerciseGroupCardTitle from './ExerciseGroupCardTitle';
 import ExpandMoreButton from '../../layout/ExpandMoreButton';
 import ExerciseGroupCardDetails from './ExerciseGroupDetails';
+import { useExercises } from '../../../hooks/useExercises';
 
 type Props = {
   exerciseGroup: ExerciseGroup,
@@ -17,12 +18,14 @@ type Props = {
 }
 
 export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, handleExpandClick }: Props) {
+  const { services } = useExercises();
+  const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
     <Card sx={{ width: '100%' }}>
       <ExerciseGroupCardTitle
-        exerciseName={exerciseGroup.exercise.name ?? ""}
-        muscles={exerciseGroup.exercise.muscles ?? []}
+        exerciseName={exercise.name ?? ""}
+        muscles={exercise.muscles ?? []}
         numberOfSets={exerciseGroup.exerciseSets.length}
         isEditing={isEditing}
       />

@@ -1,4 +1,4 @@
-import type Workout from '../types/Workout';
+import type Workout from '../types/workout';
 import type WorkoutSummary from '../types/workoutSummary';
 
 const baseUrl = 'https://localhost:7185/api';
@@ -10,6 +10,15 @@ export async function getWorkoutList(): Promise<WorkoutSummary[]> {
     throw new Error('Failed to fetch workouts');
   }
   return await response.json() as WorkoutSummary[];
+}
+
+export async function getWorkouts(): Promise<Workout[]> {
+  console.log('fetching workouts', Date.now());
+  const response = await fetch(`${baseUrl}/workouts`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch workouts');
+  }
+  return await response.json() as Workout[];
 }
 
 export async function getWorkoutById(id: number): Promise<Workout> {

@@ -19,8 +19,16 @@ export default function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/workouts" element={<WorkoutList />} />
-        <Route path="/workouts/:id" element={<WorkoutDetails />} />
+        <Route path="/workouts" element={
+          <Suspense fallback={<LoadingMessage dataName='workouts' />}>
+            <WorkoutList />
+          </Suspense>
+        } />
+        <Route path="/workouts/:id" element={
+          <Suspense fallback={<LoadingMessage dataName='workout' />}>
+            <WorkoutDetails />
+          </Suspense>
+        } />
         <Route path="/exercises" element={
           <Suspense fallback={<LoadingMessage dataName='exercises' />}>
             <ExerciseList />
