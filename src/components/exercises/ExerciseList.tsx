@@ -7,7 +7,6 @@ import { useExercises } from '../../hooks/useExercises';
 const columns: GridColDef[] = [
   { field: 'name', headerName: 'Name', flex: 1 },
   { field: 'equipment', headerName: 'Equipment', width: 130 },
-  { field: 'bodyPart', headerName: 'Body Part', width: 130 },
 ];
 
 const handleRowClick = (navigate: NavigateFunction) => {

@@ -1,11 +1,12 @@
 import type Exercise from "../types/exercise";
+import type MuscleData from "../types/muscleData";
 
 export type ExerciseAction =
   { type: string, payload: never }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setInstructions', payload: { instructions: string } }
   | { type: 'setCategory', payload: { category: string } }
-  | { type: 'setMuscles', payload: { muscles: string[] } }
+  | { type: 'setMuscles', payload: { muscles: MuscleData[] } }
   | { type: 'setEquipment', payload: { equipment: string } };
 
 export default function exerciseReducer(exercise: Exercise, action: ExerciseAction) {
@@ -46,7 +47,6 @@ export const initialExercise: Exercise = {
   id: 0,
   name: null,
   instructions: null,
-  bodyPart: 'back',
   equipment: 'assisted',
   muscles: [],
   category: 'lift'

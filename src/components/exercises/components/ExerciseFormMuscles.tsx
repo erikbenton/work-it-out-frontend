@@ -6,9 +6,10 @@ import type { ExerciseAction } from "../../../reducers/exerciseReducer";
 import ToggleButton from "@mui/material/ToggleButton";
 import Chip from "@mui/material/Chip";
 import { grey } from '@mui/material/colors';
+import type MuscleData from "../../../types/muscleData";
 
 type Props = {
-  muscles?: string[],
+  muscles?: MuscleData[],
   dispatch: React.ActionDispatch<[action: ExerciseAction]>
 }
 
@@ -18,7 +19,8 @@ const muscleOptions = ['back', 'cardio', 'chest', 'forearms', 'lower legs',
 export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
 
   const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
-    dispatch({ type: 'setMuscles', payload: { muscles: newMuscles } });
+    const muscleData: MuscleData[] = newMuscles.map(m => ({ name: m, weight: 1 }));
+    dispatch({ type: 'setMuscles', payload: { muscles: muscleData } });
   };
 
   return (
@@ -29,7 +31,7 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
       <Stack sx={{ mx: 2 }}>
         <FormLabel id="exercise-muscle-group-label">Muscles</FormLabel>
         <ToggleButtonGroup
-          value={muscles ?? []}
+          value={muscles?.map(m => m.name) ?? []}
           onChange={handleMuscles}
           aria-label="Muscles"
           sx={{ flexWrap: 'wrap' }}

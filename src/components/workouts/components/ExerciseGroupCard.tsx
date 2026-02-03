@@ -22,7 +22,7 @@ export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, 
     <Card sx={{ width: '100%' }}>
       <ExerciseGroupCardTitle
         exerciseName={exerciseGroup.exercise.name ?? ""}
-        bodyPart={exerciseGroup.exercise.bodyPart ?? ""}
+        muscles={exerciseGroup.exercise.muscles ?? []}
         numberOfSets={exerciseGroup.exerciseSets.length}
         isEditing={isEditing}
       />

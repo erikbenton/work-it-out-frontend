@@ -2,15 +2,16 @@ import Avatar from "@mui/material/Avatar";
 import CardHeader from "@mui/material/CardHeader";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { Box, Grow } from "@mui/material";
+import type MuscleData from "../../../types/muscleData";
 
 type Props = {
   exerciseName: string,
-  bodyPart: string,
+  muscles: MuscleData[],
   numberOfSets: number,
   isEditing: boolean
 }
 
-export default function ExerciseGroupCardTitle({ exerciseName, bodyPart, numberOfSets, isEditing }: Props) {
+export default function ExerciseGroupCardTitle({ exerciseName, muscles, numberOfSets, isEditing }: Props) {
 
   const menuItems = [
     { label: "Shift up", handleClick: () => { }, },
@@ -23,7 +24,7 @@ export default function ExerciseGroupCardTitle({ exerciseName, bodyPart, numberO
       sx={{ overflow: 'hidden' }}
       avatar={
         <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
-          {bodyPart[0].toUpperCase()}
+          {muscles[0].name[0].toUpperCase()}
         </Avatar>
       }
       action={

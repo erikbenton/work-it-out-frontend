@@ -1,9 +1,10 @@
+import type MuscleData from "./muscleData";
+
 export default interface Exercise {
   id: number,
   name: string | null,
   instructions: string | null,
-  bodyPart: string | null,
   equipment: string | null,
-  muscles?: string[],
+  muscles?: MuscleData[],
   category?: 'lift' | 'timed' | 'conditioning'
 }
