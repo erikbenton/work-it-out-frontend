@@ -6,11 +6,11 @@ import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import type Workout from "../../../types/workout";
 
-type Params = {
+type Props = {
   workout: Workout
 }
 
-export default function WorkoutListCard({ workout }: Params) {
+export default function WorkoutListCard({ workout }: Props) {
   return (
     <Card>
       <Link className="col-auto" to={`/workouts/${workout.id}`}>

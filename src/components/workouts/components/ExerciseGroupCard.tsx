@@ -9,15 +9,17 @@ import ExerciseGroupCardTitle from './ExerciseGroupCardTitle';
 import ExpandMoreButton from '../../layout/ExpandMoreButton';
 import ExerciseGroupCardDetails from './ExerciseGroupDetails';
 import { useExercises } from '../../../hooks/useExercises';
+import type { WorkoutAction } from '../../../reducers/workoutReducer';
 
 type Props = {
   exerciseGroup: ExerciseGroup,
   isEditing: boolean,
   expanded: boolean,
-  handleExpandClick: () => void
+  handleExpandClick: () => void,
+  dispatch: React.ActionDispatch<[action: WorkoutAction]>
 }
 
-export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, handleExpandClick }: Props) {
+export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, handleExpandClick, dispatch }: Props) {
   const { services } = useExercises();
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
@@ -32,7 +34,7 @@ export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, 
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent className='pb-0'>
           <Stack spacing={1}>
-            <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />
+            <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} dispatch={dispatch} />
             <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} isEditing={isEditing} />
           </Stack>
         </CardContent>

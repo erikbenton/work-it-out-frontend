@@ -4,7 +4,7 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import type Workout from "../../../types/Workout";
+import type Workout from "../../../types/workout";
 
 type Props = {
   workout: Workout,
