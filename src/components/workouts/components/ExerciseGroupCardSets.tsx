@@ -11,10 +11,10 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
 import { Grow, ListItemButton } from "@mui/material"
+import useWorkoutForm from "../../../hooks/useWorkoutForm"
 
 type Props = {
   exerciseSets: ExerciseSet[],
-  isEditing: boolean
 }
 
 function formattedRepsText(set: ExerciseSet): string {
@@ -23,7 +23,8 @@ function formattedRepsText(set: ExerciseSet): string {
     `${set.maxReps ?? ""} Reps`);
 }
 
-export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props) {
+export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
+  const { editing } = useWorkoutForm();
 
   return (
     <>
@@ -35,7 +36,7 @@ export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props
         }}
       >
         <Typography>Sets</Typography>
-        <Grow in={isEditing}>
+        <Grow in={editing}>
           <Stack
             direction='row'
             sx={{
@@ -59,7 +60,7 @@ export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props
             disableGutters
             key={set.id}
             secondaryAction={
-              <Grow in={isEditing}>
+              <Grow in={editing}>
                 <IconButton edge="end" aria-label="delete">
                   <MoreVertIcon />
                 </IconButton>
@@ -80,39 +81,3 @@ export default function ExerciseGroupCardSets({ exerciseSets, isEditing }: Props
     </>
   );
 }
-
-// type SetCounterProps = {
-//   exerciseSets: ExerciseSet[]
-// }
-
-// // const SetCounterInputs = forwardRef(function (props: SetCounterProps, ref) {
-
-// //   return (
-// //     <Stack
-// //       ref={ref}
-// //       direction='row'
-// //       sx={{
-// //         justifyContent: "space-between",
-// //         alignItems: "center",
-// //       }}
-// //     >
-// //       <IconButton aria-label="add exercise set">
-// //         <RemoveCircleOutlinedIcon fontSize='small' />
-// //       </IconButton>
-// //       {props.exerciseSets.length}
-// //       <IconButton aria-label="remove exercise set">
-// //         <AddCircleOutlinedIcon fontSize='small' />
-// //       </IconButton>
-// //     </Stack>
-// //   );
-// // });
-
-// // const OptionsButton = forwardRef(function (props, ref) {
-// //   return (
-// //     <Box ref={ref} {...props}>
-// //       <IconButton edge="end" aria-label="delete">
-// //         <MoreVertIcon />
-// //       </IconButton>
-// //     </Box>
-// //   );
-// // });

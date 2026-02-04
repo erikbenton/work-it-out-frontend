@@ -4,15 +4,10 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import type Workout from "../../../types/workout";
+import useWorkoutForm from "../../../hooks/useWorkoutForm";
 
-type Props = {
-  workout: Workout,
-  editing: boolean,
-  setEditing: React.Dispatch<React.SetStateAction<boolean>>
-}
-
-export default function WorkoutDetailsTitle({ workout, editing, setEditing }: Props) {
+export default function WorkoutDetailsTitle() {
+  const { workout, editing, setEditing } = useWorkoutForm();
 
   const menuItems = [
     { label: editing ? "Save" : "Edit", handleClick: () => { setEditing(!editing) }, },

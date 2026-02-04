@@ -1,26 +1,24 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import type ExerciseGroup from '../../../types/exerciseGroup';
-import { Stack } from '@mui/material';
-import ExerciseGroupCardSets from './ExercsieGroupCardSets';
+import ExerciseGroupCardSets from './ExerciseGroupCardSets';
 import ExerciseGroupCardTitle from './ExerciseGroupCardTitle';
 import ExpandMoreButton from '../../layout/ExpandMoreButton';
 import ExerciseGroupCardDetails from './ExerciseGroupDetails';
 import { useExercises } from '../../../hooks/useExercises';
-import type { WorkoutAction } from '../../../reducers/workoutReducer';
+import useWorkoutForm from '../../../hooks/useWorkoutForm';
 
 type Props = {
   exerciseGroup: ExerciseGroup,
-  isEditing: boolean,
-  expanded: boolean,
-  handleExpandClick: () => void,
-  dispatch: React.ActionDispatch<[action: WorkoutAction]>
+  index: number
 }
 
-export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, handleExpandClick, dispatch }: Props) {
+export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
   const { services } = useExercises();
+  const { expanded } = useWorkoutForm();
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
@@ -29,20 +27,18 @@ export default function ExerciseGroupCard({ exerciseGroup, isEditing, expanded, 
         exerciseName={exercise.name ?? ""}
         muscles={exercise.muscles ?? []}
         numberOfSets={exerciseGroup.exerciseSets.length}
-        isEditing={isEditing}
       />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
         <CardContent className='pb-0'>
           <Stack spacing={1}>
-            <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} dispatch={dispatch} />
-            <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} isEditing={isEditing} />
+            <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />
+            <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} />
           </Stack>
         </CardContent>
       </Collapse>
       <CardActions disableSpacing>
         <ExpandMoreButton
-          expanded={expanded}
-          handleExpandClick={handleExpandClick}
+          index={index}
           ariaLabel="show exercise group details"
           className='mx-auto p-0'
         />

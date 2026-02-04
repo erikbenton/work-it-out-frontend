@@ -5,16 +5,16 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import { useState } from 'react';
 import type ExerciseGroup from '../../../types/exerciseGroup';
-import type { WorkoutAction } from '../../../reducers/workoutReducer';
+import useWorkoutForm from '../../../hooks/useWorkoutForm';
 
 type Props = {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>
   exerciseGroup: ExerciseGroup,
-  dispatch: React.ActionDispatch<[action: WorkoutAction]>
 }
 
-export default function ExerciseGroupNoteInput({ open, setOpen, exerciseGroup, dispatch }: Props) {
+export default function ExerciseGroupNoteInput({ open, setOpen, exerciseGroup }: Props) {
+  const { dispatch } = useWorkoutForm();
   const [note, setNote] = useState(exerciseGroup.note);
 
   const handleClose = () => {
@@ -33,14 +33,11 @@ export default function ExerciseGroupNoteInput({ open, setOpen, exerciseGroup, d
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newNote = e.target.value !== ''
-    ? e.target.value
-    : undefined;
-    setNote(newNote);
+    setNote(e.target.value);
   }
 
   return (
-    <Dialog fullWidth open={open} onClose={handleClose}>
+    <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
       <DialogContent>
         <form onSubmit={handleSubmit} id="exercise-group-note-form">
           <TextField

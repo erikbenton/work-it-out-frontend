@@ -1,6 +1,7 @@
 import { styled } from '@mui/material/styles';
 import IconButton, { type IconButtonProps } from "@mui/material/IconButton";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import useWorkoutForm from '../../hooks/useWorkoutForm';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -32,18 +33,20 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 type Props = {
-  expanded: boolean,
-  handleExpandClick: () => void,
+  index: number,
   ariaLabel: string,
   className: string
 }
 
-export default function ExpandMoreButton({ expanded, handleExpandClick, ariaLabel, className }: Props) {
+export default function ExpandMoreButton({ index, ariaLabel, className }: Props) {
+  const { expanded, handleExpandClick } = useWorkoutForm();
+  const expand = expanded[index];
+
   return (
     <ExpandMore
-      expand={expanded}
-      onClick={handleExpandClick}
-      aria-expanded={expanded}
+      expand={expand}
+      onClick={handleExpandClick(expand, index)}
+      aria-expanded={expand}
       aria-label={ariaLabel}
       className={className}
     >
