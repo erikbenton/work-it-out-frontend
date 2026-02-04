@@ -1,6 +1,6 @@
 import { Box, Stack } from "@mui/material";
 import ExerciseGroupCard from "../components/ExerciseGroupCard";
-import WorkoutDetailsTitle from "../components/WorkoutDetailsTitle";
+import WorkoutFormTitle from "./WorkoutFormTitle";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 
 export default function WorkoutForm() {
@@ -8,7 +8,7 @@ export default function WorkoutForm() {
 
   return (
     <Box className="w-full md:w-2/3 px-3" role={editing ? 'form' : 'div'}>
-      <WorkoutDetailsTitle />
+      <WorkoutFormTitle />
       <Stack spacing={1} className="pb-3" >
         {workout.exerciseGroups.map((group, index) => (
           <ExerciseGroupCard

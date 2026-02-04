@@ -5,8 +5,9 @@ import Grow from "@mui/material/Grow";
 import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
+import WorkoutFormNameInput from "./WorkoutFormNameInput";
 
-export default function WorkoutDetailsTitle() {
+export default function WorkoutFormTitle() {
   const { workout, editing, setEditing } = useWorkoutForm();
 
   const menuItems = [
@@ -24,9 +25,7 @@ export default function WorkoutDetailsTitle() {
           alignItems: "center",
         }}
       >
-        <Typography variant="h4" component="h2">
-          {workout?.name}
-        </Typography>
+        <WorkoutFormNameInput />
         <VerticalIconMenu
           buttonId={"workout-options"}
           menuItems={menuItems}
