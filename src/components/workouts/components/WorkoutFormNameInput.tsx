@@ -59,17 +59,27 @@ export default function WorkoutFormNameInput() {
       {editing
         ? <Button
           sx={{
-            m: 0, p: 0,
-            fontSize: '34px', textTransform: 'none', color: 'inherit',
-            justifyContent: 'flex-start', flexGrow: 1
+            p: 0,
+            textTransform: 'none',
+            color: 'inherit',
+            justifyContent: 'flex-start',
+            flexGrow: 1,
           }}
           onClick={() => setOpen(true)}
         >
-          <Typography variant="h4" component="h2">
+          <Typography variant="h5" component="h2"
+            sx={{
+              mr: 1,
+              borderBottom: '1px solid',
+              borderColor: 'primary.main',
+              textAlign: 'start',
+              flexGrow: 1,
+            }}
+          >
             {workout?.name}
           </Typography>
         </Button>
-        : <Typography variant="h4" component="h2">
+        : <Typography variant="h5" component="h2" sx={{ flexGrow: 1, textAlign: 'start' }}>
           {workout?.name}
         </Typography>
       }

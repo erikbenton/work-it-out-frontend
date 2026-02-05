@@ -6,12 +6,14 @@ import IconButton from "@mui/material/IconButton";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import WorkoutFormNameInput from "./WorkoutFormNameInput";
+import CheckIcon from '@mui/icons-material/Check';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function WorkoutFormTitle() {
   const { workout, editing, setEditing } = useWorkoutForm();
 
   const menuItems = [
-    { label: editing ? "Save" : "Edit", handleClick: () => { setEditing(!editing) }, },
+    { label: editing ? "Cancel" : "Edit", handleClick: () => { setEditing(!editing) }, },
     { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
   ];
 
@@ -19,19 +21,27 @@ export default function WorkoutFormTitle() {
     <>
       <Stack
         direction="row"
-        spacing={2}
+        spacing={0}
         sx={{
           justifyContent: "space-between",
           alignItems: "center",
         }}
       >
         <WorkoutFormNameInput />
+        <IconButton color="primary" sx={{mx: 1}} onClick={() => setEditing(!editing)}>
+          <Grow in={editing}>
+            <CheckIcon fontSize="medium" sx={{position: 'absolute'}} />
+          </Grow>
+          <Grow in={!editing}>
+            <EditIcon fontSize="medium" sx={{position: 'absolute'}} />
+          </Grow>
+        </IconButton>
         <VerticalIconMenu
           buttonId={"workout-options"}
           menuItems={menuItems}
           size="large"
         />
-      </Stack>
+      </Stack >
       <Stack
         direction="row"
         spacing={2}

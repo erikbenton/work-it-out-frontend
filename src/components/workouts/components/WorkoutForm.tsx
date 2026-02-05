@@ -7,7 +7,7 @@ export default function WorkoutForm() {
   const { workout, editing } = useWorkoutForm();
 
   return (
-    <Box className="w-full md:w-2/3 px-3" role={editing ? 'form' : 'div'}>
+    <Box className="w-full md:w-2/3" role={editing ? 'form' : 'div'}>
       <WorkoutFormTitle />
       <Stack spacing={1} className="pb-3" >
         {workout.exerciseGroups.map((group, index) => (

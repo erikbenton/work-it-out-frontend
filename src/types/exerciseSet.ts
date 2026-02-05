@@ -7,5 +7,4 @@ export default interface ExerciseSet extends KeyId {
   setType?: string,
   sort: number,
   exerciseGroupId: number,
-  //key?: number
 }

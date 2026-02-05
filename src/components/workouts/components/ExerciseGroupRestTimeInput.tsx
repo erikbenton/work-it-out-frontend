@@ -1,21 +1,29 @@
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import { useRef, useState } from 'react';
-import type ExerciseGroup from '../../../types/exerciseGroup';
-import useWorkoutForm from '../../../hooks/useWorkoutForm';
-import Typography from '@mui/material/Typography';
-import NotesIcon from '@mui/icons-material/Notes';
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import type ExerciseGroup from "../../../types/exerciseGroup";
+import AlarmOutlinedIcon from '@mui/icons-material/AlarmOutlined';
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import TextField from "@mui/material/TextField";
+import DialogActions from "@mui/material/DialogActions";
+import { useRef, useState } from "react";
+import useWorkoutForm from "../../../hooks/useWorkoutForm";
 
 type Props = {
-  exerciseGroup: ExerciseGroup,
+  exerciseGroup: ExerciseGroup
 }
 
-export default function ExerciseGroupNoteInput({ exerciseGroup }: Props) {
+function formatRestTime(time: string | undefined): string {
+  if (!time) return '00:00';
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [hours = '00', minutes = '00', seconds = '00'] = time.split(':'); // duration -> 'hh:mm:ss'
+  return `${minutes}:${seconds}`; // only need 'mm:ss'
+}
+
+export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
+  const initTime = formatRestTime(exerciseGroup.restTime);
   const { editing, dispatch } = useWorkoutForm();
-  const [note, setNote] = useState(exerciseGroup.note);
+  const [restTime, setRestTime] = useState<string | undefined>(initTime);
   const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
 
@@ -25,17 +33,19 @@ export default function ExerciseGroupNoteInput({ exerciseGroup }: Props) {
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     dispatch({
       type: 'updateGroup',
       payload: {
-        group: { ...exerciseGroup, note: note !== '' ? note : undefined }
+        group: { ...exerciseGroup, restTime }
       }
     });
+
     handleClose();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNote(e.target.value);
+    setRestTime(e.target.value);
   }
 
   // Move the cursor to the end of the dialog input
@@ -49,19 +59,19 @@ export default function ExerciseGroupNoteInput({ exerciseGroup }: Props) {
     <>
       <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
         <DialogContent>
-          <form onSubmit={handleSubmit} id="exercise-group-note-form">
+          <form onSubmit={handleSubmit} id="exercise-group-rest-time-form">
             <TextField
               autoFocus
-              id="note"
-              name="note"
-              label="Note"
+              id="restTime"
+              name="restTime"
+              label="Rest Time (mm:ss)"
               type="text"
               multiline
               maxRows={10}
               minRows={1}
               fullWidth
               variant="standard"
-              value={note}
+              value={restTime ?? '00:00'}
               onChange={handleChange}
               inputRef={inputRef}
               onFocus={handleFocus}
@@ -72,24 +82,24 @@ export default function ExerciseGroupNoteInput({ exerciseGroup }: Props) {
           <Button onClick={handleClose}>
             Cancel
           </Button>
-          <Button type="submit" form="exercise-group-note-form">
+          <Button type="submit" form="exercise-group-rest-time-form">
             Save
           </Button>
         </DialogActions>
       </Dialog>
       <Button
         variant="text"
-        disableTouchRipple={!editing}
         color='inherit'
+        disableTouchRipple={!editing}
         sx={{ textTransform: 'none' }}
-        startIcon={<NotesIcon className='mr-2' />}
+        startIcon={<AlarmOutlinedIcon className='mr-2' />}
         onClick={() => { if (editing) { setOpen(true) } }}
       >
         <Typography
           sx={{ flex: 1, textAlign: 'left' }}
           className={exerciseGroup.note ? '' : 'text-gray-400'}
         >
-          {exerciseGroup.note ?? 'Note'}
+          {exerciseGroup.restTime ? exerciseGroup.restTime.slice(exerciseGroup.restTime.search(/[1-9]/)) : ''}
         </Typography>
       </Button>
     </>

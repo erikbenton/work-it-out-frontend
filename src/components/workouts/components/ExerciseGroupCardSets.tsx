@@ -12,9 +12,10 @@ import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
 import { Grow, ListItemButton } from "@mui/material"
 import useWorkoutForm from "../../../hooks/useWorkoutForm"
+import type ExerciseGroup from "../../../types/exerciseGroup"
 
 type Props = {
-  exerciseSets: ExerciseSet[],
+  exerciseGroup: ExerciseGroup
 }
 
 function formattedRepsText(set: ExerciseSet): string {
@@ -23,8 +24,23 @@ function formattedRepsText(set: ExerciseSet): string {
     `${set.maxReps ?? ""} Reps`);
 }
 
-export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
-  const { editing } = useWorkoutForm();
+export default function ExerciseGroupCardSets({ exerciseGroup }: Props) {
+  const { editing, dispatch } = useWorkoutForm();
+
+  const handleRemoveSet = () => {
+    const numberOfSets = exerciseGroup.exerciseSets.length;
+    dispatch({
+      type: 'removeGroupSet',
+      payload: {
+        group: exerciseGroup,
+        set: exerciseGroup.exerciseSets[numberOfSets - 1]
+      }
+    });
+  }
+
+  const handleAddSet = () => {
+    dispatch({ type: 'addGroupSet', payload: { group: exerciseGroup } })
+  }
 
   return (
     <>
@@ -44,21 +60,21 @@ export default function ExerciseGroupCardSets({ exerciseSets }: Props) {
               alignItems: "center",
             }}
           >
-            <IconButton aria-label="add exercise set">
+            <IconButton aria-label="remove exercise set" onClick={handleRemoveSet}>
               <RemoveCircleOutlinedIcon fontSize='small' />
             </IconButton>
-            {exerciseSets.length}
-            <IconButton aria-label="remove exercise set">
+            {exerciseGroup.exerciseSets.length}
+            <IconButton aria-label="add exercise set" onClick={handleAddSet}>
               <AddCircleOutlinedIcon fontSize='small' />
             </IconButton>
           </Stack>
         </Grow>
       </Stack>
       <List dense={true}>
-        {exerciseSets.map(set => (
+        {exerciseGroup.exerciseSets.map(set => (
           <ListItem
             disableGutters
-            key={set.id}
+            key={set.key}
             secondaryAction={
               <Grow in={editing}>
                 <IconButton edge="end" aria-label="delete">

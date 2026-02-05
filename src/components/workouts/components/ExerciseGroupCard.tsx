@@ -32,7 +32,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
         <CardContent className='pb-0'>
           <Stack spacing={1}>
             <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />
-            <ExerciseGroupCardSets exerciseSets={exerciseGroup.exerciseSets} />
+            <ExerciseGroupCardSets exerciseGroup={exerciseGroup} />
           </Stack>
         </CardContent>
       </Collapse>
