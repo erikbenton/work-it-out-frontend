@@ -4,20 +4,29 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { Box, Grow } from "@mui/material";
 import type MuscleData from "../../../types/muscleData";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
+import type ExerciseGroup from "../../../types/exerciseGroup";
 
 type Props = {
   exerciseName: string,
   muscles: MuscleData[],
-  numberOfSets: number
+  exerciseGroup: ExerciseGroup
 }
 
-export default function ExerciseGroupCardTitle({ exerciseName, muscles, numberOfSets }: Props) {
-  const { editing } = useWorkoutForm();
+export default function ExerciseGroupCardTitle({ exerciseName, muscles, exerciseGroup }: Props) {
+  const { editing, dispatch } = useWorkoutForm();
+
+  const numberOfSets = exerciseGroup.exerciseSets?.length ?? 0;
 
   const menuItems = [
     { label: "Shift up", handleClick: () => { }, },
     { label: "Shift down", handleClick: () => { }, },
-    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroup', payload: { group: exerciseGroup } })
+      },
+      sx: { color: 'error.main' }
+    },
   ];
 
   return (

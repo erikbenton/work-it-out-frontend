@@ -10,7 +10,9 @@ export type WorkoutAction =
   | { type: 'addGroupSet', payload: { group: ExerciseGroup } }
   | { type: 'removeGroupSet', payload: { group: ExerciseGroup, set: ExerciseSet | undefined } }
   | { type: 'updateGroup', payload: { group: ExerciseGroup } }
-  | { type: 'updateSet', payload: { group: ExerciseGroup, set: ExerciseSet } };
+  | { type: 'updateSet', payload: { group: ExerciseGroup, set: ExerciseSet } }
+  | { type: 'removeGroup', payload: { group: ExerciseGroup } }
+  | { type: 'addExercises', payload: { newExercises: number[] } };
 
 export default function workoutReducer(workout: Workout, action: WorkoutAction): Workout {
   switch (action.type) {
@@ -27,6 +29,7 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
 
     case 'updateGroup': {
       const { group } = action.payload;
+      // do simple validations here
       const validGroup: ExerciseGroup = {
         id: group.id,
         key: group.key,
@@ -91,6 +94,32 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
       const exerciseSets = exerciseGroup?.exerciseSets.map(s => s.key === set.key ? validSet : s) ?? [];
       const updatedGroup = { ...exerciseGroup, exerciseSets };
       const exerciseGroups = workout.exerciseGroups.map(g => g.key === group.key ? updatedGroup : g);
+      return { ...workout, exerciseGroups };
+    }
+
+    case 'addExercises': {
+      const { newExercises } = action.payload;
+
+      const numberOfExistingGroups = workout.exerciseGroups.length;
+
+      const newGroups = newExercises.map((exId, index) => {
+        const newGroup: ExerciseGroup = {
+          id: 0,
+          sort: numberOfExistingGroups + index,
+          exerciseId: exId,
+          exerciseSets: [],
+          workoutId: workout.id
+        };
+        return populateKey(newGroup);
+      });
+
+      const exerciseGroups = workout.exerciseGroups.concat(newGroups);
+      return { ...workout, exerciseGroups };
+    }
+
+    case 'removeGroup': {
+      const { group } = action.payload;
+      const exerciseGroups = workout.exerciseGroups.filter(g => g.key !== group.key);
       return { ...workout, exerciseGroups };
     }
 

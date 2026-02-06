@@ -12,7 +12,7 @@ export default function WorkoutForm() {
       <Stack spacing={1} sx={{ pb: 3, px: 1}} >
         {workout.exerciseGroups.map((group, index) => (
           <ExerciseGroupCard
-            key={group.id}
+            key={group.key}
             exerciseGroup={group}
             index={index}
           />

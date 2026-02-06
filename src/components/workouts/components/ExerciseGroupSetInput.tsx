@@ -97,7 +97,6 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
                   onChange={handleMinRepsChange}
                 />
                 <TextField
-                  autoFocus
                   id="maxReps"
                   name="maxReps"
                   label="Max"
@@ -119,8 +118,19 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
                   sx={{ flexWrap: 'wrap' }}
                 >
                   {setTags.map(option => (
-                    <ToggleButton key={option.id} className="rounded-full" value={option} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-                      <Chip label={option.name} variant="outlined" className="capitalize" sx={{ border: `1px solid ${option.colorRgb}`}}/>
+                    <ToggleButton
+                      key={option.id}
+                      className="rounded-full"
+                      value={option}
+                      sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}
+                    >
+                      <Chip
+                        label={option.name}
+                        variant="outlined"
+                        size="small"
+                        className="capitalize"
+                        sx={{ border: `1px solid ${option.colorRgb}` }}
+                      />
                     </ToggleButton>
                   ))}
                 </ToggleButtonGroup>

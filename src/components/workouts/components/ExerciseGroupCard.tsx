@@ -26,7 +26,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
       <ExerciseGroupCardTitle
         exerciseName={exercise.name ?? ""}
         muscles={exercise.muscles ?? []}
-        numberOfSets={exerciseGroup.exerciseSets.length}
+        exerciseGroup={exerciseGroup}
       />
       <CardActions disableSpacing>
         <ExpandMoreButton

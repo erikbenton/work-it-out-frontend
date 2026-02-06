@@ -8,9 +8,16 @@ import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import WorkoutFormNameInput from "./WorkoutFormNameInput";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
+import WorkoutExerciseSelection from "./WorkoutExerciseSelection";
+import { useState } from "react";
 
 export default function WorkoutFormTitle() {
   const { workout, editing, setEditing } = useWorkoutForm();
+  const [selectingExercises, setSelectingExercises] = useState(false);
+
+  const handleClickOpen = () => {
+    setSelectingExercises(true);
+  };
 
   const menuItems = [
     { label: editing ? "Cancel" : "Edit", handleClick: () => { setEditing(!editing) }, },
@@ -28,12 +35,12 @@ export default function WorkoutFormTitle() {
         }}
       >
         <WorkoutFormNameInput />
-        <IconButton color="primary" sx={{mx: 1}} onClick={() => setEditing(!editing)}>
+        <IconButton color="primary" sx={{ mx: 1 }} onClick={() => setEditing(!editing)}>
           <Grow in={editing}>
-            <CheckIcon fontSize="medium" sx={{position: 'absolute'}} />
+            <CheckIcon fontSize="medium" sx={{ position: 'absolute' }} />
           </Grow>
           <Grow in={!editing}>
-            <EditIcon fontSize="medium" sx={{position: 'absolute'}} />
+            <EditIcon fontSize="medium" sx={{ position: 'absolute' }} />
           </Grow>
         </IconButton>
         <VerticalIconMenu
@@ -45,22 +52,25 @@ export default function WorkoutFormTitle() {
       <Stack
         direction="row"
         spacing={2}
-        className="px-2"
         sx={{
           justifyContent: "space-between",
           alignItems: "center",
-          // paddingX: '8px'
+          px: 1
         }}
       >
         <Typography variant="body1" component="span">
           {workout?.exerciseGroups.length} Exercises
         </Typography>
         <Grow in={editing} >
-          <IconButton color="primary">
+          <IconButton color="primary" onClick={handleClickOpen}>
             <AddCircleOutlinedIcon fontSize="large" />
           </IconButton>
         </Grow>
       </Stack>
+      <WorkoutExerciseSelection
+        open={selectingExercises && editing}
+        setOpen={setSelectingExercises}
+      />
     </>
   );
 }
