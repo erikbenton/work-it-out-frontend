@@ -1,9 +1,11 @@
 import { createContext } from "react";
 import type Workout from "../types/workout";
 import { type WorkoutAction } from "../reducers/workoutReducer";
+import type SetType from "../types/setType";
 
 export type WorkoutFormContext = {
   workout: Workout,
+  setTypes: SetType[],
   editing: boolean,
   expanded: boolean[],
   setEditing: React.Dispatch<React.SetStateAction<boolean>>,

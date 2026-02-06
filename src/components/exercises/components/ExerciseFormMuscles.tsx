@@ -7,16 +7,15 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Chip from "@mui/material/Chip";
 import { grey } from '@mui/material/colors';
 import type MuscleData from "../../../types/muscleData";
+import useMuscleOptions from "../../../hooks/useMuscleOptions";
 
 type Props = {
   muscles?: MuscleData[],
   dispatch: React.ActionDispatch<[action: ExerciseAction]>
 }
 
-const muscleOptions = ['back', 'cardio', 'chest', 'forearms', 'lower legs',
-  'neck', 'shoulders', 'biceps', 'triceps', 'upper legs', 'core'];
-
 export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
+  const { muscleOptions } = useMuscleOptions();
 
   const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
     const muscleData: MuscleData[] = newMuscles.map(m => ({ name: m, weight: 1 }));
@@ -37,8 +36,8 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
           sx={{ flexWrap: 'wrap' }}
         >
           {muscleOptions.map(option => (
-            <ToggleButton key={option} className="rounded-full" value={option} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-              <Chip label={option} variant="outlined" />
+            <ToggleButton key={option.name} className="rounded-full" value={option.name} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+              <Chip label={option.name} variant="outlined" />
             </ToggleButton>
           ))}
         </ToggleButtonGroup>

@@ -2,6 +2,7 @@ import { useReducer, useState, type ReactNode } from "react";
 import type Workout from "../../../types/workout";
 import WorkoutFormContext from "../../../contexts/workoutFormContext";
 import workoutReducer from "../../../reducers/workoutReducer";
+import useSetTypes from "../../../hooks/useSetTypes";
 
 type Props = {
   initWorkout: Workout,
@@ -10,6 +11,7 @@ type Props = {
 
 export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const [workout, dispatch] = useReducer(workoutReducer, initWorkout);
+  const { setTypes } = useSetTypes();
   const [ editing, setEditing] = useState(false);
   const [expanded, setExpanded] = useState<boolean[]>(
     new Array(workout.exerciseGroups.length).fill(false));
@@ -25,6 +27,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
 
   const workoutContext = {
     workout,
+    setTypes,
     editing,
     setEditing,
     expanded,

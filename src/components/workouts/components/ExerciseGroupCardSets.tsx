@@ -1,27 +1,16 @@
-import Stack from "@mui/material/Stack"
-import type ExerciseSet from "../../../types/exerciseSet"
-import Typography from "@mui/material/Typography"
-import IconButton from "@mui/material/IconButton"
-import List from "@mui/material/List"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
-import Avatar from "@mui/material/Avatar"
-import ListItemText from "@mui/material/ListItemText"
-import ListItem from "@mui/material/ListItem"
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
-import { Grow, ListItemButton } from "@mui/material"
-import useWorkoutForm from "../../../hooks/useWorkoutForm"
-import type ExerciseGroup from "../../../types/exerciseGroup"
+import { Grow } from "@mui/material";
+import useWorkoutForm from "../../../hooks/useWorkoutForm";
+import type ExerciseGroup from "../../../types/exerciseGroup";
+import ExerciseGroupSetInput from "./ExerciseGroupSetInput";
 
 type Props = {
   exerciseGroup: ExerciseGroup
-}
-
-function formattedRepsText(set: ExerciseSet): string {
-  return (`${set.minReps ?? ""}` +
-    `${set.minReps && set.maxReps ? " - " : ""}` +
-    `${set.maxReps ?? ""} Reps`);
 }
 
 export default function ExerciseGroupCardSets({ exerciseGroup }: Props) {
@@ -72,26 +61,7 @@ export default function ExerciseGroupCardSets({ exerciseGroup }: Props) {
       </Stack>
       <List dense={true}>
         {exerciseGroup.exerciseSets.map(set => (
-          <ListItem
-            disableGutters
-            key={set.key}
-            secondaryAction={
-              <Grow in={editing}>
-                <IconButton edge="end" aria-label="delete">
-                  <MoreVertIcon />
-                </IconButton>
-              </Grow>
-            }
-          >
-            <ListItemButton disableGutters className="rounded">
-              <ListItemAvatar>
-                <Avatar>
-                  {set.sort + 1}
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText primary={formattedRepsText(set)} />
-            </ListItemButton>
-          </ListItem>
+          <ExerciseGroupSetInput key={set.key} exerciseGroup={exerciseGroup} set={set} />
         ))}
       </List>
     </>

@@ -10,7 +10,7 @@ export type WorkoutAction =
   | { type: 'addGroupSet', payload: { group: ExerciseGroup } }
   | { type: 'removeGroupSet', payload: { group: ExerciseGroup, set: ExerciseSet | undefined } }
   | { type: 'updateGroup', payload: { group: ExerciseGroup } }
-  | { type: 'updateSet', payload: { groupKey: string, set: ExerciseSet } };
+  | { type: 'updateSet', payload: { group: ExerciseGroup, set: ExerciseSet } };
 
 export default function workoutReducer(workout: Workout, action: WorkoutAction): Workout {
   switch (action.type) {
@@ -73,10 +73,10 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
     }
 
     case 'updateSet': {
-      const { groupKey, set } = action.payload;
-      const exerciseGroup = workout.exerciseGroups.find(g => g.key === groupKey);
+      const { group, set } = action.payload;
+      const exerciseGroup = workout.exerciseGroups.find(g => g.key === group.key);
       if (!exerciseGroup) {
-        throw new Error('Unable to exercise group with key: ' + groupKey);
+        throw new Error('Unable to exercise group with key: ' + group.key);
       }
       // do simple validations here 
       const validSet: ExerciseSet = {
@@ -85,11 +85,12 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
         minReps: set.minReps,
         maxReps: set.maxReps,
         sort: set.sort,
+        setType: set.setType,
         exerciseGroupId: set.exerciseGroupId
       }
       const exerciseSets = exerciseGroup?.exerciseSets.map(s => s.key === set.key ? validSet : s) ?? [];
       const updatedGroup = { ...exerciseGroup, exerciseSets };
-      const exerciseGroups = workout.exerciseGroups.map(g => g.key === groupKey ? updatedGroup : g);
+      const exerciseGroups = workout.exerciseGroups.map(g => g.key === group.key ? updatedGroup : g);
       return { ...workout, exerciseGroups };
     }
 
