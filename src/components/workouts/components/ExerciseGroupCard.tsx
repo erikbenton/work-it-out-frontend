@@ -28,6 +28,13 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
         muscles={exercise.muscles ?? []}
         numberOfSets={exerciseGroup.exerciseSets.length}
       />
+      <CardActions disableSpacing>
+        <ExpandMoreButton
+          index={index}
+          ariaLabel="show exercise group details"
+          className='mx-auto p-0'
+        />
+      </CardActions>
       <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
         <CardContent className='pb-0'>
           <Stack spacing={1}>
@@ -36,13 +43,6 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
           </Stack>
         </CardContent>
       </Collapse>
-      <CardActions disableSpacing>
-        <ExpandMoreButton
-          index={index}
-          ariaLabel="show exercise group details"
-          className='mx-auto p-0'
-        />
-      </CardActions>
     </Card>
   );
 }

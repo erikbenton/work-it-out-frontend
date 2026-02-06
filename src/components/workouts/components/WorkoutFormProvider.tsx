@@ -11,7 +11,7 @@ type Props = {
 
 export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const [workout, dispatch] = useReducer(workoutReducer, initWorkout);
-  const { setTypes } = useSetTypes();
+  const { setTags } = useSetTypes();
   const [ editing, setEditing] = useState(false);
   const [expanded, setExpanded] = useState<boolean[]>(
     new Array(workout.exerciseGroups.length).fill(false));
@@ -27,7 +27,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
 
   const workoutContext = {
     workout,
-    setTypes,
+    setTags,
     editing,
     setEditing,
     expanded,

@@ -9,7 +9,7 @@ export default function WorkoutForm() {
   return (
     <Box className="w-full md:w-2/3" role={editing ? 'form' : 'div'}>
       <WorkoutFormTitle />
-      <Stack spacing={1} className="pb-3" >
+      <Stack spacing={1} sx={{ pb: 3, px: 1}} >
         {workout.exerciseGroups.map((group, index) => (
           <ExerciseGroupCard
             key={group.id}

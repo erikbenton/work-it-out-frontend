@@ -85,7 +85,7 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
         minReps: set.minReps,
         maxReps: set.maxReps,
         sort: set.sort,
-        setType: set.setType,
+        setTagId: set.setTagId,
         exerciseGroupId: set.exerciseGroupId
       }
       const exerciseSets = exerciseGroup?.exerciseSets.map(s => s.key === set.key ? validSet : s) ?? [];

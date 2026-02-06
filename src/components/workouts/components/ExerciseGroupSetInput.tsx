@@ -16,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import type ExerciseGroup from "../../../types/exerciseGroup";
 import { Chip, FormLabel, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import type SetTagOption from "../../../types/setTagOption";
 
 function formattedRepsText(set: ExerciseSet): string {
   return (`${set.minReps ?? ""}` +
@@ -29,7 +30,7 @@ type Props = {
 }
 
 export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
-  const { editing, dispatch, setTypes } = useWorkoutForm();
+  const { editing, dispatch, setTags = [] } = useWorkoutForm();
   const [values, setValues] = useState<ExerciseSet>(set);
   const [open, setOpen] = useState(false);
 
@@ -38,7 +39,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   };
 
   const handleCancel = () => {
-    setValues(prev => ({ ...prev, setType: set.setType }));
+    setValues(prev => ({ ...prev, setTagId: set.setTagId }));
     handleClose();
   }
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
@@ -71,56 +72,59 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
     setValues(newSet);
   }
 
-  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setType: string) => {
-    const newSet = { ...values, setType };
+  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption) => {
+    const newSet = { ...values, setTagId: setTag.id };
     setValues(newSet);
   }
 
   return (
     <>
-      <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
+      <Dialog fullWidth open={open} onClose={handleCancel} disableRestoreFocus>
         <DialogContent>
           <form onSubmit={handleSubmit} id="exercise-set-input-form">
-            <Stack direction='row' spacing={2}>
-              <TextField
-                autoFocus
-                id="minReps"
-                name="minReps"
-                label="Min Reps"
-                type="number"
-                fullWidth
-                variant="standard"
-                value={values.minReps ? values.minReps : ""}
-                onChange={handleMinRepsChange}
-              />
-              <TextField
-                autoFocus
-                id="maxReps"
-                name="maxReps"
-                label="Max Reps"
-                type="number"
-                fullWidth
-                variant="standard"
-                value={values.maxReps ? values.maxReps : ""}
-                onChange={handleMaxRepsChange}
-              />
-            </Stack>
-            <Stack sx={{ mx: 2, mt: 2 }}>
-              <FormLabel id="set-tag-group-label">Tag</FormLabel>
-              <ToggleButtonGroup
-                id="set-tag-group-label"
-                value={values.setType}
-                exclusive
-                onChange={handleSetTypeChange}
-                aria-label="Tag"
-                sx={{ flexWrap: 'wrap' }}
-              >
-                {setTypes.map(option => (
-                  <ToggleButton key={option.name} className="rounded-full" value={option.name} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-                    <Chip label={option.name} variant="outlined" />
-                  </ToggleButton>
-                ))}
-              </ToggleButtonGroup>
+            <Stack spacing={1}>
+              <FormLabel id="repetition-label">Repetitions</FormLabel>
+              <Stack direction='row' spacing={2}>
+                <TextField
+                  autoFocus
+                  id="minReps"
+                  name="minReps"
+                  label="Min"
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                  value={values.minReps ? values.minReps : ""}
+                  onChange={handleMinRepsChange}
+                />
+                <TextField
+                  autoFocus
+                  id="maxReps"
+                  name="maxReps"
+                  label="Max"
+                  type="number"
+                  fullWidth
+                  variant="standard"
+                  value={values.maxReps ? values.maxReps : ""}
+                  onChange={handleMaxRepsChange}
+                />
+              </Stack>
+              <Stack sx={{ mt: 2 }}>
+                <FormLabel id="set-tag-group-label">Tag</FormLabel>
+                <ToggleButtonGroup
+                  id="set-tag-group-label"
+                  value={setTags.find(st => st.id === values.setTagId)}
+                  exclusive
+                  onChange={handleSetTypeChange}
+                  aria-label="Tag"
+                  sx={{ flexWrap: 'wrap' }}
+                >
+                  {setTags.map(option => (
+                    <ToggleButton key={option.id} className="rounded-full" value={option} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+                      <Chip label={option.name} variant="outlined" className="capitalize" sx={{ border: `1px solid ${option.colorRgb}`}}/>
+                    </ToggleButton>
+                  ))}
+                </ToggleButtonGroup>
+              </Stack>
             </Stack>
           </form>
         </DialogContent>
