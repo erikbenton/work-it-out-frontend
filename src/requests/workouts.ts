@@ -29,3 +29,43 @@ export async function getWorkoutById(id: number): Promise<Workout> {
   }
   return (await response.json()) as Workout;
 }
+
+export async function createWorkout(newWorkout: Workout): Promise<Workout> {
+  console.log('Creating workout ' + newWorkout.name);
+  const config = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(newWorkout),
+  };
+
+  const response = await fetch(`${baseUrl}/workouts`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to create new workout with name: ' + (newWorkout.name ?? "(no name given)"));
+  }
+
+  return (await response.json()) as Workout;
+}
+
+export async function updateWorkout(workout: Workout): Promise<Workout> {
+  console.log('Updating workout ' + workout.id);
+  const config = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(workout),
+  };
+
+  const response = await fetch(`${baseUrl}/workouts/${workout.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to update workout with id: ' + workout.id);
+  }
+
+  return (await response.json()) as Workout;
+}

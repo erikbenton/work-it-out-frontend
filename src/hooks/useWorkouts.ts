@@ -1,6 +1,6 @@
-import { useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import type Workout from "../types/workout";
-import { getWorkouts } from "../requests/workouts";
+import { createWorkout, getWorkouts, updateWorkout } from "../requests/workouts";
 import { mapKeys, populateKey } from "../types/keyId";
 
 const queryKey = 'workouts';
@@ -32,11 +32,44 @@ export function useWorkouts() {
     return workout;
   }
 
+  const create = useMutation({
+    mutationFn: async (newWorkout: Workout) => createWorkout(newWorkout),
+    onSuccess: (savedWorkout: Workout) => {
+      try {
+        const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+        queryClient.setQueryData(
+          [queryKey],
+          prevWorkouts
+            ?.concat(savedWorkout)
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
+  const update = useMutation({
+    mutationFn: async (workout: Workout) => updateWorkout(workout),
+    onSuccess: (updatedWorkout: Workout) => {
+      try {
+        const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+        queryClient.setQueryData([queryKey], prevWorkouts?.map(ex => (
+          ex.id === updatedWorkout.id
+            ? updatedWorkout
+            : ex)));
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
   return {
     workouts,
     isError,
     services: {
-      getWorkoutById
+      getWorkoutById,
+      create,
+      update
     }
   }
 }

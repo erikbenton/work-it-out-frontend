@@ -10,17 +10,37 @@ import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import WorkoutExerciseSelection from "./WorkoutExerciseSelection";
 import { useState } from "react";
+import { useWorkouts } from "../../../hooks/useWorkouts";
+import { useNavigate } from "react-router-dom";
 
 export default function WorkoutFormTitle() {
   const { workout, editing, setEditing } = useWorkoutForm();
+  const { services } = useWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
+  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setSelectingExercises(true);
   };
 
+  const handleEditSaveClick = () => {
+    if (editing) {
+      services.update(workout, {
+        onSuccess: (savedWorkout) => {
+          setEditing(!editing);
+          navigate(`/workouts/${savedWorkout.id}`);
+        }
+      });
+    } else {
+      setEditing(!editing);
+    }
+  }
+
   const menuItems = [
-    { label: editing ? "Cancel" : "Edit", handleClick: () => { setEditing(!editing) }, },
+    {
+      label: editing ? "Cancel" : "Edit",
+      handleClick: () => setEditing(!editing),
+    },
     { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
   ];
 
@@ -35,7 +55,7 @@ export default function WorkoutFormTitle() {
         }}
       >
         <WorkoutFormNameInput />
-        <IconButton color="primary" sx={{ mx: 1 }} onClick={() => setEditing(!editing)}>
+        <IconButton color="primary" sx={{ mx: 1 }} onClick={handleEditSaveClick}>
           <Grow in={editing}>
             <CheckIcon fontSize="medium" sx={{ position: 'absolute' }} />
           </Grow>

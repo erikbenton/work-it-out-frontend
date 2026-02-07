@@ -36,7 +36,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
         />
       </CardActions>
       <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
-        <CardContent className='pb-0'>
+        <CardContent className='pt-0'>
           <Stack spacing={1}>
             <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />
             <ExerciseGroupCardSets exerciseGroup={exerciseGroup} />

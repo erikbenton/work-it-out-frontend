@@ -57,7 +57,6 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   };
 
   const handleMinRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
     const minReps = Number(e.target.value);
     if (minReps < 0) return;
     const newSet = { ...values, minReps: minReps === 0 ? undefined : minReps }
@@ -65,14 +64,14 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   }
 
   const handleMaxRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
     const maxReps = Number(e.target.value);
     if (maxReps < 0) return;
     const newSet = { ...values, maxReps: maxReps === 0 ? undefined : maxReps }
     setValues(newSet);
   }
 
-  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption) => {
+  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | undefined) => {
+    if (!setTag) return;
     const newSet = { ...values, setTagId: setTag.id };
     setValues(newSet);
   }
