@@ -14,7 +14,7 @@ import { useWorkouts } from "../../../hooks/useWorkouts";
 import { useNavigate } from "react-router-dom";
 
 export default function WorkoutFormTitle() {
-  const { workout, editing, setEditing } = useWorkoutForm();
+  const { workout, editing, setEditing, newWorkout } = useWorkoutForm();
   const { services } = useWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
   const navigate = useNavigate();
@@ -25,12 +25,21 @@ export default function WorkoutFormTitle() {
 
   const handleEditSaveClick = () => {
     if (editing) {
-      services.update(workout, {
-        onSuccess: (savedWorkout) => {
-          setEditing(!editing);
-          navigate(`/workouts/${savedWorkout.id}`);
-        }
-      });
+      if (newWorkout) {
+        services.create(workout, {
+          onSuccess: (savedWorkout) => {
+            setEditing(!editing);
+            navigate(`/workouts/${savedWorkout.id}`);
+          }
+        });
+      } else {
+        services.update(workout, {
+          onSuccess: (savedWorkout) => {
+            setEditing(!editing);
+            navigate(`/workouts/${savedWorkout.id}`);
+          }
+        });
+      }
     } else {
       setEditing(!editing);
     }

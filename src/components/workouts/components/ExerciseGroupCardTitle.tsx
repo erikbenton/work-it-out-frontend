@@ -18,12 +18,22 @@ export default function ExerciseGroupCardTitle({ exerciseName, muscles, exercise
   const numberOfSets = exerciseGroup.exerciseSets?.length ?? 0;
 
   const menuItems = [
-    { label: "Shift up", handleClick: () => { }, },
-    { label: "Shift down", handleClick: () => { }, },
+    {
+      label: "Shift up",
+      handleClick: () => {
+        dispatch({ type: 'shiftGroup', payload: { group: exerciseGroup, shift: -1 } });
+      },
+    },
+    {
+      label: "Shift down",
+      handleClick: () => {
+        dispatch({ type: 'shiftGroup', payload: { group: exerciseGroup, shift: 1 } });
+      },
+    },
     {
       label: "Delete",
       handleClick: () => {
-        dispatch({ type: 'removeGroup', payload: { group: exerciseGroup } })
+        dispatch({ type: 'removeGroup', payload: { group: exerciseGroup } });
       },
       sx: { color: 'error.main' }
     },

@@ -11,6 +11,7 @@ import ExerciseCreate from './components/exercises/ExerciseCreate';
 import ExerciseEdit from './components/exercises/ExerciseEdit';
 import { Suspense } from 'react';
 import LoadingMessage from './components/layout/LoadingMessage';
+import WorkoutCreate from './components/workouts/WorkoutCreate';
 
 export default function App() {
 
@@ -22,6 +23,11 @@ export default function App() {
         <Route path="/workouts" element={
           <Suspense fallback={<LoadingMessage dataName='workouts' />}>
             <WorkoutList />
+          </Suspense>
+        } />
+        <Route path="/workouts/create" element={
+          <Suspense fallback={<LoadingMessage dataName='workout' />}>
+            <WorkoutCreate />
           </Suspense>
         } />
         <Route path="/workouts/:id" element={

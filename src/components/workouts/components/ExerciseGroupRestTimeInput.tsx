@@ -66,9 +66,6 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
               name="restTime"
               label="Rest Time (mm:ss)"
               type="text"
-              multiline
-              maxRows={10}
-              minRows={1}
               fullWidth
               variant="standard"
               value={restTime ?? '00:00'}

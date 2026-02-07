@@ -61,7 +61,7 @@ export default function ExerciseGroupNoteInput({ exerciseGroup }: Props) {
               minRows={1}
               fullWidth
               variant="standard"
-              value={note}
+              value={note ?? ""}
               onChange={handleChange}
               inputRef={inputRef}
               onFocus={handleFocus}

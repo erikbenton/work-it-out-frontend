@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import type Workout from "../types/workout";
-import { createWorkout, getWorkouts, updateWorkout } from "../requests/workouts";
+import { createWorkout, deleteWorkout, getWorkouts, updateWorkout } from "../requests/workouts";
 import { mapKeys, populateKey } from "../types/keyId";
 
 const queryKey = 'workouts';
@@ -63,13 +63,33 @@ export function useWorkouts() {
     }
   }).mutate;
 
+    const removeMutation = useMutation({
+      mutationFn: async (workout: Workout) => deleteWorkout(workout)
+    }).mutate;
+  
+    // wrap removeMutation so that we can use the
+    // id to filter the deleted workout onSuccess
+    const remove = (workout: Workout) => {
+      removeMutation(workout, {
+        onSuccess: () => {
+          try {
+            const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+            queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id))
+          } catch {
+            queryClient.invalidateQueries({ queryKey: [queryKey] });
+          }
+        }
+      });
+    }
+
   return {
     workouts,
     isError,
     services: {
       getWorkoutById,
       create,
-      update
+      update,
+      remove
     }
   }
 }

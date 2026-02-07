@@ -69,3 +69,14 @@ export async function updateWorkout(workout: Workout): Promise<Workout> {
 
   return (await response.json()) as Workout;
 }
+
+export async function deleteWorkout(workout: Workout): Promise<void> {
+  console.log('Deleting workout ' + workout.id);
+  const config = { method: 'DELETE' };
+
+  const response = await fetch(`${baseUrl}/workouts/${workout.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to delete workout with id: ' + workout.id);
+  }
+}

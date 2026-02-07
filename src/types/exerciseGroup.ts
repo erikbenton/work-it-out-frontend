@@ -8,6 +8,5 @@ export default interface ExerciseGroup extends KeyId {
   restTime?: string,
   sort: number,
   exerciseId: number,
-  exerciseSets: ExerciseSet[],
-  //key?: number
+  exerciseSets: ExerciseSet[]
 }

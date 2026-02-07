@@ -10,6 +10,7 @@ export type WorkoutAction =
   | { type: 'addGroupSet', payload: { group: ExerciseGroup } }
   | { type: 'removeGroupSet', payload: { group: ExerciseGroup, set: ExerciseSet | undefined } }
   | { type: 'updateGroup', payload: { group: ExerciseGroup } }
+  | { type: 'shiftGroup', payload: { group: ExerciseGroup, shift: number } }
   | { type: 'updateSet', payload: { group: ExerciseGroup, set: ExerciseSet } }
   | { type: 'removeGroup', payload: { group: ExerciseGroup } }
   | { type: 'addExercises', payload: { newExercises: number[] } };
@@ -42,6 +43,25 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
       }
       const exerciseGroups = workout.exerciseGroups.map(g => g.key === group.key ? validGroup : g);
       return { ...workout, exerciseGroups: exerciseGroups };
+    }
+
+    case 'shiftGroup': {
+      const { group, shift } = action.payload;
+      const groupIndex = workout.exerciseGroups.findIndex(g => g.key === group.key);
+      const newIndex = groupIndex + shift;
+
+      if (newIndex < 0 || newIndex >= workout.exerciseGroups.length) {
+        return { ...workout };
+      }
+
+      const shiftGroups = [ ...workout.exerciseGroups ];
+      const tempGroup = { ...shiftGroups[newIndex] };
+      shiftGroups[newIndex] = { ...group };
+      shiftGroups[groupIndex] = tempGroup;
+
+      const exerciseGroups = shiftGroups.map((g, index) => ({ ...g, sort: index}));
+
+      return { ...workout, exerciseGroups};
     }
 
     case 'addGroupSet': {

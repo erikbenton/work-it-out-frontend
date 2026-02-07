@@ -7,6 +7,7 @@ export type WorkoutFormContext = {
   workout: Workout,
   setTags: SetTagOption[] | undefined,
   editing: boolean,
+  newWorkout: boolean,
   expanded: boolean[],
   setEditing: React.Dispatch<React.SetStateAction<boolean>>,
   handleExpandClick: (expanded: boolean, index: number) => () => void,
