@@ -6,26 +6,29 @@ import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
+import { FormLabel, Stack } from "@mui/material";
 
 type Props = {
   exerciseGroup: ExerciseGroup
 }
 
-function formatRestTime(time: string | undefined): string {
-  if (!time) return '00:00';
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [hours = '00', minutes = '00', seconds = '00'] = time.split(':'); // duration -> 'hh:mm:ss'
-  return `${minutes}:${seconds}`; // only need 'mm:ss'
+const getInitRestTime = (rest: string | undefined): { minutes: number, seconds: number } | undefined => {
+  if (rest && rest.length > 5) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [hours, minutes = 0, seconds = 0] = rest.split(':');
+    return { minutes: Number(minutes), seconds: Number(seconds) };
+  }
+  return undefined;
 }
 
 export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
-  const initTime = formatRestTime(exerciseGroup.restTime);
   const { editing, dispatch } = useWorkoutForm();
-  const [restTime, setRestTime] = useState<string | undefined>(initTime);
+  const initRestTime = getInitRestTime(exerciseGroup.restTime);
+  const [seconds, setSeconds] = useState<number | undefined>(initRestTime?.seconds);
+  const [minutes, setMinutes] = useState<number | undefined>(initRestTime?.minutes);
   const [open, setOpen] = useState(false);
-  const inputRef = useRef(null);
 
   const handleClose = () => {
     setOpen(false);
@@ -33,6 +36,16 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    let restTime: string | undefined = undefined;
+
+    if (seconds !== undefined && minutes !== undefined) {
+      if (seconds > 0 || minutes > 0) {
+        const minutesText = minutes < 9 ? `0${minutes}` : minutes;
+        const secondsText = seconds < 9 ? `0${seconds}` : seconds;
+        restTime = `00:${minutesText}:${secondsText}`;
+      }
+    }
 
     dispatch({
       type: 'updateGroup',
@@ -44,35 +57,77 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
     handleClose();
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRestTime(e.target.value);
+  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length === 0) {
+      setMinutes(undefined);
+      if (seconds === 0) {
+        setSeconds(undefined);
+      }
+    } else {
+      const newMinutes = Number(e.target.value);
+      if (!seconds) {
+        setSeconds(0);
+      }
+      setMinutes(newMinutes);
+    }
   }
 
-  // Move the cursor to the end of the dialog input
-  const handleFocus = (event: React.FocusEvent<HTMLInputElement>) => {
-    const inputElement = event.target;
-    const length = inputElement?.value.length;
-    inputElement?.setSelectionRange(length, length);
-  };
+  const handleSecondsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length === 0) {
+      setSeconds(undefined);
+      if (minutes === 0) {
+        setMinutes(undefined);
+      }
+    } else {
+      if (!minutes) {
+        setMinutes(0);
+      }
+      const newSeconds = Number(e.target.value);
+      setSeconds(newSeconds);
+    }
+  }
+
+  const handleSecondsCheck = () => {
+    if (!seconds && (minutes ?? 0) > 0) {
+      setSeconds(0);
+    }
+    if (!seconds && !minutes) {
+      setSeconds(undefined);
+      setMinutes(undefined);
+    }
+  }
 
   return (
     <>
-      <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
+      <Dialog open={open} onClose={handleClose} disableRestoreFocus>
         <DialogContent>
           <form onSubmit={handleSubmit} id="exercise-group-rest-time-form">
-            <TextField
-              autoFocus
-              id="restTime"
-              name="restTime"
-              label="Rest Time (mm:ss)"
-              type="text"
-              fullWidth
-              variant="standard"
-              value={restTime ?? '00:00'}
-              onChange={handleChange}
-              inputRef={inputRef}
-              onFocus={handleFocus}
-            />
+            <Stack spacing={1}>
+              <FormLabel>Rest Time</FormLabel>
+              <Stack direction='row' spacing={2}>
+                <TextField
+                  autoFocus
+                  id="minutes"
+                  name="minutes"
+                  label="Minutes"
+                  type="number"
+                  variant="standard"
+                  value={minutes ?? ""}
+                  slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
+                  onChange={handleMinutesChange}
+                />
+                <TextField
+                  id="seconds"
+                  name="seconds"
+                  label="Seconds"
+                  type="number"
+                  variant="standard"
+                  value={seconds ?? ""}
+                  onChange={handleSecondsChange}
+                  onBlur={handleSecondsCheck}
+                />
+              </Stack>
+            </Stack>
           </form>
         </DialogContent>
         <DialogActions>
