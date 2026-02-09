@@ -1,5 +1,5 @@
 import { Avatar, Badge, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-import type CompletedExerciseSet from "../../../types/completedExerciseSet";
+import type CompletedExerciseSet from "../../../types/activeExerciseSet";
 
 type Props = {
   set: CompletedExerciseSet
