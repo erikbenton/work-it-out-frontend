@@ -6,6 +6,7 @@ import type Workout from "../types/workout";
 
 export type ActiveWorkoutAction =
   { type: string, payload: never }
+  | { type: 'endWorkout' }
   | {
     type: 'startEmptyWorkout',
     payload: never
@@ -47,26 +48,27 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
   switch (action.type) {
     case 'initializeWorkout': {
 
-      if (!workout) return null;
       const { initialWorkout } = action.payload;
 
       const initWorkout: ActiveWorkout = {
         ...initialWorkout,
         id: 0,
-        workoutId: workout.id,
+        workoutId: initialWorkout.id,
         // convert groups & sets to be active
         exerciseGroups: initialWorkout.exerciseGroups.map(g => {
           const exerciseSets = g.exerciseSets.map(s => {
             s = populateKey(s);
             return {
               ...s,
+              reps: null,
               activeExerciseGroupId: g.id,
               completed: false
-            }
-          })
-          return { ...g, exerciseSets, activeWorkoutId: initialWorkout.id }
+            };
+          });
+          g = populateKey(g);
+          return { ...g, exerciseSets, activeWorkoutId: initialWorkout.id };
         })
-      }
+      };
 
       return { ...initWorkout };
     }
@@ -79,6 +81,10 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
       }
 
       return { ...initActiveWorkout };
+    }
+
+    case 'endWorkout': {
+      return null;
     }
 
     default:

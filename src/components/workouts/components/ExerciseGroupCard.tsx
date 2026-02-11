@@ -18,7 +18,7 @@ type Props = {
 
 export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
   const { services } = useExercises();
-  const { expanded } = useWorkoutForm();
+  const { expanded, handleExpandClick } = useWorkoutForm();
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
@@ -30,7 +30,8 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
       />
       <CardActions disableSpacing>
         <ExpandMoreButton
-          index={index}
+          expand={expanded[index]}
+          handleExpandClick={handleExpandClick(expanded[index], index)}
           ariaLabel="show exercise group details"
           className='mx-auto p-0'
         />

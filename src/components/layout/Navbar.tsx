@@ -18,7 +18,7 @@ const pages = [
   { text: "Workouts", url: "/workouts" },
   { text: "Exercises", url: "/exercises" },
   { text: "History", url: "/completedWorkouts" },
-  { text: "Training", url: "/runningWorkout" },
+  { text: "Training", url: "/activeWorkout" },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 

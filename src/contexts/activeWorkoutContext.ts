@@ -6,9 +6,9 @@ import type { ActiveWorkoutAction } from "../reducers/activeWorkoutReducer";
 export type ActiveWorkoutContext = {
     workout: ActiveWorkout | null,
     setTags: SetTagOption[] | undefined,
+    activeGroupKey: string | undefined,
+    handleSetActiveGroupKey: (newKey: string | undefined) => () => void,
     emptyWorkout: boolean,
-    expanded: boolean[],
-    handleExpandClick: (expanded: boolean, index: number) => () => void,
     dispatch: React.ActionDispatch<[action: ActiveWorkoutAction]>
 }
 

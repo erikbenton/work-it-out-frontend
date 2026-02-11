@@ -1,6 +1,7 @@
 import type ActiveExerciseSet from "./activeExerciseSet"
+import type KeyId from "./keyId"
 
-export default interface ActiveExerciseGroup {
+export default interface ActiveExerciseGroup extends KeyId {
   id: number,
   workoutId: number,
   note?: string,

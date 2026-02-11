@@ -6,6 +6,7 @@ import DialogContent from "@mui/material/DialogContent";
 import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import DialogActions from "@mui/material/DialogActions";
+import { Divider, Grow, Stack } from "@mui/material";
 
 export default function WorkoutFormNameInput() {
   const { workout, editing, dispatch } = useWorkoutForm();
@@ -56,33 +57,31 @@ export default function WorkoutFormNameInput() {
           </Button>
         </DialogActions>
       </Dialog>
-      {editing
-        ? <Button
-          sx={{
-            p: 0,
-            textTransform: 'none',
-            color: 'inherit',
-            justifyContent: 'flex-start',
-            flexGrow: 1,
-          }}
-          onClick={() => setOpen(true)}
-        >
+      <Button
+        disableTouchRipple={!editing}
+        sx={{
+          p: 0,
+          textTransform: 'none',
+          color: 'inherit',
+          justifyContent: 'flex-start',
+          flexGrow: 1,
+        }}
+        onClick={() => { if (editing) { setOpen(true); }}}>
+        <Stack sx={{ width: '100%' }}>
           <Typography variant="h5" component="h2"
             sx={{
               mr: 1,
-              borderBottom: '1px solid',
-              borderColor: 'primary.main',
               textAlign: 'start',
               flexGrow: 1,
             }}
           >
             {workout?.name}
           </Typography>
-        </Button>
-        : <Typography variant="h5" component="h2" sx={{ flexGrow: 1, textAlign: 'start' }}>
-          {workout?.name}
-        </Typography>
-      }
+          <Grow in={editing} timeout={200}>
+            <Divider sx={{ bgcolor: 'primary.main'}} />
+          </Grow>
+        </Stack>
+      </Button>
     </>
   );
 }

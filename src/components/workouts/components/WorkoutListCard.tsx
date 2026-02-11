@@ -3,11 +3,12 @@ import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type Workout from "../../../types/workout";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 import { Typography } from "@mui/material";
+import useActiveWorkout from "../../../hooks/useActiveWorkout";
 
 type Props = {
   workout: Workout
@@ -15,6 +16,8 @@ type Props = {
 
 export default function WorkoutListCard({ workout }: Props) {
   const { services } = useWorkouts();
+  const { dispatch } = useActiveWorkout();
+  const navigate = useNavigate();
 
   const menuItems = [
     {
@@ -56,6 +59,10 @@ export default function WorkoutListCard({ workout }: Props) {
           aria-label="start workout"
           sx={{ textTransform: "none" }}
           variant="text"
+          onClick={() => {
+            dispatch({ type: 'initializeWorkout', payload: { initialWorkout: workout } });
+            navigate('/activeWorkout');
+          }}
         >
           Start Workout
         </Button>
