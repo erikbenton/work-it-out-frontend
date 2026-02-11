@@ -13,6 +13,8 @@ import { useExercises } from '../../../hooks/useExercises';
 import { useState } from 'react';
 import useWorkoutForm from '../../../hooks/useWorkoutForm';
 import ExerciseSelectionItem from './ExerciseSelectionItem';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from '@mui/material/styles';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -32,6 +34,8 @@ export default function WorkoutExerciseSelection({ open, setOpen }: Props) {
   const { exercises } = useExercises();
   const { dispatch } = useWorkoutForm();
   const [selected, setSelected] = useState<number[]>([]);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSave = () => {
     dispatch({
@@ -50,12 +54,21 @@ export default function WorkoutExerciseSelection({ open, setOpen }: Props) {
     <>
       <Dialog
         disableRestoreFocus
-        fullScreen
+        fullScreen={fullScreen}
+        fullWidth
+        maxWidth='sm'
         open={open}
         onClose={handleClose}
-        sx={{ width: '100%' }}
         slots={{
           transition: Transition,
+        }}
+        slotProps={{
+          paper: {
+            style: {
+              minHeight: fullScreen ? '100%': '95%',
+              maxHeight: fullScreen ? '100%': '95%',
+            }
+          }
         }}
       >
         <AppBar sx={{ position: 'relative' }}>
@@ -76,7 +89,7 @@ export default function WorkoutExerciseSelection({ open, setOpen }: Props) {
             </Button>
           </Toolbar>
         </AppBar>
-        <List>
+        <List sx={{ width: '100%' }}>
           {exercises.map(ex => (
             <ExerciseSelectionItem
               key={ex.id}
