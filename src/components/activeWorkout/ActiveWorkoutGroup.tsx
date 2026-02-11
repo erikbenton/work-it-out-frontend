@@ -15,7 +15,7 @@ export default function ActiveWorkoutGroup() {
 
   return (
     <Box className="w-full md:w-2/3">
-      <Stack spacing={1}>
+      <Stack spacing={1} sx={{px:1}}>
         {/* Exercise card */}
         <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
         {/* current group */}

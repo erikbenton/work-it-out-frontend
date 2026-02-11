@@ -23,7 +23,7 @@ export default function ExerciseFormCategory({ category, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: grey[50] }}
+      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: '#F5FBFF' }}
       square={false}
     >
       <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>

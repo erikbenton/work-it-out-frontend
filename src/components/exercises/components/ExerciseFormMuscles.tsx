@@ -5,7 +5,6 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
 import ToggleButton from "@mui/material/ToggleButton";
 import Chip from "@mui/material/Chip";
-import { grey } from '@mui/material/colors';
 import type MuscleData from "../../../types/muscleData";
 import useMuscleOptions from "../../../hooks/useMuscleOptions";
 
@@ -24,7 +23,7 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', py: 2, bgcolor: grey[50] }}
+      sx={{ width: '100%', py: 2, bgcolor: '#F5FBFF' }}
       square={false}
     >
       <Stack sx={{ mx: 2 }}>
