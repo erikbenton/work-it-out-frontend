@@ -6,7 +6,7 @@ export default interface ActiveExerciseSet extends KeyId {
   weight?: number,
   minReps?: number,
   maxReps?: number,
-  setType?: string,
+  setTagId?: number,
   sort: number,
   completed?: boolean,
   activeExerciseGroupId: number

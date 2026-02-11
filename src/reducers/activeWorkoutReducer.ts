@@ -87,6 +87,32 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
       return null;
     }
 
+    case 'updateSet': {
+      const { group, set } = action.payload;
+      if (!workout) return null;
+      const exerciseGroup = workout.exerciseGroups.find(g => g.key === group.key);
+      if (!exerciseGroup) {
+        throw new Error('Unable to exercise group with key: ' + group.key);
+      }
+      // do simple validations here 
+      const validSet: ActiveExerciseSet = {
+        id: set.id,
+        key: set.key,
+        minReps: set.minReps,
+        maxReps: set.maxReps,
+        reps: set.reps,
+        weight: set.weight,
+        completed: set.completed,
+        sort: set.sort,
+        setTagId: set.setTagId,
+        activeExerciseGroupId: set.activeExerciseGroupId
+      }
+      const exerciseSets = exerciseGroup?.exerciseSets.map(s => s.key === set.key ? validSet : s) ?? [];
+      const updatedGroup = { ...exerciseGroup, exerciseSets };
+      const exerciseGroups = workout.exerciseGroups.map(g => g.key === group.key ? updatedGroup : g);
+      return { ...workout, exerciseGroups };
+    }
+
     default:
       throw new Error("Unhandled active workout action " + action.type);
   }
