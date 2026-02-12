@@ -21,6 +21,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
     ? exercise.muscles[0].name[0].toUpperCase()
     : "?";
   const numberOfSets = exerciseGroup.exerciseSets?.length ?? 0;
+  const numberCompletedSets = exerciseGroup.exerciseSets?.filter(s => s.completed).length;
 
   const menuItems = [
     {
@@ -51,7 +52,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
   ];
 
   return (
-    <Card sx={{ width: '100%' }}>
+    <Card sx={{ width: '100%', bgcolor: '#F5FBFF' }}>
       <CardHeader
         sx={{ overflow: 'hidden' }}
         avatar={
@@ -72,7 +73,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
             {exercise.name}
           </Link>
         }
-        subheader={`${numberOfSets} Sets`}
+        subheader={`${numberCompletedSets}/${numberOfSets} Sets done`}
         slotProps={{ title: { variant: 'h6' } }}
       />
     </Card>

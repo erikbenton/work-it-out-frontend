@@ -29,7 +29,8 @@ function getInitialWorkout(): ActiveWorkout | null {
 export default function ActiveWorkoutProvider({ children }: Props) {
   const [workout, dispatch] = useReducer(activeWorkoutReducer, getInitialWorkout());
   const { setTags } = useSetTypes();
-  const [ activeGroupKey, setActiveGroupKey ] = useState<string | undefined>(undefined)
+  const [ activeGroupKey, setActiveGroupKey ] = useState<string | undefined>(undefined);
+    const [ editing, setEditing ] = useState(true);
 
   useEffect(() => {
     localStorage.setItem(activeWorkoutKey, JSON.stringify(workout));
@@ -44,6 +45,8 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const activeWorkoutContext = {
     workout,
     setTags,
+    editing,
+    setEditing,
     emptyWorkout: Boolean(workout?.workoutId),
     activeGroupKey,
     handleSetActiveGroupKey,

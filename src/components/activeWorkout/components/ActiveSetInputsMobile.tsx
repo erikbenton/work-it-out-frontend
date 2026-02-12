@@ -9,16 +9,17 @@ import { useState } from 'react';
 import type ActiveExerciseSet from '../../../types/activeExerciseSet';
 import type ActiveExerciseGroup from '../../../types/activeExerciseGroup';
 import Stack from '@mui/material/Stack';
-import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
-  set: ActiveExerciseSet
+  set?: ActiveExerciseSet
 }
 
 const drawerBleeding = 45;
-const drawerHeight = '25%';
+const drawerHeight = '20%';
 
 const Root = styled('div')(({ theme }) => ({
   height: '100%',
@@ -29,7 +30,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 const StyledBox = styled('div')(({ theme }) => ({
-  backgroundColor: '#fff',
+  backgroundColor: '#F5FBFF',
   ...theme.applyStyles('dark', {
     backgroundColor: grey[800],
   }),
@@ -50,45 +51,44 @@ const Puller = styled('div')(({ theme }) => ({
 }));
 
 export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
-  const { dispatch } = useActiveWorkout();
-  const [values, setValues] = useState<ActiveExerciseSet>(set);
-  const [open, setOpen] = useState(false);
-
-  const handleCancel = () => {
-    setValues(prev => ({ ...prev, setTagId: set.setTagId }));
-    toggleDrawer(false);
-  }
+  const { dispatch, workout, editing, setEditing } = useActiveWorkout();
+  const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
+  const navigate = useNavigate();
+  const allSetsCompleted = (!set || !values);
+  const nextGroupIndex = (workout?.exerciseGroups.findIndex(g => g.key === exerciseGroup.key) ?? -99) + 1;
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    dispatch({
-      type: 'updateSet',
-      payload: {
-        group: exerciseGroup,
-        set: { ...values }
-      }
-    });
+    if (!allSetsCompleted) {
+      dispatch({
+        type: 'updateSet',
+        payload: {
+          group: exerciseGroup,
+          set: { ...values, completed: true }
+        }
+      });
+    }
 
     toggleDrawer(false);
   };
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
-    if (weight < 0) return;
-    const newSet = { ...values, weight }
+    if (!values || weight < 0) return;
+    const newSet: ActiveExerciseSet = { ...values, weight }
     setValues(newSet);
   }
 
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reps = Number(e.target.value);
-    if (reps < 0) return;
+    if (!values || reps < 0) return;
     const newSet = { ...values, reps }
     setValues(newSet);
   }
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpen(newOpen);
+  const toggleDrawer = (newEditing: boolean) => () => {
+    setEditing(newEditing);
   };
 
   return (
@@ -98,21 +98,23 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
           '.MuiDrawer-root > .MuiPaper-root': {
             height: `calc(${drawerHeight} - ${drawerBleeding}px)`,
             overflow: 'visible',
+            backgroundColor: '#F5FBFF'
           },
         }}
       />
       <SwipeableDrawer
         anchor="bottom"
-        open={open}
+        open={editing}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         keepMounted
+        slotProps={{ backdrop: { invisible: true } }}
       >
         <StyledBox
           sx={{
-            bgcolor: 'fff',
+            bgcolor: '#F5FBFF',
             position: 'absolute',
             top: -drawerBleeding,
             borderTopLeftRadius: 8,
@@ -122,35 +124,45 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
             left: 0,
           }}
         >
-          <Box sx={{ py: '23px', bgcolor: 'fff', }}><Puller /></Box>
+          <Box className="rounded-xl" sx={{ py: '23px', bgcolor: '#F5FBFF' }}><Puller /></Box>
         </StyledBox>
-        <Box component='form' sx={{ overflow: 'auto' }} onSubmit={handleSubmit} id="exercise-set-input-form">
-          <Stack spacing={1}>
-            <FormLabel id="repetition-label">Repetitions</FormLabel>
-            <Stack direction='row' spacing={2}>
-              <TextField
-                autoFocus
-                id="weight"
-                name="weight"
-                label="Weight (lbs)"
-                type="number"
-                fullWidth
-                variant="standard"
-                value={values.minReps ? values.minReps : ""}
-                onChange={handleWeightChange}
-              />
-              <TextField
-                id="maxReps"
-                name="maxReps"
-                label="Max"
-                type="number"
-                fullWidth
-                variant="standard"
-                value={values.maxReps ? values.maxReps : ""}
-                onChange={handleRepsChange}
-              />
+        <Box component='form' sx={{ overflow: 'auto', bgcolor: '#F5FBFF' }} onSubmit={handleSubmit} id="exercise-set-input-form">
+          {allSetsCompleted
+            ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button sx={{ width: '90%' }} variant='contained' onClick={() => navigate(`/activeWorkout/${workout?.exerciseGroups[nextGroupIndex].key}`)}>
+                Next Exercise
+              </Button>
+            </Box>
+            : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
+              <Stack direction='row' spacing={2} sx={{ px: 2 }}>
+                <TextField
+                  autoFocus
+                  id="weight"
+                  name="weight"
+                  label="Weight (lbs)"
+                  type="number"
+                  fullWidth
+                  variant="filled"
+                  value={values.weight ? values.weight : ""}
+                  onChange={handleWeightChange}
+                />
+                <TextField
+                  id="reps"
+                  name="reps"
+                  label="Repetitions"
+                  type="number"
+                  fullWidth
+                  variant="filled"
+                  value={values.reps ? values.reps : ""}
+                  onChange={handleRepsChange}
+                />
+              </Stack>
+              <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
+                <Button sx={{ width: '45%' }} variant='outlined'>Comment</Button>
+                <Button type='submit' sx={{ width: '45%' }} variant='contained'>Complete</Button>
+              </Stack>
             </Stack>
-          </Stack>
+          }
         </Box>
       </SwipeableDrawer>
     </Root>

@@ -7,6 +7,8 @@ export type ActiveWorkoutContext = {
     workout: ActiveWorkout | null,
     setTags: SetTagOption[] | undefined,
     activeGroupKey: string | undefined,
+    editing: boolean,
+    setEditing: React.Dispatch<React.SetStateAction<boolean>>,
     handleSetActiveGroupKey: (newKey: string | undefined) => () => void,
     emptyWorkout: boolean,
     dispatch: React.ActionDispatch<[action: ActiveWorkoutAction]>
