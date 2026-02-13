@@ -1,16 +1,18 @@
 import ListItem from "@mui/material/ListItem";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
-import IconButton from "@mui/material/IconButton";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
+import VerticalIconMenu from "../../layout/VerticalIconMenu";
+import Badge from "@mui/material/Badge";
 
 type Props = {
   index: number,
-  set: ActiveExerciseSet
+  set: ActiveExerciseSet,
+  exerciseGroup: ActiveExerciseGroup
 };
 
 const generalAvatarStyle = {
@@ -19,7 +21,29 @@ const generalAvatarStyle = {
   fontSize: 14,
 }
 
-export function CompletedActiveSet({ index, set }: Props) {
+export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
+  const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
+  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+
+  const menuItems = [
+    {
+      label: "Edit",
+      handleClick: () => {
+        dispatch({
+          type: 'updateSet',
+          payload: { group: exerciseGroup, set: { ...set, completed: false } }
+        });
+        setEditing(true);
+      },
+    },
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroupSet', payload: { group: exerciseGroup, set } });
+      },
+      sx: { color: 'error.main' }
+    },
+  ];
 
   const weight = set.weight ? `${set.weight} lbs x ` : '';
   const reps = `${set.reps ?? 0} rep${set.reps !== 1 ? 's' : ''}`
@@ -28,9 +52,11 @@ export function CompletedActiveSet({ index, set }: Props) {
     <ListItem
       sx={{ p: 0 }}
       secondaryAction={
-        <IconButton edge="end" aria-label="set-options">
-          <MoreVertIcon />
-        </IconButton>
+        <VerticalIconMenu
+          buttonId={'set-' + set.key + "-options"}
+          menuItems={menuItems}
+          edge="end"
+        />
       }
     >
       <ListItemButton
@@ -38,13 +64,19 @@ export function CompletedActiveSet({ index, set }: Props) {
         sx={{ px: 1, color: 'gray' }}
       >
         <ListItemAvatar>
-          <Avatar sx={{
-            ...generalAvatarStyle,
-            bgcolor: '#E0E7F2',
-            color: 'gray',
-          }}>
-            {index + 1}
-          </Avatar>
+          <Badge
+            slotProps={{ badge: { style: { backgroundColor: setColor } } }}
+            badgeContent=" "
+            variant="dot"
+          >
+            <Avatar sx={{
+              ...generalAvatarStyle,
+              bgcolor: '#E0E7F2',
+              color: 'gray',
+            }}>
+              {index + 1}
+            </Avatar>
+          </Badge>
         </ListItemAvatar>
         <ListItemText
           slotProps={{ primary: { fontWeight: 100 } }}
@@ -55,16 +87,28 @@ export function CompletedActiveSet({ index, set }: Props) {
   );
 }
 
-export function CurrentActiveSet({ index }: Props) {
-  const { setEditing } = useActiveWorkout();
+export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
+  const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
+  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const menuItems = [
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroupSet', payload: { group: exerciseGroup, set } });
+      },
+      sx: { color: 'error.main' }
+    },
+  ];
 
   return (
     <ListItem
       sx={{ p: 0 }}
       secondaryAction={
-        <IconButton edge="end" aria-label="set-options">
-          <MoreVertIcon />
-        </IconButton>
+        <VerticalIconMenu
+          buttonId={'set-' + set.key + "-options"}
+          menuItems={menuItems}
+          edge="end"
+        />
       }
     >
       <ListItemButton
@@ -73,13 +117,19 @@ export function CurrentActiveSet({ index }: Props) {
         onClick={() => setEditing(curr => !curr)}
       >
         <ListItemAvatar>
-          <Avatar sx={{
-            ...generalAvatarStyle,
-            bgcolor: 'primary.main',
-            color: 'white',
-          }}>
-            {index + 1}
-          </Avatar>
+          <Badge
+            slotProps={{ badge: { style: { backgroundColor: setColor } } }}
+            badgeContent=" "
+            variant="dot"
+          >
+            <Avatar sx={{
+              ...generalAvatarStyle,
+              bgcolor: 'primary.main',
+              color: 'white',
+            }}>
+              {index + 1}
+            </Avatar>
+          </Badge>
         </ListItemAvatar>
         <ListItemText
           primary={`Set ${index + 1}`}
@@ -89,24 +139,44 @@ export function CurrentActiveSet({ index }: Props) {
   );
 }
 
-export function ActiveGroupSet({ index }: Props) {
+export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
+  const { dispatch, setTags = [] } = useActiveWorkout();
+  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+
+  const menuItems = [
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroupSet', payload: { group: exerciseGroup, set } });
+      },
+      sx: { color: 'error.main' }
+    },
+  ];
 
   return (
     <ListItem
       sx={{ p: 1 }}
       secondaryAction={
-        <IconButton edge="end" aria-label="set-options">
-          <MoreVertIcon />
-        </IconButton>
+        <VerticalIconMenu
+          buttonId={'set-' + set.key + "-options"}
+          menuItems={menuItems}
+          edge="end"
+        />
       }>
       <ListItemAvatar>
-        <Avatar sx={{
-          ...generalAvatarStyle,
-          bgcolor: '#E0E7F2',
-          color: 'black'
-        }}>
-          {index + 1}
-        </Avatar>
+        <Badge
+          slotProps={{ badge: { style: { backgroundColor: setColor } } }}
+          badgeContent=" "
+          variant="dot"
+        >
+          <Avatar sx={{
+            ...generalAvatarStyle,
+            bgcolor: '#E0E7F2',
+            color: 'black'
+          }}>
+            {index + 1}
+          </Avatar>
+        </Badge>
       </ListItemAvatar>
       <ListItemText
         primary={`Set ${index + 1}`}

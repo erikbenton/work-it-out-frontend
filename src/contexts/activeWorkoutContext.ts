@@ -5,6 +5,7 @@ import type { ActiveWorkoutAction } from "../reducers/activeWorkoutReducer";
 
 export type ActiveWorkoutContext = {
     workout: ActiveWorkout | null,
+    complete: boolean,
     setTags: SetTagOption[] | undefined,
     activeGroupKey: string | undefined,
     editing: boolean,

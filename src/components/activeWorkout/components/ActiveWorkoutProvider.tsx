@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
 import ActiveWorkoutContext from "../../../contexts/activeWorkoutContext";
 import activeWorkoutReducer from "../../../reducers/activeWorkoutReducer";
 import useSetTypes from "../../../hooks/useSetTypes";
@@ -31,6 +31,10 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const { setTags } = useSetTypes();
   const [ activeGroupKey, setActiveGroupKey ] = useState<string | undefined>(undefined);
     const [ editing, setEditing ] = useState(true);
+  const complete = useMemo(
+    () => workout?.exerciseGroups.every(g => g.exerciseSets.every(s => s.completed)) ?? false,
+    [workout]
+  );
 
   useEffect(() => {
     localStorage.setItem(activeWorkoutKey, JSON.stringify(workout));
@@ -44,6 +48,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
 
   const activeWorkoutContext = {
     workout,
+    complete,
     setTags,
     editing,
     setEditing,

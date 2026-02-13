@@ -15,7 +15,7 @@ export default function ActiveWorkoutSummary() {
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 2 }} role='form'>
       <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
-        <Typography variant="h5" component="h2">
+        <Typography sx={{ pl: 1 }} variant="h5" component="h2">
           {workout?.name}
         </Typography>
         {workout.exerciseGroups.map(group => (

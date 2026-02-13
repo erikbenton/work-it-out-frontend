@@ -22,16 +22,16 @@ export default function ActiveWorkoutGroupNavbar() {
         elevation={0}
         sx={{
           backgroundColor: 'inherit',
-          color: 'inherit'
+          color: 'inherit',
         }}
       >
-        <Toolbar>
+        <Toolbar sx={{ px: 0}} disableGutters>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2, p: 0 }}
+            sx={{ mr: 1, p: 0, ml:1 }}
             onClick={() => setOpen(false)}
           >
             <Grow
@@ -41,10 +41,10 @@ export default function ActiveWorkoutGroupNavbar() {
             >
               <ArrowBackIcon />
             </Grow>
-            <Typography sx={{ ml: 1 }} variant="h5" component="h2">
-              {workout?.name}
-            </Typography>
           </IconButton>
+          <Typography variant="h5" component="h2">
+            {workout?.name}
+          </Typography>
         </Toolbar>
       </AppBar>
     </Box>

@@ -51,11 +51,10 @@ const Puller = styled('div')(({ theme }) => ({
 }));
 
 export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
-  const { dispatch, workout, editing, setEditing } = useActiveWorkout();
+  const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
   const navigate = useNavigate();
   const allSetsCompleted = (!set || !values);
-  const nextGroupIndex = (workout?.exerciseGroups.findIndex(g => g.key === exerciseGroup.key) ?? -99) + 1;
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,6 +86,13 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
     setValues(newSet);
   }
 
+  const handleNextExercise = () => {
+    const nextGroup = workout?.exerciseGroups.find(g => g.exerciseSets.some(s => !s.completed));
+    if (nextGroup) {
+      navigate(`/activeWorkout/${nextGroup.key}`);
+    }
+  }
+
   const toggleDrawer = (newEditing: boolean) => () => {
     setEditing(newEditing);
   };
@@ -109,8 +115,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         onOpen={toggleDrawer(true)}
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
+        sx={{ position: 'initial' }} //keeps drawer open after outside clicks
         keepMounted
-        // variant='persistent'
         slotProps={{ backdrop: { invisible: true } }}
       >
         <StyledBox
@@ -128,41 +134,47 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
           <Box className="rounded-xl" sx={{ py: '23px', bgcolor: '#F5FBFF' }}><Puller /></Box>
         </StyledBox>
         <Box component='form' sx={{ overflow: 'auto', bgcolor: '#F5FBFF' }} onSubmit={handleSubmit} id="exercise-set-input-form">
-          {allSetsCompleted
+          {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button sx={{ width: '90%' }} variant='contained' onClick={() => navigate(`/activeWorkout/${workout?.exerciseGroups[nextGroupIndex].key}`)}>
-                Next Exercise
+              <Button sx={{ width: '90%' }} variant='contained' onClick={() => navigate(`/activeWorkout`)}>
+                Finish Workout
               </Button>
             </Box>
-            : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
-              <Stack direction='row' spacing={2} sx={{ px: 2 }}>
-                <TextField
-                  autoFocus
-                  id="weight"
-                  name="weight"
-                  label="Weight (lbs)"
-                  type="number"
-                  fullWidth
-                  variant="filled"
-                  value={values.weight ? values.weight : ""}
-                  onChange={handleWeightChange}
-                />
-                <TextField
-                  id="reps"
-                  name="reps"
-                  label="Repetitions"
-                  type="number"
-                  fullWidth
-                  variant="filled"
-                  value={values.reps ? values.reps : ""}
-                  onChange={handleRepsChange}
-                />
+            : allSetsCompleted
+              ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                <Button sx={{ width: '90%' }} variant='contained' onClick={handleNextExercise}>
+                  Next Exercise
+                </Button>
+              </Box>
+              : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
+                <Stack direction='row' spacing={2} sx={{ px: 2 }}>
+                  <TextField
+                    autoFocus
+                    id="weight"
+                    name="weight"
+                    label="Weight (lbs)"
+                    type="number"
+                    fullWidth
+                    variant="filled"
+                    value={values.weight ? values.weight : ""}
+                    onChange={handleWeightChange}
+                  />
+                  <TextField
+                    id="reps"
+                    name="reps"
+                    label="Repetitions"
+                    type="number"
+                    fullWidth
+                    variant="filled"
+                    value={values.reps ? values.reps : ""}
+                    onChange={handleRepsChange}
+                  />
+                </Stack>
+                <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
+                  <Button sx={{ width: '45%' }} variant='outlined'>Comment</Button>
+                  <Button type='submit' sx={{ width: '45%' }} variant='contained'>Complete</Button>
+                </Stack>
               </Stack>
-              <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
-                <Button sx={{ width: '45%' }} variant='outlined'>Comment</Button>
-                <Button type='submit' sx={{ width: '45%' }} variant='contained'>Complete</Button>
-              </Stack>
-            </Stack>
           }
         </Box>
       </SwipeableDrawer>

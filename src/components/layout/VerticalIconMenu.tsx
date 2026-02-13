@@ -10,17 +10,18 @@ import type { SvgIconPropsSizeOverrides } from "@mui/material";
 type MenuItemProps = {
   label: string,
   handleClick: () => void,
-  sx?: SxProps<Theme>
+  sx?: SxProps<Theme>,
 }
 
 type Props = {
   menuItems: MenuItemProps[],
   buttonId: string,
   sx?: SxProps<Theme>,
-  size?: OverridableStringUnion<'inherit' | 'large' | 'medium' | 'small', SvgIconPropsSizeOverrides>
+  size?: OverridableStringUnion<'inherit' | 'large' | 'medium' | 'small', SvgIconPropsSizeOverrides>,
+  edge?: false | "start" | "end"
 }
 
-export default function VerticalIconMenu({ menuItems, buttonId, size, sx }: Props) {
+export default function VerticalIconMenu({ menuItems, buttonId, size, sx, edge }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -47,6 +48,7 @@ export default function VerticalIconMenu({ menuItems, buttonId, size, sx }: Prop
         aria-controls={open ? 'options-menu' : undefined}
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
+        edge={edge}
       >
         <MoreVertIcon fontSize={size ?? 'inherit'} />
       </IconButton>
