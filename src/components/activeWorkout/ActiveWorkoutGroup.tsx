@@ -4,6 +4,7 @@ import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ActiveGroupExerciseCard from "./components/ActiveGroupExerciseCard";
 import ActiveGroupSetsCard from "./components/ActiveGroupSetsCard";
 import ActiveSetInputsMobile from "./components/ActiveSetInputsMobile";
+import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -19,7 +20,8 @@ export default function ActiveWorkoutGroup() {
   }
 
   return (
-    <Box className="w-full md:w-2/3">
+    <Box className="w-full md:w-2/3" sx={{ mt: 2}}>
+      <ActiveWorkoutGroupNavbar />
       <Stack spacing={1} sx={{ px: 1 }}>
         <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
         <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />

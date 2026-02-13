@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="static" className="mb-2">
+    <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar
           disableGutters

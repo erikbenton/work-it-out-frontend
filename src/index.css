@@ -5,3 +5,7 @@ body,
 #root {
     height: 100%;
 }
+
+#active-workout-navbar div {
+    min-height: 0;
+}

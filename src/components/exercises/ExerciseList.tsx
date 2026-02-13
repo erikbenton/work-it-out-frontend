@@ -20,7 +20,7 @@ export default function ExerciseList() {
   const { exercises } = useExercises();
 
   return (
-    <Box className="w-full md:w-2/3 px-3">
+    <Box className="w-full md:w-2/3 px-3 mt-3">
       <Paper sx={{ width: '100%' }}>
         <DataGrid
           rows={exercises ?? []}

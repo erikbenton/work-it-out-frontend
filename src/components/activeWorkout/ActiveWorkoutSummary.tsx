@@ -13,11 +13,11 @@ export default function ActiveWorkoutSummary() {
   if (workout === null) { return <WorkoutList /> }
 
   return (
-    <Box className="w-full md:w-2/3" role='form'>
-      <Typography variant="h5" component="h2">
-        {workout?.name}
-      </Typography>
+    <Box className="w-full md:w-2/3" sx={{ mt: 2 }} role='form'>
       <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
+        <Typography variant="h5" component="h2">
+          {workout?.name}
+        </Typography>
         {workout.exerciseGroups.map(group => (
           <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
         ))}

@@ -110,6 +110,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         swipeAreaWidth={drawerBleeding}
         disableSwipeToOpen={false}
         keepMounted
+        // variant='persistent'
         slotProps={{ backdrop: { invisible: true } }}
       >
         <StyledBox
