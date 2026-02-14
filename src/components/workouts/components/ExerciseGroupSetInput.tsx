@@ -15,13 +15,13 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import type ExerciseGroup from "../../../types/exerciseGroup";
-import { Chip, FormLabel, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { Badge, Chip, FormLabel, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type SetTagOption from "../../../types/setTagOption";
 
 function formattedRepsText(set: ExerciseSet): string {
   return (`${set.minReps ?? ""}` +
     `${set.minReps && set.maxReps ? " - " : ""}` +
-    `${set.maxReps ?? ""} Reps`);
+    `${set.maxReps ?? ""} reps`);
 }
 
 type Props = {
@@ -33,6 +33,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   const { editing, dispatch, setTags = [] } = useWorkoutForm();
   const [values, setValues] = useState<ExerciseSet>(set);
   const [open, setOpen] = useState(false);
+  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
 
   const handleClose = () => {
     setOpen(false);
@@ -164,11 +165,20 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           onClick={() => { if (editing) { setOpen(true) } }}
         >
           <ListItemAvatar>
-            <Avatar>
-              {set.sort + 1}
-            </Avatar>
+            <Badge
+              slotProps={{ badge: { style: { backgroundColor: setColor } } }}
+              badgeContent=" "
+              variant="dot"
+            >
+              <Avatar sx={{
+                bgcolor: '#E0E7F2',
+                color: 'gray',
+              }}>
+                {set.sort + 1}
+              </Avatar>
+            </Badge>
           </ListItemAvatar>
-          <ListItemText primary={formattedRepsText(set)} />
+          <ListItemText slotProps={{ primary: { fontSize: 16 } }} primary={formattedRepsText(set)} />
         </ListItemButton>
       </ListItem>
     </>
