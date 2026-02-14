@@ -90,6 +90,10 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
 export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
   const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
   const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const minReps = set.minReps ? `${set.minReps}` : '';
+  const maxReps = set.maxReps ? `${set.maxReps}` : '';
+  const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
+  const placeholderReps = minReps + hyphen + maxReps;
   const menuItems = [
     {
       label: "Delete",
@@ -132,7 +136,7 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
           </Badge>
         </ListItemAvatar>
         <ListItemText
-          primary={`Set ${index + 1}`}
+          primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}
         />
       </ListItemButton>
     </ListItem>
@@ -142,6 +146,10 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
 export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
   const { dispatch, setTags = [] } = useActiveWorkout();
   const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const minReps = set.minReps ? `${set.minReps}` : '';
+  const maxReps = set.maxReps ? `${set.maxReps}` : '';
+  const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
+  const placeholderReps = minReps + hyphen + maxReps;
 
   const menuItems = [
     {
@@ -179,7 +187,7 @@ export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
         </Badge>
       </ListItemAvatar>
       <ListItemText
-        primary={`Set ${index + 1}`}
+        primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}
       />
     </ListItem>
   );

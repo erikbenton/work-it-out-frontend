@@ -30,7 +30,7 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Card>
+    <Card sx={{bgcolor: '#F5FBFF'}}>
       <CardHeader
         avatar={
           <Link to={`/workouts/${workout.id}`}>

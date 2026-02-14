@@ -22,7 +22,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
-    <Card sx={{ width: '100%' }}>
+    <Card sx={{ width: '100%', bgcolor: '#F5FBFF' }}>
       <ExerciseGroupCardTitle
         exerciseName={exercise.name ?? ""}
         muscles={exercise.muscles ?? []}
@@ -33,11 +33,11 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
           expand={expanded[index]}
           handleExpandClick={handleExpandClick(expanded[index], index)}
           ariaLabel="show exercise group details"
-          className='mx-auto p-0'
+          className='mx-auto px-0 pt-0 pb-1'
         />
       </CardActions>
       <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
-        <CardContent className='pt-0'>
+        <CardContent className='pt-0 pb-1'>
           <Stack spacing={1}>
             <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />
             <ExerciseGroupCardSets exerciseGroup={exerciseGroup} />

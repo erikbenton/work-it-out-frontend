@@ -12,6 +12,7 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -52,6 +53,7 @@ const Puller = styled('div')(({ theme }) => ({
 
 export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
+  const { services, convertActiveWorkout } = useCompletedWorkouts();
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
   const navigate = useNavigate();
   const allSetsCompleted = (!set || !values);
@@ -87,7 +89,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   }
 
   const handleNextExercise = () => {
-    const nextGroup = workout?.exerciseGroups.find(g => g.exerciseSets.some(s => !s.completed));
+    const nextGroup = workout?.exerciseGroups.find(g => (
+      g.exerciseSets.some(s => !s.completed) || (g.exerciseSets.length === 0 && g.key !== exerciseGroup.key)));
     if (nextGroup) {
       navigate(`/activeWorkout/${nextGroup.key}`);
     }
@@ -96,6 +99,18 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   const toggleDrawer = (newEditing: boolean) => () => {
     setEditing(newEditing);
   };
+
+  const handleFinishWorkout = () => {
+    if (workout) {
+      const completedWorkout = convertActiveWorkout(workout);
+      services.create(completedWorkout, {
+        onSuccess: (savedCompletedWorkout) => {
+          console.log(savedCompletedWorkout);
+          navigate(`/`);
+        }
+      });
+    }
+  }
 
   return (
     <Root>
@@ -136,7 +151,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         <Box component='form' sx={{ overflow: 'auto', bgcolor: '#F5FBFF' }} onSubmit={handleSubmit} id="exercise-set-input-form">
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button sx={{ width: '90%' }} variant='contained' onClick={() => navigate(`/activeWorkout`)}>
+              <Button sx={{ width: '90%' }} variant='contained' onClick={handleFinishWorkout}>
                 Finish Workout
               </Button>
             </Box>
