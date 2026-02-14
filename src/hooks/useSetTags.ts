@@ -4,7 +4,7 @@ import { getSetTagOptions } from "../requests/setTagOptions";
 
 const queryKey = 'setTagOptions';
 
-export default function useSetTypes() {
+export default function useSetTags() {
   const { data: setTags, isLoading, isError } = useQuery<SetTagOption[]>({
     queryKey: [queryKey],
     staleTime: 1000 * 60 * 5, // 5 minutes,

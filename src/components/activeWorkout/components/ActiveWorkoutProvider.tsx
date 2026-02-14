@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
 import ActiveWorkoutContext from "../../../contexts/activeWorkoutContext";
 import activeWorkoutReducer from "../../../reducers/activeWorkoutReducer";
-import useSetTypes from "../../../hooks/useSetTypes";
+import useSetTags from "../../../hooks/useSetTags";
 import type ActiveWorkout from "../../../types/activeWorkout";
 
 type Props = {
@@ -28,7 +28,7 @@ function getInitialWorkout(): ActiveWorkout | null {
 
 export default function ActiveWorkoutProvider({ children }: Props) {
   const [workout, dispatch] = useReducer(activeWorkoutReducer, getInitialWorkout());
-  const { setTags } = useSetTypes();
+  const { setTags } = useSetTags();
   const [ activeGroupKey, setActiveGroupKey ] = useState<string | undefined>(undefined);
     const [ editing, setEditing ] = useState(true);
   const complete = useMemo(
