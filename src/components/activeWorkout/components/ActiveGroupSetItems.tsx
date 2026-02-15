@@ -8,6 +8,7 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Badge from "@mui/material/Badge";
+import type SetTagOption from "../../../types/setTagOption";
 
 type Props = {
   index: number,
@@ -16,14 +17,27 @@ type Props = {
 };
 
 const generalAvatarStyle = {
-  width: '35px',
-  height: '35px',
+  width: '30px',
+  height: '30px',
   fontSize: 14,
+}
+
+const badgeStyle = (setTag?: SetTagOption) => {
+  return {
+    textTransform: 'uppercase',
+    color: 'white',
+    fontSize: '0.6rem',
+    backgroundColor: setTag?.colorRgb ?? 'inherit',
+    minWidth: '16px',
+    width: '16px',
+    height: '16px',
+    borderRadius: '50%'
+  };
 }
 
 export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
-  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const setTag = setTags?.find(tag => tag.id === set.setTagId);
 
   const menuItems = [
     {
@@ -65,9 +79,8 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
       >
         <ListItemAvatar>
           <Badge
-            slotProps={{ badge: { style: { backgroundColor: setColor } } }}
-            badgeContent=" "
-            variant="dot"
+            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+            badgeContent={setTag?.name[0] ?? ''}
           >
             <Avatar sx={{
               ...generalAvatarStyle,
@@ -89,7 +102,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
 
 export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
   const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
-  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const setTag = setTags?.find(tag => tag.id === set.setTagId);
   const minReps = set.minReps ? `${set.minReps}` : '';
   const maxReps = set.maxReps ? `${set.maxReps}` : '';
   const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
@@ -122,9 +135,8 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
       >
         <ListItemAvatar>
           <Badge
-            slotProps={{ badge: { style: { backgroundColor: setColor } } }}
-            badgeContent=" "
-            variant="dot"
+            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+            badgeContent={setTag?.name[0] ?? ''}
           >
             <Avatar sx={{
               ...generalAvatarStyle,
@@ -145,7 +157,7 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
 
 export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
   const { dispatch, setTags = [] } = useActiveWorkout();
-  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const setTag = setTags?.find(tag => tag.id === set.setTagId);
   const minReps = set.minReps ? `${set.minReps}` : '';
   const maxReps = set.maxReps ? `${set.maxReps}` : '';
   const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
@@ -173,9 +185,8 @@ export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
       }>
       <ListItemAvatar>
         <Badge
-          slotProps={{ badge: { style: { backgroundColor: setColor } } }}
-          badgeContent=" "
-          variant="dot"
+          slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+          badgeContent={setTag?.name[0] ?? ''}
         >
           <Avatar sx={{
             ...generalAvatarStyle,

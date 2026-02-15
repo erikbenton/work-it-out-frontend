@@ -149,7 +149,7 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
       >
         <Typography
           sx={{ flex: 1, textAlign: 'left' }}
-          className={exerciseGroup.note ? '' : 'text-gray-400'}
+          className={exerciseGroup.restTime ? '' : 'text-gray-400'}
         >
           {exerciseGroup.restTime ? exerciseGroup.restTime.slice(exerciseGroup.restTime.search(/[1-9]/)) : ''}
         </Typography>

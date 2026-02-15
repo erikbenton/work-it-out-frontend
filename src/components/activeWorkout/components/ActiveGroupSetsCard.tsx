@@ -45,8 +45,8 @@ export default function ActiveGroupSetsCard({ exerciseGroup }: Props) {
             <ListItemButton sx={{ px: 1, py: 1 }} onClick={handleAddSet}>
               <ListItemAvatar>
                 <Avatar sx={{
-                  width: '35px',
-                  height: '35px',
+                  width: '30px',
+                  height: '30px',
                   bgcolor: '#E0E7F2',
                   color: 'black',
                   fontSize: 14
