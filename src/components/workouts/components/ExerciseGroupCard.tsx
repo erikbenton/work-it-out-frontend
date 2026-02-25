@@ -33,7 +33,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
           expand={expanded[index]}
           handleExpandClick={handleExpandClick(expanded[index], index)}
           ariaLabel="show exercise group details"
-          className='mx-auto px-0 pt-0 pb-1'
+          className='mx-auto '
         />
       </CardActions>
       <Collapse in={expanded[index]} timeout="auto" unmountOnExit>

@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions } from "@tanstack/react-query";
 import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
@@ -53,12 +53,20 @@ export function useCompletedWorkouts() {
     };
   }
 
+  const createFromActiveWorkout = (
+    activeWorkout: ActiveWorkout,
+    options?: MutateOptions<CompletedWorkout, Error, CompletedWorkout, unknown>
+  ) => {
+    const convertedWorkout = convertActiveWorkout(activeWorkout);
+    create(convertedWorkout, options);
+  }
+
   const create = useMutation({
     mutationFn: async (newWorkout: CompletedWorkout) => createCompletedWorkout(newWorkout),
     onSuccess: (savedWorkout: CompletedWorkout) => {
       try {
         const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
-        queryClient.setQueryData([queryKey], [ savedWorkout, ...prevWorkouts ]); // put it at the top of the list
+        queryClient.setQueryData([queryKey], [savedWorkout, ...prevWorkouts]); // put it at the top of the list
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
@@ -71,6 +79,7 @@ export function useCompletedWorkouts() {
     convertActiveWorkout,
     services: {
       create,
+      createFromActiveWorkout
     }
   }
 }

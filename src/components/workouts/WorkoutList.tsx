@@ -11,7 +11,6 @@ const { workouts } = useWorkouts();
   const navigate = useNavigate();
 
   const navigateToNewWorkoutForm = () => {
-    //dispatch(resetWorkout());
     navigate('/workouts/create');
   };
 

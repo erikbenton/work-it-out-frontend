@@ -53,7 +53,7 @@ const Puller = styled('div')(({ theme }) => ({
 
 export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
-  const { services, convertActiveWorkout } = useCompletedWorkouts();
+  const { services } = useCompletedWorkouts();
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
   const navigate = useNavigate();
   const allSetsCompleted = (!set || !values);
@@ -102,8 +102,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
 
   const handleFinishWorkout = () => {
     if (workout) {
-      const completedWorkout = convertActiveWorkout(workout);
-      services.create(completedWorkout, {
+      services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
           console.log(savedCompletedWorkout);
           navigate(`/`);

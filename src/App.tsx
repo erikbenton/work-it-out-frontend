@@ -16,6 +16,7 @@ import ActiveWorkoutGroup from './components/activeWorkout/ActiveWorkoutGroup';
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorMessage from './components/layout/ErrorMessage';
 import ActiveWorkoutSummary from './components/activeWorkout/ActiveWorkoutSummary';
+import CompletedWorkoutList from './components/completedWorkouts/CompletedWorkoutList';
 
 export default function App() {
 
@@ -56,8 +57,13 @@ export default function App() {
               <ExerciseEdit />
             </Suspense>
           } />
-          <Route path="/activeWorkout" element={<ActiveWorkoutSummary />} />
+          <Route path="/activeWorkout" element={
+            <Suspense fallback={<LoadingMessage dataName='workouts' />}>
+              <ActiveWorkoutSummary />
+            </Suspense>}
+          />
           <Route path="/activeWorkout/:key" element={<ActiveWorkoutGroup />} />
+          <Route path="/completedWorkouts" element={<CompletedWorkoutList />} />
           {/* <Route path='/componentDemo' element={<></>} /> */}
         </Routes>
       </ErrorBoundary>
