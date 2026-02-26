@@ -6,7 +6,8 @@ import ListSubheader from '@mui/material/ListSubheader';
 import { useMemo } from "react";
 import type CompletedWorkout from "../../types/completedWorkout";
 import Box from "@mui/material/Box";
-import { Stack, Typography } from "@mui/material";
+import { ListItemButton, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 type MonthYearKey = {
   month: string,
@@ -15,6 +16,7 @@ type MonthYearKey = {
 
 export default function CompletedWorkoutList() {
   const { completedWorkouts } = useCompletedWorkouts();
+  const navigate = useNavigate();
 
   const [monthYearWorkoutMap, allKeys] = useMemo(() => {
     const workoutMap = new Map<MonthYearKey, CompletedWorkout[]>();
@@ -38,11 +40,12 @@ export default function CompletedWorkoutList() {
   }, [completedWorkouts]);
 
   return (
-    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 1 }}>
+    <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
       <Typography variant="h4" component="h2">
         History
       </Typography>
       <List
+      disablePadding
         sx={{
           width: '100%',
           bgcolor: 'background.paper',
@@ -57,7 +60,7 @@ export default function CompletedWorkoutList() {
         {allKeys.map(monthYear => (
           <li key={`section-${monthYear.month}-${monthYear.year}`}>
             <ul>
-              <ListSubheader>
+              <ListSubheader disableGutters>
                 <Stack direction='row' sx={{ alignItems: 'center' }}>
                   <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     {monthYear.month}
@@ -68,8 +71,13 @@ export default function CompletedWorkoutList() {
                 </Stack>
               </ListSubheader>
               {monthYearWorkoutMap.get(monthYear)?.map(workout => (
-                <ListItem key={`item-${workout.id}`}>
-                  <ListItemText primary={workout.name} />
+                <ListItem key={`item-${workout.id}`} disableGutters disablePadding>
+                  <ListItemButton
+                    disableGutters
+                    sx={{ px: 1 }}
+                    onClick={() => navigate(`/completedWorklouts/${workout.id}`)}>
+                    <ListItemText primary={workout.name} />
+                  </ListItemButton>
                 </ListItem>
               ))}
             </ul>

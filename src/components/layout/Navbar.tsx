@@ -10,15 +10,28 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useState } from "react";
+import { useState, type ReactElement } from "react";
 import { Link } from "react-router-dom";
+import Drawer from "@mui/material/Drawer";
+import NavbarDrawer from "./NavbarDrawer";
+import HomeIcon from '@mui/icons-material/Home';
+import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
+import NoteAltIcon from '@mui/icons-material/NoteAlt';
+import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
-const pages = [
-  { text: "Home", url: "/" },
-  { text: "Workouts", url: "/workouts" },
-  { text: "Exercises", url: "/exercises" },
-  { text: "History", url: "/completedWorkouts" },
-  { text: "Training", url: "/activeWorkout" },
+export type PageLink = {
+  text: string,
+  url: string,
+  icon: ReactElement
+}
+
+const pages: PageLink[] = [
+  { text: "Home", url: "/", icon: <HomeIcon color="primary" /> },
+  { text: "Exercises", url: "/exercises", icon: <FitnessCenterIcon color="primary" /> },
+  { text: "Workouts", url: "/workouts", icon: <NoteAltIcon color="primary" /> },
+  { text: "History", url: "/completedWorkouts", icon: <AssignmentTurnedInIcon color="primary" /> },
+  { text: "Training", url: "/activeWorkout", icon: <DirectionsRunIcon color="primary" /> },
 ];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -61,30 +74,9 @@ export default function Navbar() {
             >
               <MenuIcon />
             </IconButton>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorElNav}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              open={Boolean(anchorElNav)}
-              onClose={handleCloseNavMenu}
-              sx={{ display: { xs: "block", sm: "none" } }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page.text} onClick={handleCloseNavMenu}>
-                  <Typography sx={{ textAlign: "center" }}>
-                    <Link to={page.url}>{page.text}</Link>
-                  </Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            <Drawer open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}>
+              <NavbarDrawer links={pages} handleClose={handleCloseNavMenu} />
+            </Drawer>
           </Box>
 
           {/* Expanded Menu */}
