@@ -1,13 +1,15 @@
 import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { useMemo } from "react";
 import type CompletedWorkout from "../../types/completedWorkout";
 import Box from "@mui/material/Box";
-import { ListItemButton, Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CompletedWorkoutListCard from "./components/CompletedWorkoutListCard";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
+import ListItemButton from "@mui/material/ListItemButton";
 
 type MonthYearKey = {
   month: string,
@@ -45,7 +47,7 @@ export default function CompletedWorkoutList() {
         History
       </Typography>
       <List
-      disablePadding
+        disablePadding
         sx={{
           width: '100%',
           bgcolor: 'background.paper',
@@ -74,9 +76,8 @@ export default function CompletedWorkoutList() {
                 <ListItem key={`item-${workout.id}`} disableGutters disablePadding>
                   <ListItemButton
                     disableGutters
-                    sx={{ px: 1 }}
-                    onClick={() => navigate(`/completedWorklouts/${workout.id}`)}>
-                    <ListItemText primary={workout.name} />
+                    onClick={() => navigate(`/completedWorkouts/${workout.id}`)}>
+                    <CompletedWorkoutListCard workout={workout} />
                   </ListItemButton>
                 </ListItem>
               ))}

@@ -13,6 +13,17 @@ export function useCompletedWorkouts() {
     queryFn: getCompletedWorkouts
   });
 
+  const getCompletedWorkoutById = (id: number) => {
+    const workouts = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
+    const workout = workouts.find(ex => ex.id === id);
+
+    if (!workout) {
+      throw new Error(`Unable to find completed workout with id: ${id}.`);
+    }
+
+    return workout;
+  }
+
   function convertActiveWorkout(activeWorkout: ActiveWorkout): CompletedWorkout {
     return {
       // convert top level fields
@@ -79,7 +90,8 @@ export function useCompletedWorkouts() {
     convertActiveWorkout,
     services: {
       create,
-      createFromActiveWorkout
+      createFromActiveWorkout,
+      getCompletedWorkoutById
     }
   }
 }
