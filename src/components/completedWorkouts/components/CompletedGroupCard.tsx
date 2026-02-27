@@ -4,6 +4,9 @@ import type { CompletedExerciseGroup } from "../../../types/completedExerciseGro
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
+import { CardContent, List } from "@mui/material";
+import ExerciseHistoryItemSet from "../../exercises/components/ExerciseHistoryItemSet";
+import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
 
 type Props = {
   group: CompletedExerciseGroup
@@ -20,7 +23,7 @@ export default function CompletedGroupCard({ group }: Props) {
   return (
     <Card elevation={0} sx={{ width: '100%' }}>
       <CardHeader
-        sx={{ overflow: 'hidden' }}
+        sx={{ overflow: 'hidden', pb: 0 }}
         avatar={
           <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
             {muscleAvatar}
@@ -34,6 +37,14 @@ export default function CompletedGroupCard({ group }: Props) {
         subheader={`${numberOfSets} Sets completed`}
         slotProps={{ title: { variant: 'h6' } }}
       />
+      <CardContent sx={{ p: 0 }}>
+        <List>
+          {group.completedExerciseSets.map(set => (
+            <ExerciseHistoryItemSet key={set.id} set={set} />
+          ))}
+        </List>
+        <ExerciseHistoryItemStats id={group.id} completedSets={group.completedExerciseSets} />
+      </CardContent>
     </Card>
   );
 }

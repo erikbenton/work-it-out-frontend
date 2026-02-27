@@ -19,7 +19,7 @@ export default function ExerciseHistoryTab({ history }: Props) {
           {group.completedExerciseSets.map(set => (
             <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} />
           ))}
-          <ExerciseHistoryItemStats group={group} />
+          <ExerciseHistoryItemStats id={group.completedExerciseGroupId} completedSets={group.completedExerciseSets} />
         </Box>
       ))}
     </List>

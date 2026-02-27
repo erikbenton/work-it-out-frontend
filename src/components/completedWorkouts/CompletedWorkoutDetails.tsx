@@ -15,7 +15,7 @@ export default function CompletedWorkoutDetails() {
       <Typography variant="h5" component="h2">
         {workout.name}
       </Typography>
-      <Stack spacing={1}>
+      <Stack spacing={0}>
         {workout.completedExerciseGroups.map(group => (
           <CompletedGroupCard key={group.id} group={group} />
         ))}

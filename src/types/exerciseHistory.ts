@@ -1,4 +1,4 @@
-import type CompletedExerciseSet from "./activeExerciseSet";
+import type { CompletedExerciseSet } from "./completedExerciseSet";
 
 export default interface ExerciseHistory {
   completedExerciseGroupId: number,

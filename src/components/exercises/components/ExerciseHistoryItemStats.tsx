@@ -1,24 +1,27 @@
 import { Chip, ListItemText, Stack } from "@mui/material";
-import type ExerciseHistory from "../../../types/exerciseHistory";
+import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 
 type Props = {
-  group: ExerciseHistory
+  id: number,
+  completedSets: CompletedExerciseSet[]
 }
 
-const totalReps = (group: ExerciseHistory) => {
-  return group.completedExerciseSets.reduce((acc, curr) => acc + curr.reps, 0)
+const totalReps = (sets: CompletedExerciseSet[]) => {
+  return sets.reduce((acc, curr) => acc + curr.reps, 0)
 }
-const totalWeight = (group: ExerciseHistory) => {
-  return group.completedExerciseSets.reduce((acc, curr) => acc + (curr.weight ?? 0), 0)
+const totalWeight = (sets: CompletedExerciseSet[]) => {
+  return sets.reduce((acc, curr) => acc + (curr.weight ?? 0), 0)
 };
 
-export default function ExerciseHistoryItemStats({ group }: Props) {
+export default function ExerciseHistoryItemStats({ id, completedSets }: Props) {
+  const reps = totalReps(completedSets);
+  const weight = totalWeight(completedSets);
 
   return (
-    <ListItemText id={`list-label-${group.completedExerciseGroupId}`} className='px-3' primary={
+    <ListItemText id={`list-label-${id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
-        <Chip size="small" label={`Reps: ${totalReps(group)}`} variant='filled' color='success' />
-        <Chip size="small" label={totalWeight(group) === 0 ? "" : `Weight: ${totalWeight(group)} lbs`} variant='filled' color='primary' />
+        <Chip size="small" label={`Reps: ${reps}`} variant='filled' color='success' />
+        <Chip size="small" label={`Weight: ${weight} lbs`} variant='filled' color='primary' />
       </Stack>
     } />
   );

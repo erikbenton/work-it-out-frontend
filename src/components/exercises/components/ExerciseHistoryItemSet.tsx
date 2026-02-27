@@ -1,5 +1,5 @@
 import { Avatar, Badge, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
-import type CompletedExerciseSet from "../../../types/activeExerciseSet";
+import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 
 type Props = {
   set: CompletedExerciseSet
@@ -16,7 +16,7 @@ export default function ExerciseHistoryItemSet({ set }: Props) {
     >
       <ListItemButton>
         <ListItemAvatar>
-          <Badge color="success" overlap="circular" badgeContent="W" variant="dot" invisible={set.setType !== 'warmup'}>
+          <Badge color="success" overlap="circular" badgeContent="W" variant="dot">
             <Avatar>{set.sort + 1}</Avatar>
           </Badge>
         </ListItemAvatar>
