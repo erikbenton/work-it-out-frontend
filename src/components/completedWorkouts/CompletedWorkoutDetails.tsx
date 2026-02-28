@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 import Stack from "@mui/material/Stack";
 import CompletedGroupCard from "./components/CompletedGroupCard";
+import CompletedWorkoutStats from "./components/CompletedWorkoutStats";
 
 export default function CompletedWorkoutDetails() {
   const id = Number(useParams().id);
@@ -15,6 +16,7 @@ export default function CompletedWorkoutDetails() {
       <Typography variant="h5" component="h2">
         {workout.name}
       </Typography>
+      <CompletedWorkoutStats workout={workout} />
       <Stack spacing={0}>
         {workout.completedExerciseGroups.map(group => (
           <CompletedGroupCard key={group.id} group={group} />

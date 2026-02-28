@@ -21,7 +21,7 @@ export default function CompletedGroupCard({ group }: Props) {
   const numberOfSets = group.completedExerciseSets.length;
 
   return (
-    <Card elevation={0} sx={{ width: '100%' }}>
+    <Card elevation={0} sx={{ width: '100%' }} >
       <CardHeader
         sx={{ overflow: 'hidden', pb: 0 }}
         avatar={
@@ -37,7 +37,7 @@ export default function CompletedGroupCard({ group }: Props) {
         subheader={`${numberOfSets} Sets completed`}
         slotProps={{ title: { variant: 'h6' } }}
       />
-      <CardContent sx={{ p: 0 }}>
+      <CardContent sx={{ p: 0, '&:last-child': { pb: 1 } }}>
         <List>
           {group.completedExerciseSets.map(set => (
             <ExerciseHistoryItemSet key={set.id} set={set} />
