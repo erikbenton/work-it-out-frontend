@@ -24,6 +24,26 @@ function formattedRepsText(set: ExerciseSet): string {
     `${set.maxReps ?? ""} reps`);
 }
 
+const generalAvatarStyle = {
+  width: '30px',
+  height: '30px',
+  fontSize: 14,
+}
+
+const badgeStyle = (setTag?: SetTagOption) => {
+  return {
+    textTransform: 'uppercase',
+    color: 'white',
+    fontSize: '0.6rem',
+    backgroundColor: setTag?.colorRgb ?? 'inherit',
+    minWidth: '16px',
+    width: '16px',
+    height: '16px',
+    borderRadius: '50%'
+  };
+}
+
+
 type Props = {
   exerciseGroup: ExerciseGroup,
   set: ExerciseSet
@@ -33,7 +53,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   const { editing, dispatch, setTags = [] } = useWorkoutForm();
   const [values, setValues] = useState<ExerciseSet>(set);
   const [open, setOpen] = useState(false);
-  const setColor = setTags?.find(tag => tag.id === set.setTagId)?.colorRgb;
+  const setTag = setTags?.find(tag => tag.id === set.setTagId);
 
   const handleClose = () => {
     setOpen(false);
@@ -166,11 +186,11 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
         >
           <ListItemAvatar>
             <Badge
-              slotProps={{ badge: { style: { backgroundColor: setColor } } }}
-              badgeContent=" "
-              variant="dot"
+              slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+              badgeContent={setTag?.name[0] ?? ''}
             >
               <Avatar sx={{
+                ...generalAvatarStyle,
                 bgcolor: '#E0E7F2',
                 color: 'gray',
               }}>
