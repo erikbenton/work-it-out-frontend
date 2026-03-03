@@ -6,6 +6,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import type { PageLink } from "./Navbar";
 import { useNavigate } from "react-router-dom";
+import { Divider } from "@mui/material";
+import DrawerUserMenu from "./DrawerUserMenu";
 
 type Props = {
   links: PageLink[],
@@ -16,8 +18,10 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ width: 220 }} role="presentation" onClick={handleClose}>
-      <List>
+    <Box sx={{ width: 220 }} role="presentation">
+      <DrawerUserMenu />
+      <Divider sx={{ pt: 1, mx: 1 }}/>
+      <List onClick={handleClose}>
         {links.map(page => (
           <ListItem key={page.text} disablePadding>
             <ListItemButton onClick={() => navigate(page.url)}>
