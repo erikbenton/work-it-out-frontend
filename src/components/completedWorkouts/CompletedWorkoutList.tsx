@@ -11,24 +11,19 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
 
-type MonthYearKey = {
-  month: string,
-  year: number
-}
-
 export default function CompletedWorkoutList() {
   const { completedWorkouts } = useCompletedWorkouts();
   const navigate = useNavigate();
 
   const [monthYearWorkoutMap, allKeys] = useMemo(() => {
-    const workoutMap = new Map<MonthYearKey, CompletedWorkout[]>();
-    const keys: MonthYearKey[] = [];
+    const workoutMap = new Map<string, CompletedWorkout[]>();
+    const keys: string[] = [];
     console.log('using memo: month year map')
     completedWorkouts.map(w => {
       const completedDate = new Date(w.createdAt ?? 0);
       const month = completedDate.toLocaleString('en-US', { month: 'long' });
       const year = completedDate.getFullYear();
-      const key = { month, year };
+      const key = `${month}-${year}`;
       if (workoutMap.get(key)) {
         const currentEntries = workoutMap.get(key) ?? [];
         workoutMap.set(key, currentEntries.concat(w));
@@ -38,7 +33,7 @@ export default function CompletedWorkoutList() {
       }
     });
 
-    return [workoutMap, keys];
+    return [workoutMap, keys.reverse()];
   }, [completedWorkouts]);
 
   return (
@@ -60,12 +55,12 @@ export default function CompletedWorkoutList() {
         subheader={<li />}
       >
         {allKeys.map(monthYear => (
-          <li key={`section-${monthYear.month}-${monthYear.year}`}>
+          <li key={`section-${monthYear}`}>
             <ul>
               <ListSubheader disableGutters>
                 <Stack direction='row' sx={{ alignItems: 'center' }}>
                   <Typography variant="h6" sx={{ flexGrow: 1 }}>
-                    {monthYear.month}
+                    {monthYear.split('-')[0]}
                   </Typography>
                   <Typography variant="body2">
                     {monthYearWorkoutMap.get(monthYear)?.length} Workout{monthYearWorkoutMap.get(monthYear)?.length === 1 ? '' : 's'}
