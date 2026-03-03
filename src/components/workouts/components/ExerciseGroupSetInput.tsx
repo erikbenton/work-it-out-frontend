@@ -43,7 +43,6 @@ const badgeStyle = (setTag?: SetTagOption) => {
   };
 }
 
-
 type Props = {
   exerciseGroup: ExerciseGroup,
   set: ExerciseSet

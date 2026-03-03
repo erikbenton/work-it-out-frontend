@@ -68,7 +68,7 @@ export default function CompletedWorkoutList() {
                     {monthYear.month}
                   </Typography>
                   <Typography variant="body2">
-                    {monthYearWorkoutMap.get(monthYear)?.length} Workouts
+                    {monthYearWorkoutMap.get(monthYear)?.length} Workout{monthYearWorkoutMap.get(monthYear)?.length === 1 ? '' : 's'}
                   </Typography>
                 </Stack>
               </ListSubheader>

@@ -2,7 +2,7 @@ import Stack from "@mui/material/Stack";
 import type CompletedWorkout from "../../../types/completedWorkout";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import { cyan, green, grey } from "@mui/material/colors";
+import { blue, cyan, green, grey } from "@mui/material/colors";
 import TimerIcon from '@mui/icons-material/Timer';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
@@ -29,7 +29,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
   return (
     <Stack direction='row' spacing={1}>
       <Stack alignItems={'center'} sx={{ p: 1, pb: 0 }}>
-        <Avatar sx={{ bgcolor: 'primary.main' }}>
+        <Avatar sx={{ bgcolor: blue[700] }}>
           <TimerIcon />
         </Avatar>
         <Typography variant="body1">{stats.duration}</Typography>

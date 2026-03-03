@@ -16,8 +16,7 @@ type Props = {
 
 const getInitRestTime = (rest: string | undefined): { minutes: number, seconds: number } | undefined => {
   if (rest && rest.length > 5) {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [hours, minutes = 0, seconds = 0] = rest.split(':');
+    const [, minutes = 0, seconds = 0] = rest.split(':');
     return { minutes: Number(minutes), seconds: Number(seconds) };
   }
   return undefined;
