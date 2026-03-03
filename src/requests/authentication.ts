@@ -1,8 +1,10 @@
+import type RegistrationRequest from "../types/authenticationRequest";
+import type RegistrationResponse from "../types/authenticationResponse";
 import type UserInfo from "../types/userInfo";
 
 const baseUrl = 'https://localhost:7185/api';
 
-export async function register(email: string, password: string): Promise<boolean> {
+export async function register(request: RegistrationRequest): Promise<RegistrationResponse> {
   console.log('register', Date.now());
   const config = {
     method: 'POST',
@@ -10,13 +12,13 @@ export async function register(email: string, password: string): Promise<boolean
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(request),
   };
   const response = await fetch(`${baseUrl}/authentication/register`, config);
-  return response.ok;
+  return (await response.json()) as RegistrationResponse;
 }
 
-export async function login(email: string, password: string): Promise<boolean> {
+export async function login(request: RegistrationRequest): Promise<RegistrationResponse> {
   console.log('login', Date.now());
   const config = {
     method: 'POST',
@@ -24,10 +26,10 @@ export async function login(email: string, password: string): Promise<boolean> {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify(request),
   };
   const response = await fetch(`${baseUrl}/authentication/login`, config);
-  return response.ok;
+  return (await response.json()) as RegistrationResponse;
 }
 
 export async function logout(): Promise<boolean> {

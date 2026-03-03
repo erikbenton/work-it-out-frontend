@@ -9,6 +9,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import './index.css';
 import App from './App.tsx';
 import ActiveWorkoutProvider from './components/activeWorkout/components/ActiveWorkoutProvider.tsx';
+import { UserInfoProvider } from './components/layout/UserInfoProvider.tsx';
 
 const queryClient = new QueryClient();
 
@@ -17,14 +18,16 @@ createRoot(document.getElementById('root')!).render(
     <StyledEngineProvider enableCssLayer>
       <GlobalStyles styles="@layer theme, base, mui, components, utilities;" />
       <CssBaseline />
-        <Router>
-          <QueryClientProvider client={queryClient}>
+      <Router>
+        <QueryClientProvider client={queryClient}>
+          <UserInfoProvider>
             <ActiveWorkoutProvider>
               <App />
             </ActiveWorkoutProvider>
-            <ReactQueryDevtools initialIsOpen={false} />
-          </QueryClientProvider>
-        </Router>
+          </UserInfoProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </Router>
     </StyledEngineProvider>
   </StrictMode>,
 );
