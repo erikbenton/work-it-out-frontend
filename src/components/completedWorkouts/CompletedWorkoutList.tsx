@@ -33,7 +33,7 @@ export default function CompletedWorkoutList() {
       }
     });
 
-    return [workoutMap, keys.reverse()];
+    return [workoutMap, keys];
   }, [completedWorkouts]);
 
   return (

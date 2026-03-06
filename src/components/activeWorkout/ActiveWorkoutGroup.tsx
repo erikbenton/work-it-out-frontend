@@ -7,6 +7,7 @@ import ActiveSetInputsMobile from "./components/ActiveSetInputsMobile";
 import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
 import { useExerciseHistory } from "../../hooks/useExerciseHistory";
 import ActiveExerciseHistoryList from "./components/ActiveExerciseHistoryList";
+import ActiveSetInputs from "./components/ActiveSetInputs";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -25,14 +26,19 @@ export default function ActiveWorkoutGroup() {
 
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 2}}>
+    <Box className="w-full md:w-2/3" sx={{ mt: 2 }}>
       <ActiveWorkoutGroupNavbar />
       <Stack spacing={1} sx={{ px: 1 }}>
         <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
         <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />
         <ActiveExerciseHistoryList history={history} />
-        {mobileScreen &&
-          <ActiveSetInputsMobile
+        {mobileScreen
+          ? <ActiveSetInputsMobile
+            exerciseGroup={exerciseGroup}
+            set={currentSet}
+            key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+          />
+          : <ActiveSetInputs
             exerciseGroup={exerciseGroup}
             set={currentSet}
             key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
