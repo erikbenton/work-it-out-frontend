@@ -44,7 +44,13 @@ export default function ExerciseHistoryItemSet({ set }: Props) {
             slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
             badgeContent={setTag?.name[0] ?? ''}
           >
-            <Avatar sx={generalAvatarStyle}>{set.sort + 1}</Avatar>
+            <Avatar sx={{
+              ...generalAvatarStyle,
+              bgcolor: '#E0E7F2',
+              color: 'black'
+            }}>
+              {set.sort + 1}
+            </Avatar>
           </Badge>
         </ListItemAvatar>
         <ListItemText id={`list-label-${set.id}`} primary={displaySetText(set)} />

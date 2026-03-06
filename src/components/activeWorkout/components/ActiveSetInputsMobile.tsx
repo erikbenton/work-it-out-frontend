@@ -132,6 +132,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         sx={{ position: 'initial' }} //keeps drawer open after outside clicks
         keepMounted
         slotProps={{ backdrop: { invisible: true } }}
+        ModalProps={{ disableScrollLock: true }}
       >
         <StyledBox
           sx={{

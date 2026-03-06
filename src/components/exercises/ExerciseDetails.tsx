@@ -3,33 +3,22 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getExerciseHistoryById } from '../../requests/exercises';
 import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
-import type ExerciseHistory from '../../types/exerciseHistory';
-import LoadingMessage from '../layout/LoadingMessage';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import ErrorMessage from '../layout/ErrorMessage';
 import { useExercises } from '../../hooks/useExercises';
+import { useExerciseHistory } from '../../hooks/useExerciseHistory';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
-  const { data: history, isLoading: historyLoading } = useQuery<ExerciseHistory[]>({
-    queryKey: ['exerciseHistory', id],
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    queryFn: async () => await getExerciseHistoryById(id)
-  });
+  const { data: history } = useExerciseHistory(id);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
   };
-
-  if (historyLoading) {
-    return (<LoadingMessage dataName='exercise' />);
-  }
 
   const exercise = exercises?.find(ex => ex.id === id);
 
