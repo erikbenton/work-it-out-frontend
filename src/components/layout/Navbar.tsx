@@ -65,6 +65,7 @@ export default function Navbar() {
           {/* Collapsed Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", sm: "none" } }}>
             <IconButton
+              sx={{ height: '64px' }}
               size="large"
               aria-label="account of current user"
               aria-controls="menu-appbar"
