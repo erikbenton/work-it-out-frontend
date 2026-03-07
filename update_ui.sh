@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # build the UI
-npm run build
+tsc -b && NODE_ENV=development vite build --mode development
 
 # delete old wwwroot files
 rm -r ../WorkoutBackend/WorkoutBackend.Api/wwwroot/*

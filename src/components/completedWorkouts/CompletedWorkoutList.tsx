@@ -10,6 +10,7 @@ import CompletedWorkoutListCard from "./components/CompletedWorkoutListCard";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
+import { checkPluralization } from "../../utils/formatters";
 
 export default function CompletedWorkoutList() {
   const { completedWorkouts } = useCompletedWorkouts();
@@ -63,7 +64,7 @@ export default function CompletedWorkoutList() {
                     {monthYear.split('-')[0]}
                   </Typography>
                   <Typography variant="body2">
-                    {monthYearWorkoutMap.get(monthYear)?.length} Workout{monthYearWorkoutMap.get(monthYear)?.length === 1 ? '' : 's'}
+                    {monthYearWorkoutMap.get(monthYear)?.length} {checkPluralization('Workout', monthYearWorkoutMap.get(monthYear)?.length)}
                   </Typography>
                 </Stack>
               </ListSubheader>
@@ -71,6 +72,7 @@ export default function CompletedWorkoutList() {
                 <ListItem key={`item-${workout.id}`} disableGutters disablePadding>
                   <ListItemButton
                     disableGutters
+                    sx={{ p: 0, mb: 1 }}
                     onClick={() => navigate(`/completedWorkouts/${workout.id}`)}>
                     <CompletedWorkoutListCard workout={workout} />
                   </ListItemButton>

@@ -2,6 +2,7 @@ import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions } fro
 import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
+import { msToDuration } from "../utils/formatters";
 
 const queryKey = 'completedWorkouts';
 
@@ -32,7 +33,7 @@ export function useCompletedWorkouts() {
       workoutId: activeWorkout.workoutId,
       description: activeWorkout.description,
       note: activeWorkout.note,
-      duration: '01:23:45',
+      duration: msToDuration(Date.now() - activeWorkout.startTime),
       // convert exercise groups
       completedExerciseGroups: activeWorkout.exerciseGroups.map((g, index) => {
         return {

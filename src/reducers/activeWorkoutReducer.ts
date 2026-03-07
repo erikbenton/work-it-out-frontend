@@ -54,6 +54,7 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
         ...initialWorkout,
         id: 0,
         workoutId: initialWorkout.id,
+        startTime: Date.now(),
         // convert groups & sets to be active
         exerciseGroups: initialWorkout.exerciseGroups.map(g => {
           const exerciseSets = g.exerciseSets.map(s => {
@@ -77,6 +78,7 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
       const initActiveWorkout: ActiveWorkout = {
         id: 0,
         name: 'Empty Workout',
+        startTime: Date.now(),
         exerciseGroups: []
       }
 

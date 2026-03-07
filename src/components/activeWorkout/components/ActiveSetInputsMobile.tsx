@@ -112,10 +112,10 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   }
 
   return (
-    <Root>
+    <Root className='mobile-inputs'>
       <Global
         styles={{
-          '.MuiDrawer-root > .MuiPaper-root': {
+          '.mobile-inputs.MuiDrawer-root > .MuiPaper-root': {
             height: `calc(${drawerHeight} - ${drawerBleeding}px)`,
             overflow: 'visible',
             backgroundColor: '#F5FBFF'
@@ -123,6 +123,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         }}
       />
       <SwipeableDrawer
+        className='mobile-inputs'
         anchor="bottom"
         open={editing}
         onClose={toggleDrawer(false)}

@@ -18,7 +18,7 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ width: 220 }} role="presentation">
+    <Box sx={{ width: 220 , height: '100%', bgcolor: 'white'  }} role="presentation">
       <DrawerUserMenu />
       <Divider sx={{ pt: 1, mx: 1 }}/>
       <List onClick={handleClose}>
