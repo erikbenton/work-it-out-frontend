@@ -1,7 +1,6 @@
 import type Exercise from '../types/exercise';
 import type ExerciseHistory from '../types/exerciseHistory';
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from '../utils/config';
 
 export async function getExerciseList(): Promise<Exercise[]> {
   console.log('fetching exercises', Date.now());

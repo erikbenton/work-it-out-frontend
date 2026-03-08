@@ -1,6 +1,5 @@
 import type CompletedWorkout from "../types/completedWorkout";
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from "../utils/config";
 
 export async function getCompletedWorkouts(): Promise<CompletedWorkout[]> {
   console.log('fetching completed workouts', Date.now());

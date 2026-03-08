@@ -1,6 +1,5 @@
 import type SetTagOption from "../types/setTagOption";
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from "../utils/config";
 
 export async function getSetTagOptions(): Promise<SetTagOption[]> {
   console.log('fetching set tag options.', Date.now());

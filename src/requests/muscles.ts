@@ -1,6 +1,5 @@
 import type MuscleOption from "../types/muscleOption";
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from "../utils/config";
 
 export async function getMuscles(): Promise<MuscleOption[]> {
   console.log('fetching muscles');

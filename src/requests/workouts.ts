@@ -1,7 +1,6 @@
 import type Workout from '../types/workout';
 import type WorkoutSummary from '../types/workoutSummary';
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from '../utils/config';
 
 export async function getWorkoutList(): Promise<WorkoutSummary[]> {
   console.log('fetching workouts', Date.now());

@@ -1,8 +1,7 @@
 import type RegistrationRequest from "../types/authenticationRequest";
 import type RegistrationResponse from "../types/authenticationResponse";
 import type UserInfo from "../types/userInfo";
-
-const baseUrl = 'https://localhost:7185/api';
+import { baseUrl } from "../utils/config";
 
 export async function register(request: RegistrationRequest): Promise<RegistrationResponse> {
   console.log('register', Date.now());
