@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-export default function Home() {
+export default function HomePage() {
   const { userInfo, services } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
