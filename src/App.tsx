@@ -1,8 +1,8 @@
 import './App.css';
 import Navbar from './components/layout/Navbar';
 import { Routes, Route } from 'react-router-dom';
-import Home from './components/home/Home';
 import WorkoutList from './components/workouts/WorkoutList';
+import Home from './components/home/Home';
 import { Box } from '@mui/material';
 import ExerciseList from './components/exercises/ExerciseList';
 import ExerciseDetails from './components/exercises/ExerciseDetails';
