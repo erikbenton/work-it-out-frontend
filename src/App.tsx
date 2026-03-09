@@ -2,7 +2,6 @@ import './App.css';
 import Navbar from './components/layout/Navbar';
 import { Routes, Route } from 'react-router-dom';
 import WorkoutList from './components/workouts/WorkoutList';
-import Home from './components/home/Home';
 import { Box } from '@mui/material';
 import ExerciseList from './components/exercises/ExerciseList';
 import ExerciseDetails from './components/exercises/ExerciseDetails';
@@ -18,6 +17,7 @@ import ErrorMessage from './components/layout/ErrorMessage';
 import ActiveWorkoutSummary from './components/activeWorkout/ActiveWorkoutSummary';
 import CompletedWorkoutList from './components/completedWorkouts/CompletedWorkoutList';
 import CompletedWorkoutDetails from './components/completedWorkouts/CompletedWorkoutDetails';
+import Home from './components/home/Home';
 
 export default function App() {
 
