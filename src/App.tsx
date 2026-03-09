@@ -17,7 +17,7 @@ import ErrorMessage from './components/layout/ErrorMessage';
 import ActiveWorkoutSummary from './components/activeWorkout/ActiveWorkoutSummary';
 import CompletedWorkoutList from './components/completedWorkouts/CompletedWorkoutList';
 import CompletedWorkoutDetails from './components/completedWorkouts/CompletedWorkoutDetails';
-import Home from './components/home/Home';
+// import Home from './components/home/Home';
 
 export default function App() {
 
@@ -26,7 +26,7 @@ export default function App() {
       <Navbar />
       <ErrorBoundary fallback={<ErrorMessage message='error' />}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<></>} />
           <Route path="/workouts" element={
             <Suspense fallback={<LoadingMessage dataName='workouts' />}>
               <WorkoutList />
