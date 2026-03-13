@@ -29,8 +29,8 @@ function getInitialWorkout(): ActiveWorkout | null {
 export default function ActiveWorkoutProvider({ children }: Props) {
   const [workout, dispatch] = useReducer(activeWorkoutReducer, getInitialWorkout());
   const { setTags } = useSetTags();
-  const [ activeGroupKey, setActiveGroupKey ] = useState<string | undefined>(undefined);
-    const [ editing, setEditing ] = useState(true);
+  const [activeGroupKey, setActiveGroupKey] = useState<string | undefined>(undefined);
+  const [editing, setEditing] = useState(false);
   const complete = useMemo(
     () => workout?.exerciseGroups.every(g => g.exerciseSets.every(s => s.completed)) ?? false,
     [workout]

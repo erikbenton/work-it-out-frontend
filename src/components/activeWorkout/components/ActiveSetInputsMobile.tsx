@@ -20,7 +20,7 @@ type Props = {
 }
 
 const drawerBleeding = 45;
-const drawerHeight = '20%';
+const drawerHeight = '25%';
 
 const Root = styled('div')(({ theme }) => ({
   height: '100%',
