@@ -59,7 +59,6 @@ export default function DrawerUserMenu() {
         <form onSubmit={handleLoginAttempt}>
           <Stack spacing={1} sx={{ pt: 1 }}>
             <TextField
-              autoFocus
               id="email"
               name="email"
               label="Email"

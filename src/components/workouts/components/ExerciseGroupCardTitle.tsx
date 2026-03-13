@@ -43,7 +43,7 @@ export default function ExerciseGroupCardTitle({ exerciseName, muscles, exercise
     <CardHeader
       sx={{ overflow: 'hidden' }}
       avatar={
-        <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
+        <Avatar sx={{ bgcolor: muscles[0].colorRgb ?? 'red' }} aria-label="exercise group">
           {muscles[0].name[0].toUpperCase()}
         </Avatar>
       }

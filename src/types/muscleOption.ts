@@ -1,4 +1,5 @@
 export default interface MuscleOption {
   id: number,
-  name: string
+  name: string,
+  colorRgb: string
 }

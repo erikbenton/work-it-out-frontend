@@ -18,7 +18,6 @@ import ActiveWorkoutSummary from './components/activeWorkout/ActiveWorkoutSummar
 import CompletedWorkoutList from './components/completedWorkouts/CompletedWorkoutList';
 import CompletedWorkoutDetails from './components/completedWorkouts/CompletedWorkoutDetails';
 import HomePage from './components/home/HomePage';
-// import Home from './components/home/Home';
 
 export default function App() {
 

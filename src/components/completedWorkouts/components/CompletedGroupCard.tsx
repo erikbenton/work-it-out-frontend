@@ -18,6 +18,9 @@ export default function CompletedGroupCard({ group }: Props) {
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
     : "?";
+  const muscleColor = exercise.muscles
+    ? exercise.muscles[0].colorRgb
+    : "red";
   const numberOfSets = group.completedExerciseSets.length;
 
   return (
@@ -25,7 +28,7 @@ export default function CompletedGroupCard({ group }: Props) {
       <CardHeader
         sx={{ overflow: 'hidden', pb: 0 }}
         avatar={
-          <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
+          <Avatar sx={{ bgcolor: muscleColor ?? 'red' }} aria-label="exercise group">
             {muscleAvatar}
           </Avatar>
         }

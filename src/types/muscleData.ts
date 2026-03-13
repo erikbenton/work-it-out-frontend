@@ -1,4 +1,5 @@
 export default interface MuscleData {
   name: string,
-  weight: number
+  weight: number,
+  colorRgb?: string
 }

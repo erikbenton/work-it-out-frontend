@@ -19,6 +19,9 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
     : "?";
+  const muscleColor = exercise.muscles
+    ? exercise.muscles[0].colorRgb
+    : "red";
   const numberOfSets = exerciseGroup.exerciseSets?.length ?? 0;
   const numberCompleted = exerciseGroup.exerciseSets.filter(s => s.completed).length;
 
@@ -43,7 +46,7 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
       <CardHeader
         sx={{ overflow: 'hidden' }}
         avatar={
-          <Avatar sx={{ bgcolor: 'red' }} aria-label="exercise group">
+          <Avatar sx={{ bgcolor: muscleColor ?? 'red' }} aria-label="exercise group">
             {muscleAvatar}
           </Avatar>
         }
