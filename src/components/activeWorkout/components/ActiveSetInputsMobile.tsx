@@ -105,7 +105,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
           console.log(savedCompletedWorkout);
-          navigate(`/`);
+          dispatch({ type: 'endWorkout' });
+          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         }
       });
     }

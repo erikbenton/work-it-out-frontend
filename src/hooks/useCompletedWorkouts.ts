@@ -62,6 +62,7 @@ export function useCompletedWorkouts() {
             })
         };
       })
+      .filter(g => g.completedExerciseSets.length > 0)
     };
   }
 

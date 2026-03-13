@@ -3,12 +3,28 @@ import useActiveWorkout from "../../hooks/useActiveWorkout";
 import WorkoutList from "../workouts/WorkoutList";
 import ActiveWorkoutGroupCard from "./components/ActiveWorkoutGroupCard";
 import ElapsedTimer from "./components/ElapsedTimer";
+import { useNavigate } from "react-router-dom";
+import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutSummary() {
-  const { workout, dispatch } = useActiveWorkout();
+  const { workout, dispatch, complete } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
+  const navigate = useNavigate();
 
   const handleClearWorkout = () => {
     dispatch({ type: 'endWorkout' })
+  }
+
+  const handleFinishWorkout = () => {
+    if (workout) {
+      services.createFromActiveWorkout(workout, {
+        onSuccess: (savedCompletedWorkout) => {
+          console.log(savedCompletedWorkout);
+          dispatch({ type: 'endWorkout' });
+          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
+        }
+      });
+    }
   }
 
   if (workout === null) { return <WorkoutList /> }
@@ -35,8 +51,11 @@ export default function ActiveWorkoutSummary() {
         {workout.exerciseGroups.map(group => (
           <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
         ))}
+        {complete
+          ? <Button variant="contained" onClick={handleFinishWorkout}>Finish Workout</Button>
+          : <Button variant="outlined" onClick={handleClearWorkout}>Clear Workout</Button>
+        }
       </Stack>
-      <Button onClick={handleClearWorkout}>Clear Workout</Button>
     </Box>
   );
 }
