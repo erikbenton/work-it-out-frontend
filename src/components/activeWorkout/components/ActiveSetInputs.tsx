@@ -9,6 +9,7 @@ import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
+import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -74,7 +75,7 @@ export default function ActiveSetInputs({ exerciseGroup, set }: Props) {
     if (workout) {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
-          console.log(savedCompletedWorkout);
+          devConsole(savedCompletedWorkout);
           navigate(`/`);
         }
       });

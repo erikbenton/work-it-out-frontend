@@ -1,8 +1,9 @@
 import type SetTagOption from "../types/setTagOption";
 import { baseUrl } from "../utils/config";
+import { devConsole } from "../utils/debugLogger";
 
 export async function getSetTagOptions(): Promise<SetTagOption[]> {
-  console.log('fetching set tag options.', Date.now());
+  devConsole('fetching set tag options.', Date.now());
   const response = await fetch(`${baseUrl}/workouts/setTagOptions`);
   if (!response.ok) {
     throw new Error('Failed to fetch set tag options.');

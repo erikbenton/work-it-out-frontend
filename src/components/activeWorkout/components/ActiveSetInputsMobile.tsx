@@ -13,6 +13,7 @@ import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
+import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -104,7 +105,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
     if (workout) {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
-          console.log(savedCompletedWorkout);
+          devConsole(savedCompletedWorkout);
           dispatch({ type: 'endWorkout' });
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         }

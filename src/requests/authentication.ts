@@ -2,9 +2,10 @@ import type RegistrationRequest from "../types/authenticationRequest";
 import type RegistrationResponse from "../types/authenticationResponse";
 import type UserInfo from "../types/userInfo";
 import { baseUrl } from "../utils/config";
+import { devConsole } from "../utils/debugLogger";
 
 export async function register(request: RegistrationRequest): Promise<RegistrationResponse> {
-  console.log('register', Date.now());
+  devConsole('register', Date.now());
   const config = {
     method: 'POST',
     headers: {
@@ -18,7 +19,7 @@ export async function register(request: RegistrationRequest): Promise<Registrati
 }
 
 export async function login(request: RegistrationRequest): Promise<RegistrationResponse> {
-  console.log('login', Date.now());
+  devConsole('login', Date.now());
   const config = {
     method: 'POST',
     headers: {
@@ -32,7 +33,7 @@ export async function login(request: RegistrationRequest): Promise<RegistrationR
 }
 
 export async function logout(): Promise<boolean> {
-  console.log('logout', Date.now());
+  devConsole('logout', Date.now());
   const config = {
     method: 'POST'
   };
@@ -41,7 +42,7 @@ export async function logout(): Promise<boolean> {
 }
 
 export async function getUserInfo(): Promise<UserInfo> {
-  console.log('fetching user info', Date.now());
+  devConsole('fetching user info', Date.now());
   const response = await fetch(`${baseUrl}/authentication/userInfo`);
   if (!response.ok) {
     throw new Error('Failed to fetch user info');

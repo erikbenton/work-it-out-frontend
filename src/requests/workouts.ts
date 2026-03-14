@@ -1,9 +1,10 @@
 import type Workout from '../types/workout';
 import type WorkoutSummary from '../types/workoutSummary';
 import { baseUrl } from '../utils/config';
+import { devConsole } from '../utils/debugLogger';
 
 export async function getWorkoutList(): Promise<WorkoutSummary[]> {
-  console.log('fetching workouts', Date.now());
+  devConsole('fetching workouts', Date.now());
   const response = await fetch(`${baseUrl}/workouts`);
   if (!response.ok) {
     throw new Error('Failed to fetch workouts');
@@ -12,7 +13,7 @@ export async function getWorkoutList(): Promise<WorkoutSummary[]> {
 }
 
 export async function getWorkouts(): Promise<Workout[]> {
-  console.log('fetching workouts', Date.now());
+  devConsole('fetching workouts', Date.now());
   const response = await fetch(`${baseUrl}/workouts`);
   if (!response.ok) {
     throw new Error('Failed to fetch workouts');
@@ -21,7 +22,7 @@ export async function getWorkouts(): Promise<Workout[]> {
 }
 
 export async function getWorkoutById(id: number): Promise<Workout> {
-  console.log('fetching workout ' + id.toString(), Date.now());
+  devConsole('fetching workout ' + id.toString(), Date.now());
   const response = await fetch(`${baseUrl}/workouts/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch workout with id: ' + id.toString());
@@ -30,7 +31,7 @@ export async function getWorkoutById(id: number): Promise<Workout> {
 }
 
 export async function createWorkout(newWorkout: Workout): Promise<Workout> {
-  console.log('Creating workout ' + newWorkout.name);
+  devConsole('Creating workout ' + newWorkout.name);
   const config = {
     method: 'POST',
     headers: {
@@ -50,7 +51,7 @@ export async function createWorkout(newWorkout: Workout): Promise<Workout> {
 }
 
 export async function updateWorkout(workout: Workout): Promise<Workout> {
-  console.log('Updating workout ' + workout.id);
+  devConsole('Updating workout ' + workout.id);
   const config = {
     method: 'PUT',
     headers: {
@@ -70,7 +71,7 @@ export async function updateWorkout(workout: Workout): Promise<Workout> {
 }
 
 export async function deleteWorkout(workout: Workout): Promise<void> {
-  console.log('Deleting workout ' + workout.id);
+  devConsole('Deleting workout ' + workout.id);
   const config = { method: 'DELETE' };
 
   const response = await fetch(`${baseUrl}/workouts/${workout.id}`, config);

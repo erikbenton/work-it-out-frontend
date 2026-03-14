@@ -11,6 +11,7 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
 import { checkPluralization } from "../../utils/formatters";
+import { devConsole } from "../../utils/debugLogger";
 
 export default function CompletedWorkoutList() {
   const { completedWorkouts } = useCompletedWorkouts();
@@ -19,7 +20,7 @@ export default function CompletedWorkoutList() {
   const [monthYearWorkoutMap, allKeys] = useMemo(() => {
     const workoutMap = new Map<string, CompletedWorkout[]>();
     const keys: string[] = [];
-    console.log('using memo: month year map')
+    devConsole('using memo: month year map')
     completedWorkouts.map(w => {
       const completedDate = new Date(w.createdAt ?? 0);
       const month = completedDate.toLocaleString('en-US', { month: 'long' });

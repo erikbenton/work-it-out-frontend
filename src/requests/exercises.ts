@@ -1,9 +1,10 @@
 import type Exercise from '../types/exercise';
 import type ExerciseHistory from '../types/exerciseHistory';
 import { baseUrl } from '../utils/config';
+import { devConsole } from '../utils/debugLogger';
 
 export async function getExerciseList(): Promise<Exercise[]> {
-  console.log('fetching exercises', Date.now());
+  devConsole('fetching exercises', Date.now());
   const response = await fetch(`${baseUrl}/exercises`);
   if (!response.ok) {
     throw new Error('Failed to fetch exercises');
@@ -12,7 +13,7 @@ export async function getExerciseList(): Promise<Exercise[]> {
 }
 
 export async function getExerciseById(id: number): Promise<Exercise> {
-  console.log('fetching exercise ' + id.toString(), Date.now());
+  devConsole('fetching exercise ' + id.toString(), Date.now());
   const response = await fetch(`${baseUrl}/exercises/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch exercise with id: ' + id.toString());
@@ -21,7 +22,7 @@ export async function getExerciseById(id: number): Promise<Exercise> {
 }
 
 export async function getExerciseHistoryById(id: number): Promise<ExerciseHistory[]> {
-  console.log('fetching exercise history', Date.now());
+  devConsole('fetching exercise history', Date.now());
   const response = await fetch(`${baseUrl}/completedExerciseGroups/${id}`);
   if (!response.ok) {
     throw new Error('Failed to fetch history for exercise with id: ' + id.toString());
@@ -30,7 +31,7 @@ export async function getExerciseHistoryById(id: number): Promise<ExerciseHistor
 }
 
 export async function createExercise(newExercise: Exercise): Promise<Exercise> {
-  console.log('Creating exercise ' + newExercise.name);
+  devConsole('Creating exercise ' + newExercise.name);
   const config = {
     method: 'POST',
     headers: {
@@ -50,7 +51,7 @@ export async function createExercise(newExercise: Exercise): Promise<Exercise> {
 }
 
 export async function updateExercise(exercise: Exercise): Promise<Exercise> {
-  console.log('Updating exercise ' + exercise.id);
+  devConsole('Updating exercise ' + exercise.id);
   const config = {
     method: 'PUT',
     headers: {
@@ -70,7 +71,7 @@ export async function updateExercise(exercise: Exercise): Promise<Exercise> {
 }
 
 export async function deleteExercise(exercise: Exercise): Promise<void> {
-  console.log('Deleting exercise ' + exercise.id);
+  devConsole('Deleting exercise ' + exercise.id);
   const config = { method: 'DELETE' };
 
   const response = await fetch(`${baseUrl}/exercises/${exercise.id}`, config);

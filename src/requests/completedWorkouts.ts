@@ -1,8 +1,9 @@
 import type CompletedWorkout from "../types/completedWorkout";
 import { baseUrl } from "../utils/config";
+import { devConsole } from "../utils/debugLogger";
 
 export async function getCompletedWorkouts(): Promise<CompletedWorkout[]> {
-  console.log('fetching completed workouts', Date.now());
+  devConsole('fetching completed workouts', Date.now());
   const response = await fetch(`${baseUrl}/completedWorkouts`);
   if (!response.ok) {
     throw new Error('Failed to fetch completed workouts');
@@ -11,7 +12,7 @@ export async function getCompletedWorkouts(): Promise<CompletedWorkout[]> {
 }
 
 export async function createCompletedWorkout(newWorkout: CompletedWorkout): Promise<CompletedWorkout> {
-  console.log('Creating completed workout ' + newWorkout.name);
+  devConsole('Creating completed workout ' + newWorkout.name);
 
   const config = {
     method: 'POST',

@@ -5,6 +5,7 @@ import ActiveWorkoutGroupCard from "./components/ActiveWorkoutGroupCard";
 import ElapsedTimer from "./components/ElapsedTimer";
 import { useNavigate } from "react-router-dom";
 import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
+import { devConsole } from "../../utils/debugLogger";
 
 export default function ActiveWorkoutSummary() {
   const { workout, dispatch, complete } = useActiveWorkout();
@@ -19,7 +20,7 @@ export default function ActiveWorkoutSummary() {
     if (workout) {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
-          console.log(savedCompletedWorkout);
+          devConsole(savedCompletedWorkout);
           dispatch({ type: 'endWorkout' });
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         }
