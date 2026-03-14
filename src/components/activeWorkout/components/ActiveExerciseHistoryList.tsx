@@ -18,7 +18,7 @@ export default function ActiveExerciseHistoryList({ history }: Props) {
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
       {history?.map(group => (
-        <Card sx={{ bgcolor: '#F5FBFF', py: 1 }} key={`group-history-${group.completedExerciseGroupId}`}>
+        <Card sx={{ bgcolor: '#F5FBFF', py: 1, borderRadius: 4 }} key={`group-history-${group.completedExerciseGroupId}`}>
           <CardContent className="pb-0" sx={{ p: 0 }}>
             <ExerciseHistoryItemTitle group={group} />
             <Divider sx={{ opacity: 0.3 }} />

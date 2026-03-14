@@ -21,7 +21,7 @@ export default function ExerciseFormTextFields({ name, instructions, dispatch }:
 
   return (
     <Paper
-      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: '#F5FBFF' }}
+      sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2, bgcolor: '#F5FBFF', borderRadius: 5 }}
       square={false}
     >
       <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>

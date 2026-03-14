@@ -21,8 +21,8 @@ export default function ActiveGroupSetsCard({ exerciseGroup }: Props) {
   }
 
   return (
-    <Card sx={{ bgcolor: '#F5FBFF' }}>
-      <CardContent className="pb-0" sx={{ p: 0 }}>
+    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+      <CardContent className="pb-1" sx={{ p: 0 }}>
         <List sx={{ pb: 0 }}>
           <ListItem>
             <ListItemText primary="Today" slotProps={{ primary: { fontWeight: '600' } }} />

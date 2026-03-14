@@ -55,7 +55,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
   ];
 
   return (
-    <Card sx={{ width: '100%', bgcolor: '#F5FBFF' }}>
+    <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
       <CardHeader
         sx={{ overflow: 'hidden' }}
         avatar={

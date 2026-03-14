@@ -1,8 +1,15 @@
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { createExercise, deleteExercise, getExerciseList, updateExercise } from "../requests/exercises";
 import type Exercise from "../types/exercise";
 
 const queryKey = 'exercises';
+
+export type ExerciseServices = {
+  create: UseMutateFunction<Exercise, Error, Exercise, unknown>;
+  update: UseMutateFunction<Exercise, Error, Exercise, unknown>;
+  remove: (exercise: Exercise) => void;
+  getExerciseById: (id: number) => Exercise;
+}
 
 export function useExercises() {
   const queryClient = useQueryClient();
@@ -31,8 +38,8 @@ export function useExercises() {
         queryClient.setQueryData(
           [queryKey],
           prevExercises
-          ?.concat(savedExercise)
-          .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
+            ?.concat(savedExercise)
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }

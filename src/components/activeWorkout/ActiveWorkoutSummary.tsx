@@ -51,10 +51,8 @@ export default function ActiveWorkoutSummary() {
         {workout.exerciseGroups.map(group => (
           <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
         ))}
-        {complete
-          ? <Button variant="contained" onClick={handleFinishWorkout}>Finish Workout</Button>
-          : <Button variant="outlined" onClick={handleClearWorkout}>Clear Workout</Button>
-        }
+        {complete && <Button sx={{ borderRadius: 5 }} variant="contained" onClick={handleFinishWorkout}>Finish Workout</Button>}
+        <Button sx={{ borderRadius: 5 }} variant="outlined" onClick={handleClearWorkout}>Clear Workout</Button>
       </Stack>
     </Box>
   );

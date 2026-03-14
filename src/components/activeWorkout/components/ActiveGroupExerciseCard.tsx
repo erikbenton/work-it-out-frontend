@@ -42,7 +42,7 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
   ];
 
   return (
-    <Card sx={{ width: '100%', bgcolor: '#F5FBFF' }}>
+    <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
       <CardHeader
         sx={{ overflow: 'hidden' }}
         avatar={

@@ -22,7 +22,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
-    <Card sx={{ width: '100%', bgcolor: '#F5FBFF' }}>
+    <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
       <ExerciseGroupCardTitle
         exerciseName={exercise.name ?? ""}
         muscles={exercise.muscles ?? []}

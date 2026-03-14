@@ -28,7 +28,7 @@ const { workouts } = useWorkouts();
         <Button
           aria-label="start workout"
           className="mt-3"
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", borderRadius: 5  }}
           variant="contained"
           onClick={navigateToNewWorkoutForm}
         >

@@ -24,7 +24,7 @@ export default function ExerciseFormEquipment({ equipment, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', py: 2, bgcolor: '#F5FBFF' }}
+      sx={{ width: '100%', py: 2, bgcolor: '#F5FBFF', borderRadius: 5 }}
       square={false}
     >
       <Stack sx={{ mx: 2 }}>

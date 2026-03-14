@@ -9,6 +9,8 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 import { Typography } from "@mui/material";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
+import { useExercises } from "../../../hooks/useExercises";
+import { getMaxMuscleGroup } from "../../../utils/muscles";
 
 type Props = {
   workout: Workout
@@ -16,8 +18,10 @@ type Props = {
 
 export default function WorkoutListCard({ workout }: Props) {
   const { services } = useWorkouts();
+  const { services: exercises } = useExercises();
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
+  const maxMuscle = getMaxMuscleGroup(workout.exerciseGroups, exercises);
 
   const menuItems = [
     {
@@ -30,12 +34,12 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Card sx={{bgcolor: '#F5FBFF'}}>
+    <Card sx={{bgcolor: '#F5FBFF', borderRadius: 5 }}>
       <CardHeader
         avatar={
           <Link to={`/workouts/${workout.id}`}>
-            <Avatar className="bg-neutral-300" aria-label="workout">
-              R
+            <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
+              {maxMuscle.name[0].toUpperCase()}
             </Avatar>
           </Link>
         }
