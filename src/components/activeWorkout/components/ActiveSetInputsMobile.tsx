@@ -104,10 +104,10 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
   const handleFinishWorkout = () => {
     if (workout) {
       services.createFromActiveWorkout(workout, {
-        onSuccess: (savedCompletedWorkout) => {
+        onSuccess: async (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
+          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`)
           dispatch({ type: 'endWorkout' });
-          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         }
       });
     }

@@ -1,6 +1,5 @@
 import ExerciseHistoryItemSet from "../../exercises/components/ExerciseHistoryItemSet";
 import ExerciseHistoryItemTitle from "../../exercises/components/ExerciseHistoryItemTitle";
-import type ExerciseHistory from "../../../types/exerciseHistory";
 import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -8,12 +7,14 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import React from "react";
 import Box from "@mui/material/Box";
+import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 
 type Props = {
-  history: ExerciseHistory[]
+  exerciseId: number
 }
 
-export default function ActiveExerciseHistoryList({ history }: Props) {
+export default function ActiveExerciseHistoryList({ exerciseId }: Props) {
+  const { data: history } = useExerciseHistory(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>

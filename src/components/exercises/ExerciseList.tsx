@@ -74,6 +74,7 @@ function ExerciseSubheaderList({ exercises }: Props) {
                 </ListItem>
               </ListItemButton>
             ))}
+            <ListItem></ListItem>
           </ul>
         </li>
       ))}

@@ -6,7 +6,7 @@ import { useMemo } from "react";
 import type CompletedWorkout from "../../types/completedWorkout";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
-import CompletedWorkoutListCard from "./components/CompletedWorkoutListCard";
+import CompletedWorkoutListRow from "./components/CompletedWorkoutListRow";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -75,7 +75,7 @@ export default function CompletedWorkoutList() {
                     disableGutters
                     sx={{ p: 0, mb: 1 }}
                     onClick={() => navigate(`/completedWorkouts/${workout.id}`)}>
-                    <CompletedWorkoutListCard workout={workout} />
+                    <CompletedWorkoutListRow workout={workout} />
                   </ListItemButton>
                 </ListItem>
               ))}
