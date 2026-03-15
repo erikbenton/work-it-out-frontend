@@ -9,7 +9,8 @@ export function useWorkouts() {
   const queryClient = useQueryClient();
   const { data: workouts, isError } = useSuspenseQuery<Workout[]>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
+    gcTime: 1000 * 60 * 60 * 24 * 14, // 14 days
     queryFn: getWorkouts
   });
 

@@ -7,8 +7,8 @@ const queryKey = 'setTagOptions';
 export default function useSetTags() {
   const { data: setTags, isLoading, isError } = useQuery<SetTagOption[]>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 5, // 5 minutes,
-    gcTime: 1000 * 60 * 60 * 24, // 1 day
+    staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
+    gcTime: 1000 * 60 * 60 * 24 * 14, // 14 days
     queryFn: getSetTagOptions
   });
 
