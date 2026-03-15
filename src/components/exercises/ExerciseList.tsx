@@ -28,7 +28,7 @@ type Props = {
 function ExerciseSubheaderList({ exercises }: Props) {
   const navigate = useNavigate();
   const theme = useTheme();
-    const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleRowClick = (exercise: Exercise, navigate: NavigateFunction) => {
     return () => {
@@ -74,10 +74,11 @@ function ExerciseSubheaderList({ exercises }: Props) {
                 </ListItem>
               </ListItemButton>
             ))}
-            <ListItem></ListItem>
+
           </ul>
         </li>
       ))}
+      <ListItem sx={{ my: 2 }}></ListItem>
     </List>
   );
 }

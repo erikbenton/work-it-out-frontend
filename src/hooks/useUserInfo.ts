@@ -24,7 +24,7 @@ export default function useUserInfo() {
     mutationFn: async (request: AuthenticationRequest) => await register(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
-        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userId };
+        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
         queryClient.setQueryData([queryKey], user);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -36,7 +36,7 @@ export default function useUserInfo() {
     mutationFn: async (request: AuthenticationRequest) => await login(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
-        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userId };
+        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
         queryClient.setQueryData([queryKey], user);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });

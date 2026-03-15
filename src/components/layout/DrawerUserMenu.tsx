@@ -25,7 +25,7 @@ export default function DrawerUserMenu() {
     if (event) {
       event.preventDefault();
     }
-    handleLoginClick();
+    await handleLoginClick();
   }
 
   const handleLoginClick = async () => {
