@@ -78,8 +78,21 @@ export default function DrawerUserMenu() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button variant="contained" type="submit" onClick={handleLoginClick}>Login</Button>
-            <Button variant="contained" sx={{ bgcolor: grey[500] }} onClick={handleRegisterAttempt}>Register</Button>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: 5 }}
+              type="submit"
+              onClick={handleLoginClick}
+            >
+              Login
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ bgcolor: grey[500], borderRadius: 5 }}
+              onClick={handleRegisterAttempt}
+            >
+              Register
+            </Button>
           </Stack>
         </form>
       }
