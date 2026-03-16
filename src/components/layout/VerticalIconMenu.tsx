@@ -61,6 +61,9 @@ export default function VerticalIconMenu({ menuItems, buttonId, size, sx, edge }
           list: {
             'aria-labelledby': buttonId,
           },
+          paper: {
+            sx: { borderRadius: 5 }
+          }
         }}
       >
         {menuItems.map(item => (

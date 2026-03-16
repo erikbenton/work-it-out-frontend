@@ -25,6 +25,12 @@ export default function WorkoutListCard({ workout }: Props) {
 
   const menuItems = [
     {
+      label: "Clone",
+      handleClick: () => {
+        services.clone(workout);
+      },
+    },
+    {
       label: "Delete",
       handleClick: () => {
         services.remove(workout);
@@ -34,7 +40,7 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Card sx={{bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
       <CardHeader
         avatar={
           <Link to={`/workouts/${workout.id}`}>

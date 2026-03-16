@@ -33,8 +33,44 @@ export function useWorkouts() {
     return workout;
   }
 
+  const createClone = (workout: Workout): Workout => {
+    return {
+      ...workout,
+      id: 0,
+      name: workout.name + ' (Clone)',
+      exerciseGroups: workout.exerciseGroups.map(group => {
+        return {
+          ...group,
+          id: 0,
+          exerciseSets: group.exerciseSets.map(set => {
+            return {
+              ...set,
+              id: 0
+            }
+          })
+        }
+      })
+    };
+  }
+
   const create = useMutation({
     mutationFn: async (newWorkout: Workout) => createWorkout(newWorkout),
+    onSuccess: (savedWorkout: Workout) => {
+      try {
+        const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+        queryClient.setQueryData(
+          [queryKey],
+          prevWorkouts
+            ?.concat(savedWorkout)
+            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
+  const clone = useMutation({
+    mutationFn: async (workout: Workout) => createWorkout(createClone(workout)),
     onSuccess: (savedWorkout: Workout) => {
       try {
         const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
@@ -64,24 +100,24 @@ export function useWorkouts() {
     }
   }).mutate;
 
-    const removeMutation = useMutation({
-      mutationFn: async (workout: Workout) => deleteWorkout(workout)
-    }).mutate;
-  
-    // wrap removeMutation so that we can use the
-    // id to filter the deleted workout onSuccess
-    const remove = (workout: Workout) => {
-      removeMutation(workout, {
-        onSuccess: () => {
-          try {
-            const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
-            queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id))
-          } catch {
-            queryClient.invalidateQueries({ queryKey: [queryKey] });
-          }
+  const removeMutation = useMutation({
+    mutationFn: async (workout: Workout) => deleteWorkout(workout)
+  }).mutate;
+
+  // wrap removeMutation so that we can use the
+  // id to filter the deleted workout onSuccess
+  const remove = (workout: Workout) => {
+    removeMutation(workout, {
+      onSuccess: () => {
+        try {
+          const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id))
+        } catch {
+          queryClient.invalidateQueries({ queryKey: [queryKey] });
         }
-      });
-    }
+      }
+    });
+  }
 
   return {
     workouts,
@@ -89,6 +125,7 @@ export function useWorkouts() {
     services: {
       getWorkoutById,
       create,
+      clone,
       update,
       remove
     }

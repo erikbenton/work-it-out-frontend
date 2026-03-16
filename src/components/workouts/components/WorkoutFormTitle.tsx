@@ -53,6 +53,21 @@ export default function WorkoutFormTitle() {
     { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
   ];
 
+  if (!editing) {
+    // put it 2nd in the list
+    menuItems.splice(1, 0, {
+      label: "Clone",
+      handleClick: () => {
+        services.clone(workout, {
+          onSuccess: (savedWorkout) => {
+            setEditing(!editing);
+            navigate(`/workouts/${savedWorkout.id}`);
+          }
+        });
+      }, 
+    });
+  }
+
   return (
     <>
       <Stack
