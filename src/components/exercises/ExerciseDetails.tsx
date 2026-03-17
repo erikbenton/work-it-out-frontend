@@ -14,7 +14,7 @@ export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
-  const { data: history } = useExerciseHistory(id);
+  const { data: history, isLoading: historyLoading } = useExerciseHistory(id);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
@@ -41,7 +41,7 @@ export default function ExerciseDetails() {
         <Tab label="Charts" />
       </Tabs>
       {activeTab === 0 ? <ExerciseAboutTab exercise={exercise} />
-        : activeTab === 1 ? <ExerciseHistoryTab history={history} />
+        : activeTab === 1 ? <ExerciseHistoryTab history={history} isLoading={historyLoading} />
           : <></>
       }
     </Box>
