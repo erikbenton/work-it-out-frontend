@@ -3,6 +3,9 @@ import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
 import { msToDuration } from "../utils/formatters";
+import { getDateTime } from "../utils/dateTime";
+import type ExerciseHistory from "../types/exerciseHistory";
+import { queryKey as historyQueryKey } from "./useExerciseHistory";
 
 const queryKey = 'completedWorkouts';
 
@@ -24,6 +27,28 @@ export function useCompletedWorkouts() {
     }
 
     return workout;
+  }
+
+  const updateHistories = (completedWorkout: CompletedWorkout) => {
+    for (const group of completedWorkout.completedExerciseGroups) {
+      const dateTime = getDateTime(completedWorkout.createdAt);
+      const history: ExerciseHistory = {
+        completedExerciseGroupId: group.id,
+        year: dateTime.year,
+        month: dateTime.month,
+        day: dateTime.dayOfMonth,
+        comment: group.comment,
+        exerciseId: group.exerciseId,
+        completedExerciseSets: group.completedExerciseSets
+      }
+      const key = [historyQueryKey, history.exerciseId]
+      try {
+        const prevHistory: ExerciseHistory[] = queryClient.getQueryData(key) as ExerciseHistory[];
+        queryClient.setQueryData(key, [history, ...prevHistory]);
+      } catch {
+        queryClient.invalidateQueries({ queryKey: key });
+      }
+    }
   }
 
   function convertActiveWorkout(activeWorkout: ActiveWorkout): CompletedWorkout {
@@ -63,7 +88,7 @@ export function useCompletedWorkouts() {
             })
         };
       })
-      .filter(g => g.completedExerciseSets.length > 0)
+        .filter(g => g.completedExerciseSets.length > 0)
     };
   }
 
@@ -94,7 +119,8 @@ export function useCompletedWorkouts() {
     services: {
       create,
       createFromActiveWorkout,
-      getCompletedWorkoutById
+      getCompletedWorkoutById,
+      updateHistories
     }
   }
 }
