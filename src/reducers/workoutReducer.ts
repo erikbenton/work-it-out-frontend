@@ -88,7 +88,9 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
     case 'removeGroupSet': {
       const { group, set } = action.payload;
       if (!set || !group) return { ...workout };
-      const updatedSets = group.exerciseSets.filter(s => s.key !== set.key);
+      const updatedSets = group.exerciseSets
+        .filter(s => s.key !== set.key)
+        .map((s, index) => ({ ...s, sort: index }));
       const updatedGroup = { ...group, exerciseSets: [...updatedSets] };
       const updatedGroups = workout.exerciseGroups
         .map(g => g.key === updatedGroup.key ? updatedGroup : g);

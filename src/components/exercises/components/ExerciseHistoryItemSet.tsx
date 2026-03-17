@@ -1,7 +1,14 @@
-import { Avatar, Badge, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
+
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import type SetTagOption from "../../../types/setTagOption";
 import useSetTags from "../../../hooks/useSetTags";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Tooltip from "@mui/material/Tooltip";
+import Badge from "@mui/material/Badge";
+import Avatar from "@mui/material/Avatar";
+import ListItemText from "@mui/material/ListItemText";
 
 type Props = {
   set: CompletedExerciseSet
@@ -40,18 +47,20 @@ export default function ExerciseHistoryItemSet({ set }: Props) {
     >
       <ListItemButton>
         <ListItemAvatar>
-          <Badge
-            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
-            badgeContent={setTag?.name[0] ?? ''}
-          >
-            <Avatar sx={{
-              ...generalAvatarStyle,
-              bgcolor: '#E0E7F2',
-              color: 'black'
-            }}>
-              {set.sort + 1}
-            </Avatar>
-          </Badge>
+          <Tooltip title={setTag?.name} placement="right">
+            <Badge
+              slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+              badgeContent={setTag?.name[0] ?? ''}
+            >
+              <Avatar sx={{
+                ...generalAvatarStyle,
+                bgcolor: '#E0E7F2',
+                color: 'black'
+              }}>
+                {set.sort + 1}
+              </Avatar>
+            </Badge>
+          </Tooltip>
         </ListItemAvatar>
         <ListItemText id={`list-label-${set.id}`} primary={displaySetText(set)} />
       </ListItemButton>

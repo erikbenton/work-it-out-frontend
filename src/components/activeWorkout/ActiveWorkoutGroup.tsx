@@ -28,23 +28,25 @@ export default function ActiveWorkoutGroup() {
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 2 }}>
       <ActiveWorkoutGroupNavbar />
-      <Stack spacing={1} sx={{ px: 1 }}>
-        <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
-        <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />
-        <ActiveExerciseHistoryList exerciseId={exerciseGroup?.exerciseId} />
-        {mobileScreen
-          ? <ActiveSetInputsMobile
-            exerciseGroup={exerciseGroup}
-            set={currentSet}
-            key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
-          />
-          : <ActiveSetInputs
-            exerciseGroup={exerciseGroup}
-            set={currentSet}
-            key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
-          />
-        }
-      </Stack>
+      <Box mb='30vh'>
+        <Stack spacing={1} sx={{ px: 1 }}>
+          <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
+          <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />
+          <ActiveExerciseHistoryList exerciseId={exerciseGroup?.exerciseId} />
+          {mobileScreen
+            ? <ActiveSetInputsMobile
+              exerciseGroup={exerciseGroup}
+              set={currentSet}
+              key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+            />
+            : <ActiveSetInputs
+              exerciseGroup={exerciseGroup}
+              set={currentSet}
+              key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+            />
+          }
+        </Stack>
+      </Box>
     </Box>
   )
 }

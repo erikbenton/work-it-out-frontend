@@ -9,6 +9,7 @@ import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Badge from "@mui/material/Badge";
 import type SetTagOption from "../../../types/setTagOption";
+import { Tooltip } from "@mui/material";
 
 type Props = {
   index: number,
@@ -78,18 +79,20 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
         sx={{ px: 1, color: 'gray' }}
       >
         <ListItemAvatar>
-          <Badge
-            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
-            badgeContent={setTag?.name[0] ?? ''}
-          >
-            <Avatar sx={{
-              ...generalAvatarStyle,
-              bgcolor: '#E0E7F2',
-              color: 'gray',
-            }}>
-              {index + 1}
-            </Avatar>
-          </Badge>
+          <Tooltip title={setTag?.name} placement="right">
+            <Badge
+              slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+              badgeContent={setTag?.name[0] ?? ''}
+            >
+              <Avatar sx={{
+                ...generalAvatarStyle,
+                bgcolor: '#E0E7F2',
+                color: 'gray',
+              }}>
+                {index + 1}
+              </Avatar>
+            </Badge>
+          </Tooltip>
         </ListItemAvatar>
         <ListItemText
           slotProps={{ primary: { fontWeight: 100 } }}
@@ -134,18 +137,21 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
         onClick={() => setEditing(curr => !curr)}
       >
         <ListItemAvatar>
-          <Badge
-            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
-            badgeContent={setTag?.name[0] ?? ''}
-          >
-            <Avatar sx={{
-              ...generalAvatarStyle,
-              bgcolor: 'primary.main',
-              color: 'white',
-            }}>
-              {index + 1}
-            </Avatar>
-          </Badge>
+          <Tooltip title={setTag?.name} placement="right">
+
+            <Badge
+              slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+              badgeContent={setTag?.name[0] ?? ''}
+            >
+              <Avatar sx={{
+                ...generalAvatarStyle,
+                bgcolor: 'primary.main',
+                color: 'white',
+              }}>
+                {index + 1}
+              </Avatar>
+            </Badge>
+          </Tooltip>
         </ListItemAvatar>
         <ListItemText
           primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}
@@ -184,18 +190,21 @@ export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
         />
       }>
       <ListItemAvatar>
-        <Badge
-          slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
-          badgeContent={setTag?.name[0] ?? ''}
-        >
-          <Avatar sx={{
-            ...generalAvatarStyle,
-            bgcolor: '#E0E7F2',
-            color: 'black'
-          }}>
-            {index + 1}
-          </Avatar>
-        </Badge>
+        <Tooltip title={setTag?.name} placement="right">
+
+          <Badge
+            slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+            badgeContent={setTag?.name[0] ?? ''}
+          >
+            <Avatar sx={{
+              ...generalAvatarStyle,
+              bgcolor: '#E0E7F2',
+              color: 'black'
+            }}>
+              {index + 1}
+            </Avatar>
+          </Badge>
+        </Tooltip>
       </ListItemAvatar>
       <ListItemText
         primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}

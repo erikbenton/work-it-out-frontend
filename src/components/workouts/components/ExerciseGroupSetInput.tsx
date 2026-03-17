@@ -4,8 +4,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from "@mui/material/IconButton";
 import type ExerciseSet from "../../../types/exerciseSet";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import { useState } from "react";
@@ -15,8 +13,16 @@ import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import type ExerciseGroup from "../../../types/exerciseGroup";
-import { Badge, Chip, FormLabel, Stack, ToggleButton, ToggleButtonGroup } from "@mui/material";
 import type SetTagOption from "../../../types/setTagOption";
+import Stack from "@mui/material/Stack";
+import FormLabel from "@mui/material/FormLabel";
+import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import ToggleButton from "@mui/material/ToggleButton";
+import Chip from "@mui/material/Chip";
+import Tooltip from "@mui/material/Tooltip";
+import Badge from "@mui/material/Badge";
+import Box from "@mui/material/Box";
+import VerticalIconMenu from "../../layout/VerticalIconMenu";
 
 function formattedRepsText(set: ExerciseSet): string {
   return (`${set.minReps ?? ""}` +
@@ -53,6 +59,16 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   const [values, setValues] = useState<ExerciseSet>(set);
   const [open, setOpen] = useState(false);
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
+
+  const menuItems = [
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroupSet', payload: { group: exerciseGroup, set } });
+      },
+      sx: { color: 'error.main' }
+    },
+  ]
 
   const handleClose = () => {
     setOpen(false);
@@ -171,9 +187,12 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
         key={set.key}
         secondaryAction={
           <Grow in={editing}>
-            <IconButton edge="end" aria-label="delete">
-              <MoreVertIcon />
-            </IconButton>
+            <Box>
+              <VerticalIconMenu
+                buttonId={`set-${set.key}-options`}
+                menuItems={menuItems}
+              />
+            </Box>
           </Grow>
         }
       >
@@ -184,18 +203,20 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           onClick={() => { if (editing) { setOpen(true) } }}
         >
           <ListItemAvatar>
-            <Badge
-              slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
-              badgeContent={setTag?.name[0] ?? ''}
-            >
-              <Avatar sx={{
-                ...generalAvatarStyle,
-                bgcolor: '#E0E7F2',
-                color: 'gray',
-              }}>
-                {set.sort + 1}
-              </Avatar>
-            </Badge>
+            <Tooltip title={setTag?.name} placement="right">
+              <Badge
+                slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
+                badgeContent={setTag?.name[0] ?? ''}
+              >
+                <Avatar sx={{
+                  ...generalAvatarStyle,
+                  bgcolor: '#E0E7F2',
+                  color: 'gray',
+                }}>
+                  {set.sort + 1}
+                </Avatar>
+              </Badge>
+            </Tooltip>
           </ListItemAvatar>
           <ListItemText slotProps={{ primary: { fontSize: 16 } }} primary={formattedRepsText(set)} />
         </ListItemButton>

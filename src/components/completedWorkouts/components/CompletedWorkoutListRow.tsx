@@ -22,7 +22,7 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
 
   return (
     <Stack spacing={2} direction='row' flex={1} flexGrow={1} alignItems='center' sx={{ px: 2 }}>
-      <Stack>
+      <Stack sx={{ width: '32px' }}>
         <Typography variant="subtitle2">{dateTime.dayOfWeek}</Typography>
         <Typography variant="subtitle1">{dateTime.dayOfMonth}</Typography>
       </Stack>

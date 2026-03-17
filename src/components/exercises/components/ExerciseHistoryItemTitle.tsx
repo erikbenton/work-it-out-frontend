@@ -1,5 +1,6 @@
 import { ListItemText, Stack, Typography } from "@mui/material";
 import type ExerciseHistory from "../../../types/exerciseHistory";
+import { checkPluralization } from "../../../utils/formatters";
 
 type Props = {
   group: ExerciseHistory
@@ -25,6 +26,7 @@ function formatDate(group: ExerciseHistory) {
 }
 
 export default function ExerciseHistoryItemTitle({ group }: Props) {
+  const daysDiff = daysSince(group.year, group.month, group.day);
 
   return (
     <ListItemText id={`list-label-${group.completedExerciseGroupId}`} className='px-3' primary={
@@ -37,7 +39,7 @@ export default function ExerciseHistoryItemTitle({ group }: Props) {
         }}
       >
         <Typography variant='body1' className='grow'>{formatDate(group)}</Typography>
-        <Typography variant='body2'>{daysSince(group.year, group.month, group.day)} days ago</Typography>
+        <Typography variant='body2'>{daysDiff} {checkPluralization('day', daysDiff)} ago</Typography>
       </Stack>
     } />
   );
