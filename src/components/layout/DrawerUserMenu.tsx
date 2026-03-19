@@ -6,11 +6,13 @@ import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { grey } from "@mui/material/colors";
+import { useNavigate } from "react-router-dom";
 
 export default function DrawerUserMenu() {
   const { userInfo, services } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleRegisterAttempt = async () => {
     services.registerUser({ email, password }, {
@@ -42,6 +44,7 @@ export default function DrawerUserMenu() {
       onSuccess: () => {
         setEmail('')
         setPassword('');
+        navigate('/');
       }
     });
   }
@@ -53,8 +56,8 @@ export default function DrawerUserMenu() {
       </Typography>
       {userInfo.isLoggedIn
         ? <Stack spacing={1} sx={{ pt: 1 }}>
-          <Typography>Hello {userInfo.email!.split('@')[0]}</Typography>
-          <Button variant="contained" onClick={handleLogoutAttempt}>Logout</Button>
+          <Typography>Hello, {userInfo.email!.split('@')[0]}</Typography>
+          <Button variant="contained" sx={{ borderRadius: 5 }} onClick={handleLogoutAttempt}>Logout</Button>
         </Stack> :
         <form onSubmit={handleLoginAttempt}>
           <Stack spacing={1} sx={{ pt: 1 }}>

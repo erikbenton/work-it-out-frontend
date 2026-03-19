@@ -48,6 +48,7 @@ export default function useUserInfo() {
     mutationFn: async () => await logout(),
     onSuccess: (response: boolean) => {
       try {
+        queryClient.clear();
         const user: UserInfo = { isLoggedIn: !response, email: undefined };
         queryClient.setQueryData([queryKey], user);
       } catch {

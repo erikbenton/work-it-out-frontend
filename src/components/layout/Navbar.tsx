@@ -11,10 +11,10 @@ import Drawer from "@mui/material/Drawer";
 import NavbarDrawer from "./NavbarDrawer";
 import HomeIcon from '@mui/icons-material/Home';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import NoteAltIcon from '@mui/icons-material/NoteAlt';
-import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { Typography } from "@mui/material";
+import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
+import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 
 export type PageLink = {
   text: string,
@@ -24,10 +24,10 @@ export type PageLink = {
 
 const pages: PageLink[] = [
   { text: "Home", url: "/", icon: <HomeIcon color="primary" /> },
-  { text: "Exercises", url: "/exercises", icon: <FitnessCenterIcon color="primary" /> },
-  { text: "Workouts", url: "/workouts", icon: <NoteAltIcon color="primary" /> },
-  { text: "History", url: "/completedWorkouts", icon: <AssignmentTurnedInIcon color="primary" /> },
   { text: "Training", url: "/activeWorkout", icon: <DirectionsRunIcon color="primary" /> },
+  { text: "Exercises", url: "/exercises", icon: <FitnessCenterIcon color="primary" /> },
+  { text: "Workouts", url: "/workouts", icon: <NoteAltOutlinedIcon color="primary" /> },
+  { text: "History", url: "/completedWorkouts", icon: <EventAvailableOutlinedIcon color="primary" /> },
 ];
 
 export default function Navbar() {

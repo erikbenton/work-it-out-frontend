@@ -56,7 +56,6 @@ export function useCompletedWorkouts() {
       // convert top level fields
       id: activeWorkout.id,
       name: activeWorkout.name,
-      workoutId: activeWorkout.workoutId,
       description: activeWorkout.description,
       note: activeWorkout.note,
       duration: msToDuration(Date.now() - activeWorkout.startTime),
@@ -64,7 +63,6 @@ export function useCompletedWorkouts() {
       completedExerciseGroups: activeWorkout.exerciseGroups.map((g, index) => {
         return {
           id: 0,
-          workoutId: activeWorkout.workoutId,
           completedWorkoutId: activeWorkout.id,
           exerciseId: g.exerciseId,
           sort: index,

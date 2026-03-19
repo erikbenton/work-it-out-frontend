@@ -155,13 +155,13 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
         <Box component='form' sx={{ overflow: 'auto', bgcolor: '#F5FBFF' }} onSubmit={handleSubmit} id="exercise-set-input-form">
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button sx={{ width: '90%' }} variant='contained' onClick={handleFinishWorkout}>
+              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
                 Finish Workout
               </Button>
             </Box>
             : allSetsCompleted
               ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-                <Button sx={{ width: '90%' }} variant='contained' onClick={handleNextExercise}>
+                <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleNextExercise}>
                   Next Exercise
                 </Button>
               </Box>
@@ -190,8 +190,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
                   />
                 </Stack>
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
-                  <Button sx={{ width: '45%' }} variant='outlined'>Comment</Button>
-                  <Button type='submit' sx={{ width: '45%' }} variant='contained'>Complete</Button>
+                  <Button sx={{ width: '45%', borderRadius: 5 }} variant='outlined'>Comment</Button>
+                  <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
                 </Stack>
               </Stack>
           }
