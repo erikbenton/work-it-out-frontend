@@ -17,3 +17,9 @@ export function msToDuration(ms: number): string {
 export function checkPluralization(word: string, amount: number | undefined): string {
   return (amount ?? 0) === 1 ? word : word + 's';
 }
+
+export function capitalize(word: string): string {
+  const letters = word.split('')
+  letters[0] = letters[0].toUpperCase();
+  return letters.join('');
+}
