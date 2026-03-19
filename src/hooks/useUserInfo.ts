@@ -24,6 +24,8 @@ export default function useUserInfo() {
     mutationFn: async (request: AuthenticationRequest) => await register(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
+        queryClient.cancelQueries();
+        queryClient.clear();
         const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
         queryClient.setQueryData([queryKey], user);
       } catch {
@@ -36,6 +38,8 @@ export default function useUserInfo() {
     mutationFn: async (request: AuthenticationRequest) => await login(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
+        queryClient.cancelQueries();
+        queryClient.clear();
         const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
         queryClient.setQueryData([queryKey], user);
       } catch {
@@ -48,6 +52,7 @@ export default function useUserInfo() {
     mutationFn: async () => await logout(),
     onSuccess: (response: boolean) => {
       try {
+        queryClient.cancelQueries();
         queryClient.clear();
         const user: UserInfo = { isLoggedIn: !response, email: undefined };
         queryClient.setQueryData([queryKey], user);

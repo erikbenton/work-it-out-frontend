@@ -20,7 +20,11 @@ export default function HomePage() {
     });
   }
 
-  const handleLoginAttempt = async () => {
+  const handleLoginAttempt = async (event?: React.SubmitEvent<HTMLFormElement>) => {
+    if (event) {
+      event.preventDefault();
+    }
+
     services.loginUser({ email, password }, {
       onSuccess: () => {
         setEmail('')
@@ -43,7 +47,7 @@ export default function HomePage() {
       <Typography variant="h4" component="h2">
         Work-It-Out
       </Typography>
-      <Stack role="form" spacing={1} sx={{ pt: 1 }}>
+      <Stack component="form" spacing={1} sx={{ pt: 1 }} onSubmit={handleLoginAttempt}>
         {userInfo.isLoggedIn
           ? <>
             <Typography>Hello {userInfo.email!}</Typography>
@@ -71,7 +75,7 @@ export default function HomePage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Button onClick={handleLoginAttempt}>Login</Button>
+            <Button type='submit'>Login</Button>
             <Button onClick={handleRegisterAttempt}>New? Register</Button>
           </>
         }

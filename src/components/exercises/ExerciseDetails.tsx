@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
-import ErrorMessage from '../layout/ErrorMessage';
 import { useExercises } from '../../hooks/useExercises';
 import { useExerciseHistory } from '../../hooks/useExerciseHistory';
 
@@ -24,7 +23,7 @@ export default function ExerciseDetails() {
 
   // TODO: No exercise, return Error message
   if (!exercise) {
-    return (<ErrorMessage message={`No exercise was found with the id: ${id}`} />);
+    throw new Error(`No exercise was found with the id: ${id}`);
   }
 
   return (
