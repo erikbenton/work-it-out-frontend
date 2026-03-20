@@ -23,3 +23,11 @@ export function capitalize(word: string): string {
   letters[0] = letters[0].toUpperCase();
   return letters.join('');
 }
+
+export function getShortDate(date?: string): string {
+  return new Date(date ?? '')
+    .toLocaleDateString(
+      'en-US',
+      { year: "2-digit", month: "2-digit", day: "2-digit" }
+    );
+}
