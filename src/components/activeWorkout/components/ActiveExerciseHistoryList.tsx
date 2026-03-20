@@ -8,22 +8,13 @@ import Divider from "@mui/material/Divider";
 import React from "react";
 import Box from "@mui/material/Box";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
-import CircularProgress from "@mui/material/CircularProgress";
 
 type Props = {
   exerciseId: number
 }
 
 export default function ActiveExerciseHistoryList({ exerciseId }: Props) {
-  const { data: history, isLoading } = useExerciseHistory(exerciseId);
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  const { data: history } = useExerciseHistory(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>

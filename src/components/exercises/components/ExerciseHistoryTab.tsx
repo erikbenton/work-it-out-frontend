@@ -3,27 +3,17 @@ import Box from '@mui/material/Box';
 import ExerciseHistoryItemSet from './ExerciseHistoryItemSet';
 import ExerciseHistoryItemTitle from './ExerciseHistoryItemTitle';
 import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
-import CircularProgress from '@mui/material/CircularProgress';
 import type ExerciseHistory from '../../../types/exerciseHistory';
 
 type Props = {
-  history?: ExerciseHistory[],
-  isLoading: boolean
+  history: ExerciseHistory[]
 }
 
-export default function ExerciseHistoryTab({ history, isLoading }: Props) {
-
-  if (isLoading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', py: 3 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+export default function ExerciseHistoryTab({ history }: Props) {
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
-      {history?.map(group => (
+      {history.map(group => (
         <Box className="pb-1" key={`group-history-${group.completedExerciseGroupId}`}>
           <ExerciseHistoryItemTitle group={group} />
           {group.completedExerciseSets.map(set => (

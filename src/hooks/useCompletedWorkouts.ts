@@ -3,7 +3,6 @@ import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
 import { msToDuration } from "../utils/formatters";
-import { getDateTime } from "../utils/dateTime";
 import type ExerciseHistory from "../types/exerciseHistory";
 import { queryKey as historyQueryKey } from "./useExerciseHistory";
 
@@ -31,12 +30,9 @@ export function useCompletedWorkouts() {
 
   const updateHistories = (completedWorkout: CompletedWorkout) => {
     for (const group of completedWorkout.completedExerciseGroups) {
-      const dateTime = getDateTime(completedWorkout.createdAt);
       const history: ExerciseHistory = {
         completedExerciseGroupId: group.id,
-        year: dateTime.year,
-        month: dateTime.month,
-        day: dateTime.dayOfMonth,
+        createdAt: completedWorkout.createdAt!,
         comment: group.comment,
         exerciseId: group.exerciseId,
         completedExerciseSets: group.completedExerciseSets

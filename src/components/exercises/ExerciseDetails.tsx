@@ -1,19 +1,21 @@
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import { useExercises } from '../../hooks/useExercises';
 import { useExerciseHistory } from '../../hooks/useExerciseHistory';
+import LoadingIcon from '../layout/LoadingIcon';
+import ExerciseChartTab from './components/ExerciseChartsTab';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
-  const { data: history, isLoading: historyLoading } = useExerciseHistory(id);
+  const { data: history } = useExerciseHistory(id);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
@@ -40,8 +42,13 @@ export default function ExerciseDetails() {
         <Tab label="Charts" />
       </Tabs>
       {activeTab === 0 ? <ExerciseAboutTab exercise={exercise} />
-        : activeTab === 1 ? <ExerciseHistoryTab history={history} isLoading={historyLoading} />
-          : <></>
+        : activeTab === 1 ? (
+          <Suspense fallback={<LoadingIcon label='Histories' />}>
+            <ExerciseHistoryTab history={history} />
+          </Suspense>)
+          : <Suspense fallback={<LoadingIcon label='Histories' />}>
+            <ExerciseChartTab history={history} />
+          </Suspense>
       }
     </Box>
   );

@@ -7,6 +7,8 @@ import ActiveSetInputsMobile from "./components/ActiveSetInputsMobile";
 import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
 import ActiveExerciseHistoryList from "./components/ActiveExerciseHistoryList";
 import ActiveSetInputs from "./components/ActiveSetInputs";
+import { Suspense } from "react";
+import LoadingIcon from "../layout/LoadingIcon";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -32,7 +34,9 @@ export default function ActiveWorkoutGroup() {
         <Stack spacing={1} sx={{ px: 1 }}>
           <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
           <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />
-          <ActiveExerciseHistoryList exerciseId={exerciseGroup?.exerciseId} />
+          <Suspense fallback={<LoadingIcon />}>
+            <ActiveExerciseHistoryList exerciseId={exerciseGroup?.exerciseId} />
+          </Suspense>
           {mobileScreen
             ? <ActiveSetInputsMobile
               exerciseGroup={exerciseGroup}

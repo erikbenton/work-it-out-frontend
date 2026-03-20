@@ -1,13 +1,11 @@
 import { ListItemText, Stack, Typography } from "@mui/material";
 import type ExerciseHistory from "../../../types/exerciseHistory";
 import { checkPluralization } from "../../../utils/formatters";
+import { getDateTime, type DateTime } from "../../../utils/dateTime";
 
 type Props = {
   group: ExerciseHistory
 }
-
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "June",
-  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 function daysSince(year: number, month: number, day: number): number {
   const pastDate = new Date(year, month - 1, day);
@@ -17,16 +15,17 @@ function daysSince(year: number, month: number, day: number): number {
   return diffInDays;
 }
 
-function formatDate(group: ExerciseHistory) {
-  const base = `${group.day} ${months[group.month - 1]}`;
+function formatDate(dateTime: DateTime) {
+  const base = `${dateTime.dayOfMonth} ${dateTime.monthNameShort}`;
   const today = new Date();
-  return group.year === today.getFullYear()
+  return dateTime.year === today.getFullYear()
     ? base
-    : base + ` ${group.year}`;
+    : base + ` ${dateTime.year}`;
 }
 
 export default function ExerciseHistoryItemTitle({ group }: Props) {
-  const daysDiff = daysSince(group.year, group.month, group.day);
+  const dateTime = getDateTime(group.createdAt)
+  const daysDiff = daysSince(dateTime.year, dateTime.month, dateTime.dayOfMonth);
 
   return (
     <ListItemText id={`list-label-${group.completedExerciseGroupId}`} className='px-3' primary={
@@ -38,7 +37,7 @@ export default function ExerciseHistoryItemTitle({ group }: Props) {
           alignItems: "center",
         }}
       >
-        <Typography variant='body1' className='grow'>{formatDate(group)}</Typography>
+        <Typography variant='body1' className='grow'>{formatDate(dateTime)}</Typography>
         <Typography variant='body2'>{daysDiff} {checkPluralization('day', daysDiff)} ago</Typography>
       </Stack>
     } />
