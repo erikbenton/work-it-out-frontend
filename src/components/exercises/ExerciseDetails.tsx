@@ -7,7 +7,6 @@ import ExerciseAboutTab from './components/ExerciseAboutTab';
 import ExerciseHistoryTab from './components/ExerciseHistoryTab';
 import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import { useExercises } from '../../hooks/useExercises';
-import { useExerciseHistory } from '../../hooks/useExerciseHistory';
 import LoadingIcon from '../layout/LoadingIcon';
 import ExerciseStats from './components/ExerciseStats';
 
@@ -15,7 +14,6 @@ export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
-  const { data: history } = useExerciseHistory(id);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
@@ -44,10 +42,10 @@ export default function ExerciseDetails() {
       {activeTab === 0 ? <ExerciseAboutTab exercise={exercise} />
         : activeTab === 1 ? (
           <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseHistoryTab history={history} />
+            <ExerciseHistoryTab exerciseId={id} />
           </Suspense>)
           : <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseStats history={history} />
+            <ExerciseStats exerciseId={id} />
           </Suspense>
       }
     </Box>

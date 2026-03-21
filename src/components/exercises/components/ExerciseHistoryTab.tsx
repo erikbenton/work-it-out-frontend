@@ -3,13 +3,14 @@ import Box from '@mui/material/Box';
 import ExerciseHistoryItemSet from './ExerciseHistoryItemSet';
 import ExerciseHistoryItemTitle from './ExerciseHistoryItemTitle';
 import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
-import type ExerciseHistory from '../../../types/exerciseHistory';
+import { useExerciseHistory } from '../../../hooks/useExerciseHistory';
 
 type Props = {
-  history: ExerciseHistory[]
+  exerciseId: number
 }
 
-export default function ExerciseHistoryTab({ history }: Props) {
+export default function ExerciseHistoryTab({ exerciseId }: Props) {
+  const { data: history } = useExerciseHistory(exerciseId);
 
   return (
     <List sx={{ width: '100%', bgcolor: 'background.paper' }}>

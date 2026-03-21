@@ -1,15 +1,17 @@
 import Stack from "@mui/material/Stack";
-import type ExerciseHistory from "../../../types/exerciseHistory";
 import ExerciseChartTab from "./ExerciseChartsTab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ExerciseStatsBar from "./ExerciseStatsBar";
+import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 
 type Props = {
-  history: ExerciseHistory[]
+  exerciseId: number
 }
 
-export default function ExerciseStats({ history }: Props) {
+export default function ExerciseStats({ exerciseId }: Props) {
+  const { data: history } = useExerciseHistory(exerciseId);
+
   if (history.length === 0) {
     return (
       <Box>
