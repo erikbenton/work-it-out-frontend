@@ -79,6 +79,11 @@ export default function CompletedWorkoutList() {
                   </ListItemButton>
                 </ListItem>
               ))}
+              <ListItem></ListItem>
+              <ListItem></ListItem>
+              <ListItem></ListItem>
+              <ListItem></ListItem>
+              <ListItem></ListItem>
             </ul>
           </li>
         ))}

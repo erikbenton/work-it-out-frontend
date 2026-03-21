@@ -31,3 +31,7 @@ export function getShortDate(date?: string): string {
       { year: "2-digit", month: "2-digit", day: "2-digit" }
     );
 }
+
+export function chartDate(date: Date): string {
+  return date.toLocaleString('en-US', { month: '2-digit', day: '2-digit' });
+}

@@ -2,6 +2,11 @@ import Stack from "@mui/material/Stack";
 import type ExerciseHistory from "../../../types/exerciseHistory";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { getDateTime, type DateTime } from "../../../utils/dateTime";
+import { chartDate } from "../../../utils/formatters";
+import { deepPurple, indigo, red } from "@mui/material/colors";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { calculateMaxEstimatedPersonalRecord, calculateMaxWeight, calculateVolume } from "../../../utils/charts";
 
 type Props = {
   history: ExerciseHistory[]
@@ -20,16 +25,6 @@ function isNewerOrSameDay(check: DateTime, target: DateTime): boolean {
   return (check.year >= target.year &&
     check.month >= target.month &&
     check.dayOfMonth >= target.dayOfMonth);
-}
-
-const calculateMaxWeight = (history: ExerciseHistory): number => {
-  return history.completedExerciseSets
-    .reduce((acc, curr) => (curr.weight ?? 0) > acc ? (curr.weight ?? 0) : acc, 0)
-}
-
-const calculateMaxReps = (history: ExerciseHistory): number => {
-  return history.completedExerciseSets
-    .reduce((acc, curr) => curr.reps > acc ? curr.reps : acc, 0)
 }
 
 export default function ExerciseChartTab({ history }: Props) {
@@ -65,27 +60,66 @@ export default function ExerciseChartTab({ history }: Props) {
     historyPoints.shift();
   }
 
-  
+
   const dates = historyPoints.map(({ xValue }) => new Date(xValue));
   const maxWeight = historyPoints.map(({ yValue }) => yValue ? calculateMaxWeight(yValue) : null);
-  const maxReps = historyPoints.map(({ yValue }) => yValue ? calculateMaxReps(yValue) : null);
+  const maxPersonalRecord = historyPoints.map(({ yValue }) => yValue ? calculateMaxEstimatedPersonalRecord(yValue) : null);
+  const volume = historyPoints.map(({ yValue }) => yValue ? calculateVolume(yValue) : null);
+
+  if (dates.length === 0) {
+    return (<Box><Typography>No data was found for this exercise in the time period.</Typography></Box>)
+  }
+
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ pb: 5 }}>
       <LineChart
-        series={[{ data: maxWeight, connectNulls: true }]}
+        series={[{
+          data: maxWeight,
+          color: indigo[700],
+          area: true,
+          baseline: 'min',
+          label: 'Max Weight (lbs)',
+          valueFormatter: (val) => val ? `${val} lbs` : null,
+          connectNulls: true
+        }]}
         xAxis={[{
           data: dates,
           scaleType: 'time',
-          valueFormatter: (val) => val.toLocaleString('en-US', { month: '2-digit', day: '2-digit' }),
+          valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
       />
       <LineChart
-        series={[{ data: maxReps, connectNulls: true }]}
+        series={[{
+          data: maxPersonalRecord,
+          color: red[700],
+          area: true,
+          baseline: 'min',
+          label: 'Max Est. PR (lbs)',
+          valueFormatter: (val) => val ? `${val} lbs` : null,
+          connectNulls: true
+        }]}
         xAxis={[{
           data: dates,
           scaleType: 'time',
-          valueFormatter: (val) => val.toLocaleString('en-US', { month: '2-digit', day: '2-digit' }),
+          valueFormatter: (val) => chartDate(val),
+          tickNumber: dates.length
+        }]}
+      />
+      <LineChart
+        series={[{
+          data: volume,
+          color: deepPurple[700],
+          area: true,
+          baseline: 'min',
+          label: 'Volume (lbs)',
+          valueFormatter: (val) => val ? `${val} lbs` : null,
+          connectNulls: true
+        }]}
+        xAxis={[{
+          data: dates,
+          scaleType: 'time',
+          valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
       />

@@ -9,7 +9,7 @@ import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import { useExercises } from '../../hooks/useExercises';
 import { useExerciseHistory } from '../../hooks/useExerciseHistory';
 import LoadingIcon from '../layout/LoadingIcon';
-import ExerciseChartTab from './components/ExerciseChartsTab';
+import ExerciseStats from './components/ExerciseStats';
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
@@ -39,7 +39,7 @@ export default function ExerciseDetails() {
       >
         <Tab label="About" />
         <Tab label="History" />
-        <Tab label="Charts" />
+        <Tab label="Stats" />
       </Tabs>
       {activeTab === 0 ? <ExerciseAboutTab exercise={exercise} />
         : activeTab === 1 ? (
@@ -47,7 +47,7 @@ export default function ExerciseDetails() {
             <ExerciseHistoryTab history={history} />
           </Suspense>)
           : <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseChartTab history={history} />
+            <ExerciseStats history={history} />
           </Suspense>
       }
     </Box>
