@@ -22,9 +22,7 @@ const getKey = (dateTime: DateTime): string => {
 }
 
 function isNewerOrSameDay(check: DateTime, target: DateTime): boolean {
-  return (check.year >= target.year &&
-    check.month >= target.month &&
-    check.dayOfMonth >= target.dayOfMonth);
+  return check.date.getTime() >= target.date.getTime();
 }
 
 export default function ExerciseChartTab({ history }: Props) {
