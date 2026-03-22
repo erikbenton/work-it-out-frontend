@@ -50,25 +50,33 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Link to={`/workouts/${workout.id}`}>
-      <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
-        <CardHeader
-          avatar={
+    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+      <CardHeader
+        avatar={
+          <Link to={`/workouts/${workout.id}`}>
             <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
               {maxMuscle.name[0].toUpperCase()}
             </Avatar>
-          }
-          title={workout.name}
-          subheader={workout.description ?? exerciseNames}
-          action={
-            <VerticalIconMenu
-              buttonId={workout.name.split(' ').join('-').toLowerCase() + "-options"}
-              menuItems={menuItems}
-            />
-          }
-          slotProps={{ title: { variant: 'h6' } }}
-        />
-      </Card>
-    </Link>
+          </Link>
+        }
+        title={
+          <Link to={`/workouts/${workout.id}`} className="inline-block w-full">
+            {workout.name}
+          </Link>
+        }
+        subheader={
+          <Link to={`/workouts/${workout.id}`} className="inline-block w-full">
+            {workout.description ?? exerciseNames}
+          </Link>
+        }
+        action={
+          <VerticalIconMenu
+            buttonId={workout.name.split(' ').join('-').toLowerCase() + "-options"}
+            menuItems={menuItems}
+          />
+        }
+        slotProps={{ title: { variant: 'h6' } }}
+      />
+    </Card>
   );
 }
