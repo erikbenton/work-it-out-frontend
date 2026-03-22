@@ -6,8 +6,8 @@ export default function ExerciseList() {
   const { exercises } = useExercises();
 
   return (
-    <Box className="w-full md:w-2/3 mt-3">
-      <Typography variant="h4" component="h2">
+    <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
+      <Typography variant="h4" component="h2" sx={{ px: 1 }}>
         Exercises
       </Typography>
       <ExerciseSubheaderList exercises={exercises} />

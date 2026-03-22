@@ -6,7 +6,7 @@ import WorkoutListCard from './components/WorkoutListCard';
 import { useWorkouts } from '../../hooks/useWorkouts';
 
 const WorkoutList = () => {
-const { workouts } = useWorkouts();
+  const { workouts } = useWorkouts();
 
   const navigate = useNavigate();
 
@@ -15,20 +15,21 @@ const { workouts } = useWorkouts();
   };
 
   return (
-    <Box className="w-full md:w-2/3 px-3">
-      <Typography variant="h4" component="h2">
+    <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
+      <Typography variant="h4" component="h2" sx={{ mb: 1 }}>
         Workouts
       </Typography>
       <Stack spacing={1}>
-        {workouts?.map((workout) => (
+        {workouts.map((workout) => (
           <WorkoutListCard key={workout.id} workout={workout} />
         ))}
       </Stack>
       <Box className="flex flex-col items-center">
         <Button
+          fullWidth
           aria-label="start workout"
           className="mt-3"
-          sx={{ textTransform: "none", borderRadius: 5  }}
+          sx={{ textTransform: "none", borderRadius: 5 }}
           variant="contained"
           onClick={navigateToNewWorkoutForm}
         >

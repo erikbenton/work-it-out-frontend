@@ -40,7 +40,7 @@ export default function CompletedWorkoutList() {
 
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
-      <Typography variant="h4" component="h2">
+      <Typography variant="h4" component="h2" sx={{ px: 1 }}>
         History
       </Typography>
       <List
@@ -50,7 +50,7 @@ export default function CompletedWorkoutList() {
           bgcolor: 'background.paper',
           position: 'relative',
           overflow: 'auto',
-          maxHeight: '87vh',
+          maxHeight: '86vh',
           '& ul': { padding: 0 },
           mt: 1
         }}
@@ -60,7 +60,7 @@ export default function CompletedWorkoutList() {
           <li key={`section-${monthYear}`}>
             <ul>
               <ListSubheader disableGutters>
-                <Stack direction='row' sx={{ alignItems: 'center' }}>
+                <Stack direction='row' sx={{ alignItems: 'center', px: 1 }}>
                   <Typography variant="h6" sx={{ flexGrow: 1 }}>
                     {monthYear.split('-')[0]}
                   </Typography>

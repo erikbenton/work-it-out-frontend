@@ -1,11 +1,11 @@
 import { Box, Button, Stack, Typography } from "@mui/material";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
-import WorkoutList from "../workouts/WorkoutList";
 import ActiveWorkoutGroupCard from "./components/ActiveWorkoutGroupCard";
 import ElapsedTimer from "./components/ElapsedTimer";
 import { useNavigate } from "react-router-dom";
 import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 import { devConsole } from "../../utils/debugLogger";
+import ActiveWorkoutsList from "./components/ActiveWorkoutsList";
 
 export default function ActiveWorkoutSummary() {
   const { workout, dispatch, complete } = useActiveWorkout();
@@ -29,10 +29,10 @@ export default function ActiveWorkoutSummary() {
     }
   }
 
-  if (workout === null) { return <WorkoutList /> }
+  if (workout === null) { return <ActiveWorkoutsList /> }
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 2 }} role='form'>
+    <Box className="w-full md:w-2/3" sx={{ mt: 1 }} role='form'>
       <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
         <Stack direction='row'
           sx={{
@@ -42,7 +42,7 @@ export default function ActiveWorkoutSummary() {
           }}
         >
           <Typography sx={{ pl: 1 }} variant="h5" component="h2">
-            {workout?.name}
+            {workout.name}
           </Typography>
           {workout &&
             <Box sx={{ mr: 1 }}>
@@ -54,7 +54,7 @@ export default function ActiveWorkoutSummary() {
           <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
         ))}
         {complete && <Button sx={{ borderRadius: 5 }} variant="contained" onClick={handleFinishWorkout}>Finish Workout</Button>}
-        <Button sx={{ borderRadius: 5 }} variant="outlined" onClick={handleClearWorkout}>Clear Workout</Button>
+        <Button sx={{ textTransform: 'none', borderRadius: 5 }} variant="outlined" onClick={handleClearWorkout}>Clear Workout</Button>
       </Stack>
     </Box>
   );

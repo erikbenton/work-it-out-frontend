@@ -1,13 +1,10 @@
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
-import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import { Link, useNavigate } from "react-router-dom";
 import type Workout from "../../../types/workout";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
-import { Typography } from "@mui/material";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
 import { getMaxMuscleGroup } from "../../../utils/muscles";
@@ -22,6 +19,9 @@ export default function WorkoutListCard({ workout }: Props) {
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
   const maxMuscle = getMaxMuscleGroup(workout.exerciseGroups, exercises);
+  const exerciseNames = workout.exerciseGroups
+    .map(group => exercises.getExerciseById(group.exerciseId).name)
+    .join(', ');
 
   const menuItems = [
     {
@@ -29,6 +29,16 @@ export default function WorkoutListCard({ workout }: Props) {
       handleClick: () => {
         services.clone(workout);
       },
+    },
+    {
+      label: 'Start Workout',
+      handleClick: () => {
+        dispatch({
+          type: 'initializeWorkout',
+          payload: { initialWorkout: workout }
+        });
+        navigate(`/activeWorkout`);
+      }
     },
     {
       label: "Delete",
@@ -40,43 +50,25 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
-      <CardHeader
-        avatar={
-          <Link to={`/workouts/${workout.id}`}>
+    <Link to={`/workouts/${workout.id}`}>
+      <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+        <CardHeader
+          avatar={
             <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
               {maxMuscle.name[0].toUpperCase()}
             </Avatar>
-          </Link>
-        }
-        title={
-          <Link to={`/workouts/${workout.id}`}>
-            <Typography>
-              {workout.name}
-            </Typography>
-          </Link>
-        }
-        subheader={workout.description ?? ""}
-        action={
-          <VerticalIconMenu
-            buttonId={workout.name.split(' ').join('-').toLowerCase() + "-options"}
-            menuItems={menuItems}
-          />
-        }
-      />
-      <CardActions disableSpacing className="flex flex-col items-center">
-        <Button
-          aria-label="start workout"
-          sx={{ textTransform: "none" }}
-          variant="text"
-          onClick={() => {
-            dispatch({ type: 'initializeWorkout', payload: { initialWorkout: workout } });
-            navigate('/activeWorkout');
-          }}
-        >
-          Start Workout
-        </Button>
-      </CardActions>
-    </Card>
+          }
+          title={workout.name}
+          subheader={workout.description ?? exerciseNames}
+          action={
+            <VerticalIconMenu
+              buttonId={workout.name.split(' ').join('-').toLowerCase() + "-options"}
+              menuItems={menuItems}
+            />
+          }
+          slotProps={{ title: { variant: 'h6' } }}
+        />
+      </Card>
+    </Link>
   );
 }
