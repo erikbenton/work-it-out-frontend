@@ -11,7 +11,9 @@ import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 
 type Props = {
-  set: CompletedExerciseSet
+  set: CompletedExerciseSet,
+  onDoubleClick?: (completedSet: CompletedExerciseSet) => void,
+  isCurrent?: boolean
 }
 
 function displaySetText(set: CompletedExerciseSet) {
@@ -37,15 +39,21 @@ const badgeStyle = (setTag?: SetTagOption) => {
   };
 }
 
-export default function ExerciseHistoryItemSet({ set }: Props) {
+export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }: Props) {
   const { setTags } = useSetTags();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
+
+  const handleDoubleClick = () => {
+    if (onDoubleClick) {
+      onDoubleClick(set);
+    }
+  }
 
   return (
     <ListItem
       disablePadding
     >
-      <ListItemButton>
+      <ListItemButton onDoubleClick={handleDoubleClick}>
         <ListItemAvatar>
           <Tooltip title={setTag?.name} placement="right">
             <Badge
@@ -54,8 +62,8 @@ export default function ExerciseHistoryItemSet({ set }: Props) {
             >
               <Avatar sx={{
                 ...generalAvatarStyle,
-                bgcolor: '#E0E7F2',
-                color: 'black'
+                bgcolor: isCurrent ? 'primary.main' : '#E0E7F2',
+                color: isCurrent ? 'white' : 'black'
               }}>
                 {set.sort + 1}
               </Avatar>

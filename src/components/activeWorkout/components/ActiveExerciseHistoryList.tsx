@@ -8,29 +8,42 @@ import Divider from "@mui/material/Divider";
 import React from "react";
 import Box from "@mui/material/Box";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
+import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 
 type Props = {
-  exerciseId: number
+  exerciseId: number,
+  onDoubleClick: (completedSet: CompletedExerciseSet) => void,
+  currentIndex?: number
 }
 
-export default function ActiveExerciseHistoryList({ exerciseId }: Props) {
+export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
   const { data: history } = useExerciseHistory(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
       {history?.map(group => (
-        <Card sx={{ bgcolor: '#F5FBFF', py: 1, borderRadius: 4 }} key={`group-history-${group.completedExerciseGroupId}`}>
+        <Card
+          sx={{ bgcolor: '#F5FBFF', py: 1, borderRadius: 4 }}
+          key={`group-history-${group.completedExerciseGroupId}`}
+        >
           <CardContent className="pb-0" sx={{ p: 0 }}>
             <ExerciseHistoryItemTitle group={group} />
             <Divider sx={{ opacity: 0.3 }} />
-            {group.completedExerciseSets.map(set => (
+            {group.completedExerciseSets.map((set, index) => (
               <React.Fragment key={`set-history-${set.id}`}>
-                <ExerciseHistoryItemSet set={set} />
+                <ExerciseHistoryItemSet
+                  set={set}
+                  onDoubleClick={onDoubleClick}
+                  isCurrent={currentIndex === index}
+                />
                 <Divider sx={{ opacity: 0.3 }} />
               </React.Fragment>
             ))}
             <Box sx={{ pt: 1 }}>
-              <ExerciseHistoryItemStats id={group.completedExerciseGroupId} completedSets={group.completedExerciseSets} />
+              <ExerciseHistoryItemStats
+                id={group.completedExerciseGroupId}
+                completedSets={group.completedExerciseSets}
+              />
             </Box>
           </CardContent>
         </Card>

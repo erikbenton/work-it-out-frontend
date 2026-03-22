@@ -3,7 +3,6 @@ import Dialog from '@mui/material/Dialog';
 import type ActiveExerciseGroup from '../../../types/activeExerciseGroup';
 import type ActiveExerciseSet from '../../../types/activeExerciseSet';
 import useActiveWorkout from '../../../hooks/useActiveWorkout';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import Box from '@mui/material/Box';
@@ -13,7 +12,8 @@ import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
-  set?: ActiveExerciseSet
+  values?: ActiveExerciseSet,
+  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>
 }
 
 export interface SimpleDialogProps {
@@ -22,12 +22,11 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-export default function ActiveSetInputs({ exerciseGroup, set }: Props) {
+export default function ActiveSetInputs({ exerciseGroup, values, setValues }: Props) {
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
-  const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
   const navigate = useNavigate();
-  const allSetsCompleted = (!set || !values);
+  const allSetsCompleted = !values;
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
