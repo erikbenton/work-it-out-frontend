@@ -12,7 +12,7 @@ export default function CompletedWorkoutDetails() {
   const workout = services.getCompletedWorkoutById(id);
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
+    <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
       <Typography variant="h5" component="h2">
         {workout.name}
       </Typography>

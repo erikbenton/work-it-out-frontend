@@ -7,7 +7,7 @@ export const calculateMaxWeight = (history: ExerciseHistory): number => {
     .reduce((acc, curr) => (curr.weight ?? 0) > acc ? (curr.weight ?? 0) : acc, 0);
 }
 
-export const calculateMaxEstimatedPersonalRecord = (history: ExerciseHistory): number => {
+export const calculateEstimatedOneRepMax = (history: ExerciseHistory): number => {
   return history.completedExerciseSets.reduce(
     (max, curr) => {
       const weight = (curr.weight ?? 0);

@@ -5,7 +5,7 @@ import { chartDate } from "../../../utils/formatters";
 import { deepPurple, indigo, red } from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { calculateMaxEstimatedPersonalRecord, calculateMaxWeight, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
+import { calculateEstimatedOneRepMax, calculateMaxWeight, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
 import type ChartPoint from "../../../types/chartPoint";
 
 type Props = {
@@ -18,7 +18,7 @@ export default function ExerciseCharts({ history }: Props) {
 
   const dates = historyPoints.map(({ date }) => new Date(date));
   const maxWeight = historyPoints.map(({ value }) => value ? calculateMaxWeight(value) : null);
-  const maxPersonalRecord = historyPoints.map(({ value }) => value ? calculateMaxEstimatedPersonalRecord(value) : null);
+  const oneRepMax = historyPoints.map(({ value }) => value ? calculateEstimatedOneRepMax(value) : null);
   const volume = historyPoints.map(({ value }) => value ? calculateVolume(value) : null);
 
   if (dates.length === 0) {
@@ -46,11 +46,11 @@ export default function ExerciseCharts({ history }: Props) {
       />
       <LineChart
         series={[{
-          data: maxPersonalRecord,
+          data: oneRepMax,
           color: red[700],
           area: true,
           baseline: 'min',
-          label: 'Max Est. PR (lbs)',
+          label: 'Est. 1RM (lbs)',
           valueFormatter: (val) => val ? `${Math.round(val)} lbs` : null,
           connectNulls: true
         }]}

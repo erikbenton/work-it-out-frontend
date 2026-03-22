@@ -39,9 +39,10 @@ export default function ExerciseDetailsTitle({ exercise }: Props) {
       sx={{
         justifyContent: "space-between",
         alignItems: "center",
+        px: 1
       }}
     >
-      <Typography variant="h4" component="h2">
+      <Typography variant="h5" component="h2">
         {exercise.name}
       </Typography>
       <VerticalIconMenu
