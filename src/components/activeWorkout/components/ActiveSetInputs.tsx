@@ -13,7 +13,9 @@ import { devConsole } from '../../../utils/debugLogger';
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
   values?: ActiveExerciseSet,
-  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>
+  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
+  setKey: string,
+  allSetsCompleted: boolean
 }
 
 export interface SimpleDialogProps {
@@ -22,21 +24,20 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-export default function ActiveSetInputs({ exerciseGroup, values, setValues }: Props) {
+export default function ActiveSetInputs({ exerciseGroup, values, setKey, setValues, allSetsCompleted }: Props) {
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
-  const allSetsCompleted = !values;
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!allSetsCompleted) {
+    if (!allSetsCompleted && values) {
       dispatch({
         type: 'updateSet',
         payload: {
           group: exerciseGroup,
-          set: { ...values, completed: true }
+          set: { ...values, key: setKey, completed: true }
         }
       });
     }
@@ -82,17 +83,23 @@ export default function ActiveSetInputs({ exerciseGroup, values, setValues }: Pr
   }
 
   return (
-    <Dialog fullWidth maxWidth='xs' onClose={toggleDialog(false)} open={editing}>
+    <Dialog
+      fullWidth
+      maxWidth='xs'
+      onClose={toggleDialog(false)}
+      slotProps={{ paper: { sx: { borderRadius: 5, p: 2, bgcolor: '#F5FBFF' } } }}
+      open={editing}
+    >
       <Box sx={{ overflow: 'auto', bgcolor: '#F5FBFF', p: 2 }} id="exercise-set-input-form">
         {workoutCompleted
           ? <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', minHeight: 64 }}>
-            <Button sx={{ width: '90%' }} variant='contained' onClick={handleFinishWorkout}>
+            <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
               Finish Workout
             </Button>
           </Box>
           : allSetsCompleted
             ? <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', minHeight: 64 }}>
-              <Button sx={{ width: '70%' }} variant='contained' onClick={handleNextExercise}>
+              <Button sx={{ width: '70%', borderRadius: 5 }} variant='contained' onClick={handleNextExercise}>
                 Next Exercise
               </Button>
             </Box>
@@ -107,7 +114,7 @@ export default function ActiveSetInputs({ exerciseGroup, values, setValues }: Pr
                     type="number"
                     fullWidth
                     variant="filled"
-                    value={values.weight ? values.weight : ""}
+                    value={values?.weight ? values.weight : ""}
                     onChange={handleWeightChange}
                   />
                   <TextField
@@ -117,13 +124,13 @@ export default function ActiveSetInputs({ exerciseGroup, values, setValues }: Pr
                     type="number"
                     fullWidth
                     variant="filled"
-                    value={values.reps ? values.reps : ""}
+                    value={values?.reps ? values.reps : ""}
                     onChange={handleRepsChange}
                   />
                 </Stack>
                 <Stack direction='row' spacing={1} sx={{ width: '100%' }}>
-                  <Button fullWidth variant='outlined'>Comment</Button>
-                  <Button type='submit' fullWidth variant='contained'>Complete</Button>
+                  <Button fullWidth sx={{ borderRadius: 5 }} variant='outlined'>Comment</Button>
+                  <Button type='submit' fullWidth sx={{ borderRadius: 5 }} variant='contained'>Complete</Button>
                 </Stack>
               </Stack>
             </Stack>

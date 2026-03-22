@@ -3,12 +3,15 @@ import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import React from "react";
 import { ActiveGroupSet, CompletedActiveSet, CurrentActiveSet } from "./ActiveGroupSetItems";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
+import type ActiveExerciseSet from "../../../types/activeExerciseSet";
+import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 
 type Props = {
-  exerciseGroup: ActiveExerciseGroup
+  exerciseGroup: ActiveExerciseGroup,
+  onDoubleClick: (completedSet: CompletedExerciseSet | ActiveExerciseSet) => void,
 }
 
-export default function ActiveGroupSetsCard({ exerciseGroup }: Props) {
+export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick }: Props) {
   const { dispatch, setEditing } = useActiveWorkout();
   const currentSet = exerciseGroup.exerciseSets.findIndex(s => !s.completed);
 
@@ -33,7 +36,7 @@ export default function ActiveGroupSetsCard({ exerciseGroup }: Props) {
             // remove the set using Collapse's onExited
             <React.Fragment key={s.key}>
               {s.completed
-                ? <CompletedActiveSet index={index} set={s} exerciseGroup={exerciseGroup} />
+                ? <CompletedActiveSet index={index} set={s} exerciseGroup={exerciseGroup} onDoubleClick={onDoubleClick} />
                 : index === currentSet
                   ? <CurrentActiveSet index={index} set={s} exerciseGroup={exerciseGroup} />
                   : <ActiveGroupSet index={index} set={s} exerciseGroup={exerciseGroup} />

@@ -5,7 +5,6 @@ import { grey } from '@mui/material/colors';
 import Box from '@mui/material/Box';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useActiveWorkout from '../../../hooks/useActiveWorkout';
-import { useState } from 'react';
 import type ActiveExerciseSet from '../../../types/activeExerciseSet';
 import type ActiveExerciseGroup from '../../../types/activeExerciseGroup';
 import Stack from '@mui/material/Stack';
@@ -17,7 +16,10 @@ import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
-  set?: ActiveExerciseSet
+  values?: ActiveExerciseSet,
+  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
+  setKey: string,
+  allSetsCompleted: boolean
 }
 
 const drawerBleeding = 45;
@@ -52,22 +54,20 @@ const Puller = styled('div')(({ theme }) => ({
   }),
 }));
 
-export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
+export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, setValues, allSetsCompleted }: Props) {
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
-  const [values, setValues] = useState<ActiveExerciseSet | undefined>(set);
   const navigate = useNavigate();
-  const allSetsCompleted = (!set || !values);
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!allSetsCompleted) {
+    if (!allSetsCompleted && values) {
       dispatch({
         type: 'updateSet',
         payload: {
           group: exerciseGroup,
-          set: { ...values, completed: true }
+          set: { ...values, key: setKey, completed: true }
         }
       });
     }
@@ -175,7 +175,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
                     type="number"
                     fullWidth
                     variant="filled"
-                    value={values.weight ? values.weight : ""}
+                    value={values?.weight ? values.weight : ""}
                     onChange={handleWeightChange}
                   />
                   <TextField
@@ -185,7 +185,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, set }: Props) {
                     type="number"
                     fullWidth
                     variant="filled"
-                    value={values.reps ? values.reps : ""}
+                    value={values?.reps ? values.reps : ""}
                     onChange={handleRepsChange}
                   />
                 </Stack>

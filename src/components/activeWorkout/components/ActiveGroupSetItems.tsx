@@ -10,12 +10,18 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Badge from "@mui/material/Badge";
 import type SetTagOption from "../../../types/setTagOption";
 import { Tooltip } from "@mui/material";
+import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
+import { devConsole } from "../../../utils/debugLogger";
 
 type Props = {
   index: number,
   set: ActiveExerciseSet,
   exerciseGroup: ActiveExerciseGroup
 };
+
+interface CompletedProps extends Props {
+  onDoubleClick: (completedSet: CompletedExerciseSet | ActiveExerciseSet) => void,
+}
 
 const generalAvatarStyle = {
   width: '30px',
@@ -36,7 +42,7 @@ const badgeStyle = (setTag?: SetTagOption) => {
   };
 }
 
-export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
+export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
 
@@ -60,6 +66,11 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
     },
   ];
 
+  const handleDoubleClick = () => {
+    devConsole('here')
+    onDoubleClick(set)
+  }
+
   const weight = set.weight ? `${set.weight} lbs x ` : '';
   const reps = `${set.reps ?? 0} rep${set.reps !== 1 ? 's' : ''}`
 
@@ -77,6 +88,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup }: Props) {
       <ListItemButton
         disableGutters
         sx={{ px: 1, color: 'gray' }}
+        onDoubleClick={handleDoubleClick}
       >
         <ListItemAvatar>
           <Tooltip title={setTag?.name} placement="right">

@@ -18,9 +18,10 @@ export default function ActiveWorkoutGroup() {
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
-  const currentIndex = exerciseGroup?.exerciseSets.findIndex(s => !s.completed);
-  const currentSet = currentIndex ? exerciseGroup?.exerciseSets[currentIndex] : undefined;
+  const currentIndex = exerciseGroup?.exerciseSets.findIndex(s => !s.completed) ?? -1;
+  const currentSet = currentIndex > -1 ? exerciseGroup?.exerciseSets[currentIndex] : undefined;
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(currentSet);
+  const allSetsCompleted = currentIndex === -1;
 
   if (!workout) {
     return (<Typography>No workout selected</Typography>);
@@ -30,13 +31,14 @@ export default function ActiveWorkoutGroup() {
     throw new Error('Workout does not contain exercise group with key: ' + key);
   }
 
-  const copyCompletedSet = (completedSet: CompletedExerciseSet) => {
+  const copyCompletedSet = (completedSet: CompletedExerciseSet | ActiveExerciseSet) => {
     if (values) {
+      const { reps, weight, setTagId } = completedSet;
       const newSet: ActiveExerciseSet = {
         ...values,
-        reps: completedSet.reps,
-        weight: completedSet.weight,
-        setTagId: completedSet.setTagId
+        reps,
+        weight,
+        setTagId
       }
       setValues(newSet);
     }
@@ -49,7 +51,10 @@ export default function ActiveWorkoutGroup() {
       <Box mb='30vh'>
         <Stack spacing={1} sx={{ px: 1 }}>
           <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
-          <ActiveGroupSetsCard exerciseGroup={exerciseGroup} />
+          <ActiveGroupSetsCard
+            exerciseGroup={exerciseGroup}
+            onDoubleClick={copyCompletedSet}
+          />
           <Suspense fallback={<LoadingIcon />}>
             <ActiveExerciseHistoryList
               exerciseId={exerciseGroup.exerciseId}
@@ -60,13 +65,18 @@ export default function ActiveWorkoutGroup() {
           {mobileScreen
             ? <ActiveSetInputsMobile
               exerciseGroup={exerciseGroup}
-              set={currentSet}
+              setKey={currentSet?.key ?? ''}
+              values={values}
+              setValues={setValues}
+              allSetsCompleted={allSetsCompleted}
               key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
             />
             : <ActiveSetInputs
               exerciseGroup={exerciseGroup}
+              setKey={currentSet?.key ?? ''}
               values={values}
               setValues={setValues}
+              allSetsCompleted={allSetsCompleted}
               key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
             />
           }
