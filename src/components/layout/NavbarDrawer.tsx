@@ -49,7 +49,14 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
               width: '95%'
             }}
           >
-            <ListItemButton onClick={() => navigate(page.url)}>
+            <ListItemButton
+              onClick={() => navigate(page.url)}
+              sx={{
+                borderBottomRightRadius: '20px',
+                borderTopRightRadius: '20px',
+                width: '95%'
+              }}
+            >
               <ListItemIcon>
                 {page.icon(page.active)}
               </ListItemIcon>
