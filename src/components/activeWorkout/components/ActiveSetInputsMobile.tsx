@@ -8,11 +8,13 @@ import useActiveWorkout from '../../../hooks/useActiveWorkout';
 import type ActiveExerciseSet from '../../../types/activeExerciseSet';
 import type ActiveExerciseGroup from '../../../types/activeExerciseGroup';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
-import { Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import { devConsole } from '../../../utils/debugLogger';
+import { useState } from 'react';
+import SetTagsInputMobile from './SetTagsInputMobile';
+import Button from '@mui/material/Button';
+import LiftingInputsMobile from './LiftingInputsMobile';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -55,6 +57,7 @@ const Puller = styled('div')(({ theme }) => ({
 }));
 
 export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, setValues, allSetsCompleted }: Props) {
+  const [expanded, setExpanded] = useState(false);
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
@@ -74,20 +77,6 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
 
     toggleDrawer(false);
   };
-
-  const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const weight = Number(e.target.value);
-    if (!values || weight < 0) return;
-    const newSet: ActiveExerciseSet = { ...values, weight }
-    setValues(newSet);
-  }
-
-  const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const reps = Number(e.target.value);
-    if (!values || reps < 0) return;
-    const newSet = { ...values, reps }
-    setValues(newSet);
-  }
 
   const handleNextExercise = () => {
     const nextGroup = workout?.exerciseGroups.find(g => (
@@ -114,12 +103,14 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
     }
   }
 
+  const expandedOffset = expanded ? '5%' : '0px';
+
   return (
     <Root className='mobile-inputs'>
       <Global
         styles={{
           '.mobile-inputs.MuiDrawer-root > .MuiPaper-root': {
-            height: `calc(${drawerHeight} - ${drawerBleeding}px)`,
+            height: `calc(${drawerHeight} + ${expandedOffset} - ${drawerBleeding}px)`,
             overflow: 'visible',
             backgroundColor: '#F5FBFF'
           },
@@ -166,33 +157,12 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
                 </Button>
               </Box>
               : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
-                <Stack direction='row' spacing={2} sx={{ px: 2 }}>
-                  <TextField
-                    autoFocus
-                    id="weight"
-                    name="weight"
-                    label="Weight (lbs)"
-                    type="number"
-                    fullWidth
-                    variant="filled"
-                    value={values?.weight ? values.weight : ""}
-                    onChange={handleWeightChange}
-                  />
-                  <TextField
-                    id="reps"
-                    name="reps"
-                    label="Repetitions"
-                    type="number"
-                    fullWidth
-                    variant="filled"
-                    value={values?.reps ? values.reps : ""}
-                    onChange={handleRepsChange}
-                  />
-                </Stack>
+                <LiftingInputsMobile values={values} setValues={setValues} />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
-                  <Button sx={{ width: '45%', borderRadius: 5 }} variant='outlined'>Comment</Button>
+                  <Button sx={{ width: '45%', borderRadius: 5 }} variant='outlined' onClick={() => setExpanded(!expanded)}>Comment</Button>
                   <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
                 </Stack>
+                <SetTagsInputMobile expanded={expanded} setValues={setValues} values={values} />
               </Stack>
           }
         </Box>

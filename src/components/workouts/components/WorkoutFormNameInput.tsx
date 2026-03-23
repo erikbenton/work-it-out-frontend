@@ -70,7 +70,7 @@ export default function WorkoutFormNameInput() {
         <Stack sx={{ width: '100%' }}>
           <Typography variant="h5" component="h2"
             sx={{
-              mr: 1,
+              mx: 1,
               textAlign: 'start',
               flexGrow: 1,
             }}
@@ -78,7 +78,7 @@ export default function WorkoutFormNameInput() {
             {workout?.name}
           </Typography>
           <Grow in={editing} timeout={200}>
-            <Divider sx={{ bgcolor: 'primary.main'}} />
+            <Divider sx={{ bgcolor: 'primary.main', ml: 1}} />
           </Grow>
         </Stack>
       </Button>
