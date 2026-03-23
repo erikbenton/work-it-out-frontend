@@ -19,15 +19,36 @@ import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 export type PageLink = {
   text: string,
   url: string,
-  icon: ReactElement
+  icon: (active?: boolean) => ReactElement,
+  active?: boolean
 }
 
 const pages: PageLink[] = [
-  { text: "Home", url: "/", icon: <HomeIcon color="primary" /> },
-  { text: "Training", url: "/activeWorkout", icon: <DirectionsRunIcon color="primary" /> },
-  { text: "Exercises", url: "/exercises", icon: <FitnessCenterIcon color="primary" /> },
-  { text: "Workouts", url: "/workouts", icon: <NoteAltOutlinedIcon color="primary" /> },
-  { text: "History", url: "/completedWorkouts", icon: <EventAvailableOutlinedIcon color="primary" /> },
+  {
+    text: "Home",
+    url: "/",
+    icon: (active) => <HomeIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
+    text: "Training",
+    url: "/activeWorkout",
+    icon: (active) => <DirectionsRunIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
+    text: "Exercises",
+    url: "/exercises",
+    icon: (active) => <FitnessCenterIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
+    text: "Workouts",
+    url: "/workouts",
+    icon: (active) => <NoteAltOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
+    text: "History",
+    url: "/completedWorkouts",
+    icon: (active) => <EventAvailableOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
 ];
 
 export default function Navbar() {
