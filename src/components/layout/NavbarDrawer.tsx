@@ -42,19 +42,19 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
             key={page.text}
             disablePadding
             sx={{
-              bgcolor: page.active ? 'primary.main' : 'inherited',
+              bgcolor: page.active ? 'primary.light' : 'inherited',
               color: page.active ? 'white' : 'inherited',
-              borderBottomRightRadius: '20px',
-              borderTopRightRadius: '20px',
-              width: '95%'
+              borderBottomRightRadius: '25px',
+              borderTopRightRadius: '25px',
+              width: '97%'
             }}
           >
             <ListItemButton
               onClick={() => navigate(page.url)}
               sx={{
-                borderBottomRightRadius: '20px',
-                borderTopRightRadius: '20px',
-                width: '95%'
+                borderBottomRightRadius: '25px',
+                borderTopRightRadius: '25px',
+                width: '97%'
               }}
             >
               <ListItemIcon>
