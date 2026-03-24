@@ -1,0 +1,1 @@
+export const bgBlue = '#F5FBFF';
