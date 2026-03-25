@@ -21,8 +21,8 @@ type Props = {
   exerciseGroup: ActiveExerciseGroup,
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
-  setKey: string,
-  allSetsCompleted: boolean
+  allSetsCompleted: boolean,
+  completeSet: (completedSet: ActiveExerciseSet) => void
 }
 
 const drawerBleeding = 45;
@@ -57,7 +57,7 @@ const Puller = styled('div')(({ theme }) => ({
   }),
 }));
 
-export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, setValues, allSetsCompleted }: Props) {
+export default function ActiveSetInputsMobile({ exerciseGroup, values, setValues, allSetsCompleted, completeSet }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -69,13 +69,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
     event.preventDefault();
 
     if (!allSetsCompleted && values) {
-      dispatch({
-        type: 'updateSet',
-        payload: {
-          group: exerciseGroup,
-          set: { ...values, key: setKey, completed: true }
-        }
-      });
+      completeSet(values);
     }
 
     toggleDrawer(false);
@@ -85,6 +79,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
     const nextGroup = workout?.exerciseGroups.find(g => (
       g.exerciseSets.some(s => !s.completed) || (g.exerciseSets.length === 0 && g.key !== exerciseGroup.key)));
     if (nextGroup) {
+      const nextSet = nextGroup.exerciseSets[0];
+      setValues(nextSet);
       navigate(`/activeWorkout/${nextGroup.key}`);
     }
   }

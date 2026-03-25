@@ -14,7 +14,7 @@ import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
-  const { workout } = useActiveWorkout();
+  const { workout, dispatch } = useActiveWorkout();
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
@@ -44,6 +44,20 @@ export default function ActiveWorkoutGroup() {
     }
   }
 
+  const completeSet = (completedSet: ActiveExerciseSet) => {
+    dispatch({
+      type: 'updateSet',
+      payload: {
+        group: exerciseGroup,
+        set: { ...completedSet, key: currentSet?.key, completed: true }
+      }
+    });
+    if (currentIndex < exerciseGroup?.exerciseSets.length - 1) {
+      const nextSet = exerciseGroup?.exerciseSets[currentIndex + 1];
+      // keep the weight and reps but update everything else
+      setValues({ ...nextSet, weight: completedSet.weight, reps: completedSet.reps })
+    }
+  }
 
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 2 }}>
@@ -65,19 +79,19 @@ export default function ActiveWorkoutGroup() {
           {mobileScreen
             ? <ActiveSetInputsMobile
               exerciseGroup={exerciseGroup}
-              setKey={currentSet?.key ?? ''}
               values={values}
               setValues={setValues}
               allSetsCompleted={allSetsCompleted}
               key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+              completeSet={completeSet}
             />
             : <ActiveSetInputs
               exerciseGroup={exerciseGroup}
-              setKey={currentSet?.key ?? ''}
               values={values}
               setValues={setValues}
               allSetsCompleted={allSetsCompleted}
               key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+              completeSet={completeSet}
             />
           }
         </Stack>

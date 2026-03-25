@@ -14,8 +14,8 @@ type Props = {
   exerciseGroup: ActiveExerciseGroup,
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
-  setKey: string,
-  allSetsCompleted: boolean
+  allSetsCompleted: boolean,
+  completeSet: (completedSet: ActiveExerciseSet) => void
 }
 
 export interface SimpleDialogProps {
@@ -24,8 +24,8 @@ export interface SimpleDialogProps {
   onClose: (value: string) => void;
 }
 
-export default function ActiveSetInputs({ exerciseGroup, values, setKey, setValues, allSetsCompleted }: Props) {
-  const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
+export default function ActiveSetInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet }: Props) {
+  const { workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
 
@@ -33,16 +33,8 @@ export default function ActiveSetInputs({ exerciseGroup, values, setKey, setValu
     event.preventDefault();
 
     if (!allSetsCompleted && values) {
-      dispatch({
-        type: 'updateSet',
-        payload: {
-          group: exerciseGroup,
-          set: { ...values, key: setKey, completed: true }
-        }
-      });
+      completeSet(values);
     }
-
-    toggleDialog(false);
   };
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +55,8 @@ export default function ActiveSetInputs({ exerciseGroup, values, setKey, setValu
     const nextGroup = workout?.exerciseGroups.find(g => (
       g.exerciseSets.some(s => !s.completed) || (g.exerciseSets.length === 0 && g.key !== exerciseGroup.key)));
     if (nextGroup) {
+      const nextSet = nextGroup.exerciseSets[0];
+      setValues(nextSet);
       navigate(`/activeWorkout/${nextGroup.key}`);
     }
   }
