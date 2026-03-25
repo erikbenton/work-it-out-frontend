@@ -6,12 +6,22 @@ import LoginRegister from './components/LoginRegister';
 import Stack from '@mui/material/Stack';
 import UserStats from './components/UserStats';
 import UserTraining from './components/UserTraining';
+import useActiveWorkout from '../../hooks/useActiveWorkout';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
   const { userInfo, services } = useUser();
+  const { workout } = useActiveWorkout();
+  const navigate = useNavigate();
 
   const handleLogoutAttempt = async () => {
     services.logoutUser(undefined);
+  }
+
+  const handleResumeWorkout = () => {
+    if (workout) {
+      navigate('/activeWorkout');
+    }
   }
 
   return (
@@ -22,7 +32,6 @@ export default function HomePage() {
           justifyContent: "space-between",
           alignItems: "center",
           alignContent: 'center',
-          px: 1,
           my: 1
         }}
       >
@@ -34,7 +43,17 @@ export default function HomePage() {
       {userInfo.isLoggedIn
         ? <Stack spacing={2}>
           <UserStats />
-          <UserTraining />
+          {workout
+            ? <Button
+              fullWidth
+              type='button'
+              variant='contained'
+              sx={{ borderRadius: 5, textTransform: 'none' }}
+              onClick={handleResumeWorkout}
+            >
+              Resume Workout
+            </Button>
+            : <UserTraining />}
         </Stack>
         : <LoginRegister />
       }

@@ -29,7 +29,13 @@ export default function ActiveWorkoutSummary() {
     }
   }
 
-  if (workout === null) { return <ActiveWorkoutsList /> }
+  if (workout === null) {
+    return (
+    <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
+      <ActiveWorkoutsList />
+    </Box>
+    );
+  }
 
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 1 }} role='form'>

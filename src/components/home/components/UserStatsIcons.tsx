@@ -1,7 +1,7 @@
-import { blue, cyan, green, grey, pink, purple } from "@mui/material/colors";
+import { blue, cyan, green, grey, purple, red } from "@mui/material/colors";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
-import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
+import WhatshotIcon from '@mui/icons-material/Whatshot';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import TimerIcon from '@mui/icons-material/Timer';
@@ -15,6 +15,9 @@ type Props = {
 
 export default function UserStatsIcons({ numberOfDays }: Props) {
   const { userStats } = useUserStats(numberOfDays);
+  const met = 3;
+  const avgWeightKg = 68;
+  const calories = Math.floor((userStats.durationInSeconds) * met * avgWeightKg / ( 60 * 60));
 
   return (
     <Grid container spacing={2}>
@@ -36,10 +39,10 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
       </Grid>
       <Grid size={4}>
         <StatIcon
-          icon={<DownloadDoneIcon />}
-          color={pink[700]}
-          text={userStats.numberOfExercises}
-          label="Exercises"
+          icon={<WhatshotIcon />}
+          color={red[700]}
+          text={calories}
+          label="Calories"
         />
       </Grid>
       <Grid size={4}>

@@ -1,23 +1,13 @@
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import ActiveWorkoutsList from "../../activeWorkout/components/ActiveWorkoutsList";
+
 
 
 export default function UserTraining() {
 
   return (
-    <Stack spacing={1} sx={{ px: 1 }}>
-      <Typography variant="h6" component="h3">
-        Training
-      </Typography>
-      <Button
-        fullWidth
-        type='button'
-        variant='outlined'
-        sx={{ borderRadius: 5, textTransform: 'none' }}
-      >
-        Start Empty Workout
-      </Button>
-    </Stack>
+    <Box>
+      <ActiveWorkoutsList titleVariant="h6" titleComponent="h3" titlePaddingX={1} />
+    </Box>
   )
 }
