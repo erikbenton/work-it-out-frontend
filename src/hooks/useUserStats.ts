@@ -2,7 +2,9 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import type UserStats from "../types/userStats";
 import { getUserStats } from "../requests/userStats";
 
-const queryKey = "userStats";
+export const queryKey = "userStats";
+
+export const numberOfDaysKeys = [7, 14, 28];
 
 export default function useUserStats(numberOfDays: number) {
   const { data: userStats, isError } = useSuspenseQuery<UserStats>({

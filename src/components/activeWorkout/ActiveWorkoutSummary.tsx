@@ -21,7 +21,6 @@ export default function ActiveWorkoutSummary() {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
-          services.updateHistories(savedCompletedWorkout);
           dispatch({ type: 'endWorkout' });
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         }

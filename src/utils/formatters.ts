@@ -14,6 +14,15 @@ export function msToDuration(ms: number): string {
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
+export function secondsToDuration(seconds: number): string {
+  return msToDuration(seconds * 1000);
+}
+
+export function durationToSeconds(duration: string): number {
+  const [ hours, minutes, seconds] = duration.split(':');
+  return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds); 
+}
+
 export function checkPluralization(word: string, amount: number | undefined): string {
   return (amount ?? 0) === 1 ? word : word + 's';
 }

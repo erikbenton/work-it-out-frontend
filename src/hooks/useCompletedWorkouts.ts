@@ -2,9 +2,12 @@ import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions } fro
 import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
-import { msToDuration } from "../utils/formatters";
+import { durationToSeconds, msToDuration, secondsToDuration } from "../utils/formatters";
 import type ExerciseHistory from "../types/exerciseHistory";
 import { queryKey as historyQueryKey } from "./useExerciseHistory";
+import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
+import type UserStats from "../types/userStats";
+import { calculateNumberOfReps, calculateVolume } from "../utils/charts";
 
 const queryKey = 'completedWorkouts';
 
@@ -39,8 +42,40 @@ export function useCompletedWorkouts() {
       }
       const key = [historyQueryKey, history.exerciseId]
       try {
-        const prevHistory: ExerciseHistory[] = queryClient.getQueryData(key) as ExerciseHistory[];
+        const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
         queryClient.setQueryData(key, [history, ...prevHistory]);
+      } catch {
+        queryClient.invalidateQueries({ queryKey: key });
+      }
+    }
+  }
+
+  const updateStats = (completedWorkout: CompletedWorkout) => {
+    for (const numberOfDays of numberOfDaysKeys) {
+      const key = [userStatsQueryKey, numberOfDays];
+      try {
+        const userStats = queryClient.getQueryData(key) as UserStats | undefined;
+        if (userStats) {
+          const numberOfWorkouts = userStats.numberOfWorkouts + 1;
+          const numberOfReps = userStats.numberOfReps + completedWorkout.completedExerciseGroups
+            .reduce((acc, curr) => acc + calculateNumberOfReps(curr), 0);
+          const numberOfSets = userStats.numberOfSets + completedWorkout.completedExerciseGroups
+            .reduce((acc, curr) => acc + curr.completedExerciseSets.length, 0);
+          const totalVolume = userStats.totalVolume + completedWorkout.completedExerciseGroups
+            .reduce((acc, curr) => acc + calculateVolume(curr), 0);
+          const durationInSeconds = userStats.durationInSeconds + durationToSeconds(completedWorkout.duration);
+          const duration = secondsToDuration(durationInSeconds);
+          const updatedStats: UserStats = {
+            numberOfWorkouts,
+            numberOfDays,
+            numberOfReps,
+            numberOfSets,
+            duration,
+            durationInSeconds,
+            totalVolume
+          }
+          queryClient.setQueryData(key, updatedStats);
+        }
       } catch {
         queryClient.invalidateQueries({ queryKey: key });
       }
@@ -100,6 +135,8 @@ export function useCompletedWorkouts() {
       try {
         const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
         queryClient.setQueryData([queryKey], [savedWorkout, ...prevWorkouts]); // put it at the top of the list
+        updateHistories(savedWorkout);
+        updateStats(savedWorkout);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
@@ -113,8 +150,7 @@ export function useCompletedWorkouts() {
     services: {
       create,
       createFromActiveWorkout,
-      getCompletedWorkoutById,
-      updateHistories
+      getCompletedWorkoutById
     }
   }
 }

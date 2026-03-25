@@ -98,7 +98,6 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
       services.createFromActiveWorkout(workout, {
         onSuccess: async (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
-          services.updateHistories(savedCompletedWorkout);
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`)
           dispatch({ type: 'endWorkout' });
         }
