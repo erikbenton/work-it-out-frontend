@@ -15,6 +15,7 @@ import { useState } from 'react';
 import SetTagsInputMobile from './SetTagsInputMobile';
 import Button from '@mui/material/Button';
 import LiftingInputsMobile from './LiftingInputsMobile';
+import useSetTags from '../../../hooks/useSetTags';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -61,6 +62,8 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
   const { dispatch, workout, editing, setEditing, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
+  const { setTags } = useSetTags();
+  const setTag = setTags?.find(s => s.id === values?.setTagId);
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -159,7 +162,13 @@ export default function ActiveSetInputsMobile({ exerciseGroup, setKey, values, s
               : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
                 <LiftingInputsMobile values={values} setValues={setValues} />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
-                  <Button sx={{ width: '45%', borderRadius: 5 }} variant='outlined' onClick={() => setExpanded(!expanded)}>Comment</Button>
+                  <Button
+                    sx={{ width: '45%', borderRadius: 5 }}
+                    variant='outlined'
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    {setTag ? setTag.name : 'Tag'}
+                  </Button>
                   <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
                 </Stack>
                 <SetTagsInputMobile expanded={expanded} setValues={setValues} values={values} />

@@ -16,9 +16,9 @@ type Props = {
 export default function SetTagsInputMobile({ expanded, values, setValues }: Props) {
   const { setTags } = useSetTags();
 
-  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | undefined) => {
-    if (!setTag || !values) return;
-    const newSet = { ...values, setTagId: setTag.id };
+  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | null) => {
+    if (!values) return;
+    const newSet = { ...values, setTagId: setTag?.id };
     setValues(newSet);
   }
 
