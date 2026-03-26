@@ -11,7 +11,6 @@ import Slide from '@mui/material/Slide';
 import { type TransitionProps } from '@mui/material/transitions';
 import { useExercises } from '../../../hooks/useExercises';
 import { useState } from 'react';
-import useWorkoutForm from '../../../hooks/useWorkoutForm';
 import ExerciseSelectionItem from './ExerciseSelectionItem';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
@@ -27,21 +26,18 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  addExercises: (exercises: number[]) => void
 }
 
-export default function WorkoutExerciseSelection({ open, setOpen }: Props) {
+export default function WorkoutExerciseSelection({ open, setOpen, addExercises }: Props) {
   const { exercises } = useExercises();
-  const { dispatch } = useWorkoutForm();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const handleSave = () => {
-    dispatch({
-      type: 'addExercises',
-      payload: { newExercises: selected }
-    });
+    addExercises(selected);
     handleClose();
   }
 
@@ -51,56 +47,54 @@ export default function WorkoutExerciseSelection({ open, setOpen }: Props) {
   };
 
   return (
-    <>
-      <Dialog
-        disableRestoreFocus
-        fullScreen={fullScreen}
-        fullWidth
-        maxWidth='sm'
-        open={open}
-        onClose={handleClose}
-        slots={{
-          transition: Transition,
-        }}
-        slotProps={{
-          paper: {
-            style: {
-              minHeight: fullScreen ? '100%': '95%',
-              maxHeight: fullScreen ? '100%': '95%',
-            }
+    <Dialog
+      disableRestoreFocus
+      fullScreen={fullScreen}
+      fullWidth
+      maxWidth='sm'
+      open={open}
+      onClose={handleClose}
+      slots={{
+        transition: Transition,
+      }}
+      slotProps={{
+        paper: {
+          style: {
+            minHeight: fullScreen ? '100%' : '95%',
+            maxHeight: fullScreen ? '100%' : '95%',
           }
-        }}
-      >
-        <AppBar sx={{ position: 'relative' }}>
-          <Toolbar>
-            <IconButton
-              edge="start"
-              color="inherit"
-              onClick={handleClose}
-              aria-label="close"
-            >
-              <CloseIcon />
-            </IconButton>
-            <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
-              Exercises
-            </Typography>
-            <Button autoFocus color="inherit" onClick={handleSave}>
-              save
-            </Button>
-          </Toolbar>
-        </AppBar>
-        <List sx={{ width: '100%' }}>
-          {exercises.map(ex => (
-            <ExerciseSelectionItem
-              key={ex.id}
-              selected={selected}
-              setSelected={setSelected}
-              exercise={ex}
-            />
-          ))}
-        </List>
-      </Dialog>
-    </>
+        }
+      }}
+    >
+      <AppBar sx={{ position: 'relative' }}>
+        <Toolbar>
+          <IconButton
+            edge="start"
+            color="inherit"
+            onClick={handleClose}
+            aria-label="close"
+          >
+            <CloseIcon />
+          </IconButton>
+          <Typography sx={{ ml: 2, flex: 1 }} variant="h6" component="div">
+            Exercises
+          </Typography>
+          <Button autoFocus color="inherit" onClick={handleSave}>
+            save
+          </Button>
+        </Toolbar>
+      </AppBar>
+      <List sx={{ width: '100%' }}>
+        {exercises.map(ex => (
+          <ExerciseSelectionItem
+            key={ex.id}
+            selected={selected}
+            setSelected={setSelected}
+            exercise={ex}
+          />
+        ))}
+      </List>
+    </Dialog>
   );
 
 }

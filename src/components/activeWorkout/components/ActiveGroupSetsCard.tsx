@@ -5,22 +5,29 @@ import { ActiveGroupSet, CompletedActiveSet, CurrentActiveSet } from "./ActiveGr
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
+import { createNewGroupSet } from "../../../reducers/activeWorkoutReducer";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
   onDoubleClick: (completedSet: CompletedExerciseSet | ActiveExerciseSet) => void,
+  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
+  allSetsCompleted: boolean
 }
 
-export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick }: Props) {
+export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick, setValues, allSetsCompleted }: Props) {
   const { dispatch, setEditing } = useActiveWorkout();
   const currentSet = exerciseGroup.exerciseSets.findIndex(s => !s.completed);
 
   const handleAddSet = () => {
+    const newSet = createNewGroupSet(exerciseGroup);
     dispatch({
       type: 'addGroupSet',
-      payload: { group: exerciseGroup }
+      payload: { group: exerciseGroup, set: newSet }
     });
     setEditing(true);
+    if (allSetsCompleted) {
+      setValues(newSet);
+    }
   }
 
   return (

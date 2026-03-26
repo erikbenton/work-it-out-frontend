@@ -9,7 +9,7 @@ export type ActiveWorkoutAction =
   | { type: 'endWorkout' }
   | {
     type: 'startEmptyWorkout',
-    payload: never
+    payload: null
   }
   | {
     type: 'initializeWorkout',
@@ -17,7 +17,7 @@ export type ActiveWorkoutAction =
   }
   | {
     type: 'addGroupSet',
-    payload: { group: ActiveExerciseGroup }
+    payload: { group: ActiveExerciseGroup, set?: ActiveExerciseSet }
   }
   | {
     type: 'removeGroupSet',
@@ -117,25 +117,10 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
 
     case 'addGroupSet': {
       if (workout === null) return null;
-      const { group } = action.payload;
-      const numberOfSets = group.exerciseSets.length;
-      const newSet: ActiveExerciseSet = numberOfSets > 0
-        ? populateKey({
-          ...group.exerciseSets[numberOfSets - 1],
-          id: 0,
-          reps: null,
-          weight: undefined,
-          completed: false,
-          sort: numberOfSets
-        })
-        : populateKey<ActiveExerciseSet>({
-          id: 0,
-          activeExerciseGroupId: group.id,
-          reps: null,
-          weight: undefined,
-          completed: false,
-          sort: numberOfSets,
-        });
+      const { group, set } = action.payload;
+      const newSet: ActiveExerciseSet = set
+        ? set
+        : createNewGroupSet(group);
 
       const exerciseGroup = workout.exerciseGroups.find(g => g.key === group.key);
       if (!exerciseGroup) {
@@ -206,7 +191,52 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
       return { ...workout, exerciseGroups };
     }
 
+    case 'addExercises': {
+      const { newExercises } = action.payload;
+      if (!workout) return null;
+
+      const numberOfExistingGroups = workout.exerciseGroups.length;
+
+      const newGroups = newExercises.map((exId, index) => {
+        const newGroup: ActiveExerciseGroup = {
+          id: 0,
+          activeWorkoutId: workout.id,
+          sort: numberOfExistingGroups + index,
+          exerciseId: exId,
+          exerciseSets: [],
+          workoutId: workout.id
+        };
+        return populateKey(newGroup);
+      });
+
+      const exerciseGroups = workout.exerciseGroups.concat(newGroups);
+      return { ...workout, exerciseGroups };
+    }
+
     default:
       throw new Error("Unhandled active workout action " + action.type);
   }
+}
+
+export function createNewGroupSet(group: ActiveExerciseGroup): ActiveExerciseSet {
+  const numberOfSets = group.exerciseSets.length;
+  const newSet: ActiveExerciseSet = numberOfSets > 0
+    ? populateKey({
+      ...group.exerciseSets[numberOfSets - 1],
+      id: 0,
+      reps: null,
+      weight: undefined,
+      completed: false,
+      sort: numberOfSets
+    })
+    : populateKey<ActiveExerciseSet>({
+      id: 0,
+      activeExerciseGroupId: group.id,
+      reps: null,
+      weight: undefined,
+      completed: false,
+      sort: numberOfSets,
+    });
+
+  return newSet;
 }

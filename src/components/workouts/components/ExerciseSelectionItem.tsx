@@ -8,10 +8,11 @@ import CheckIcon from '@mui/icons-material/Check';
 type Props = {
   exercise: Exercise,
   selected: number[],
-  setSelected: React.Dispatch<React.SetStateAction<number[]>>
+  setSelected: React.Dispatch<React.SetStateAction<number[]>>,
+  limit?: number
 }
 
-export default function ExerciseSelectionItem({ exercise, selected, setSelected }: Props) {
+export default function ExerciseSelectionItem({ exercise, selected, setSelected, limit }: Props) {
 
   const alreadySelected = selected.findIndex(s => s === exercise.id) > -1;
 
@@ -19,7 +20,10 @@ export default function ExerciseSelectionItem({ exercise, selected, setSelected 
     if (alreadySelected) {
       setSelected(prev => prev.filter(id => id !== exercise.id));
     } else {
-      setSelected(selected.concat(exercise.id));
+      const newSelection = limit
+        ? selected.concat(exercise.id).slice(selected.length - limit, selected.length)
+        : selected.concat(exercise.id);
+      setSelected(newSelection);
     }
   }
 

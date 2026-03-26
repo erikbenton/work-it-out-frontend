@@ -14,7 +14,7 @@ import { useWorkouts } from "../../../hooks/useWorkouts";
 import { useNavigate } from "react-router-dom";
 
 export default function WorkoutFormTitle() {
-  const { workout, editing, setEditing, newWorkout } = useWorkoutForm();
+  const { workout, editing, setEditing, newWorkout, dispatch } = useWorkoutForm();
   const { services } = useWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
   const navigate = useNavigate();
@@ -22,6 +22,13 @@ export default function WorkoutFormTitle() {
   const handleClickOpen = () => {
     setSelectingExercises(true);
   };
+
+  const addExercises = (exercises: number[]) => {
+    dispatch({
+      type: 'addExercises',
+      payload: { newExercises: exercises }
+    });
+  }
 
   const handleEditSaveClick = () => {
     if (editing) {
@@ -64,7 +71,7 @@ export default function WorkoutFormTitle() {
             navigate(`/workouts/${savedWorkout.id}`);
           }
         });
-      }, 
+      },
     });
   }
 
@@ -114,6 +121,7 @@ export default function WorkoutFormTitle() {
       <WorkoutExerciseSelection
         open={selectingExercises && editing}
         setOpen={setSelectingExercises}
+        addExercises={addExercises}
       />
     </>
   );

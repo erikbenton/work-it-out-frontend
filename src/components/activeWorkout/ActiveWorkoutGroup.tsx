@@ -68,6 +68,8 @@ export default function ActiveWorkoutGroup() {
           <ActiveGroupSetsCard
             exerciseGroup={exerciseGroup}
             onDoubleClick={copyCompletedSet}
+            setValues={setValues}
+            allSetsCompleted={allSetsCompleted}
           />
           <Suspense fallback={<LoadingIcon />}>
             <ActiveExerciseHistoryList
