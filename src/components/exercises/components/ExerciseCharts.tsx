@@ -7,9 +7,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { calculateEstimatedOneRepMax, calculateMaxWeight, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
 import type ChartPoint from "../../../types/chartPoint";
+import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
-  history: ExerciseHistory[]
+  history: ExerciseHistory[] | CompletedExerciseGroup[]
 }
 
 export default function ExerciseCharts({ history }: Props) {

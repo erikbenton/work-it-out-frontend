@@ -3,11 +3,10 @@ import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
 import { durationToSeconds, msToDuration, secondsToDuration } from "../utils/formatters";
-import type ExerciseHistory from "../types/exerciseHistory";
-import { queryKey as historyQueryKey } from "./useExerciseHistory";
 import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
 import type UserStats from "../types/userStats";
 import { calculateNumberOfReps, calculateVolume } from "../utils/charts";
+import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 
 const queryKey = 'completedWorkouts';
 
@@ -31,24 +30,32 @@ export function useCompletedWorkouts() {
     return workout;
   }
 
-  const updateHistories = (completedWorkout: CompletedWorkout) => {
-    for (const group of completedWorkout.completedExerciseGroups) {
-      const history: ExerciseHistory = {
-        completedExerciseGroupId: group.id,
-        createdAt: completedWorkout.createdAt!,
-        comment: group.comment,
-        exerciseId: group.exerciseId,
-        completedExerciseSets: group.completedExerciseSets
-      }
-      const key = [historyQueryKey, history.exerciseId]
-      try {
-        const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
-        queryClient.setQueryData(key, [history, ...prevHistory]);
-      } catch {
-        queryClient.invalidateQueries({ queryKey: key });
-      }
-    }
+  const getCompletedGroupsByExerciseId = (exerciseId: number): CompletedExerciseGroup[] => {
+    const workouts = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
+    return workouts.map(w =>
+      w.completedExerciseGroups.filter(group =>
+        group.exerciseId === exerciseId))
+      .flat();
   }
+
+  // const updateHistories = (completedWorkout: CompletedWorkout) => {
+  //   for (const group of completedWorkout.completedExerciseGroups) {
+  //     const history: ExerciseHistory = {
+  //       completedExerciseGroupId: group.id,
+  //       createdAt: completedWorkout.createdAt!,
+  //       comment: group.comment,
+  //       exerciseId: group.exerciseId,
+  //       completedExerciseSets: group.completedExerciseSets
+  //     }
+  //     const key = [historyQueryKey, history.exerciseId]
+  //     try {
+  //       const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
+  //       queryClient.setQueryData(key, [history, ...prevHistory]);
+  //     } catch {
+  //       queryClient.invalidateQueries({ queryKey: key });
+  //     }
+  //   }
+  // }
 
   const updateStats = (completedWorkout: CompletedWorkout) => {
     for (const numberOfDays of numberOfDaysKeys) {
@@ -135,7 +142,7 @@ export function useCompletedWorkouts() {
       try {
         const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
         queryClient.setQueryData([queryKey], [savedWorkout, ...prevWorkouts]); // put it at the top of the list
-        updateHistories(savedWorkout);
+        //updateHistories(savedWorkout);
         updateStats(savedWorkout);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -150,7 +157,8 @@ export function useCompletedWorkouts() {
     services: {
       create,
       createFromActiveWorkout,
-      getCompletedWorkoutById
+      getCompletedWorkoutById,
+      getCompletedGroupsByExerciseId
     }
   }
 }

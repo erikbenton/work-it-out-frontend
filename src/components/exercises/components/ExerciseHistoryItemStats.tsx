@@ -2,7 +2,7 @@ import { Chip, ListItemText, Stack } from "@mui/material";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 
 type Props = {
-  id: number,
+  id: number | string,
   completedSets: CompletedExerciseSet[]
 }
 

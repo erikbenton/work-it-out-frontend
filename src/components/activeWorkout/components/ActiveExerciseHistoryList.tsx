@@ -7,8 +7,8 @@ import Stack from "@mui/material/Stack";
 import Divider from "@mui/material/Divider";
 import React from "react";
 import Box from "@mui/material/Box";
-import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
+import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 type Props = {
   exerciseId: number,
@@ -17,14 +17,15 @@ type Props = {
 }
 
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
-  const { data: history } = useExerciseHistory(exerciseId);
+  const { services } = useCompletedWorkouts();
+  const history = services.getCompletedGroupsByExerciseId(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
       {history?.map(group => (
         <Card
           sx={{ bgcolor: '#F5FBFF', py: 1, borderRadius: 4 }}
-          key={`group-history-${group.completedExerciseGroupId}`}
+          key={`group-history-${group.id}`}
         >
           <CardContent className="pb-0" sx={{ p: 0 }}>
             <ExerciseHistoryItemTitle group={group} />
@@ -41,7 +42,7 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
             ))}
             <Box sx={{ pt: 1 }}>
               <ExerciseHistoryItemStats
-                id={group.completedExerciseGroupId}
+                id={group.id}
                 completedSets={group.completedExerciseSets}
               />
             </Box>

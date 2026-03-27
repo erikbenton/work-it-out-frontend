@@ -34,7 +34,7 @@ const getDateHistoryKey = (dateTime: DateTime): string => {
   return `${dateTime.month}/${dateTime.dayOfMonth}/${dateTime.year % 100}`
 }
 
-export function getChartHistoryPoints(history: ExerciseHistory[], numOfDays: number): ChartPoint[] {
+export function getChartHistoryPoints(history: ExerciseHistory[] | CompletedExerciseGroup[], numOfDays: number): ChartPoint[] {
   const mostRecent = history[0];
   const mostRecentDate = getDateTime(mostRecent.createdAt);
   const latestDate = new Date(mostRecentDate.year, mostRecentDate.month - 1, mostRecentDate.dayOfMonth);
@@ -42,7 +42,7 @@ export function getChartHistoryPoints(history: ExerciseHistory[], numOfDays: num
   const startDate = getDateTime(new Date(latestDate.getTime() - timePeriod).toDateString());
 
   // create map of date-to-history for days in the time period
-  const dateHistory = new Map<string, (ExerciseHistory | null)>();
+  const dateHistory = new Map<string, (ExerciseHistory | CompletedExerciseGroup | null)>();
   for (const entry of history ?? []) {
     const entryDateTime = getDateTime(entry.createdAt);
     if (entryDateTime.date.getTime() >= startDate.date.getTime()) {

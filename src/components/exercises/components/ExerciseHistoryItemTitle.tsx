@@ -2,9 +2,10 @@ import { ListItemText, Stack, Typography } from "@mui/material";
 import type ExerciseHistory from "../../../types/exerciseHistory";
 import { checkPluralization } from "../../../utils/formatters";
 import { getDateTime, type DateTime } from "../../../utils/dateTime";
+import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
-  group: ExerciseHistory
+  group: ExerciseHistory | CompletedExerciseGroup
 }
 
 function daysSince(year: number, month: number, day: number): number {
@@ -28,7 +29,7 @@ export default function ExerciseHistoryItemTitle({ group }: Props) {
   const daysDiff = daysSince(dateTime.year, dateTime.month, dateTime.dayOfMonth);
 
   return (
-    <ListItemText id={`list-label-${group.completedExerciseGroupId}`} className='px-3' primary={
+    <ListItemText id={`list-label-${group.createdAt}`} className='px-3' primary={
       <Stack
         direction="row"
         spacing={2}
