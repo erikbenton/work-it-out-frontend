@@ -89,7 +89,7 @@ export default function ActiveWorkoutSummary() {
           <VerticalIconMenu
             buttonId={"active-workout-options"}
             menuItems={menuItems}
-            size="large"
+            size="medium"
           />
         </Stack>
         <WorkoutExerciseSelection

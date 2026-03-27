@@ -12,11 +12,13 @@ import WorkoutExerciseSelection from "./WorkoutExerciseSelection";
 import { useState } from "react";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 import { useNavigate } from "react-router-dom";
+import useActiveWorkout from "../../../hooks/useActiveWorkout";
 
 export default function WorkoutFormTitle() {
   const { workout, editing, setEditing, newWorkout, dispatch } = useWorkoutForm();
   const { services } = useWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
+  const { dispatch: activeDispatch } = useActiveWorkout();
   const navigate = useNavigate();
 
   const handleClickOpen = () => {
@@ -28,6 +30,14 @@ export default function WorkoutFormTitle() {
       type: 'addExercises',
       payload: { newExercises: exercises }
     });
+  }
+
+  const startWorkout = () => {
+    activeDispatch({
+      type: 'initializeWorkout',
+      payload: { initialWorkout: workout }
+    });
+    navigate('/activeWorkout');
   }
 
   const handleEditSaveClick = () => {
@@ -61,8 +71,10 @@ export default function WorkoutFormTitle() {
   ];
 
   if (!editing) {
-    // put it 2nd in the list
-    menuItems.splice(1, 0, {
+    // put it 1st in the list
+    menuItems.unshift({ label: 'Start', handleClick: startWorkout })
+    // put it 3rd in the list
+    menuItems.splice(2, 0, {
       label: "Clone",
       handleClick: () => {
         services.clone(workout, {
@@ -97,7 +109,7 @@ export default function WorkoutFormTitle() {
         <VerticalIconMenu
           buttonId={"workout-options"}
           menuItems={menuItems}
-          size="large"
+          size="medium"
         />
       </Stack >
       <Stack

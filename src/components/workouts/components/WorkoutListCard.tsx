@@ -25,13 +25,7 @@ export default function WorkoutListCard({ workout }: Props) {
 
   const menuItems = [
     {
-      label: "Clone",
-      handleClick: () => {
-        services.clone(workout);
-      },
-    },
-    {
-      label: 'Start Workout',
+      label: 'Start',
       handleClick: () => {
         dispatch({
           type: 'initializeWorkout',
@@ -39,6 +33,12 @@ export default function WorkoutListCard({ workout }: Props) {
         });
         navigate(`/activeWorkout`);
       }
+    },
+    {
+      label: "Clone",
+      handleClick: () => {
+        services.clone(workout);
+      },
     },
     {
       label: "Delete",
