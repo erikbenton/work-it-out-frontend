@@ -1,15 +1,28 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
-import type ExerciseHistory from "../types/exerciseHistory";
-import { getExerciseHistoryById } from "../requests/exercises";
+import { useCompletedWorkouts } from "./useCompletedWorkouts";
+import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
+import cacheTimes from "../utils/cacheTimes";
+import type CompletedWorkout from "../types/completedWorkout";
 
 export const queryKey = 'exerciseHistory';
 
+function getCompletedGroupsByExerciseId(
+  exerciseId: number,
+  completedWorkouts: CompletedWorkout[]
+): CompletedExerciseGroup[] {
+  return completedWorkouts.map(w =>
+    w.completedExerciseGroups.filter(group =>
+      group.exerciseId === exerciseId))
+    .flat();
+}
+
 export function useExerciseHistory(id: number) {
-  const { data, isError } = useSuspenseQuery<ExerciseHistory[]>({
+  const { completedWorkouts } = useCompletedWorkouts();
+  const { data, isError } = useSuspenseQuery<CompletedExerciseGroup[]>({
     queryKey: [queryKey, id],
-    staleTime: 1000 * 60 * 60 * 24 * 1, // 1 day,
-    gcTime: 1000 * 60 * 60 * 24 * 2, // 2 days
-    queryFn: async () => getExerciseHistoryById(id)
+    staleTime: cacheTimes.day, // 1 day,
+    gcTime: cacheTimes.day * 2, // 2 days
+    queryFn: () => getCompletedGroupsByExerciseId(id, completedWorkouts)
   });
 
   return {

@@ -8,11 +8,10 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import TimelineIcon from '@mui/icons-material/Timeline';
 import { blue, cyan, green, grey, pink } from "@mui/material/colors";
 import { calculateEstimatedOneRepMax, calculateVolume } from "../../../utils/charts";
-import type ExerciseHistory from "../../../types/exerciseHistory";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
-  history: ExerciseHistory[] | CompletedExerciseGroup[]
+  history: CompletedExerciseGroup[]
 }
 
 export default function ExerciseStatsBar({ history }: Props) {

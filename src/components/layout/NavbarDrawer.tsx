@@ -8,6 +8,8 @@ import type { PageLink } from "./Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Divider } from "@mui/material";
 import DrawerUserMenu from "./DrawerUserMenu";
+import { Suspense } from "react";
+import LoadingIcon from "./LoadingIcon";
 
 type Props = {
   links: PageLink[],
@@ -34,7 +36,9 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
 
   return (
     <Box sx={{ width: 220, height: '100%', bgcolor: 'white' }} role="presentation">
-      <DrawerUserMenu />
+      <Suspense fallback={<LoadingIcon />}>
+        <DrawerUserMenu />
+      </Suspense>
       <Divider sx={{ pt: 1, mx: 1 }} />
       <List onClick={handleClose}>
         {pages.map(page => (

@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import React from "react";
 import Box from "@mui/material/Box";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
-import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 
 type Props = {
   exerciseId: number,
@@ -17,8 +17,7 @@ type Props = {
 }
 
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
-  const { services } = useCompletedWorkouts();
-  const history = services.getCompletedGroupsByExerciseId(exerciseId);
+  const { data: history } = useExerciseHistory(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>

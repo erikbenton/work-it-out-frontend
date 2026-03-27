@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery, type UseMutateFunction } from "@tanstack/react-query";
 import { createExercise, deleteExercise, getExerciseList, updateExercise } from "../requests/exercises";
 import type Exercise from "../types/exercise";
+import cacheTimes from "../utils/cacheTimes";
 
 const queryKey = 'exercises';
 
@@ -15,8 +16,8 @@ export function useExercises() {
   const queryClient = useQueryClient();
   const { data: exercises, isError } = useSuspenseQuery<Exercise[]>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
-    gcTime: 1000 * 60 * 60 * 24 * 14, // 14 days
+    staleTime: cacheTimes.week, // 7 days
+    gcTime: cacheTimes.week * 2, // 14 days
     queryFn: getExerciseList
   });
 

@@ -1,11 +1,10 @@
 import { ListItemText, Stack, Typography } from "@mui/material";
-import type ExerciseHistory from "../../../types/exerciseHistory";
 import { checkPluralization } from "../../../utils/formatters";
 import { getDateTime, type DateTime } from "../../../utils/dateTime";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
-  group: ExerciseHistory | CompletedExerciseGroup
+  group: CompletedExerciseGroup
 }
 
 function daysSince(year: number, month: number, day: number): number {

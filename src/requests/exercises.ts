@@ -1,5 +1,4 @@
 import type Exercise from '../types/exercise';
-import type ExerciseHistory from '../types/exerciseHistory';
 import { baseUrl } from '../utils/config';
 import { devConsole } from '../utils/debugLogger';
 
@@ -19,15 +18,6 @@ export async function getExerciseById(id: number): Promise<Exercise> {
     throw new Error('Failed to fetch exercise with id: ' + id.toString());
   }
   return (await response.json()) as Exercise;
-}
-
-export async function getExerciseHistoryById(id: number): Promise<ExerciseHistory[]> {
-  devConsole('fetching exercise history', Date.now());
-  const response = await fetch(`${baseUrl}/completedExerciseGroups/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch history for exercise with id: ' + id.toString());
-  }
-  return (await response.json()) as ExerciseHistory[];
 }
 
 export async function createExercise(newExercise: Exercise): Promise<Exercise> {

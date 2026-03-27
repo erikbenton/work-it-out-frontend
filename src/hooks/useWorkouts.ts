@@ -2,6 +2,7 @@ import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-q
 import type Workout from "../types/workout";
 import { createWorkout, deleteWorkout, getWorkouts, updateWorkout } from "../requests/workouts";
 import { mapKeys, populateKey } from "../types/keyId";
+import cacheTimes from "../utils/cacheTimes";
 
 const queryKey = 'workouts';
 
@@ -9,8 +10,8 @@ export function useWorkouts() {
   const queryClient = useQueryClient();
   const { data: workouts, isError } = useSuspenseQuery<Workout[]>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
-    gcTime: 1000 * 60 * 60 * 24 * 14, // 14 days
+    staleTime: cacheTimes.week, // 7 days
+    gcTime: cacheTimes.week * 2, // 14 days
     queryFn: getWorkouts
   });
 

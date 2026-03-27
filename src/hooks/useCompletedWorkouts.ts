@@ -6,7 +6,9 @@ import { durationToSeconds, msToDuration, secondsToDuration } from "../utils/for
 import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
 import type UserStats from "../types/userStats";
 import { calculateNumberOfReps, calculateVolume } from "../utils/charts";
+import cacheTimes from "../utils/cacheTimes";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
+import { queryKey as historyQueryKey } from "./useExerciseHistory";
 
 const queryKey = 'completedWorkouts';
 
@@ -14,8 +16,8 @@ export function useCompletedWorkouts() {
   const queryClient = useQueryClient();
   const { data: completedWorkouts, isError } = useSuspenseQuery<CompletedWorkout[]>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 60 * 24 * 7, // 7 days
-    gcTime: 1000 * 60 * 60 * 24 * 14, // 14 days
+    staleTime: cacheTimes.week,
+    gcTime: cacheTimes.week * 2,
     queryFn: getCompletedWorkouts
   });
 
@@ -30,36 +32,21 @@ export function useCompletedWorkouts() {
     return workout;
   }
 
-  const getCompletedGroupsByExerciseId = (exerciseId: number): CompletedExerciseGroup[] => {
-    const workouts = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
-    return workouts.map(w =>
-      w.completedExerciseGroups.filter(group =>
-        group.exerciseId === exerciseId))
-      .flat();
+  const updateHistories = (completedWorkout: CompletedWorkout) => {
+    for (const group of completedWorkout.completedExerciseGroups) {
+      const key = [historyQueryKey, group.exerciseId]
+      try {
+        const prevHistory = queryClient.getQueryData(key) as CompletedExerciseGroup[];
+        queryClient.setQueryData(key, [history, ...prevHistory]);
+      } catch {
+        queryClient.invalidateQueries({ queryKey: key });
+      }
+    }
   }
 
-  // const updateHistories = (completedWorkout: CompletedWorkout) => {
-  //   for (const group of completedWorkout.completedExerciseGroups) {
-  //     const history: ExerciseHistory = {
-  //       completedExerciseGroupId: group.id,
-  //       createdAt: completedWorkout.createdAt!,
-  //       comment: group.comment,
-  //       exerciseId: group.exerciseId,
-  //       completedExerciseSets: group.completedExerciseSets
-  //     }
-  //     const key = [historyQueryKey, history.exerciseId]
-  //     try {
-  //       const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
-  //       queryClient.setQueryData(key, [history, ...prevHistory]);
-  //     } catch {
-  //       queryClient.invalidateQueries({ queryKey: key });
-  //     }
-  //   }
-  // }
-
   const updateStats = (completedWorkout: CompletedWorkout) => {
-    for (const numberOfDays of numberOfDaysKeys) {
-      const key = [userStatsQueryKey, numberOfDays];
+    for (const option of numberOfDaysKeys) {
+      const key = [userStatsQueryKey, option.numberOfDays];
       try {
         const userStats = queryClient.getQueryData(key) as UserStats | undefined;
         if (userStats) {
@@ -74,7 +61,7 @@ export function useCompletedWorkouts() {
           const duration = secondsToDuration(durationInSeconds);
           const updatedStats: UserStats = {
             numberOfWorkouts,
-            numberOfDays,
+            numberOfDays: option.numberOfDays,
             numberOfReps,
             numberOfSets,
             duration,
@@ -142,7 +129,7 @@ export function useCompletedWorkouts() {
       try {
         const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
         queryClient.setQueryData([queryKey], [savedWorkout, ...prevWorkouts]); // put it at the top of the list
-        //updateHistories(savedWorkout);
+        updateHistories(savedWorkout);
         updateStats(savedWorkout);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -157,8 +144,7 @@ export function useCompletedWorkouts() {
     services: {
       create,
       createFromActiveWorkout,
-      getCompletedWorkoutById,
-      getCompletedGroupsByExerciseId
+      getCompletedWorkoutById
     }
   }
 }

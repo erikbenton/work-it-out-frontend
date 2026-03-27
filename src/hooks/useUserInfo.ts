@@ -3,6 +3,7 @@ import type UserInfo from "../types/userInfo";
 import { getUserInfo, login, logout, register } from "../requests/authentication";
 import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
+import cacheTimes from "../utils/cacheTimes";
 
 const queryKey = 'userInfo';
 
@@ -16,12 +17,28 @@ export default function useUserInfo() {
   const queryClient = useQueryClient();
   const { data: userInfo, isError } = useSuspenseQuery<UserInfo>({
     queryKey: [queryKey],
-    staleTime: 1000 * 60 * 60 * 24, // 1 day
+    staleTime: cacheTimes.day,
+    gcTime: cacheTimes.day * 2,
     queryFn: getUserInfo
   });
 
+  const registering = async (request: AuthenticationRequest): Promise<AuthenticationResponse> => {
+    queryClient.invalidateQueries({ queryKey: [queryKey] });
+    return await register(request);
+  }
+
+  const loggingIn = async (request: AuthenticationRequest): Promise<AuthenticationResponse> => {
+    queryClient.invalidateQueries({ queryKey: [queryKey] });
+    return await login(request);
+  }
+
+  const loggingOut = async (): Promise<boolean> => {
+    queryClient.invalidateQueries({ queryKey: [queryKey] });
+    return await logout();
+  }
+
   const registerUser = useMutation({
-    mutationFn: async (request: AuthenticationRequest) => await register(request),
+    mutationFn: async (request: AuthenticationRequest) => await registering(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
         queryClient.cancelQueries();
@@ -35,7 +52,7 @@ export default function useUserInfo() {
   }).mutate;
 
   const loginUser = useMutation({
-    mutationFn: async (request: AuthenticationRequest) => await login(request),
+    mutationFn: async (request: AuthenticationRequest) => await loggingIn(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
         queryClient.cancelQueries();
@@ -49,13 +66,12 @@ export default function useUserInfo() {
   }).mutate;
 
   const logoutUser = useMutation({
-    mutationFn: async () => await logout(),
-    onSuccess: (response: boolean) => {
+    mutationFn: async () => await loggingOut(),
+    onSuccess: () => {
       try {
         queryClient.cancelQueries();
         queryClient.clear();
-        const user: UserInfo = { isLoggedIn: !response, email: undefined };
-        queryClient.setQueryData([queryKey], user);
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }

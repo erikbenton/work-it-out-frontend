@@ -3,15 +3,14 @@ import ExerciseChart from "./ExerciseCharts";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ExerciseStatsBar from "./ExerciseStatsBar";
-import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 
 type Props = {
   exerciseId: number
 }
 
 export default function ExerciseStats({ exerciseId }: Props) {
-  const { services } = useCompletedWorkouts();
-  const history = services.getCompletedGroupsByExerciseId(exerciseId);
+  const { data: history } = useExerciseHistory(exerciseId);
 
   if (history.length === 0) {
     return (

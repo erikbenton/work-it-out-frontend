@@ -1,19 +1,18 @@
 import type ChartPoint from "../types/chartPoint";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
-import type ExerciseHistory from "../types/exerciseHistory";
 import { getDateTime, type DateTime } from "./dateTime";
 
-export const calculateMaxWeight = (history: ExerciseHistory | CompletedExerciseGroup): number => {
+export const calculateMaxWeight = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
     .reduce((acc, curr) => (curr.weight ?? 0) > acc ? (curr.weight ?? 0) : acc, 0);
 }
 
-export const calculateNumberOfReps = (history: ExerciseHistory | CompletedExerciseGroup): number => {
+export const calculateNumberOfReps = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
     .reduce((acc, curr) => acc + curr.reps, 0);
 }
 
-export const calculateEstimatedOneRepMax = (history: ExerciseHistory | CompletedExerciseGroup): number => {
+export const calculateEstimatedOneRepMax = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets.reduce(
     (max, curr) => {
       const weight = (curr.weight ?? 0);
@@ -22,7 +21,7 @@ export const calculateEstimatedOneRepMax = (history: ExerciseHistory | Completed
     }, 0);
 }
 
-export const calculateVolume = (history: ExerciseHistory | CompletedExerciseGroup): number => {
+export const calculateVolume = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
     .reduce((acc, curr) => {
       const volume = curr.reps * (curr.weight ?? 1);
@@ -34,7 +33,7 @@ const getDateHistoryKey = (dateTime: DateTime): string => {
   return `${dateTime.month}/${dateTime.dayOfMonth}/${dateTime.year % 100}`
 }
 
-export function getChartHistoryPoints(history: ExerciseHistory[] | CompletedExerciseGroup[], numOfDays: number): ChartPoint[] {
+export function getChartHistoryPoints(history: CompletedExerciseGroup[], numOfDays: number): ChartPoint[] {
   const mostRecent = history[0];
   const mostRecentDate = getDateTime(mostRecent.createdAt);
   const latestDate = new Date(mostRecentDate.year, mostRecentDate.month - 1, mostRecentDate.dayOfMonth);
@@ -42,7 +41,7 @@ export function getChartHistoryPoints(history: ExerciseHistory[] | CompletedExer
   const startDate = getDateTime(new Date(latestDate.getTime() - timePeriod).toDateString());
 
   // create map of date-to-history for days in the time period
-  const dateHistory = new Map<string, (ExerciseHistory | CompletedExerciseGroup | null)>();
+  const dateHistory = new Map<string, (CompletedExerciseGroup | null)>();
   for (const entry of history ?? []) {
     const entryDateTime = getDateTime(entry.createdAt);
     if (entryDateTime.date.getTime() >= startDate.date.getTime()) {

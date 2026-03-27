@@ -8,6 +8,8 @@ import UserStats from './components/UserStats';
 import UserTraining from './components/UserTraining';
 import useActiveWorkout from '../../hooks/useActiveWorkout';
 import { useNavigate } from 'react-router-dom';
+import { Suspense } from 'react';
+import LoadingIcon from '../layout/LoadingIcon';
 
 export default function HomePage() {
   const { userInfo, services } = useUser();
@@ -55,7 +57,9 @@ export default function HomePage() {
             </Button>
             : <UserTraining />}
         </Stack>
-        : <LoginRegister />
+        : <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
+          <LoginRegister />
+        </Suspense>
       }
     </Box>
   );

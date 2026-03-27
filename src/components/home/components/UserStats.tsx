@@ -8,6 +8,7 @@ import Typography from "@mui/material/Typography";
 import { useState } from "react";
 import { devConsole } from "../../../utils/debugLogger";
 import UserStatsIcons from "./UserStatsIcons";
+import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 
 
 export default function UserStats() {
@@ -46,9 +47,14 @@ export default function UserStats() {
             sx={{ borderRadius: 5 }}
             MenuProps={{ slotProps: { paper: { sx: { borderRadius: 5 } } } }}
           >
-            <MenuItem value={7}>1 Week</MenuItem>
-            <MenuItem value={14}>2 Weeks</MenuItem>
-            <MenuItem value={28}>4 Weeks</MenuItem>
+            {numberOfDaysKeys.map(option => (
+              <MenuItem
+                key={option.numberOfDays}
+                value={option.numberOfDays}
+              >
+                {option.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Stack>

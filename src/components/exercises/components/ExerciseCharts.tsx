@@ -1,5 +1,4 @@
 import Stack from "@mui/material/Stack";
-import type ExerciseHistory from "../../../types/exerciseHistory";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { chartDate } from "../../../utils/formatters";
 import { deepPurple, indigo, red } from "@mui/material/colors";
@@ -10,7 +9,7 @@ import type ChartPoint from "../../../types/chartPoint";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
-  history: ExerciseHistory[] | CompletedExerciseGroup[]
+  history: CompletedExerciseGroup[]
 }
 
 export default function ExerciseCharts({ history }: Props) {
