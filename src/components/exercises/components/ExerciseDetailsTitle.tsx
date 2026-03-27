@@ -48,7 +48,7 @@ export default function ExerciseDetailsTitle({ exercise }: Props) {
       <VerticalIconMenu
         buttonId='exercise-menu-button'
         menuItems={menuItems}
-        size='large'
+        size='medium'
       />
     </Stack>
   );
