@@ -4,10 +4,11 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import RemoveCircleOutlinedIcon from '@mui/icons-material/RemoveCircleOutlined';
-import { Grow } from "@mui/material";
+import { Collapse, Grow } from "@mui/material";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import type ExerciseGroup from "../../../types/exerciseGroup";
 import ExerciseGroupSetInput from "./ExerciseGroupSetInput";
+import TransitionGroup from "react-transition-group/TransitionGroup";
 
 type Props = {
   exerciseGroup: ExerciseGroup
@@ -60,9 +61,13 @@ export default function ExerciseGroupCardSets({ exerciseGroup }: Props) {
         </Grow>
       </Stack>
       <List dense={true}>
-        {exerciseGroup.exerciseSets.map(set => (
-          <ExerciseGroupSetInput key={set.key} exerciseGroup={exerciseGroup} set={set} />
-        ))}
+        <TransitionGroup>
+          {exerciseGroup.exerciseSets.map(set => (
+            <Collapse key={set.key} >
+              <ExerciseGroupSetInput key={set.key} exerciseGroup={exerciseGroup} set={set} />
+            </Collapse>
+          ))}
+        </TransitionGroup>
       </List>
     </>
   );

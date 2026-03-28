@@ -1,4 +1,4 @@
-import { Avatar, Card, CardContent, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
+import { Avatar, Card, CardContent, Collapse, Divider, List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from "@mui/material";
 import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import React from "react";
 import { ActiveGroupSet, CompletedActiveSet, CurrentActiveSet } from "./ActiveGroupSetItems";
@@ -6,6 +6,7 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { createNewGroupSet } from "../../../reducers/activeWorkoutReducer";
+import { TransitionGroup } from "react-transition-group";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -38,19 +39,21 @@ export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick, setV
             <ListItemText primary="Today" slotProps={{ primary: { fontWeight: '600' } }} />
           </ListItem>
           <Divider sx={{ opacity: 0.3 }} />
-          {exerciseGroup.exerciseSets.map((s, index) => (
-            // Wrap these in a Collapse then collapse then when removing
-            // remove the set using Collapse's onExited
-            <React.Fragment key={s.key}>
-              {s.completed
-                ? <CompletedActiveSet index={index} set={s} exerciseGroup={exerciseGroup} onDoubleClick={onDoubleClick} />
-                : index === currentSet
-                  ? <CurrentActiveSet index={index} set={s} exerciseGroup={exerciseGroup} />
-                  : <ActiveGroupSet index={index} set={s} exerciseGroup={exerciseGroup} />
-              }
-              <Divider sx={{ opacity: 0.3 }} />
-            </React.Fragment>
-          ))}
+          <TransitionGroup>
+            {exerciseGroup.exerciseSets.map((s, index) => (
+              <Collapse key={s.key}>
+                <React.Fragment key={s.key}>
+                  {s.completed
+                    ? <CompletedActiveSet index={index} set={s} exerciseGroup={exerciseGroup} onDoubleClick={onDoubleClick} />
+                    : index === currentSet
+                      ? <CurrentActiveSet index={index} set={s} exerciseGroup={exerciseGroup} />
+                      : <ActiveGroupSet index={index} set={s} exerciseGroup={exerciseGroup} />
+                  }
+                  <Divider sx={{ opacity: 0.3 }} />
+                </React.Fragment>
+              </Collapse>
+            ))}
+          </TransitionGroup>
           <ListItem disableGutters sx={{ py: 0 }}>
             <ListItemButton sx={{ px: 1, py: 1 }} onClick={handleAddSet}>
               <ListItemAvatar>
