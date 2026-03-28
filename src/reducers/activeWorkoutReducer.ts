@@ -42,6 +42,10 @@ export type ActiveWorkoutAction =
   | {
     type: 'addExercises',
     payload: { newExercises: number[] }
+  }
+  | {
+    type: 'updateRestTime',
+    payload: { startTime?: number, duration?: string }
   };
 
 export default function activeWorkoutReducer(workout: ActiveWorkout | null, action: ActiveWorkoutAction) {
@@ -211,6 +215,17 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
 
       const exerciseGroups = workout.exerciseGroups.concat(newGroups);
       return { ...workout, exerciseGroups };
+    }
+
+    case 'updateRestTime': {
+      const {
+        startTime: currentRestStart,
+        duration: currentRestTime
+      } = action.payload;
+
+      if (!workout) return null;
+
+      return { ...workout, currentRestStart, currentRestTime };
     }
 
     default:

@@ -9,6 +9,7 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { Grow, Stack } from "@mui/material";
 import { useState } from "react";
 import ElapsedTimer from "./ElapsedTimer";
+import CountdownTimer from "./CountdownTimer";
 
 export default function ActiveWorkoutGroupNavbar() {
   const [open, setOpen] = useState(true);
@@ -58,7 +59,14 @@ export default function ActiveWorkoutGroupNavbar() {
               </Typography>
             </Stack>
             {workout &&
-              <Box sx={{mr: 1}}>
+              <Box sx={{ mr: 1 }}>
+                {workout.currentRestTime && workout.currentRestStart &&
+                  <CountdownTimer
+                    key={workout.currentRestStart}
+                    startTime={workout.currentRestStart}
+                    duration={workout.currentRestTime}
+                  />
+                }
                 <ElapsedTimer startTime={workout.startTime} />
               </Box>
             }

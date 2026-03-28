@@ -11,6 +11,7 @@ import { Suspense, useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
+import { devConsole } from "../../utils/debugLogger";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -51,6 +52,12 @@ export default function ActiveWorkoutGroup() {
         group: exerciseGroup,
         set: { ...completedSet, key: currentSet?.key, completed: true }
       }
+    });
+    const now = Date.now();
+    devConsole(now);
+    dispatch({
+      type: 'updateRestTime',
+      payload: { startTime: (new Date()).getTime(), duration: exerciseGroup.restTime }
     });
     if (currentIndex < exerciseGroup?.exerciseSets.length - 1) {
       const nextSet = exerciseGroup?.exerciseSets[currentIndex + 1];

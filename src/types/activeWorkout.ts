@@ -8,5 +8,7 @@ export default interface ActiveWorkout {
   note?: string,
   duration?: string,
   startTime: number,
-  exerciseGroups: AcitveExerciseGroup[]
+  exerciseGroups: AcitveExerciseGroup[],
+  currentRestTime?: string,
+  currentRestStart?: number
 }

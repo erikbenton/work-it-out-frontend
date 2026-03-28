@@ -9,6 +9,7 @@ import ActiveWorkoutsList from "./components/ActiveWorkoutsList";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
 import { useState } from "react";
 import WorkoutExerciseSelection from "../workouts/components/WorkoutExerciseSelection";
+import CountdownTimer from "./components/CountdownTimer";
 
 export default function ActiveWorkoutSummary() {
   const { workout, dispatch, complete } = useActiveWorkout();
@@ -83,6 +84,13 @@ export default function ActiveWorkoutSummary() {
           </Typography>
           {workout &&
             <Box sx={{ mr: 1 }}>
+              {workout.currentRestTime && workout.currentRestStart &&
+                <CountdownTimer
+                  key={workout.currentRestStart}
+                  startTime={workout.currentRestStart}
+                  duration={workout.currentRestTime}
+                />
+              }
               <ElapsedTimer startTime={workout.startTime} />
             </Box>
           }
