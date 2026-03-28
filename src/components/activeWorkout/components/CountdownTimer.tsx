@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { durationToSeconds, msToDuration } from "../../../utils/formatters";
-import { Typography } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
+import useActiveWorkout from "../../../hooks/useActiveWorkout";
 
 type Props = {
   startTime: number,
@@ -8,6 +9,7 @@ type Props = {
 }
 
 export default function CountdownTimer({ startTime, duration }: Props) {
+  const { timerAppeared, setTimerAppeared } = useActiveWorkout();
   const durationInMs = durationToSeconds(duration) * 1000;
   const startTimeRef = useRef(startTime);
   const [time, setTime] = useState(0);
@@ -21,15 +23,21 @@ export default function CountdownTimer({ startTime, duration }: Props) {
     return () => clearInterval(intervalId);
   }, []);
 
-    // Make sure the count down time is rounding up to the sec
+  const handleAppeared = () => {
+    setTimerAppeared(true);
+  }
+
+  // Make sure the count down time is rounding up to the sec
   // eg: 59,999 msec -> 59.999 -> 60 sec, not 59 sec
   //     59,001 msec -> 59.001 -> 60 sec, not 59 sec
   const countDownTimeActual = Math.ceil((durationInMs - time) / 1000) * 1000;
   const countDownTime = Math.abs(countDownTimeActual);
 
   return (
-    <Typography>
-      {msToDuration(countDownTime, { format: "include-hours" })}
-    </Typography>
+    <Collapse orientation="horizontal" in={true} appear={!timerAppeared} onTransitionEnd={handleAppeared}>
+      <Typography>
+        {msToDuration(countDownTime, { format: "include-hours" })}
+      </Typography>
+    </Collapse>
   )
 }

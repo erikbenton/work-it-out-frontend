@@ -14,7 +14,7 @@ import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
-  const { workout, dispatch } = useActiveWorkout();
+  const { workout, dispatch, setTimerAppeared } = useActiveWorkout();
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
@@ -56,6 +56,7 @@ export default function ActiveWorkoutGroup() {
       type: 'updateRestTime',
       payload: { startTime: Date.now(), duration: exerciseGroup.restTime }
     });
+    setTimerAppeared(false);
     if (currentIndex < exerciseGroup?.exerciseSets.length - 1) {
       const nextSet = exerciseGroup?.exerciseSets[currentIndex + 1];
       // keep the weight and reps but update everything else

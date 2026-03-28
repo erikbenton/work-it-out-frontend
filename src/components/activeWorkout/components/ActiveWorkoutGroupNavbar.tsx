@@ -61,7 +61,7 @@ export default function ActiveWorkoutGroupNavbar() {
             {workout &&
               <Box sx={{ mr: 1 }}>
                 <Stack direction='row' spacing={2}>
-                  {workout.currentRestTime && workout.currentRestStart &&
+                  {workout && workout.currentRestStart && workout.currentRestTime &&
                     <CountdownTimer
                       key={workout.currentRestStart}
                       startTime={workout.currentRestStart}
