@@ -20,7 +20,7 @@ export default function ElapsedTimer({ startTime }: Props) {
 
   return (
     <span>
-      {msToDuration(time)}
+      {msToDuration(time, { format: "include-hours" })}
     </span>
   )
 }

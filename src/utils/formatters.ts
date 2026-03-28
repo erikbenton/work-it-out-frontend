@@ -1,4 +1,8 @@
-export function msToDuration(ms: number): string {
+type DurationOptions = {
+  format: ('always-hours' | 'no-hours' | 'include-hours')
+}
+
+export function msToDuration(ms: number, options?: DurationOptions): string {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / (1000 * 60)) % 60);
   const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
@@ -11,6 +15,17 @@ export function msToDuration(ms: number): string {
   const formattedMinutes = pad(minutes);
   const formattedSeconds = pad(seconds);
 
+  if (options) {
+    if (options.format === 'no-hours') {
+      return `${formattedMinutes}:${formattedSeconds}`;
+    }
+    if (options.format === 'include-hours') {
+      return hours > 0
+        ? `${formattedHours}:${formattedMinutes}:${formattedSeconds}`
+        : `${formattedMinutes}:${formattedSeconds}`;
+    }
+  }
+
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
@@ -19,8 +34,8 @@ export function secondsToDuration(seconds: number): string {
 }
 
 export function durationToSeconds(duration: string): number {
-  const [ hours, minutes, seconds] = duration.split(':');
-  return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds); 
+  const [hours, minutes, seconds] = duration.split(':');
+  return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
 }
 
 export function checkPluralization(word: string, amount: number | undefined): string {

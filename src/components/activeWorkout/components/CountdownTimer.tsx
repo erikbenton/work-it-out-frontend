@@ -29,7 +29,7 @@ export default function CountdownTimer({ startTime, duration }: Props) {
 
   return (
     <Typography>
-      {msToDuration(countDownTime)}
+      {msToDuration(countDownTime, { format: "include-hours" })}
     </Typography>
   )
 }
