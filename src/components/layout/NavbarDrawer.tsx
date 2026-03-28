@@ -6,17 +6,18 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import type { PageLink } from "./Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Divider } from "@mui/material";
+import { Divider, Drawer } from "@mui/material";
 import DrawerUserMenu from "./DrawerUserMenu";
 import { Suspense } from "react";
 import LoadingIcon from "./LoadingIcon";
 
 type Props = {
   links: PageLink[],
-  handleClose: () => void
+  handleClose: () => void,
+  open?: boolean
 }
 
-export default function NavbarDrawer({ links, handleClose }: Props) {
+export default function NavbarDrawer({ links, handleClose, open }: Props) {
   const pages: PageLink[] = links.map(l => ({ ...l, active: false }));
   const location = useLocation();
   const navigate = useNavigate();
@@ -35,40 +36,42 @@ export default function NavbarDrawer({ links, handleClose }: Props) {
   }
 
   return (
-    <Box sx={{ width: 220, height: '100%', bgcolor: 'white' }} role="presentation">
-      <Suspense fallback={<LoadingIcon />}>
-        <DrawerUserMenu />
-      </Suspense>
-      <Divider sx={{ pt: 1, mx: 1 }} />
-      <List onClick={handleClose}>
-        {pages.map(page => (
-          <ListItem
-            key={page.text}
-            disablePadding
-            sx={{
-              bgcolor: page.active ? 'primary.light' : 'inherited',
-              color: page.active ? 'white' : 'inherited',
-              borderBottomRightRadius: '25px',
-              borderTopRightRadius: '25px',
-              width: '97%'
-            }}
-          >
-            <ListItemButton
-              onClick={() => navigate(page.url)}
+    <Drawer open={open} onClose={handleClose}>
+      <Box sx={{ width: 220, height: '100%', bgcolor: 'white' }} role="presentation">
+        <Suspense fallback={<LoadingIcon />}>
+          <DrawerUserMenu />
+        </Suspense>
+        <Divider sx={{ pt: 1, mx: 1 }} />
+        <List onClick={handleClose}>
+          {pages.map(page => (
+            <ListItem
+              key={page.text}
+              disablePadding
               sx={{
+                bgcolor: page.active ? 'primary.light' : 'inherited',
+                color: page.active ? 'white' : 'inherited',
                 borderBottomRightRadius: '25px',
                 borderTopRightRadius: '25px',
                 width: '97%'
               }}
             >
-              <ListItemIcon>
-                {page.icon(page.active)}
-              </ListItemIcon>
-              <ListItemText primary={page.text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+              <ListItemButton
+                onClick={() => navigate(page.url)}
+                sx={{
+                  borderBottomRightRadius: '25px',
+                  borderTopRightRadius: '25px',
+                  width: '97%'
+                }}
+              >
+                <ListItemIcon>
+                  {page.icon(page.active)}
+                </ListItemIcon>
+                <ListItemText primary={page.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    </Drawer>
   );
 }

@@ -7,7 +7,6 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { useState, type ReactElement } from "react";
 import { Link } from "react-router-dom";
-import Drawer from "@mui/material/Drawer";
 import NavbarDrawer from "./NavbarDrawer";
 import HomeIcon from '@mui/icons-material/Home';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
@@ -82,9 +81,11 @@ export default function Navbar() {
             >
               <MenuIcon />
             </IconButton>
-            <Drawer open={Boolean(anchorElNav)} onClose={handleCloseNavMenu}>
-              <NavbarDrawer links={pages} handleClose={handleCloseNavMenu} />
-            </Drawer>
+            <NavbarDrawer
+              open={Boolean(anchorElNav)}
+              links={pages}
+              handleClose={handleCloseNavMenu}
+            />
           </Box>
 
           {/* Expanded Menu */}
