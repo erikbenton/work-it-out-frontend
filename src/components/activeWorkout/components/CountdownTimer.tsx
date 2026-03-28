@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { durationToSeconds, msToDuration } from "../../../utils/formatters";
-import { Collapse, Typography } from "@mui/material";
+import { Chip, Collapse, Typography } from "@mui/material";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 
 type Props = {
@@ -34,10 +34,18 @@ export default function CountdownTimer({ startTime, duration }: Props) {
   const countDownTime = Math.abs(countDownTimeActual);
 
   return (
-    <Collapse orientation="horizontal" in={true} appear={!timerAppeared} onTransitionEnd={handleAppeared}>
-      <Typography>
-        {msToDuration(countDownTime, { format: "include-hours" })}
-      </Typography>
-    </Collapse>
+    <Chip
+      variant="outlined"
+      label={
+        <Collapse
+          orientation="horizontal"
+          in={true}
+          appear={!timerAppeared}
+          onTransitionEnd={handleAppeared}>
+          <Typography>
+            {msToDuration(countDownTime, { format: "include-hours" })}
+          </Typography>
+        </Collapse>
+      } />
   )
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { msToDuration } from "../../../utils/formatters";
+import { Typography } from "@mui/material";
 
 type Props = {
   startTime: number
@@ -19,8 +20,8 @@ export default function ElapsedTimer({ startTime }: Props) {
   }, []);
 
   return (
-    <span>
+    <Typography variant="h5" component="h2">
       {msToDuration(time, { format: "include-hours" })}
-    </span>
+    </Typography>
   )
 }

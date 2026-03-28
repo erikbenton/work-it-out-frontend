@@ -6,15 +6,58 @@ import Typography from "@mui/material/Typography";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import { Grow, Stack } from "@mui/material";
+import { Collapse, Stack } from "@mui/material";
 import { useState } from "react";
 import ElapsedTimer from "./ElapsedTimer";
 import CountdownTimer from "./CountdownTimer";
+import VerticalIconMenu from "../../layout/VerticalIconMenu";
+import { devConsole } from "../../../utils/debugLogger";
+import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutGroupNavbar() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
-  const { workout } = useActiveWorkout();
+  const { workout, dispatch } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
+
+  const handleClearWorkout = () => {
+    dispatch({ type: 'endWorkout' });
+    navigate('/activeWorkout');
+  }
+
+  const handleFinishWorkout = () => {
+    if (workout) {
+      services.createFromActiveWorkout(workout, {
+        onSuccess: (savedCompletedWorkout) => {
+          devConsole(savedCompletedWorkout);
+          dispatch({ type: 'endWorkout' });
+          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
+        }
+      });
+    }
+  }
+
+  if (workout === null) {
+    return (
+      <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
+        <Typography variant="h5" component='h2'>
+          No workout selected.
+        </Typography>
+      </Box>
+    );
+  }
+
+  const menuItems = [
+    {
+      label: 'Finish Workout',
+      handleClick: handleFinishWorkout,
+    },
+    {
+      label: "Cancel Workout",
+      handleClick: handleClearWorkout,
+      sx: { color: 'error.main' }
+    },
+  ];
 
   return (
     <Box sx={{ flexGrow: 1, mb: 1 }}>
@@ -37,41 +80,40 @@ export default function ActiveWorkoutGroupNavbar() {
               alignItems: "center",
             }}
           >
-            <Stack direction='row'>
+            <Stack direction='row' sx={{ alignItems: 'center' }}>
               <IconButton
                 size="large"
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mr: 1, p: 0, ml: 1 }}
+                sx={{ mx: 1, p: 0 }}
                 onClick={() => setOpen(false)}
               >
-                <Grow
+
+                <Collapse
+                  orientation="horizontal"
                   timeout={100}
                   in={open}
+                  appear={true}
                   onExited={() => navigate('/activeWorkout')}
                 >
-                  <ArrowBackIcon />
-                </Grow>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <ArrowBackIcon />
+                  </Box>
+                </Collapse>
               </IconButton>
-              <Typography variant="h5" component="h2">
-                {workout?.name}
-              </Typography>
+              <ElapsedTimer startTime={workout.startTime} />
             </Stack>
-            {workout &&
-              <Box sx={{ mr: 1 }}>
-                <Stack direction='row' spacing={2}>
-                  {workout && workout.currentRestStart && workout.currentRestTime &&
-                    <CountdownTimer
-                      key={workout.currentRestStart}
-                      startTime={workout.currentRestStart}
-                      duration={workout.currentRestTime}
-                    />
-                  }
-                  <ElapsedTimer startTime={workout.startTime} />
-                </Stack>
-              </Box>
-            }
+            <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
+              {workout.currentRestStart && workout.currentRestTime &&
+                <CountdownTimer
+                  key={workout.currentRestStart}
+                  startTime={workout.currentRestStart}
+                  duration={workout.currentRestTime}
+                />
+              }
+              <VerticalIconMenu menuItems={menuItems} buttonId={`${workout.id}`} />
+            </Stack>
           </Stack>
         </Toolbar>
       </AppBar>
