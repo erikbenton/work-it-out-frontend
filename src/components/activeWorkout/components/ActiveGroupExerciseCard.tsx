@@ -7,6 +7,8 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
 import { Link } from "react-router-dom";
 import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
+import Stack from "@mui/material/Stack";
+import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup
@@ -63,7 +65,14 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
             {exercise.name}
           </Link>
         }
-        subheader={`${numberCompleted}/${numberOfSets} Sets done`}
+        subheader={
+          <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
+            {numberCompleted}/{numberOfSets} Sets done
+            {numberCompleted === numberOfSets &&
+              (<AllSetsCompleteIcon />)
+            }
+          </Stack>
+        }
         slotProps={{ title: { variant: 'h6' } }}
       />
     </Card>

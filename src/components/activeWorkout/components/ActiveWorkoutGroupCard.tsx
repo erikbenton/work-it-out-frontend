@@ -7,6 +7,8 @@ import Box from "@mui/material/Box";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { Link, useNavigate } from "react-router-dom";
 import Card from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup
@@ -76,7 +78,14 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
             {exercise.name}
           </Link>
         }
-        subheader={`${numberCompletedSets}/${numberOfSets} Sets done`}
+        subheader={
+          <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
+            {numberCompletedSets}/{numberOfSets} Sets done
+            {numberCompletedSets === numberOfSets &&
+              (<AllSetsCompleteIcon />)
+            }
+          </Stack>
+        }
         slotProps={{ title: { variant: 'h6' } }}
       />
     </Card>
