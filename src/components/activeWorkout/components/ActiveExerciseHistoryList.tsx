@@ -9,6 +9,7 @@ import React from "react";
 import Box from "@mui/material/Box";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   exerciseId: number,
@@ -23,7 +24,7 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
     <Stack spacing={1} sx={{ width: '100%' }}>
       {history?.map(group => (
         <Card
-          sx={{ bgcolor: '#F5FBFF', py: 1, borderRadius: 4 }}
+          sx={{ bgcolor: bgBlue, py: 1, borderRadius: 4 }}
           key={`group-history-${group.id}`}
         >
           <CardContent className="pb-0" sx={{ p: 0 }}>

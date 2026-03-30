@@ -7,6 +7,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import Chip from "@mui/material/Chip";
 import type MuscleData from "../../../types/muscleData";
 import useMuscleOptions from "../../../hooks/useMuscleOptions";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   muscles?: MuscleData[],
@@ -23,7 +24,7 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', py: 2, bgcolor: '#F5FBFF',borderRadius: 5 }}
+      sx={{ width: '100%', py: 2, bgcolor: bgBlue,borderRadius: 5 }}
       square={false}
     >
       <Stack sx={{ mx: 2 }}>

@@ -8,6 +8,7 @@ import { useWorkouts } from "../../../hooks/useWorkouts";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
 import { getMaxMuscleGroup } from "../../../utils/muscles";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   workout: Workout
@@ -50,7 +51,7 @@ export default function WorkoutListCard({ workout }: Props) {
   ];
 
   return (
-    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
         avatar={
           <Link to={`/workouts/${workout.id}`}>

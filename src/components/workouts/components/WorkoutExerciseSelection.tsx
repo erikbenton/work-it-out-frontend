@@ -27,10 +27,11 @@ const Transition = React.forwardRef(function Transition(
 type Props = {
   open: boolean,
   setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  addExercises: (exercises: number[]) => void
+  addExercises: (exercises: number[]) => void,
+  limit?: number
 }
 
-export default function WorkoutExerciseSelection({ open, setOpen, addExercises }: Props) {
+export default function WorkoutExerciseSelection({ open, setOpen, addExercises, limit }: Props) {
   const { exercises } = useExercises();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
@@ -91,6 +92,7 @@ export default function WorkoutExerciseSelection({ open, setOpen, addExercises }
             selected={selected}
             setSelected={setSelected}
             exercise={ex}
+            limit={limit}
           />
         ))}
       </List>

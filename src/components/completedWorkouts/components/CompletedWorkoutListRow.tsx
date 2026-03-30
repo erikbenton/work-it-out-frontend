@@ -7,6 +7,7 @@ import { getMaxMuscleGroup } from "../../../utils/muscles";
 import { getDateTime } from "../../../utils/dateTime";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   workout: CompletedWorkout
@@ -26,7 +27,7 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
         <Typography variant="subtitle2">{dateTime.dayOfWeek}</Typography>
         <Typography variant="subtitle1">{dateTime.dayOfMonth}</Typography>
       </Stack>
-      <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
+      <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
         <CardHeader
           sx={{ overflow: 'hidden' }}
           avatar={

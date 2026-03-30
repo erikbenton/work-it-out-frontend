@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import { devConsole } from '../../../utils/debugLogger';
+import { bgBlue } from '../../../utils/styling';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -81,10 +82,10 @@ export default function ActiveSetInputs({ exerciseGroup, values, setValues, allS
       fullWidth
       maxWidth='xs'
       onClose={toggleDialog(false)}
-      slotProps={{ paper: { sx: { borderRadius: 5, p: 2, bgcolor: '#F5FBFF' } } }}
+      slotProps={{ paper: { sx: { borderRadius: 5, p: 2, bgcolor: bgBlue } } }}
       open={editing}
     >
-      <Box sx={{ overflow: 'auto', bgcolor: '#F5FBFF', p: 2 }} id="exercise-set-input-form">
+      <Box sx={{ overflow: 'auto', bgcolor: bgBlue, p: 2 }} id="exercise-set-input-form">
         {workoutCompleted
           ? <Box sx={{ display: 'flex', width: '100%', justifyContent: 'center', minHeight: 64 }}>
             <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
@@ -97,7 +98,7 @@ export default function ActiveSetInputs({ exerciseGroup, values, setValues, allS
                 Next Exercise
               </Button>
             </Box>
-            : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
+            : <Stack spacing={2} sx={{ bgcolor: bgBlue }}>
               <Stack component='form' onSubmit={handleSubmit} spacing={1}>
                 <Stack direction='row' spacing={1} sx={{ width: '100%' }}>
                   <TextField

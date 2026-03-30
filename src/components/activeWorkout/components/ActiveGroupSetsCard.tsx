@@ -7,6 +7,7 @@ import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { createNewGroupSet } from "../../../reducers/activeWorkoutReducer";
 import { TransitionGroup } from "react-transition-group";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -32,7 +33,7 @@ export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick, setV
   }
 
   return (
-    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ bgcolor: bgBlue, borderRadius: 5 }}>
       <CardContent className="pb-1" sx={{ p: 0 }}>
         <List sx={{ pb: 0 }}>
           <ListItem>

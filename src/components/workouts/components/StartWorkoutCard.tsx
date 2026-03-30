@@ -9,6 +9,7 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
 import { getMaxMuscleGroup } from "../../../utils/muscles";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   workout: Workout
@@ -30,7 +31,7 @@ export default function StartWorkoutCard({ workout }: Props) {
   ];
 
   return (
-    <Card sx={{ bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
         avatar={
           <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>

@@ -9,6 +9,7 @@ import { useState } from "react";
 import { devConsole } from "../../../utils/debugLogger";
 import UserStatsIcons from "./UserStatsIcons";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
+import { bgBlue } from "../../../utils/styling";
 
 
 export default function UserStats() {
@@ -64,7 +65,7 @@ export default function UserStats() {
           display: 'flex',
           flexDirection: 'row',
           py: 2,
-          bgcolor: '#F5FBFF',
+          bgcolor: bgBlue,
           borderRadius: 5
         }}
         square={false}

@@ -16,6 +16,7 @@ import SetTagsInputMobile from './SetTagsInputMobile';
 import Button from '@mui/material/Button';
 import LiftingInputsMobile from './LiftingInputsMobile';
 import useSetTags from '../../../hooks/useSetTags';
+import { bgBlue } from '../../../utils/styling';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -37,7 +38,7 @@ const Root = styled('div')(({ theme }) => ({
 }));
 
 const StyledBox = styled('div')(({ theme }) => ({
-  backgroundColor: '#F5FBFF',
+  backgroundColor: bgBlue,
   ...theme.applyStyles('dark', {
     backgroundColor: grey[800],
   }),
@@ -110,7 +111,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, values, setValues
           '.mobile-inputs.MuiDrawer-root > .MuiPaper-root': {
             height: `calc(${drawerHeight} + ${expandedOffset} - ${drawerBleeding}px)`,
             overflow: 'visible',
-            backgroundColor: '#F5FBFF'
+            backgroundColor: bgBlue
           },
         }}
       />
@@ -129,7 +130,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, values, setValues
       >
         <StyledBox
           sx={{
-            bgcolor: '#F5FBFF',
+            bgcolor: bgBlue,
             position: 'absolute',
             top: -drawerBleeding,
             borderTopLeftRadius: 8,
@@ -139,9 +140,9 @@ export default function ActiveSetInputsMobile({ exerciseGroup, values, setValues
             left: 0,
           }}
         >
-          <Box className="rounded-xl" sx={{ py: '23px', bgcolor: '#F5FBFF' }}><Puller /></Box>
+          <Box className="rounded-xl" sx={{ py: '23px', bgcolor: bgBlue }}><Puller /></Box>
         </StyledBox>
-        <Box component='form' sx={{ overflow: 'auto', bgcolor: '#F5FBFF' }} onSubmit={handleSubmit} id="exercise-set-input-form">
+        <Box component='form' sx={{ overflow: 'auto', bgcolor: bgBlue }} onSubmit={handleSubmit} id="exercise-set-input-form">
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center' }}>
               <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
@@ -154,7 +155,7 @@ export default function ActiveSetInputsMobile({ exerciseGroup, values, setValues
                   Next Exercise
                 </Button>
               </Box>
-              : <Stack spacing={2} sx={{ bgcolor: '#F5FBFF' }}>
+              : <Stack spacing={2} sx={{ bgcolor: bgBlue }}>
                 <LiftingInputsMobile values={values} setValues={setValues} />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
                   <Button

@@ -5,6 +5,7 @@ import Stack from "@mui/material/Stack";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
+import { bgBlue } from "../../../utils/styling";
 
 const equipmentOptions = ['assisted', 'band', 'barbell', 'body weight', 'cable',
   'dumbbell', 'machine', 'ez barbell', 'kettlebell', 'medicine ball',
@@ -24,7 +25,7 @@ export default function ExerciseFormEquipment({ equipment, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', py: 2, bgcolor: '#F5FBFF', borderRadius: 5 }}
+      sx={{ width: '100%', py: 2, bgcolor: bgBlue, borderRadius: 5 }}
       square={false}
     >
       <Stack sx={{ mx: 2 }}>

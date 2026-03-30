@@ -10,6 +10,7 @@ import ExpandMoreButton from '../../layout/ExpandMoreButton';
 import ExerciseGroupCardDetails from './ExerciseGroupDetails';
 import { useExercises } from '../../../hooks/useExercises';
 import useWorkoutForm from '../../../hooks/useWorkoutForm';
+import { bgBlue } from '../../../utils/styling';
 
 type Props = {
   exerciseGroup: ExerciseGroup,
@@ -22,7 +23,7 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   return (
-    <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
       <ExerciseGroupCardTitle
         exerciseName={exercise.name ?? ""}
         muscles={exercise.muscles ?? []}

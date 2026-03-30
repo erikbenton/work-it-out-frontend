@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import Stack from "@mui/material/Stack";
 import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
+import { bgBlue } from "../../../utils/styling";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup
@@ -44,7 +45,7 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
   ];
 
   return (
-    <Card sx={{ width: '100%', bgcolor: '#F5FBFF', borderRadius: 5 }}>
+    <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
         sx={{ overflow: 'hidden' }}
         avatar={
