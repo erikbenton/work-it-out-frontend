@@ -26,7 +26,6 @@ export default function LiftingInputsMobile({ values, setValues }: Props) {
   return (
     <Stack direction='row' spacing={2} sx={{ px: 2 }}>
       <TextField
-        autoFocus
         id="weight"
         name="weight"
         label="Weight (lbs)"

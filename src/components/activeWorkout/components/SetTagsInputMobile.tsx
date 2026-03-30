@@ -23,7 +23,7 @@ export default function SetTagsInputMobile({ expanded, values, setValues }: Prop
   }
 
   return (
-    <Stack sx={{ justifyContent: 'space-evenly' }}>
+    <Stack sx={{ justifyContent: 'space-evenly', mt: 0 }}>
       <Collapse in={expanded} unmountOnExit>
         <ToggleButtonGroup
           id="set-tag-group-label"
@@ -31,21 +31,22 @@ export default function SetTagsInputMobile({ expanded, values, setValues }: Prop
           exclusive
           onChange={handleSetTypeChange}
           aria-label="Tag"
-          sx={{ flexWrap: 'wrap', mx: 2 }}
+          sx={{ flexWrap: 'wrap', mx: 2, mb: 2, justifyContent: 'space-evenly' }}
         >
           {setTags?.map(option => (
             <ToggleButton
               key={option.id}
               className="rounded-full"
               value={option}
+              size="small"
               sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}
             >
               <Chip
                 label={option.name}
                 variant="outlined"
-                size="small"
+                size="medium"
                 className="capitalize"
-                sx={{ border: `1px solid ${option.colorRgb}` }}
+                sx={{ border: `1px solid ${option.colorRgb}`, minWidth: '80px' }}
               />
             </ToggleButton>
           ))}
