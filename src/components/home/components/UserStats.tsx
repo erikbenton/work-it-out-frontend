@@ -66,7 +66,7 @@ export default function UserStats() {
           flexDirection: 'row',
           py: 2,
           bgcolor: bgBlue,
-          borderRadius: 5
+          borderRadius: 5,
         }}
         square={false}
       >

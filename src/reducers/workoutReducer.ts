@@ -5,6 +5,7 @@ import type Workout from "../types/workout";
 
 export type WorkoutAction =
   { type: string, payload: never }
+  | { type: 'setWorkout', payload: { workout: Workout } }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setDescription', payload: { description: string | undefined } }
   | { type: 'addGroupSet', payload: { group: ExerciseGroup } }
@@ -17,6 +18,10 @@ export type WorkoutAction =
 
 export default function workoutReducer(workout: Workout, action: WorkoutAction): Workout {
   switch (action.type) {
+
+    case 'setWorkout':
+      return { ...action.payload.workout };
+
     case 'setName':
       return { ...workout, name: action.payload.name.trim() };
 
@@ -54,14 +59,14 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
         return { ...workout };
       }
 
-      const shiftGroups = [ ...workout.exerciseGroups ];
+      const shiftGroups = [...workout.exerciseGroups];
       const tempGroup = { ...shiftGroups[newIndex] };
       shiftGroups[newIndex] = { ...group };
       shiftGroups[groupIndex] = tempGroup;
 
-      const exerciseGroups = shiftGroups.map((g, index) => ({ ...g, sort: index}));
+      const exerciseGroups = shiftGroups.map((g, index) => ({ ...g, sort: index }));
 
-      return { ...workout, exerciseGroups};
+      return { ...workout, exerciseGroups };
     }
 
     case 'addGroupSet': {

@@ -13,7 +13,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const [workout, dispatch] = useReducer(workoutReducer, initWorkout);
   const newWorkout = initWorkout.id === 0;
   const { setTags } = useSetTags();
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(newWorkout);
   const [expanded, setExpanded] = useState<boolean[]>(
     new Array(workout.exerciseGroups.length).fill(false));
 

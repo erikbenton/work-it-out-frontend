@@ -65,10 +65,28 @@ export default function WorkoutFormTitle() {
   const menuItems = [
     {
       label: editing ? "Cancel" : "Edit",
-      handleClick: () => setEditing(!editing),
+      handleClick: () => {
+        setEditing(!editing);
+        if (editing) {
+          if (workout.id) {
+            dispatch({
+              type: 'setWorkout',
+              payload: {
+                workout: services.getWorkoutById(workout.id)
+              }
+            });
+          } else {
+            navigate('/workouts');
+          }
+        }
+      },
     },
-    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } },
+    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } }
   ];
+
+  if (newWorkout) {
+    menuItems.pop();
+  }
 
   if (!editing) {
     // put it 1st in the list

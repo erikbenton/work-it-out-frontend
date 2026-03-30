@@ -10,7 +10,7 @@ import { devConsole } from '../../../utils/debugLogger';
 import { useState } from 'react';
 import SetTagsInputMobile from './SetTagsInputMobile';
 import Button from '@mui/material/Button';
-import LiftingInputsMobile from './LiftingInputsMobile';
+import LiftingInputs from './LiftingInputs';
 import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
@@ -20,10 +20,11 @@ type Props = {
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
   allSetsCompleted: boolean,
-  completeSet: (completedSet: ActiveExerciseSet) => void
+  completeSet: (completedSet: ActiveExerciseSet) => void,
+  size: 'small' | 'large'
 }
 
-export default function ActiveSetsInputMobileSticky({ exerciseGroup, values, setValues, allSetsCompleted, completeSet }: Props) {
+export default function ActiveSetsInputSticky({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { dispatch, workout, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -67,7 +68,15 @@ export default function ActiveSetsInputMobileSticky({ exerciseGroup, values, set
       position='sticky'
       bottom={0}
       component='form'
-      sx={{ overflow: 'auto', bgcolor: bgBlue, zIndex: 3, pt: 3, pb: 1, boxShadow: 1 }}
+      sx={{
+        overflow: 'auto',
+        bgcolor: bgBlue,
+        zIndex: 3,
+        pt: 3,
+        pb: 1,
+        boxShadow: 1,
+        mx: size === 'small' ? 0 : 1
+      }}
       onSubmit={handleSubmit}
       id="exercise-set-input-form"
     >
@@ -85,7 +94,7 @@ export default function ActiveSetsInputMobileSticky({ exerciseGroup, values, set
               </Button>
             </Box>
             : <Stack spacing={1} sx={{ bgcolor: bgBlue }}>
-              <LiftingInputsMobile values={values} setValues={setValues} />
+              <LiftingInputs values={values} setValues={setValues} size={size} />
               <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
                 <Button
                   sx={{ width: '45%', borderRadius: 5 }}

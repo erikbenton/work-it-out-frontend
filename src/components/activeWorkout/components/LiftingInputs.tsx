@@ -5,9 +5,10 @@ import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 type Props = {
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
+  size: 'small' | 'large'
 }
 
-export default function LiftingInputsMobile({ values, setValues }: Props) {
+export default function LiftingInputs({ values, setValues, size }: Props) {
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
@@ -34,6 +35,10 @@ export default function LiftingInputsMobile({ values, setValues }: Props) {
         variant="filled"
         value={values?.weight ? values.weight : ""}
         onChange={handleWeightChange}
+        slotProps={{
+          input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+          inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+        }}
       />
       <TextField
         id="reps"
@@ -44,6 +49,10 @@ export default function LiftingInputsMobile({ values, setValues }: Props) {
         variant="filled"
         value={values?.reps ? values.reps : ""}
         onChange={handleRepsChange}
+        slotProps={{
+          input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+          inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+        }}
       />
     </Stack>
   )

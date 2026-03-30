@@ -17,10 +17,10 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
   const { userStats } = useUserStats(numberOfDays);
   const met = 3;
   const avgWeightKg = 68;
-  const calories = Math.floor((userStats.durationInSeconds) * met * avgWeightKg / ( 60 * 60));
+  const calories = Math.floor((userStats.durationInSeconds) * met * avgWeightKg / (60 * 60));
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} sx={{ width: '100%' }}>
       <Grid size={4}>
         <StatIcon
           icon={<TimelineIcon />}

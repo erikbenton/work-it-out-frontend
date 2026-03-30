@@ -5,12 +5,11 @@ import ActiveGroupExerciseCard from "./components/ActiveGroupExerciseCard";
 import ActiveGroupSetsCard from "./components/ActiveGroupSetsCard";
 import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
 import ActiveExerciseHistoryList from "./components/ActiveExerciseHistoryList";
-import ActiveSetInputs from "./components/ActiveSetInputs";
 import { Suspense, useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
-import ActiveSetsInputMobileSticky from "./components/ActiveSetsInputMobileSticky";
+import ActiveSetsInputSticky from "./components/ActiveSetsInputSticky";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -87,24 +86,15 @@ export default function ActiveWorkoutGroup() {
           </Stack>
         </Box>
       </Box>
-      {mobileScreen
-        ? <ActiveSetsInputMobileSticky
-          exerciseGroup={exerciseGroup}
-          values={values}
-          setValues={setValues}
-          allSetsCompleted={allSetsCompleted}
-          key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
-          completeSet={completeSet}
-        />
-        : <ActiveSetInputs
-          exerciseGroup={exerciseGroup}
-          values={values}
-          setValues={setValues}
-          allSetsCompleted={allSetsCompleted}
-          key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
-          completeSet={completeSet}
-        />
-      }
+      <ActiveSetsInputSticky
+        exerciseGroup={exerciseGroup}
+        values={values}
+        setValues={setValues}
+        allSetsCompleted={allSetsCompleted}
+        key={`${exerciseGroup.key}-${currentSet?.key ?? ''}`}
+        completeSet={completeSet}
+        size={mobileScreen ? 'small' : 'large'}
+      />
     </Box>
   )
 }

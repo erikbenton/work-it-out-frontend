@@ -97,7 +97,7 @@ export default function ActiveWorkoutGroupNavbar() {
                   appear={true}
                   onExited={() => navigate('/activeWorkout')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', pr: 1 }}>
                     <ArrowBackIcon />
                   </Box>
                 </Collapse>
