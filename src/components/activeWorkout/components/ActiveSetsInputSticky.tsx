@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import { devConsole } from '../../../utils/debugLogger';
 import { useState } from 'react';
-import SetTagsInputMobile from './SetTagsInputMobile';
+import SetTagsInput from './SetTagsInput';
 import Button from '@mui/material/Button';
 import LiftingInputs from './LiftingInputs';
 import useSetTags from '../../../hooks/useSetTags';
@@ -105,7 +105,7 @@ export default function ActiveSetsInputSticky({ exerciseGroup, values, setValues
                 </Button>
                 <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
               </Stack>
-              <SetTagsInputMobile expanded={expanded} setValues={setValues} values={values} />
+              <SetTagsInput expanded={expanded} setValues={setValues} values={values} />
             </Stack>
         }
       </Collapse>

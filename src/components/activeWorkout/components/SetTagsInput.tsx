@@ -13,7 +13,7 @@ type Props = {
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
 }
 
-export default function SetTagsInputMobile({ expanded, values, setValues }: Props) {
+export default function SetTagsInput({ expanded, values, setValues }: Props) {
   const { setTags } = useSetTags();
 
   const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | null) => {
@@ -31,7 +31,7 @@ export default function SetTagsInputMobile({ expanded, values, setValues }: Prop
           exclusive
           onChange={handleSetTypeChange}
           aria-label="Tag"
-          sx={{ flexWrap: 'wrap', mx: 2, mb: 2, justifyContent: 'space-evenly' }}
+          sx={{ flexWrap: 'wrap', mb: 2, justifyContent: 'space-evenly', width: '100%' }}
         >
           {setTags?.map(option => (
             <ToggleButton
