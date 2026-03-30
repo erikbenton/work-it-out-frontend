@@ -19,16 +19,17 @@ const WorkoutList = () => {
       <Typography variant="h4" component="h2" sx={{ mb: 1 }}>
         Workouts
       </Typography>
-      <Stack spacing={1}>
-        {workouts.map((workout) => (
-          <WorkoutListCard key={workout.id} workout={workout} />
-        ))}
-      </Stack>
-      <Box className="flex flex-col items-center">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          mb: 2
+        }}
+      >
         <Button
           fullWidth
           aria-label="start workout"
-          className="mt-3"
           sx={{ textTransform: "none", borderRadius: 5 }}
           variant="contained"
           onClick={navigateToNewWorkoutForm}
@@ -36,6 +37,11 @@ const WorkoutList = () => {
           Add Workout
         </Button>
       </Box>
+      <Stack spacing={1}>
+        {workouts.map((workout) => (
+          <WorkoutListCard key={workout.id} workout={workout} />
+        ))}
+      </Stack>
     </Box>
   );
 };
