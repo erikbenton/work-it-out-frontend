@@ -68,7 +68,7 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
         subheader={
           <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
             {numberCompleted}/{numberOfSets} Sets done
-            {numberCompleted === numberOfSets &&
+            {numberOfSets !== 0 && numberCompleted === numberOfSets &&
               (<AllSetsCompleteIcon />)
             }
           </Stack>
