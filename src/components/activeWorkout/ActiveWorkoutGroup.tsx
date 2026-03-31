@@ -10,6 +10,7 @@ import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
 import ActiveSetsInputSticky from "./components/ActiveSetsInputSticky";
+import WorkoutExerciseSelection from "../workouts/components/WorkoutExerciseSelection";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -20,6 +21,7 @@ export default function ActiveWorkoutGroup() {
   const currentIndex = exerciseGroup?.exerciseSets.findIndex(s => !s.completed) ?? -1;
   const currentSet = currentIndex > -1 ? exerciseGroup?.exerciseSets[currentIndex] : undefined;
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(currentSet);
+  const [replacingExercise, setReplacingExercise] = useState(false);
   const allSetsCompleted = currentIndex === -1;
 
   if (!workout) {
@@ -63,13 +65,34 @@ export default function ActiveWorkoutGroup() {
     }
   }
 
+  const replaceExercise = (exercises: number[]) => {
+    if (exercises.length > 0) {
+      const updatedExerciseId = exercises[0];
+      dispatch({
+        type: 'updateGroup',
+        payload: { group: { ...exerciseGroup, exerciseId: updatedExerciseId } }
+      });
+    }
+  }
+
+  if (replacingExercise) {
+    return (
+      <WorkoutExerciseSelection
+        open={replacingExercise}
+        setOpen={setReplacingExercise}
+        addExercises={replaceExercise}
+        limit={1}
+      />
+    );
+  }
+
   return (
     <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2 }}>
       <ActiveWorkoutGroupNavbar />
       <Box minHeight='100%'>
         <Box mb="10vh">
           <Stack spacing={1} sx={{ px: 1 }}>
-            <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} />
+            <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} setReplacingExercise={setReplacingExercise} />
             <ActiveGroupSetsCard
               exerciseGroup={exerciseGroup}
               onDoubleClick={copyCompletedSet}

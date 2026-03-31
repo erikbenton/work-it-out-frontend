@@ -20,16 +20,18 @@ export default function ExerciseSelectionItem({ exercise, selected, setSelected,
     if (alreadySelected) {
       setSelected(prev => prev.filter(id => id !== exercise.id));
     } else {
-      const newSelection = limit
-        ? selected.concat(exercise.id).slice(selected.length - limit, selected.length)
+      const newSelection = limit && selected.length >= limit
+        ? selected.concat(exercise.id).slice(selected.length - limit + 1)
         : selected.concat(exercise.id);
       setSelected(newSelection);
     }
   }
 
   return (
-    <ListItem key={exercise.id} disableGutters disablePadding
-
+    <ListItem
+      key={exercise.id}
+      disableGutters
+      disablePadding
       secondaryAction={
         alreadySelected
           ? <IconButton

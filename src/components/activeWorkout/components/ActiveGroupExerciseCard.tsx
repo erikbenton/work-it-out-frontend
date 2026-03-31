@@ -12,10 +12,11 @@ import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
 import { bgBlue } from "../../../utils/styling";
 
 type Props = {
-  exerciseGroup: ActiveExerciseGroup
+  exerciseGroup: ActiveExerciseGroup,
+  setReplacingExercise: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
+export default function ActiveGroupExerciseCard({ exerciseGroup, setReplacingExercise }: Props) {
   const { dispatch } = useActiveWorkout();
   const { services } = useExercises();
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
@@ -32,7 +33,7 @@ export default function ActiveGroupExerciseCard({ exerciseGroup }: Props) {
     {
       label: "Replace",
       handleClick: () => {
-        return;
+        setReplacingExercise(true);
       },
     },
     {

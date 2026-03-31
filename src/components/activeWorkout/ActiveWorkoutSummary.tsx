@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
 import ActiveWorkoutGroupCard from "./components/ActiveWorkoutGroupCard";
 import ElapsedTimer from "./components/ElapsedTimer";
@@ -10,9 +10,10 @@ import VerticalIconMenu from "../layout/VerticalIconMenu";
 import { useState } from "react";
 import WorkoutExerciseSelection from "../workouts/components/WorkoutExerciseSelection";
 import CountdownTimer from "./components/CountdownTimer";
+import SummaryActionButtons from "./components/SummaryActionButtons";
 
 export default function ActiveWorkoutSummary() {
-  const { workout, dispatch, complete } = useActiveWorkout();
+  const { workout, dispatch } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
   const [selectingExercises, setSelectingExercises] = useState(false);
@@ -104,15 +105,11 @@ export default function ActiveWorkoutSummary() {
         {workout.exerciseGroups.map(group => (
           <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
         ))}
-        {complete &&
-          <Button
-            sx={{ textTransform: 'none', borderRadius: 5 }}
-            variant="contained"
-            onClick={handleFinishWorkout}
-          >
-            Finish Workout
-          </Button>
-        }
+        <SummaryActionButtons
+          workout={workout}
+          handleAddingExercises={handleAddingExercises}
+          handleFinishWorkout={handleFinishWorkout}
+        />
       </Stack>
     </Box>
   );
