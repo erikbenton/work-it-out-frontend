@@ -10,7 +10,7 @@ import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
 import ActiveSetsInputSticky from "./components/ActiveSetsInputSticky";
-import WorkoutExerciseSelection from "../workouts/components/WorkoutExerciseSelection";
+import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -77,7 +77,7 @@ export default function ActiveWorkoutGroup() {
 
   if (replacingExercise) {
     return (
-      <WorkoutExerciseSelection
+      <ExerciseSelect
         open={replacingExercise}
         setOpen={setReplacingExercise}
         addExercises={replaceExercise}

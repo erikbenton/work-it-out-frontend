@@ -8,11 +8,11 @@ import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import WorkoutFormNameInput from "./WorkoutFormNameInput";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import WorkoutExerciseSelection from "./WorkoutExerciseSelection";
 import { useState } from "react";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 import { useNavigate } from "react-router-dom";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
+import ExerciseSelect from "../../exercises/components/ExerciseSelect";
 
 export default function WorkoutFormTitle() {
   const { workout, editing, setEditing, newWorkout, dispatch } = useWorkoutForm();
@@ -148,7 +148,7 @@ export default function WorkoutFormTitle() {
           </IconButton>
         </Grow>
       </Stack>
-      <WorkoutExerciseSelection
+      <ExerciseSelect
         open={selectingExercises && editing}
         setOpen={setSelectingExercises}
         addExercises={addExercises}

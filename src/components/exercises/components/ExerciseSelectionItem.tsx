@@ -47,7 +47,11 @@ export default function ExerciseSelectionItem({ exercise, selected, setSelected,
         key={exercise.id}
         onClick={handleClick}
       >
-        <ListItemText primary={exercise.name} secondary={exercise.equipment} />
+        <ListItemText
+          primary={exercise.name}
+          secondary={exercise.equipment}
+          slotProps={{ secondary: { sx: { textTransform: 'capitalize' } } }}
+        />
       </ListItemButton>
     </ListItem>
   )

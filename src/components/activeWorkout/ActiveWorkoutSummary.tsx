@@ -8,9 +8,9 @@ import { devConsole } from "../../utils/debugLogger";
 import ActiveWorkoutsList from "./components/ActiveWorkoutsList";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
 import { useState } from "react";
-import WorkoutExerciseSelection from "../workouts/components/WorkoutExerciseSelection";
 import CountdownTimer from "./components/CountdownTimer";
 import SummaryActionButtons from "./components/SummaryActionButtons";
+import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutSummary() {
   const { workout, dispatch } = useActiveWorkout();
@@ -97,7 +97,7 @@ export default function ActiveWorkoutSummary() {
             />
           </Stack>
         </Stack>
-        <WorkoutExerciseSelection
+        <ExerciseSelect
           open={selectingExercises}
           setOpen={setSelectingExercises}
           addExercises={addExercises}
