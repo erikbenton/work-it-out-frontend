@@ -4,16 +4,37 @@ import ExerciseHistoryItemSet from './ExerciseHistoryItemSet';
 import ExerciseHistoryItemTitle from './ExerciseHistoryItemTitle';
 import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
 import { useExerciseHistory } from '../../../hooks/useExerciseHistory';
+import { useMediaQuery, useTheme } from '@mui/material';
+import useWindowDimensions from '../../../hooks/useWindowDimensions';
 
 type Props = {
   exerciseId: number
 }
 
+const fullScreenStyle = {
+  width: '100%',
+  bgcolor: 'background.paper',
+}
+
 export default function ExerciseHistoryTab({ exerciseId }: Props) {
   const { data: history } = useExerciseHistory(exerciseId);
+  const theme = useTheme();
+  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const { height } = useWindowDimensions();
+
+  const headerPixelsOffset = 176;
+
+  const mobileScreenStyle = {
+    ...fullScreenStyle,
+    overflow: 'auto',
+    position: 'relative',
+    maxHeight: `${height - headerPixelsOffset}px`
+  };
 
   return (
-    <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
+    <List
+      sx={mobileScreen ? mobileScreenStyle : fullScreenStyle}
+    >
       {history.map(group => (
         <Box className="pb-1" key={`group-history-${group.id}`}>
           <ExerciseHistoryItemTitle group={group} />

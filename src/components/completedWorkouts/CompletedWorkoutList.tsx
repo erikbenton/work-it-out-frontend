@@ -12,9 +12,11 @@ import Stack from "@mui/material/Stack";
 import ListItemButton from "@mui/material/ListItemButton";
 import { checkPluralization } from "../../utils/formatters";
 import { devConsole } from "../../utils/debugLogger";
+import useWindowDimensions from "../../hooks/useWindowDimensions";
 
 export default function CompletedWorkoutList() {
   const { completedWorkouts } = useCompletedWorkouts();
+  const { height } = useWindowDimensions();
   const navigate = useNavigate();
 
   const [monthYearWorkoutMap, allKeys] = useMemo(() => {
@@ -38,6 +40,8 @@ export default function CompletedWorkoutList() {
     return [workoutMap, keys];
   }, [completedWorkouts]);
 
+  const headerOffsetPixels = 121.98; // yes, .98 matters
+
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
       <Typography variant="h4" component="h2" sx={{ px: 1 }}>
@@ -50,7 +54,7 @@ export default function CompletedWorkoutList() {
           bgcolor: 'background.paper',
           position: 'relative',
           overflow: 'auto',
-          maxHeight: '86vh',
+          maxHeight: `${height - headerOffsetPixels}px`,
           '& ul': { padding: 0 },
           mt: 1
         }}

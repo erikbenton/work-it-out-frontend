@@ -1,4 +1,4 @@
-import { Box, ListItemButton, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Box, ListItemButton, Typography } from '@mui/material';
 import { useNavigate, type NavigateFunction } from 'react-router-dom';
 import { useExercises } from '../../hooks/useExercises';
 
@@ -20,6 +20,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import type Exercise from '../../types/exercise';
+import useWindowDimensions from '../../hooks/useWindowDimensions';
 
 type Props = {
   exercises: Exercise[]
@@ -27,8 +28,7 @@ type Props = {
 
 function ExerciseSubheaderList({ exercises }: Props) {
   const navigate = useNavigate();
-  const theme = useTheme();
-  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const { height } = useWindowDimensions();
 
   const handleRowClick = (exercise: Exercise, navigate: NavigateFunction) => {
     return () => {
@@ -51,6 +51,8 @@ function ExerciseSubheaderList({ exercises }: Props) {
 
   const sortedKeys = keys.sort();
 
+  const headerOffsetPixels = 113.98;
+
   return (
     <List
       sx={{
@@ -58,7 +60,7 @@ function ExerciseSubheaderList({ exercises }: Props) {
         bgcolor: 'background.paper',
         position: 'relative',
         overflow: 'auto',
-        maxHeight: mobileScreen ? '87vh' : '91vh',
+        maxHeight: `${height - headerOffsetPixels}px`,
         '& ul': { padding: 0 },
       }}
       subheader={<li />}

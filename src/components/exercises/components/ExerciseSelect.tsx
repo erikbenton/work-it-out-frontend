@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { type TransitionProps } from '@mui/material/transitions';
 import CloseIcon from '@mui/icons-material/Close';
 import ExerciseSelectionItem from "./ExerciseSelectionItem";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -26,7 +27,8 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
   const { exercises } = useExercises();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const { height } = useWindowDimensions();
 
   const handleSave = () => {
     addExercises(selected);
@@ -53,10 +55,12 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
 
   const sortedKeys = keys.sort();
 
+  const headerOffsetPixels = mobileScreen ? 56 : 64;
+
   return (
     <Dialog
       disableRestoreFocus
-      fullScreen={fullScreen}
+      fullScreen={mobileScreen}
       fullWidth
       maxWidth='sm'
       open={open}
@@ -67,8 +71,8 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
       slotProps={{
         paper: {
           style: {
-            minHeight: fullScreen ? '100%' : '100%',
-            maxHeight: fullScreen ? '100%' : '100%',
+            minHeight: '100%',
+            maxHeight: '100%',
           }
         }
       }}
@@ -98,7 +102,7 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
             bgcolor: 'background.paper',
             position: 'relative',
             overflow: 'auto',
-            maxHeight: fullScreen ? '90vh' : '93vh',
+            maxHeight: `${height - headerOffsetPixels}px`,
             '& ul': { padding: 0 },
           }}
           subheader={<li />}
