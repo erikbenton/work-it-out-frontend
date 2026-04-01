@@ -14,6 +14,7 @@ export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
+  const [period, setPeriod] = useState(14);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);
@@ -45,7 +46,7 @@ export default function ExerciseDetails() {
             <ExerciseHistoryTab exerciseId={id} />
           </Suspense>)
           : <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseStats exerciseId={id} />
+            <ExerciseStats exerciseId={id} period={period} setPeriod={setPeriod} />
           </Suspense>
       }
     </Box>

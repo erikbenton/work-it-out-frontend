@@ -5,10 +5,12 @@ import ExerciseStatsBar from "./ExerciseStatsBar";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 
 type Props = {
-  exerciseId: number
+  exerciseId: number,
+  period: number,
+  setPeriod: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function ExerciseStats({ exerciseId }: Props) {
+export default function ExerciseStats({ exerciseId, period, setPeriod }: Props) {
   const { data: history } = useExerciseHistory(exerciseId);
 
   if (history.length === 0) {
@@ -24,7 +26,7 @@ export default function ExerciseStats({ exerciseId }: Props) {
   return (
     <>
       <ExerciseStatsBar history={history} />
-      <ExerciseChart history={history} />
+      <ExerciseChart history={history} period={period} setPeriod={setPeriod} />
     </>
   )
 }

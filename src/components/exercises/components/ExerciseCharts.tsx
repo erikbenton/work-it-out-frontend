@@ -9,14 +9,14 @@ import type ChartPoint from "../../../types/chartPoint";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
-import { useState } from "react";
 
 type Props = {
-  history: CompletedExerciseGroup[]
+  history: CompletedExerciseGroup[],
+  period: number,
+  setPeriod: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function ExerciseCharts({ history }: Props) {
-  const [period, setPeriod] = useState(14);
+export default function ExerciseCharts({ history, period, setPeriod }: Props) {
 
   const historyPoints: ChartPoint[] = getChartHistoryPoints(history, period);
 
