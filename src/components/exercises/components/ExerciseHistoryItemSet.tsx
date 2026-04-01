@@ -8,7 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
-import { badgeStyle, generalAvatarStyle } from "../../../utils/styling";
+import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 
 type Props = {
   set: CompletedExerciseSet,
@@ -41,7 +41,7 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }
             >
               <Avatar sx={{
                 ...generalAvatarStyle,
-                bgcolor: isCurrent ? 'primary.main' : '#E0E7F2',
+                bgcolor: isCurrent ? 'primary.main' : bgDarkBlue,
                 color: isCurrent ? 'white' : 'black',
               }}>
                 {set.sort + 1}

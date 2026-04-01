@@ -23,7 +23,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
-import { badgeStyle, generalAvatarStyle } from "../../../utils/styling";
+import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 
 function formattedRepsText(set: ExerciseSet): string {
   return (`${set.minReps ?? ""}` +
@@ -192,7 +192,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
               >
                 <Avatar sx={{
                   ...generalAvatarStyle,
-                  bgcolor: '#E0E7F2',
+                  bgcolor: bgDarkBlue,
                   color: 'gray',
                 }}>
                   {set.sort + 1}

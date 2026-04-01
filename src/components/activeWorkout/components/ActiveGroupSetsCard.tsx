@@ -7,7 +7,7 @@ import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { createNewGroupSet } from "../../../reducers/activeWorkoutReducer";
 import { TransitionGroup } from "react-transition-group";
-import { bgBlue } from "../../../utils/styling";
+import { bgBlue, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -59,11 +59,9 @@ export default function ActiveGroupSetsCard({ exerciseGroup, onDoubleClick, setV
             <ListItemButton sx={{ px: 1, py: 1 }} onClick={handleAddSet}>
               <ListItemAvatar>
                 <Avatar sx={{
-                  width: '30px',
-                  height: '30px',
-                  bgcolor: '#E0E7F2',
-                  color: 'black',
-                  fontSize: 14
+                  ...generalAvatarStyle,
+                  bgcolor: bgDarkBlue,
+                  color: 'black'
                 }}>
                   +
                 </Avatar>

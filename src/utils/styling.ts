@@ -2,6 +2,8 @@ import type SetTagOption from "../types/setTagOption";
 
 export const bgBlue = '#F5FBFF';
 
+export const bgDarkBlue = '#E0E7F2';
+
 export const generalAvatarStyle = {
   width: '35px',
   height: '35px',
