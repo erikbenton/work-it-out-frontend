@@ -26,7 +26,7 @@ export default function ExerciseStatsBar({ history }: Props) {
   }, 0);
 
   return (
-    <Stack direction='row' spacing={1} sx={{ overflowX: 'scroll' }}>
+    <Stack direction='row' spacing={1} sx={{ overflowX: 'auto', justifyContent: 'space-around' }}>
       <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
         <Avatar sx={{ bgcolor: blue[700] }}>
           <TimelineIcon />
