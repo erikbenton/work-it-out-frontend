@@ -23,30 +23,12 @@ import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
 import Box from "@mui/material/Box";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
+import { badgeStyle, generalAvatarStyle } from "../../../utils/styling";
 
 function formattedRepsText(set: ExerciseSet): string {
   return (`${set.minReps ?? ""}` +
     `${set.minReps && set.maxReps ? " - " : ""}` +
     `${set.maxReps ?? ""} reps`);
-}
-
-const generalAvatarStyle = {
-  width: '30px',
-  height: '30px',
-  fontSize: 14,
-}
-
-const badgeStyle = (setTag?: SetTagOption) => {
-  return {
-    textTransform: 'uppercase',
-    color: 'white',
-    fontSize: '0.6rem',
-    backgroundColor: setTag?.colorRgb ?? 'inherit',
-    minWidth: '16px',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%'
-  };
 }
 
 type Props = {

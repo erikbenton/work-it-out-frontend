@@ -1,6 +1,5 @@
 
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
-import type SetTagOption from "../../../types/setTagOption";
 import useSetTags from "../../../hooks/useSetTags";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -9,6 +8,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
+import { badgeStyle, generalAvatarStyle } from "../../../utils/styling";
 
 type Props = {
   set: CompletedExerciseSet,
@@ -18,25 +18,6 @@ type Props = {
 
 function displaySetText(set: CompletedExerciseSet) {
   return (set.weight ? `${set.weight} lbs x ${set.reps}` : `${set.reps}`) + ' reps'
-}
-
-const generalAvatarStyle = {
-  width: '30px',
-  height: '30px',
-  fontSize: 14,
-}
-
-const badgeStyle = (setTag?: SetTagOption) => {
-  return {
-    textTransform: 'uppercase',
-    color: 'white',
-    fontSize: '0.6rem',
-    backgroundColor: setTag?.colorRgb ?? 'inherit',
-    minWidth: '16px',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%'
-  };
 }
 
 export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }: Props) {
@@ -50,9 +31,7 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }
   }
 
   return (
-    <ListItem
-      disablePadding
-    >
+    <ListItem disablePadding>
       <ListItemButton onDoubleClick={handleDoubleClick}>
         <ListItemAvatar>
           <Tooltip title={setTag?.name} placement="right">
@@ -63,7 +42,7 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }
               <Avatar sx={{
                 ...generalAvatarStyle,
                 bgcolor: isCurrent ? 'primary.main' : '#E0E7F2',
-                color: isCurrent ? 'white' : 'black'
+                color: isCurrent ? 'white' : 'black',
               }}>
                 {set.sort + 1}
               </Avatar>

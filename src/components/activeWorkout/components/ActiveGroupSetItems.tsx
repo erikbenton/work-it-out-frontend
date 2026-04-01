@@ -8,10 +8,10 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Badge from "@mui/material/Badge";
-import type SetTagOption from "../../../types/setTagOption";
 import { Tooltip } from "@mui/material";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { devConsole } from "../../../utils/debugLogger";
+import { badgeStyle, generalAvatarStyle } from "../../../utils/styling";
 
 type Props = {
   index: number,
@@ -21,25 +21,6 @@ type Props = {
 
 interface CompletedProps extends Props {
   onDoubleClick: (completedSet: CompletedExerciseSet | ActiveExerciseSet) => void,
-}
-
-const generalAvatarStyle = {
-  width: '30px',
-  height: '30px',
-  fontSize: 14,
-}
-
-const badgeStyle = (setTag?: SetTagOption) => {
-  return {
-    textTransform: 'uppercase',
-    color: 'white',
-    fontSize: '0.6rem',
-    backgroundColor: setTag?.colorRgb ?? 'inherit',
-    minWidth: '16px',
-    width: '16px',
-    height: '16px',
-    borderRadius: '50%'
-  };
 }
 
 export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {

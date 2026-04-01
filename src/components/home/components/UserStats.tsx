@@ -6,7 +6,6 @@ import Select, { type SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
-import { devConsole } from "../../../utils/debugLogger";
 import UserStatsIcons from "./UserStatsIcons";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 import { bgBlue } from "../../../utils/styling";
@@ -14,8 +13,6 @@ import { bgBlue } from "../../../utils/styling";
 
 export default function UserStats() {
   const [period, setPeriod] = useState(28);
-
-  devConsole(period);
 
   const handleChange = (event: SelectChangeEvent<number>) => {
     setPeriod(event.target.value);
