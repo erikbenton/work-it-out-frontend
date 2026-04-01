@@ -130,7 +130,12 @@ function ExerciseChartPeriodInput({ period, setPeriod }: PeriodProps) {
           label="Period"
           onChange={handleChange}
           sx={{ borderRadius: 5 }}
-          MenuProps={{ slotProps: { paper: { sx: { borderRadius: 5 } } } }}
+          MenuProps={{
+            slotProps: {
+              paper: { sx: { borderRadius: 5 } },
+              list: { disablePadding: true }
+            }
+          }}
         >
           {numberOfDaysKeys.map(option => (
             <MenuItem
