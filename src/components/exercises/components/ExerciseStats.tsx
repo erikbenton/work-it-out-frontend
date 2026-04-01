@@ -1,4 +1,3 @@
-import Stack from "@mui/material/Stack";
 import ExerciseChart from "./ExerciseCharts";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -23,9 +22,9 @@ export default function ExerciseStats({ exerciseId }: Props) {
   }
 
   return (
-    <Stack spacing={3}>
+    <>
       <ExerciseStatsBar history={history} />
       <ExerciseChart history={history} />
-    </Stack>
+    </>
   )
 }

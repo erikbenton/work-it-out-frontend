@@ -33,7 +33,7 @@ export default function ExerciseDetails() {
         onChange={handleChange}
         centered
         variant='fullWidth'
-        sx={{ position: 'sticky', top: 0, mb: 2 }}
+        sx={{ position: 'sticky', top: 0 }}
       >
         <Tab label="About" />
         <Tab label="History" />
