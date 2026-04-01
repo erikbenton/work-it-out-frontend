@@ -26,7 +26,13 @@ export default function ExerciseCharts({ history }: Props) {
   const volume = historyPoints.map(({ value }) => value ? calculateVolume(value) : null);
 
   if (dates.length === 0) {
-    return (<Box><Typography>No data was found for this exercise in the time period.</Typography></Box>)
+    return (
+      <Box>
+        <Typography>
+          No data was found for this exercise in the time period.
+        </Typography>
+      </Box>
+    );
   }
 
   return (

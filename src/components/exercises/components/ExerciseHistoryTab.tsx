@@ -4,7 +4,7 @@ import ExerciseHistoryItemSet from './ExerciseHistoryItemSet';
 import ExerciseHistoryItemTitle from './ExerciseHistoryItemTitle';
 import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
 import { useExerciseHistory } from '../../../hooks/useExerciseHistory';
-import { useMediaQuery, useTheme } from '@mui/material';
+import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 
 type Props = {
@@ -30,6 +30,16 @@ export default function ExerciseHistoryTab({ exerciseId }: Props) {
     position: 'relative',
     maxHeight: `${height - headerPixelsOffset}px`
   };
+
+    if (history.length === 0) {
+    return (
+      <Box>
+        <Typography>
+          No data was found for this exercise in the time period.
+        </Typography>
+      </Box>
+    );
+  }
 
   return (
     <List
