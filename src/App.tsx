@@ -30,7 +30,15 @@ export default function App() {
   }
 
   return (
-    <Box className="flex flex-col items-center h-full">
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        pt: '64px'
+      }}
+    >
       <Navbar />
       <QueryErrorResetBoundary>
         {({ reset }) => (

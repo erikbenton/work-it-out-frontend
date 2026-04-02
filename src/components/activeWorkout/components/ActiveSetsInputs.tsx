@@ -24,7 +24,7 @@ type Props = {
   size: 'small' | 'large'
 }
 
-export default function ActiveSetsInputSticky({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
+export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { dispatch, workout, complete: workoutCompleted } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -63,52 +63,60 @@ export default function ActiveSetsInputSticky({ exerciseGroup, values, setValues
   }
 
   return (
-
-    <Box
-      position='sticky'
+    <Box position='fixed'
       bottom={0}
       component='form'
-      sx={{
-        overflow: 'auto',
-        bgcolor: bgBlue,
-        zIndex: 3,
-        pt: 3,
-        pb: 1,
-        boxShadow: 1,
-        mx: size === 'small' ? 0 : 1
-      }}
       onSubmit={handleSubmit}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+        px: size === 'small' ? 0 : 2,
+        zIndex: 3,
+      }}
       id="exercise-set-input-form"
     >
-      <Collapse in={true} appear={true}>
-        {workoutCompleted
-          ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-            <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
-              Finish Workout
-            </Button>
-          </Box>
-          : allSetsCompleted
+      <Box
+        className="w-full md:w-2/3"
+        sx={{
+          overflow: 'auto',
+          bgcolor: bgBlue,
+          pt: 3,
+          pb: 1,
+          boxShadow: 1,
+        }}
+      >
+        <Collapse in={true} appear={true}>
+          {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleNextExercise}>
-                Next Exercise
+              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
+                Finish Workout
               </Button>
             </Box>
-            : <Stack spacing={1} sx={{ bgcolor: bgBlue }}>
-              <LiftingInputs values={values} setValues={setValues} size={size} />
-              <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
-                <Button
-                  sx={{ width: '45%', borderRadius: 5 }}
-                  variant='outlined'
-                  onClick={() => setExpanded(!expanded)}
-                >
-                  {setTag ? setTag.name : 'Tag'}
+            : allSetsCompleted
+              ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
+                <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleNextExercise}>
+                  Next Exercise
                 </Button>
-                <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
+              </Box>
+              : <Stack spacing={1} sx={{ bgcolor: bgBlue }}>
+                <LiftingInputs values={values} setValues={setValues} size={size} />
+                <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
+                  <Button
+                    sx={{ width: '45%', borderRadius: 5 }}
+                    variant='outlined'
+                    onClick={() => setExpanded(!expanded)}
+                  >
+                    {setTag ? setTag.name : 'Tag'}
+                  </Button>
+                  <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
+                </Stack>
+                <SetTagsInput expanded={expanded} setValues={setValues} values={values} />
               </Stack>
-              <SetTagsInput expanded={expanded} setValues={setValues} values={values} />
-            </Stack>
-        }
-      </Collapse>
+          }
+        </Collapse>
+      </Box>
     </Box>
   )
 }

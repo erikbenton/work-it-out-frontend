@@ -62,7 +62,7 @@ export default function Navbar() {
   };
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="fixed">
       <Container maxWidth="xl">
         <Toolbar
           disableGutters

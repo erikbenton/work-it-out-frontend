@@ -9,7 +9,7 @@ import { Suspense, useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
-import ActiveSetsInputSticky from "./components/ActiveSetsInputSticky";
+import ActiveSetsInputs from "./components/ActiveSetsInputs";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutGroup() {
@@ -87,29 +87,31 @@ export default function ActiveWorkoutGroup() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2 }}>
-      <ActiveWorkoutGroupNavbar />
-      <Box minHeight='100%'>
-        <Box mb="10vh">
-          <Stack spacing={1} sx={{ px: 1 }}>
-            <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} setReplacingExercise={setReplacingExercise} />
-            <ActiveGroupSetsCard
-              exerciseGroup={exerciseGroup}
-              onDoubleClick={copyCompletedSet}
-              setValues={setValues}
-              allSetsCompleted={allSetsCompleted}
-            />
-            <Suspense fallback={<LoadingIcon />}>
-              <ActiveExerciseHistoryList
-                exerciseId={exerciseGroup.exerciseId}
+    <>
+      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2 }}>
+        <ActiveWorkoutGroupNavbar />
+        <Box minHeight='100%'>
+          <Box pb="20vh">
+            <Stack spacing={1} sx={{ px: 1 }}>
+              <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} setReplacingExercise={setReplacingExercise} />
+              <ActiveGroupSetsCard
+                exerciseGroup={exerciseGroup}
                 onDoubleClick={copyCompletedSet}
-                currentIndex={currentIndex}
+                setValues={setValues}
+                allSetsCompleted={allSetsCompleted}
               />
-            </Suspense>
-          </Stack>
+              <Suspense fallback={<LoadingIcon />}>
+                <ActiveExerciseHistoryList
+                  exerciseId={exerciseGroup.exerciseId}
+                  onDoubleClick={copyCompletedSet}
+                  currentIndex={currentIndex}
+                />
+              </Suspense>
+            </Stack>
+          </Box>
         </Box>
       </Box>
-      <ActiveSetsInputSticky
+      <ActiveSetsInputs
         exerciseGroup={exerciseGroup}
         values={values}
         setValues={setValues}
@@ -118,6 +120,6 @@ export default function ActiveWorkoutGroup() {
         completeSet={completeSet}
         size={mobileScreen ? 'small' : 'large'}
       />
-    </Box>
+    </>
   )
 }
