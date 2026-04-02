@@ -10,7 +10,8 @@ import type { PopoverOrigin, SvgIconPropsSizeOverrides } from "@mui/material";
 type MenuItemProps = {
   label: string,
   handleClick: () => void,
-  sx?: SxProps<Theme>
+  sx?: SxProps<Theme>,
+  disabled?: boolean
 }
 
 type Props = {
@@ -82,6 +83,7 @@ export default function VerticalIconMenu({ menuItems, buttonId, size, sx, edge, 
             key={item.label}
             sx={item.sx}
             onClick={onClick(item)}
+            disabled={item.disabled ?? false}
           >
             {item.label}
           </MenuItem>

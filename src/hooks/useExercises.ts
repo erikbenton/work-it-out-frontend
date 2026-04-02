@@ -69,12 +69,15 @@ export function useExercises() {
 
   // wrap removeMutation so that we can use the
   // id to filter the deleted exercise onSuccess
-  const remove = (exercise: Exercise) => {
+  const remove = (exercise: Exercise, callBackFn?: () => void) => {
     removeMutation(exercise, {
       onSuccess: () => {
         try {
           const prevExercises: Exercise[] = queryClient.getQueryData([queryKey]) as Exercise[];
-          queryClient.setQueryData([queryKey], prevExercises.filter(ex => ex.id !== exercise.id))
+          queryClient.setQueryData([queryKey], prevExercises.filter(ex => ex.id !== exercise.id));
+          if (callBackFn) {
+            callBackFn();
+          }
         } catch {
           queryClient.invalidateQueries({ queryKey: [queryKey] });
         }

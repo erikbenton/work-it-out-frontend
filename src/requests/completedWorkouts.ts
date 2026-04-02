@@ -31,3 +31,14 @@ export async function createCompletedWorkout(newWorkout: CompletedWorkout): Prom
 
   return (await response.json()) as CompletedWorkout;
 }
+
+export async function deleteCompletedWorkout(workout: CompletedWorkout): Promise<void> {
+  devConsole('Deleting completed workout ' + workout.id);
+  const config = { method: 'DELETE' };
+
+  const response = await fetch(`${baseUrl}/completedWorkouts/${workout.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to delete workout with id: ' + workout.id);
+  }
+}

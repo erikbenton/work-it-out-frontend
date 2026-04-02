@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions } from "@tanstack/react-query";
 import type CompletedWorkout from "../types/completedWorkout";
-import { createCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
+import { createCompletedWorkout, deleteCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
 import { durationToSeconds, msToDuration, secondsToDuration } from "../utils/formatters";
 import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
@@ -37,10 +37,29 @@ export function useCompletedWorkouts() {
       const key = [historyQueryKey, group.exerciseId]
       try {
         const prevHistory = queryClient.getQueryData(key) as CompletedExerciseGroup[];
-        queryClient.setQueryData(key, [{ ...group}, ...prevHistory]);
+        queryClient.setQueryData(key, [{ ...group }, ...prevHistory]);
       } catch {
         queryClient.invalidateQueries({ queryKey: key });
       }
+    }
+  }
+
+  const removeHistories = (completedWorkout: CompletedWorkout) => {
+    for (const group of completedWorkout.completedExerciseGroups) {
+      const key = [historyQueryKey, group.exerciseId]
+      try {
+        const prevHistory = queryClient.getQueryData(key) as CompletedExerciseGroup[];
+        queryClient.setQueryData(key, prevHistory.filter(h => h.id === group.id));
+      } catch {
+        queryClient.invalidateQueries({ queryKey: key });
+      }
+    }
+  }
+
+  const removeStats = () => {
+    for (const option of numberOfDaysKeys) {
+      const key = [userStatsQueryKey, option.numberOfDays];
+      queryClient.invalidateQueries({ queryKey: key });
     }
   }
 
@@ -137,12 +156,37 @@ export function useCompletedWorkouts() {
     }
   }).mutate;
 
+  const removeMutation = useMutation({
+    mutationFn: async (workout: CompletedWorkout) => deleteCompletedWorkout(workout)
+  }).mutate;
+
+  // wrap removeMutation so that we can use the
+  // id to filter the deleted CompletedWorkout onSuccess
+  const remove = (workout: CompletedWorkout, callBackFn?: () => void) => {
+    removeMutation(workout, {
+      onSuccess: () => {
+        try {
+          const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
+          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id));
+          removeHistories(workout);
+          removeStats();
+          if (callBackFn) {
+            callBackFn();
+          }
+        } catch {
+          queryClient.invalidateQueries({ queryKey: [queryKey] });
+        }
+      }
+    });
+  }
+
   return {
     completedWorkouts,
     isError,
     convertActiveWorkout,
     services: {
       create,
+      remove,
       createFromActiveWorkout,
       getCompletedWorkoutById
     }

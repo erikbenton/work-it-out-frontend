@@ -21,6 +21,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import type Exercise from '../../types/exercise';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
+import { capitalize } from '../../utils/formatters';
 
 type Props = {
   exercises: Exercise[]
@@ -70,9 +71,15 @@ function ExerciseSubheaderList({ exercises }: Props) {
           <ul>
             <ListSubheader>{key}</ListSubheader>
             {(exerciseLetterMap.get(key) ?? []).map((exercise) => (
-              <ListItemButton key={`item-${key}-${exercise.id}`} onClick={handleRowClick(exercise, navigate)}>
+              <ListItemButton
+                key={`item-${key}-${exercise.id}`}
+                onClick={handleRowClick(exercise, navigate)}
+              >
                 <ListItem>
-                  <ListItemText primary={exercise.name} />
+                  <ListItemText
+                    primary={exercise.name}
+                    secondary={`${exercise.muscles?.map(m => capitalize(m.name)).join(', ')}`}
+                  />
                 </ListItem>
               </ListItemButton>
             ))}

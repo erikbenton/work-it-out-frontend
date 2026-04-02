@@ -1,6 +1,7 @@
 import type ActiveExerciseGroup from "../types/activeExerciseGroup";
 import type ActiveExerciseSet from "../types/activeExerciseSet";
 import type ActiveWorkout from "../types/activeWorkout";
+import type CompletedWorkout from "../types/completedWorkout";
 import { populateKey } from "../types/keyId";
 import type Workout from "../types/workout";
 
@@ -14,6 +15,10 @@ export type ActiveWorkoutAction =
   | {
     type: 'initializeWorkout',
     payload: { initialWorkout: Workout }
+  }
+  | {
+    type: 'redoWorkout',
+    payload: { completedWorkout: CompletedWorkout }
   }
   | {
     type: 'addGroupSet',
@@ -76,6 +81,38 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
       };
 
       return { ...initWorkout };
+    }
+
+    case 'redoWorkout': {
+      const { completedWorkout } = action.payload;
+
+      const newWorkout: ActiveWorkout = {
+        id: 0,
+        name: completedWorkout.name,
+        startTime: Date.now(),
+        // convert groups & sets to be active
+        exerciseGroups: completedWorkout.completedExerciseGroups.map(g => {
+          const exerciseSets = g.completedExerciseSets.map(s => {
+            s = populateKey(s);
+            return {
+              ...s,
+              reps: null,
+              weight: undefined,
+              activeExerciseGroupId: g.id,
+              completed: false
+            };
+          });
+          g = populateKey(g);
+          return {
+            ...g,
+            exerciseSets,
+            workoutId: g.completedWorkoutId,
+            activeWorkoutId: completedWorkout.id ?? 0
+          };
+        })
+      }
+
+      return { ...newWorkout };
     }
 
     case 'startEmptyWorkout': {
