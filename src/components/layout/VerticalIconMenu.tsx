@@ -7,7 +7,7 @@ import { useState } from "react";
 import type { OverridableStringUnion, } from "@mui/types";
 import type { PopoverOrigin, SvgIconPropsSizeOverrides } from "@mui/material";
 
-type MenuItemProps = {
+export type VerticalMenuItemProps = {
   label: string,
   handleClick: () => void,
   sx?: SxProps<Theme>,
@@ -15,7 +15,7 @@ type MenuItemProps = {
 }
 
 type Props = {
-  menuItems: MenuItemProps[],
+  menuItems: VerticalMenuItemProps[],
   buttonId: string,
   sx?: SxProps<Theme>,
   size?: OverridableStringUnion<'inherit' | 'large' | 'medium' | 'small', SvgIconPropsSizeOverrides>,
@@ -35,7 +35,7 @@ export default function VerticalIconMenu({ menuItems, buttonId, size, sx, edge, 
     setAnchorEl(null);
   };
 
-  const onClick = (menuItem: MenuItemProps) => {
+  const onClick = (menuItem: VerticalMenuItemProps) => {
     return () => {
       menuItem.handleClick();
       handleClose();

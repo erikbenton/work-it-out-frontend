@@ -32,6 +32,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const [activeGroupKey, setActiveGroupKey] = useState<string | undefined>(undefined);
   const [editing, setEditing] = useState(false);
   const [timerAppeared, setTimerAppeared] = useState(false);
+  const [timerOffset, setTimerOffset] = useState(0);
   const complete = useMemo(
     () => workout?.exerciseGroups.every(g => g.exerciseSets.every(s => s.completed)) ?? false,
     [workout]
@@ -58,7 +59,9 @@ export default function ActiveWorkoutProvider({ children }: Props) {
     handleSetActiveGroupKey,
     dispatch,
     timerAppeared,
-    setTimerAppeared
+    setTimerAppeared,
+    timerOffset,
+    setTimerOffset
   };
 
   return (

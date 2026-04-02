@@ -15,6 +15,8 @@ export type ActiveWorkoutContext = {
     dispatch: React.ActionDispatch<[action: ActiveWorkoutAction]>,
     timerAppeared: boolean,
     setTimerAppeared: React.Dispatch<React.SetStateAction<boolean>>,
+    timerOffset: number,
+    setTimerOffset: React.Dispatch<React.SetStateAction<number>>,
 }
 
 const ActiveWorkoutContext = createContext<ActiveWorkoutContext | null>(null);

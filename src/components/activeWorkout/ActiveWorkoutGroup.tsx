@@ -14,7 +14,7 @@ import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
-  const { workout, dispatch, setTimerAppeared } = useActiveWorkout();
+  const { workout, dispatch, setTimerAppeared, setTimerOffset } = useActiveWorkout();
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
@@ -58,6 +58,7 @@ export default function ActiveWorkoutGroup() {
       payload: { startTime: Date.now(), duration: exerciseGroup.restTime }
     });
     setTimerAppeared(false);
+    setTimerOffset(0);
     if (currentIndex < exerciseGroup?.exerciseSets.length - 1) {
       const nextSet = exerciseGroup?.exerciseSets[currentIndex + 1];
       // keep the weight and reps but update everything else
