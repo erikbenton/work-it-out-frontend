@@ -14,6 +14,7 @@ import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import { Typography } from "@mui/material";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
+import useUser from "../../hooks/useUser";
 
 export type PageLink = {
   text: string,
@@ -51,6 +52,7 @@ const pages: PageLink[] = [
 ];
 
 export default function Navbar() {
+  const { userInfo } = useUser();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -60,6 +62,8 @@ export default function Navbar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const navbarLinks = userInfo.isLoggedIn ? pages : [pages[0]];
 
   return (
     <AppBar position="fixed">
@@ -83,14 +87,14 @@ export default function Navbar() {
             </IconButton>
             <NavbarDrawer
               open={Boolean(anchorElNav)}
-              links={pages}
+              links={navbarLinks}
               handleClose={handleCloseNavMenu}
             />
           </Box>
 
           {/* Expanded Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
-            {pages.map((page) => (
+            {navbarLinks.map((page) => (
               <Link to={page.url} key={page.text}>
                 <Button
                   onClick={handleCloseNavMenu}
