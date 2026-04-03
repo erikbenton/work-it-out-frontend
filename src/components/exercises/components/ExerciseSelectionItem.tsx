@@ -4,6 +4,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import type Exercise from "../../../types/exercise";
 import CheckIcon from '@mui/icons-material/Check';
+import { capitalize } from "../../../utils/formatters";
 
 type Props = {
   exercise: Exercise,
@@ -49,8 +50,7 @@ export default function ExerciseSelectionItem({ exercise, selected, setSelected,
       >
         <ListItemText
           primary={exercise.name}
-          secondary={exercise.equipment}
-          slotProps={{ secondary: { sx: { textTransform: 'capitalize' } } }}
+          secondary={exercise.muscles?.map(m => capitalize(m.name)).join(', ')}
         />
       </ListItemButton>
     </ListItem>
