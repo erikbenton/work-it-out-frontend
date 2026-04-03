@@ -12,13 +12,9 @@ import { Suspense } from 'react';
 import LoadingIcon from '../layout/LoadingIcon';
 
 export default function HomePage() {
-  const { userInfo, services } = useUser();
+  const { userInfo, handleLogoutAttempt, loading: userLoading } = useUser();
   const { workout } = useActiveWorkout();
   const navigate = useNavigate();
-
-  const handleLogoutAttempt = async () => {
-    services.logoutUser(undefined);
-  }
 
   const handleResumeWorkout = () => {
     if (workout) {
@@ -40,26 +36,28 @@ export default function HomePage() {
         <Typography variant="h4" component="h2">
           Work-It-Out
         </Typography>
-        {userInfo.isLoggedIn && <Button onClick={handleLogoutAttempt}>Logout</Button>}
+        {userInfo.isLoggedIn && <Button onClick={() => handleLogoutAttempt()}>Logout</Button>}
       </Stack>
-      {userInfo.isLoggedIn
-        ? <Stack spacing={2}>
-          <UserStats />
-          {workout
-            ? <Button
-              fullWidth
-              type='button'
-              variant='contained'
-              sx={{ borderRadius: 5, textTransform: 'none' }}
-              onClick={handleResumeWorkout}
-            >
-              Resume Workout
-            </Button>
-            : <UserTraining />}
-        </Stack>
-        : <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
-          <LoginRegister />
-        </Suspense>
+      {userLoading
+        ? <LoadingIcon />
+        : userInfo.isLoggedIn
+          ? <Stack spacing={2}>
+            <UserStats />
+            {workout
+              ? <Button
+                fullWidth
+                type='button'
+                variant='contained'
+                sx={{ borderRadius: 5, textTransform: 'none' }}
+                onClick={handleResumeWorkout}
+              >
+                Resume Workout
+              </Button>
+              : <UserTraining />}
+          </Stack>
+          : <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
+            <LoginRegister />
+          </Suspense>
       }
     </Box>
   );

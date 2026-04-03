@@ -3,33 +3,51 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import useUser from "../../../hooks/useUser";
 import Button from "@mui/material/Button";
+import LoadingIcon from "../../layout/LoadingIcon";
 
 
 export default function LoginRegister() {
-  const { services } = useUser();
+  const { services, loading, setLoading } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRegisterAttempt = async () => {
+    setLoading(true);
     services.registerUser({ email, password }, {
       onSuccess: () => {
         setEmail('')
         setPassword('');
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
       }
     });
   }
 
-  const handleLoginAttempt = async (event?: React.SubmitEvent<HTMLFormElement>) => {
+  const handleLoginAttempt = async (event?: React.SyntheticEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
     }
+    await handleLoginClick();
+  }
 
+  const handleLoginClick = async () => {
+    setLoading(true);
     services.loginUser({ email, password }, {
       onSuccess: () => {
         setEmail('')
         setPassword('');
+        setLoading(false);
+      },
+      onError: () => {
+        setLoading(false);
       }
     });
+  }
+
+  if (loading) {
+    return (<LoadingIcon />);
   }
 
   return (
