@@ -9,101 +9,17 @@ import WorkoutFormNameInput from "./WorkoutFormNameInput";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import { useState } from "react";
-import { useWorkouts } from "../../../hooks/useWorkouts";
-import { useNavigate } from "react-router-dom";
-import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import ExerciseSelect from "../../exercises/components/ExerciseSelect";
 
 export default function WorkoutFormTitle() {
-  const { workout, editing, setEditing, newWorkout, dispatch } = useWorkoutForm();
-  const { services } = useWorkouts();
+  const { workout, editing, handleEditSaveClick, getTitleMenuOptions, addExercises } = useWorkoutForm();
   const [selectingExercises, setSelectingExercises] = useState(false);
-  const { dispatch: activeDispatch } = useActiveWorkout();
-  const navigate = useNavigate();
 
   const handleClickOpen = () => {
     setSelectingExercises(true);
   };
 
-  const addExercises = (exercises: number[]) => {
-    dispatch({
-      type: 'addExercises',
-      payload: { newExercises: exercises }
-    });
-  }
-
-  const startWorkout = () => {
-    activeDispatch({
-      type: 'initializeWorkout',
-      payload: { initialWorkout: workout }
-    });
-    navigate('/activeWorkout');
-  }
-
-  const handleEditSaveClick = () => {
-    if (editing) {
-      if (newWorkout) {
-        services.create(workout, {
-          onSuccess: (savedWorkout) => {
-            setEditing(!editing);
-            navigate(`/workouts/${savedWorkout.id}`);
-          }
-        });
-      } else {
-        services.update(workout, {
-          onSuccess: (savedWorkout) => {
-            setEditing(!editing);
-            navigate(`/workouts/${savedWorkout.id}`);
-          }
-        });
-      }
-    } else {
-      setEditing(!editing);
-    }
-  }
-
-  const menuItems = [
-    {
-      label: editing ? "Cancel" : "Edit",
-      handleClick: () => {
-        setEditing(!editing);
-        if (editing) {
-          if (workout.id) {
-            dispatch({
-              type: 'setWorkout',
-              payload: {
-                workout: services.getWorkoutById(workout.id)
-              }
-            });
-          } else {
-            navigate('/workouts');
-          }
-        }
-      },
-    },
-    { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } }
-  ];
-
-  if (newWorkout) {
-    menuItems.pop();
-  }
-
-  if (!editing) {
-    // put it 1st in the list
-    menuItems.unshift({ label: 'Start', handleClick: startWorkout })
-    // put it 3rd in the list
-    menuItems.splice(2, 0, {
-      label: "Clone",
-      handleClick: () => {
-        services.clone(workout, {
-          onSuccess: (savedWorkout) => {
-            setEditing(!editing);
-            navigate(`/workouts/${savedWorkout.id}`);
-          }
-        });
-      },
-    });
-  }
+  const menuItems = getTitleMenuOptions();
 
   return (
     <>
