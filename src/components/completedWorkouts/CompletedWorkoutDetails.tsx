@@ -7,6 +7,9 @@ import CompletedGroupCard from "./components/CompletedGroupCard";
 import CompletedWorkoutStats from "./components/CompletedWorkoutStats";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
+import type Workout from "../../types/workout";
+import { populateKey } from "../../types/keyId";
+import type ExerciseSet from "../../types/exerciseSet";
 
 export default function CompletedWorkoutDetails() {
   const id = Number(useParams().id);
@@ -29,7 +32,37 @@ export default function CompletedWorkoutDetails() {
     },
     {
       label: "Save as...",
-      handleClick: () => { },
+      handleClick: () => {
+        const copiedWorkout: Workout = {
+          id: 0,
+          name: workout.name + ' (Copy)',
+          description: workout.description,
+          exerciseGroups: workout.completedExerciseGroups.map((g, i) => {
+            const exerciseSets: ExerciseSet[] = g.completedExerciseSets.map((s, i) => {
+              s = populateKey(s)
+              return {
+                id: 0,
+                key: s.key,
+                minReps: s.minReps,
+                maxReps: s.maxReps,
+                sort: i,
+                setTagId: s.setTagId,
+                exerciseGroupId: 0,
+              }
+            });
+            g = populateKey(g);
+            return {
+              id: 0,
+              exerciseId: g.exerciseId,
+              sort: i,
+              key: g.key,
+              workoutId: 0,
+              exerciseSets
+            };
+          })
+        }
+        navigate('/workouts/create', { state: copiedWorkout });
+      },
     },
     {
       label: "Delete",
