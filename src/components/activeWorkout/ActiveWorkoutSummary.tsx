@@ -8,7 +8,6 @@ import { devConsole } from "../../utils/debugLogger";
 import ActiveWorkoutsList from "./components/ActiveWorkoutsList";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
 import { useState } from "react";
-import CountdownTimer from "./components/CountdownTimer";
 import SummaryActionButtons from "./components/SummaryActionButtons";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
@@ -82,20 +81,11 @@ export default function ActiveWorkoutSummary() {
           }}
         >
           <ElapsedTimer startTime={workout.startTime} />
-          <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
-            {workout.currentRestStart && workout.currentRestTime &&
-              <CountdownTimer
-                key={workout.currentRestStart}
-                startTime={workout.currentRestStart}
-                duration={workout.currentRestTime}
-              />
-            }
-            <VerticalIconMenu
-              buttonId={"active-workout-options"}
-              menuItems={menuItems}
-              size="medium"
-            />
-          </Stack>
+          <VerticalIconMenu
+            buttonId={"active-workout-options"}
+            menuItems={menuItems}
+            size="medium"
+          />
         </Stack>
         <ExerciseSelect
           open={selectingExercises}

@@ -9,7 +9,6 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { Collapse, Stack } from "@mui/material";
 import { useState } from "react";
 import ElapsedTimer from "./ElapsedTimer";
-import CountdownTimer from "./CountdownTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { devConsole } from "../../../utils/debugLogger";
 import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
@@ -104,16 +103,7 @@ export default function ActiveWorkoutGroupNavbar() {
               </IconButton>
               <ElapsedTimer startTime={workout.startTime} />
             </Stack>
-            <Stack direction='row' spacing={1} sx={{ alignItems: 'center' }}>
-              {workout.currentRestStart && workout.currentRestTime &&
-                <CountdownTimer
-                  key={workout.currentRestStart}
-                  startTime={workout.currentRestStart}
-                  duration={workout.currentRestTime}
-                />
-              }
-              <VerticalIconMenu menuItems={menuItems} buttonId={`${workout.id}`} />
-            </Stack>
+            <VerticalIconMenu menuItems={menuItems} buttonId={`${workout.id}`} />
           </Stack>
         </Toolbar>
       </AppBar>

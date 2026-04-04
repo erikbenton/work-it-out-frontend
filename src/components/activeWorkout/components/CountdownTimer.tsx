@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState } from "react";
 import { durationToSeconds, msToDuration } from "../../../utils/formatters";
-import { Chip, Collapse, Menu, MenuItem, Typography } from "@mui/material";
+import { Chip, Collapse, Menu, MenuItem, Typography, type SxProps } from "@mui/material";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import AccessAlarmOutlinedIcon from '@mui/icons-material/AccessAlarmOutlined';
 import type { VerticalMenuItemProps } from "../../layout/VerticalIconMenu";
+import type { Theme } from "@emotion/react";
+import { red } from "@mui/material/colors";
 
 type Props = {
   startTime: number,
-  duration: string
+  duration: string,
+  chipSx?: SxProps<Theme>
 }
 
-export default function CountdownTimer({ startTime, duration }: Props) {
+export default function CountdownTimer({ startTime, duration, chipSx }: Props) {
   const { timerAppeared, setTimerAppeared, dispatch, timerOffset, setTimerOffset } = useActiveWorkout();
   const durationInMs = durationToSeconds(duration) * 1000;
   const startTimeRef = useRef(startTime);
@@ -86,7 +89,7 @@ export default function CountdownTimer({ startTime, duration }: Props) {
       <Chip
         variant="outlined"
         onClick={handleClick}
-        sx={{ py: 1 }}
+        sx={{ ...chipSx, py: 1, borderColor: countDownTimeActual < 0 ? red[300] : 'inherit' }}
         label={
           <Collapse
             orientation="horizontal"

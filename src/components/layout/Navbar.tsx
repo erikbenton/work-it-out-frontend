@@ -15,6 +15,8 @@ import { Typography } from "@mui/material";
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import useUser from "../../hooks/useUser";
+import useActiveWorkout from "../../hooks/useActiveWorkout";
+import CountdownTimer from "../activeWorkout/components/CountdownTimer";
 
 export type PageLink = {
   text: string,
@@ -53,6 +55,7 @@ const pages: PageLink[] = [
 
 export default function Navbar() {
   const { userInfo } = useUser();
+  const { workout: activeWorkout } = useActiveWorkout();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -70,7 +73,7 @@ export default function Navbar() {
       <Container maxWidth="xl">
         <Toolbar
           disableGutters
-          sx={{ display: 'flex', alignItems: 'stretch', justifyContent: 'center' }}
+          sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
         >
           {/* Collapsed Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "flex", sm: "none" } }}>
@@ -105,6 +108,17 @@ export default function Navbar() {
               </Link>
             ))}
           </Box>
+
+          {activeWorkout && activeWorkout.currentRestStart && activeWorkout.currentRestTime &&
+            <Box sx={{ mr: 2 }}>
+              <CountdownTimer
+                key={activeWorkout.currentRestStart}
+                startTime={activeWorkout.currentRestStart}
+                duration={activeWorkout.currentRestTime}
+                chipSx={{ color: 'white' }}
+              />
+            </Box>
+          }
 
           <Box sx={{ display: { xs: "none", sm: "flex" } }}>
             <Typography variant="h5" alignContent='center'>
