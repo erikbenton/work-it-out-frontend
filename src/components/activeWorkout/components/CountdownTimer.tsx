@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { durationToSeconds, msToDuration } from "../../../utils/formatters";
-import { Chip, Collapse, Menu, MenuItem, Typography, type SxProps } from "@mui/material";
+import { Box, Chip, Collapse, Menu, MenuItem, Typography, type SxProps } from "@mui/material";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import AccessAlarmOutlinedIcon from '@mui/icons-material/AccessAlarmOutlined';
 import type { VerticalMenuItemProps } from "../../layout/VerticalIconMenu";
@@ -95,11 +95,14 @@ export default function CountdownTimer({ startTime, duration, chipSx }: Props) {
             orientation="horizontal"
             in={true}
             appear={!timerAppeared}
-            onTransitionEnd={handleAppeared}>
-            <Typography>
+            onTransitionEnd={handleAppeared}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
               <AccessAlarmOutlinedIcon sx={{ pr: '4px' }} />
-              {msToDuration(countDownTime, { format: "include-hours" })}
-            </Typography>
+              <Typography display='inline-block'>
+                {msToDuration(countDownTime, { format: "include-hours" })}
+              </Typography>
+            </Box>
           </Collapse>
         }
       />
