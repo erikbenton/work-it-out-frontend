@@ -10,11 +10,10 @@ export default function WorkoutForm() {
     <Box className="w-full md:w-2/3" role={editing ? 'form' : 'div'}>
       <WorkoutFormTitle />
       <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
-        {workout.exerciseGroups.map((group, index) => (
+        {workout.exerciseGroups.map(group => (
           <ExerciseGroupCard
             key={group.key}
             exerciseGroup={group}
-            index={index}
           />
         ))}
       </Stack>

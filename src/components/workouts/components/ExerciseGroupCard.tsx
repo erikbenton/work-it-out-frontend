@@ -13,14 +13,14 @@ import useWorkoutForm from '../../../hooks/useWorkoutForm';
 import { bgBlue } from '../../../utils/styling';
 
 type Props = {
-  exerciseGroup: ExerciseGroup,
-  index: number
+  exerciseGroup: ExerciseGroup
 }
 
-export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
+export default function ExerciseGroupCard({ exerciseGroup }: Props) {
   const { services } = useExercises();
   const { expanded, handleExpandClick } = useWorkoutForm();
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
+  const isExpanded = expanded.get(exerciseGroup.key ?? '') ?? false;
 
   return (
     <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
@@ -31,13 +31,13 @@ export default function ExerciseGroupCard({ exerciseGroup, index }: Props) {
       />
       <CardActions disableSpacing>
         <ExpandMoreButton
-          expand={expanded[index]}
-          handleExpandClick={handleExpandClick(expanded[index], index)}
+          expand={isExpanded}
+          handleExpandClick={handleExpandClick(isExpanded, exerciseGroup.key)}
           ariaLabel="show exercise group details"
           className='mx-auto '
         />
       </CardActions>
-      <Collapse in={expanded[index]} timeout="auto" unmountOnExit>
+      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <CardContent className='pt-0 pb-1'>
           <Stack spacing={1}>
             <ExerciseGroupCardDetails exerciseGroup={exerciseGroup} />

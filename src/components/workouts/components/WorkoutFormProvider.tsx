@@ -21,15 +21,18 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const newWorkout = initWorkout.id === 0;
   const { setTags } = useSetTags();
   const [editing, setEditing] = useState(newWorkout);
-  const [expanded, setExpanded] = useState<boolean[]>(
-    new Array(workout.exerciseGroups.length).fill(false));
+  const [expanded, setExpanded] = useState<Map<string, boolean>>(() => {
+    const expandedMap = new Map<string, boolean>();
+    for (const group of initWorkout.exerciseGroups) {
+      expandedMap.set(group.key ?? '', false);
+    }
+    return expandedMap;
+  });
 
-  const handleExpandClick = (currentValue: boolean, index: number) => {
+  const handleExpandClick = (currentValue: boolean, key?: string) => {
     return () => {
-      setExpanded(prev => {
-        prev[index] = !currentValue;
-        return [...prev];
-      });
+      expanded.set(key ?? '', !currentValue);
+      setExpanded(new Map(expanded));
     };
   }
 
