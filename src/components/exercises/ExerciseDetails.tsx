@@ -9,12 +9,16 @@ import ExerciseDetailsTitle from './components/ExerciseDetailsTitle';
 import { useExercises } from '../../hooks/useExercises';
 import LoadingIcon from '../layout/LoadingIcon';
 import ExerciseStats from './components/ExerciseStats';
+import { numberOfDaysKeys } from '../../hooks/useUserStats';
+
+const initialPeriod = numberOfDaysKeys
+  .find(p => p.label.includes('4 Weeks'))?.numberOfDays ?? 28;
 
 export default function ExerciseDetails() {
   const id = Number(useParams().id)
   const [activeTab, setActiveTab] = useState(0);
   const { exercises } = useExercises();
-  const [period, setPeriod] = useState(14);
+  const [period, setPeriod] = useState(initialPeriod);
 
   const handleChange = (_event: React.SyntheticEvent, newTab: number) => {
     setActiveTab(newTab);

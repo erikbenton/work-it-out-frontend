@@ -59,3 +59,11 @@ export function getShortDate(date?: string): string {
 export function chartDate(date: Date): string {
   return date.toLocaleString('en-US', { month: '2-digit', day: '2-digit' });
 }
+
+export function daysSince(year: number, month: number, day: number): number {
+  const pastDate = new Date(year, month - 1, day);
+  const now = new Date();
+  const diffInMs = now.getTime() - pastDate.getTime();
+  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+  return diffInDays;
+}

@@ -14,6 +14,9 @@ export const numberOfDaysKeys = [
   { numberOfDays: 7, label: "1 Week" },
   { numberOfDays: 14, label: "2 Weeks" },
   { numberOfDays: 28, label: "4 Weeks" },
+  { numberOfDays: 60, label: "2 Months" },
+  { numberOfDays: 90, label: "3 Months" },
+  { numberOfDays: -1, label: "All Time" }
 ];
 
 function calculateGroupStats(workout: CompletedWorkout): UserStats {
@@ -41,7 +44,9 @@ function calculateUserStats(
   devConsole('end date', endDate);
 
   // get the workouts before the end date
-  const workouts = completedWorkouts.filter(w => new Date(w.createdAt ?? '') > endDate);
+  const workouts = numberOfDays > 0
+    ? completedWorkouts.filter(w => new Date(w.createdAt ?? '') > endDate)
+    : completedWorkouts;
 
   // iterate through the Exercise Groups
   // calculate the stats

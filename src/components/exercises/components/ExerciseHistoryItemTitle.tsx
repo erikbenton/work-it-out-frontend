@@ -1,18 +1,10 @@
 import { ListItemText, Stack, Typography } from "@mui/material";
-import { checkPluralization } from "../../../utils/formatters";
+import { checkPluralization, daysSince } from "../../../utils/formatters";
 import { getDateTime, type DateTime } from "../../../utils/dateTime";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 
 type Props = {
   group: CompletedExerciseGroup
-}
-
-function daysSince(year: number, month: number, day: number): number {
-  const pastDate = new Date(year, month - 1, day);
-  const now = new Date();
-  const diffInMs = now.getTime() - pastDate.getTime();
-  const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
-  return diffInDays;
 }
 
 function formatDate(dateTime: DateTime) {

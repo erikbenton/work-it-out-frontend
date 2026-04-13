@@ -1,6 +1,5 @@
 import useUser from '../../hooks/useUser';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import LoginRegister from './components/LoginRegister';
 import Stack from '@mui/material/Stack';
@@ -10,9 +9,10 @@ import useActiveWorkout from '../../hooks/useActiveWorkout';
 import { useNavigate } from 'react-router-dom';
 import { Suspense } from 'react';
 import LoadingIcon from '../layout/LoadingIcon';
+import HomePageTitle from './components/HomePageTitle';
 
 export default function HomePage() {
-  const { userInfo, handleLogoutAttempt, loading: userLoading } = useUser();
+  const { userInfo, loading: userLoading } = useUser();
   const { workout } = useActiveWorkout();
   const navigate = useNavigate();
 
@@ -24,24 +24,7 @@ export default function HomePage() {
 
   return (
     <Box className="w-full md:w-2/3 px-3">
-      <Stack
-        direction="row"
-        sx={{
-          justifyContent: "space-between",
-          alignItems: "center",
-          alignContent: 'center',
-          my: 1
-        }}
-      >
-        <Typography variant="h4" component="h2" sx={{ cursor: 'pointer' }}>
-          Work-It-Out
-        </Typography>
-        {userInfo.isLoggedIn &&
-          <Button onClick={() => handleLogoutAttempt()} sx={{ borderRadius: 5 }}>
-            Logout
-          </Button>
-        }
-      </Stack>
+      <HomePageTitle />
       {userLoading
         ? <LoadingIcon />
         : userInfo.isLoggedIn

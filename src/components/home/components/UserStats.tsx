@@ -10,9 +10,10 @@ import UserStatsIcons from "./UserStatsIcons";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 import { bgBlue } from "../../../utils/styling";
 
+const initialPeriod = numberOfDaysKeys[numberOfDaysKeys.length - 1].numberOfDays;
 
 export default function UserStats() {
-  const [period, setPeriod] = useState(28);
+  const [period, setPeriod] = useState(initialPeriod);
 
   const handleChange = (event: SelectChangeEvent<number>) => {
     setPeriod(event.target.value);
