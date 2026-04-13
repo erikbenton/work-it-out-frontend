@@ -2,7 +2,6 @@ import Typography from '@mui/material/Typography';
 import { Stack } from '@mui/material';
 import VerticalIconMenu from '../../layout/VerticalIconMenu';
 import { useNavigate } from 'react-router-dom';
-import { useExercises } from '../../../hooks/useExercises';
 import type Exercise from '../../../types/exercise';
 
 type Props = {
@@ -10,7 +9,6 @@ type Props = {
 }
 
 export default function ExerciseDetailsTitle({ exercise }: Props) {
-  const { services } = useExercises();
   const navigate = useNavigate();
 
   const menuItems = [
@@ -21,15 +19,7 @@ export default function ExerciseDetailsTitle({ exercise }: Props) {
     {
       label: "Edit",
       handleClick: () => navigate(`/exercises/${exercise.id}/edit`),
-    },
-    {
-      label: "Delete",
-      handleClick: () => {
-        services.remove(exercise);
-        navigate('/exercises');
-      },
-      sx: { color: 'error.main' }
-    },
+    }
   ];
 
   return (
