@@ -121,8 +121,13 @@ export default function Navbar() {
           }
 
           <Box sx={{ display: { xs: "none", sm: "flex" } }}>
-            <Typography variant="h5" alignContent='center'>
-              Work-It-Out
+            <Typography
+              variant="h5"
+              alignContent='center'
+            >
+              <Link to={'/'}>
+                Work-It-Out
+              </Link>
             </Typography>
           </Box>
 

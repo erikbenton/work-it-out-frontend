@@ -33,10 +33,14 @@ export default function HomePage() {
           my: 1
         }}
       >
-        <Typography variant="h4" component="h2">
+        <Typography variant="h4" component="h2" sx={{ cursor: 'pointer' }}>
           Work-It-Out
         </Typography>
-        {userInfo.isLoggedIn && <Button onClick={() => handleLogoutAttempt()}>Logout</Button>}
+        {userInfo.isLoggedIn &&
+          <Button onClick={() => handleLogoutAttempt()} sx={{ borderRadius: 5 }}>
+            Logout
+          </Button>
+        }
       </Stack>
       {userLoading
         ? <LoadingIcon />
