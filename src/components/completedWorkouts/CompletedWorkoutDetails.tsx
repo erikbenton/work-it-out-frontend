@@ -10,6 +10,7 @@ import useActiveWorkout from "../../hooks/useActiveWorkout";
 import type Workout from "../../types/workout";
 import { populateKey } from "../../types/keyId";
 import type ExerciseSet from "../../types/exerciseSet";
+import MuscleSummaryChart from "./components/MuscleSummaryChart";
 
 export default function CompletedWorkoutDetails() {
   const id = Number(useParams().id);
@@ -100,6 +101,7 @@ export default function CompletedWorkoutDetails() {
           <CompletedGroupCard key={group.id} group={group} />
         ))}
       </Stack>
+      <MuscleSummaryChart groups={workout.completedExerciseGroups} />
     </Box>
   );
 }
