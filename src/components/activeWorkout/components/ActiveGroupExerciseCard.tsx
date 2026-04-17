@@ -10,6 +10,10 @@ import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 import Stack from "@mui/material/Stack";
 import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
 import { bgBlue } from "../../../utils/styling";
+import CardActions from "@mui/material/CardActions";
+import ExpandMoreButton from "../../layout/ExpandMoreButton";
+import { useState } from "react";
+import { CardContent, Collapse, Typography } from "@mui/material";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -19,6 +23,7 @@ type Props = {
 export default function ActiveGroupExerciseCard({ exerciseGroup, setReplacingExercise }: Props) {
   const { dispatch } = useActiveWorkout();
   const { services } = useExercises();
+  const [isExpanded, setIsExpanded] = useState(false);
   const exercise = services.getExerciseById(exerciseGroup.exerciseId);
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
@@ -45,10 +50,14 @@ export default function ActiveGroupExerciseCard({ exerciseGroup, setReplacingExe
     },
   ];
 
+  const handleExpandClick = () => {
+    setIsExpanded(!isExpanded);
+  }
+
   return (
     <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
-        sx={{ overflow: 'hidden' }}
+        sx={{ overflow: 'hidden', pb: exerciseGroup.note ? 0 : undefined }}
         avatar={
           <Avatar sx={{ bgcolor: muscleColor ?? 'red' }} aria-label="exercise group">
             {muscleAvatar}
@@ -77,6 +86,23 @@ export default function ActiveGroupExerciseCard({ exerciseGroup, setReplacingExe
         }
         slotProps={{ title: { variant: 'h6' } }}
       />
+      {exerciseGroup.note &&
+        <>
+          <CardActions disableSpacing>
+            <ExpandMoreButton
+              expand={isExpanded}
+              handleExpandClick={handleExpandClick}
+              ariaLabel="show exercise group details"
+              className='mx-auto '
+            />
+          </CardActions>
+          <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+            <CardContent sx={{ pt: 1 }}>
+              <Typography>{exerciseGroup.note}</Typography>
+            </CardContent>
+          </Collapse>
+        </>
+      }
     </Card>
   );
 }
