@@ -22,7 +22,7 @@ export default function ExerciseHistoryTab({ exerciseId }: Props) {
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
 
-  const headerPixelsOffset = 176;
+  const headerPixelsOffset = 160;
 
   const mobileScreenStyle = {
     ...fullScreenStyle,
@@ -31,7 +31,7 @@ export default function ExerciseHistoryTab({ exerciseId }: Props) {
     maxHeight: `${height - headerPixelsOffset}px`
   };
 
-    if (history.length === 0) {
+  if (history.length === 0) {
     return (
       <Box>
         <Typography>

@@ -7,8 +7,9 @@ import Typography from "@mui/material/Typography";
 import { calculateEstimatedOneRepMax, calculateMaxWeight, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
 import type ChartPoint from "../../../types/chartPoint";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
-import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent } from "@mui/material";
+import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, useTheme, useMediaQuery } from "@mui/material";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
+import useWindowDimensions from "../../../hooks/useWindowDimensions";
 
 type Props = {
   history: CompletedExerciseGroup[],
@@ -16,7 +17,24 @@ type Props = {
   setPeriod: React.Dispatch<React.SetStateAction<number>>
 }
 
+const fullScreenStyle = {
+  width: '100%',
+  bgcolor: 'background.paper',
+}
+
 export default function ExerciseCharts({ history, period, setPeriod }: Props) {
+  const theme = useTheme();
+  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const { height } = useWindowDimensions();
+
+  const headerPixelsOffset = 252.02;
+
+  const mobileScreenStyle = {
+    ...fullScreenStyle,
+    overflow: 'auto',
+    position: 'relative',
+    maxHeight: `${height - headerPixelsOffset}px`
+  };
 
   const historyPoints: ChartPoint[] = getChartHistoryPoints(history, period);
 
@@ -36,7 +54,7 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
   }
 
   return (
-    <>
+    <Box sx={mobileScreen ? mobileScreenStyle : fullScreenStyle}>
       <ExerciseChartPeriodInput
         period={period}
         setPeriod={setPeriod}
@@ -94,7 +112,7 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
           }]}
         />
       </Stack>
-    </>
+    </Box>
   );
 }
 type PeriodProps = {
