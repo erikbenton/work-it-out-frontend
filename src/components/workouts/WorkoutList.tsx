@@ -15,7 +15,7 @@ const WorkoutList = () => {
   };
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
+    <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1, pb: '10vh' }}>
       <Typography variant="h4" component="h2" sx={{ mb: 1 }}>
         Workouts
       </Typography>
