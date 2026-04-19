@@ -19,6 +19,7 @@ type Props = {
 
 const fullScreenStyle = {
   width: '100%',
+  pb: '10vh',
   bgcolor: 'background.paper',
 }
 
