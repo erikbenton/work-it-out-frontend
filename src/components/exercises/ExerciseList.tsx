@@ -1,15 +1,33 @@
-import { Box, ListItemButton, Typography } from '@mui/material';
+import { Box, IconButton, ListItemButton, Stack, Typography } from '@mui/material';
 import { useNavigate, type NavigateFunction } from 'react-router-dom';
 import { useExercises } from '../../hooks/useExercises';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
 export default function ExerciseList() {
   const { exercises } = useExercises();
+  const navigate = useNavigate();
+
+  const handleAddExercise = () => {
+    navigate("/exercises/create");
+  }
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
-      <Typography variant="h4" component="h2" sx={{ px: 1 }}>
-        Exercises
-      </Typography>
+    <Box className="w-full md:w-2/3 border-x border-blue-100" sx={{ mt: 1 }}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <Typography variant="h4" component="h2" sx={{ px: 1 }}>
+          Exercises
+        </Typography>
+        <IconButton color="primary" onClick={handleAddExercise}>
+          <AddCircleOutlinedIcon fontSize="large" />
+        </IconButton>
+      </Stack>
       <ExerciseSubheaderList exercises={exercises} />
     </Box>
   );

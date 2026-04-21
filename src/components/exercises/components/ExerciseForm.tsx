@@ -5,6 +5,7 @@ import ExerciseFormCategory from "../components/ExerciseFormCategory";
 import ExerciseFormMuscles from "../components/ExerciseFormMuscles";
 import ExerciseFormEquipment from "../components/ExerciseFormEquipment";
 import type Exercise from "../../../types/exercise";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   exercise: Exercise,
@@ -13,6 +14,15 @@ type Props = {
 }
 
 export default function ExerciseForm({ exercise, dispatch, handleSubmit }: Props) {
+  const navigate = useNavigate();
+
+  const handleCancel = () => {
+    if (exercise.id) {
+      navigate(`/exercises/${exercise.id}`);
+    } else {
+      navigate('/exercises');
+    }
+  }
 
   return (
     <Box component="form" className="w-full md:w-2/3 p-3">
@@ -22,6 +32,7 @@ export default function ExerciseForm({ exercise, dispatch, handleSubmit }: Props
         <ExerciseFormMuscles muscles={exercise.muscles} dispatch={dispatch} />
         <ExerciseFormEquipment equipment={exercise.equipment} dispatch={dispatch} />
         <Button sx={{ borderRadius: 5 }} variant="contained" onClick={handleSubmit}>Save</Button>
+        <Button sx={{ borderRadius: 5 }} variant="outlined" color="error" onClick={handleCancel}>Cancel</Button>
       </Stack>
     </Box>
   );
