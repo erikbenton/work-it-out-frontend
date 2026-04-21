@@ -69,6 +69,8 @@ export default function useUserInfo() {
     mutationFn: async () => await loggingOut(),
     onSuccess: () => {
       try {
+        const user: UserInfo = { isLoggedIn: false, email: undefined };
+        queryClient.setQueryData([queryKey], user);
         queryClient.cancelQueries();
         queryClient.clear();
         queryClient.invalidateQueries({ queryKey: [queryKey] });
