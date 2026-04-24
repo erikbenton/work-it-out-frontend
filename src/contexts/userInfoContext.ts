@@ -7,6 +7,8 @@ export type UserInfoContext = {
   services: UserServices,
   loading: boolean,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
+  userMessages: string[],
+  setUserMessages: React.Dispatch<React.SetStateAction<string[]>>,
   handleRegisterAttempt: (email: string, password: string, onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void,
   handleLoginAttempt: (email: string, password: string, onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void
   handleLogoutAttempt: (onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void

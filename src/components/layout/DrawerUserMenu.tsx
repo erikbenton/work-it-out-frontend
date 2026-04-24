@@ -8,9 +8,11 @@ import TextField from "@mui/material/TextField";
 import { grey } from "@mui/material/colors";
 import LoadingIcon from "./LoadingIcon";
 import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import UserErrorList from "./UserErrorList";
 
 export default function DrawerUserMenu() {
-  const { userInfo, loading, handleLoginAttempt, handleLogoutAttempt, handleRegisterAttempt } = useUser();
+  const { userInfo, loading, userMessages, setUserMessages, handleLoginAttempt, handleLogoutAttempt, handleRegisterAttempt } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -25,55 +27,12 @@ export default function DrawerUserMenu() {
     navigate('/');
   }
 
-  // const handleRegisterAttempt = async () => {
-  //   setLoading(true);
-  //   services.registerUser({ email, password }, {
-  //     onSuccess: () => {
-  //       setEmail('')
-  //       setPassword('');
-  //       setLoading(false);
-  //     },
-  //     onError: () => {
-  //       setLoading(false);
-  //     }
-  //   });
-  // }
-
   const handleLogin = (event?: React.SyntheticEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
     }
     handleLoginAttempt(email, password, resetState);
   }
-
-  // const handleLoginClick = async () => {
-  //   setLoading(true);
-  //   services.loginUser({ email, password }, {
-  //     onSuccess: () => {
-  //       setEmail('')
-  //       setPassword('');
-  //       setLoading(false);
-  //     },
-  //     onError: () => {
-  //       setLoading(false);
-  //     }
-  //   });
-  // }
-
-  // const handleLogoutAttempt = async () => {
-  //   setLoading(true);
-  //   services.logoutUser(undefined, {
-  //     onSuccess: () => {
-  //       setEmail('')
-  //       setPassword('');
-  //       navigate('/');
-  //       setLoading(false);
-  //     },
-  //     onError: () => {
-  //       setLoading(false);
-  //     }
-  //   });
-  // }
 
   return (
     <Box sx={{ p: 1 }}>
@@ -125,6 +84,16 @@ export default function DrawerUserMenu() {
                 Register
               </Button>
             </Stack>
+            {userMessages.length > 0 &&
+              <Alert
+                severity="error"
+                onClose={() => setUserMessages([])}
+                sx={{ mt: 2, px: 1 }}
+                slotProps={{ action: { sx: { p: 0 } } }}
+              >
+                <UserErrorList />
+              </Alert>
+            }
           </form>
       }
     </Box >
