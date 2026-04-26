@@ -3,6 +3,9 @@ import ActiveWorkoutContext from "../../../contexts/activeWorkoutContext";
 import activeWorkoutReducer from "../../../reducers/activeWorkoutReducer";
 import useSetTags from "../../../hooks/useSetTags";
 import type ActiveWorkout from "../../../types/activeWorkout";
+import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import { useNavigate } from "react-router-dom";
+import { devConsole } from "../../../utils/debugLogger";
 
 type Props = {
   children: ReactNode
@@ -31,8 +34,11 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const { setTags } = useSetTags();
   const [activeGroupKey, setActiveGroupKey] = useState<string | undefined>(undefined);
   const [editing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [timerAppeared, setTimerAppeared] = useState(false);
   const [timerOffset, setTimerOffset] = useState(0);
+  const { services } = useCompletedWorkouts();
+  const navigate = useNavigate();
   const complete = useMemo(
     () => workout?.exerciseGroups.every(g => g.exerciseSets.every(s => s.completed)) ?? false,
     [workout]
@@ -48,12 +54,31 @@ export default function ActiveWorkoutProvider({ children }: Props) {
     }
   }
 
+  const handleFinishWorkout = () => {
+    if (workout) {
+      setLoading(true);
+      services.createFromActiveWorkout(workout, {
+        onSuccess: (savedCompletedWorkout) => {
+          devConsole(savedCompletedWorkout);
+          setLoading(false);
+          dispatch({ type: 'endWorkout' });
+          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
+        },
+        onError: () => {
+          setLoading(false);
+        }
+      });
+    }
+  }
+
   const activeWorkoutContext = {
     workout,
     complete,
     setTags,
     editing,
     setEditing,
+    loading,
+    setLoading,
     emptyWorkout: Boolean(workout?.workoutId),
     activeGroupKey,
     handleSetActiveGroupKey,
@@ -61,7 +86,8 @@ export default function ActiveWorkoutProvider({ children }: Props) {
     timerAppeared,
     setTimerAppeared,
     timerOffset,
-    setTimerOffset
+    setTimerOffset,
+    handleFinishWorkout
   };
 
   return (

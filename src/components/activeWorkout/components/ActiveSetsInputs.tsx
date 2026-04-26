@@ -5,8 +5,6 @@ import type ActiveExerciseSet from '../../../types/activeExerciseSet';
 import type ActiveExerciseGroup from '../../../types/activeExerciseGroup';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';
-import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
-import { devConsole } from '../../../utils/debugLogger';
 import { useState } from 'react';
 import SetTagsInput from './SetTagsInput';
 import Button from '@mui/material/Button';
@@ -26,8 +24,7 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { dispatch, workout, complete: workoutCompleted } = useActiveWorkout();
-  const { services } = useCompletedWorkouts();
+  const { workout, complete: workoutCompleted, handleFinishWorkout } = useActiveWorkout();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(s => s.id === values?.setTagId);
@@ -47,18 +44,6 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
       const nextSet = nextGroup.exerciseSets[0];
       setValues(nextSet);
       navigate(`/activeWorkout/${nextGroup.key}`);
-    }
-  }
-
-  const handleFinishWorkout = () => {
-    if (workout) {
-      services.createFromActiveWorkout(workout, {
-        onSuccess: async (savedCompletedWorkout) => {
-          devConsole(savedCompletedWorkout);
-          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`)
-          dispatch({ type: 'endWorkout' });
-        }
-      });
     }
   }
 

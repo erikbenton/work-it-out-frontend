@@ -10,30 +10,15 @@ import { Collapse, Stack } from "@mui/material";
 import { useState } from "react";
 import ElapsedTimer from "./ElapsedTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
-import { devConsole } from "../../../utils/debugLogger";
-import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutGroupNavbar() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
-  const { workout, dispatch } = useActiveWorkout();
-  const { services } = useCompletedWorkouts();
+  const { workout, dispatch, handleFinishWorkout } = useActiveWorkout();
 
   const handleClearWorkout = () => {
     dispatch({ type: 'endWorkout' });
     navigate('/activeWorkout');
-  }
-
-  const handleFinishWorkout = () => {
-    if (workout) {
-      services.createFromActiveWorkout(workout, {
-        onSuccess: (savedCompletedWorkout) => {
-          devConsole(savedCompletedWorkout);
-          dispatch({ type: 'endWorkout' });
-          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
-        }
-      });
-    }
   }
 
   if (workout === null) {

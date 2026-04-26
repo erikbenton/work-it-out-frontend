@@ -2,35 +2,19 @@ import { Box, Stack } from "@mui/material";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
 import ActiveWorkoutGroupCard from "./components/ActiveWorkoutGroupCard";
 import ElapsedTimer from "./components/ElapsedTimer";
-import { useNavigate } from "react-router-dom";
-import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
-import { devConsole } from "../../utils/debugLogger";
 import ActiveWorkoutsList from "./components/ActiveWorkoutsList";
 import VerticalIconMenu from "../layout/VerticalIconMenu";
 import { useState } from "react";
 import SummaryActionButtons from "./components/SummaryActionButtons";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
+import LoadingIcon from "../layout/LoadingIcon";
 
 export default function ActiveWorkoutSummary() {
-  const { workout, dispatch } = useActiveWorkout();
-  const { services } = useCompletedWorkouts();
-  const navigate = useNavigate();
+  const { workout, dispatch, loading, handleFinishWorkout } = useActiveWorkout();
   const [selectingExercises, setSelectingExercises] = useState(false);
 
   const handleClearWorkout = () => {
     dispatch({ type: 'endWorkout' });
-  }
-
-  const handleFinishWorkout = () => {
-    if (workout) {
-      services.createFromActiveWorkout(workout, {
-        onSuccess: (savedCompletedWorkout) => {
-          devConsole(savedCompletedWorkout);
-          dispatch({ type: 'endWorkout' });
-          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
-        }
-      });
-    }
   }
 
   const handleAddingExercises = () => {
@@ -42,14 +26,6 @@ export default function ActiveWorkoutSummary() {
       type: 'addExercises',
       payload: { newExercises: exercises }
     });
-  }
-
-  if (workout === null) {
-    return (
-      <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
-        <ActiveWorkoutsList />
-      </Box>
-    );
   }
 
   const menuItems = [
@@ -67,6 +43,18 @@ export default function ActiveWorkoutSummary() {
       sx: { color: 'error.main' }
     },
   ];
+
+  if (workout === null) {
+    return (
+      <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1 }}>
+        <ActiveWorkoutsList />
+      </Box>
+    );
+  }
+
+  if (loading) {
+    return (<LoadingIcon />);
+  }
 
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 2 }} role='form'>

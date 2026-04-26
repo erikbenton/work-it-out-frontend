@@ -14,7 +14,7 @@ import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
-  const { workout, dispatch, setTimerAppeared, setTimerOffset } = useActiveWorkout();
+  const { workout, dispatch, loading, setTimerAppeared, setTimerOffset } = useActiveWorkout();
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
@@ -85,6 +85,10 @@ export default function ActiveWorkoutGroup() {
         limit={1}
       />
     );
+  }
+
+  if (loading) {
+    return (<LoadingIcon />);
   }
 
   return (

@@ -10,6 +10,8 @@ export type ActiveWorkoutContext = {
     activeGroupKey: string | undefined,
     editing: boolean,
     setEditing: React.Dispatch<React.SetStateAction<boolean>>,
+    loading: boolean,
+    setLoading: React.Dispatch<React.SetStateAction<boolean>>,
     handleSetActiveGroupKey: (newKey: string | undefined) => () => void,
     emptyWorkout: boolean,
     dispatch: React.ActionDispatch<[action: ActiveWorkoutAction]>,
@@ -17,6 +19,7 @@ export type ActiveWorkoutContext = {
     setTimerAppeared: React.Dispatch<React.SetStateAction<boolean>>,
     timerOffset: number,
     setTimerOffset: React.Dispatch<React.SetStateAction<number>>,
+    handleFinishWorkout: () => void
 }
 
 const ActiveWorkoutContext = createContext<ActiveWorkoutContext | null>(null);
