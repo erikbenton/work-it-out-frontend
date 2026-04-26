@@ -38,7 +38,7 @@ export default function MuscleSummaryChart({ groups }: Props) {
 
   return (
     <PieChart
-      sx={{ mt: 5, height: '200px' }}
+      sx={{ my: 4, height: '200px' }}
       series={[{
         data: muscleSummary,
         valueFormatter: (item: { value: number }) => `${item.value.toFixed(1)}%`
