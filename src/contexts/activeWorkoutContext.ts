@@ -2,6 +2,7 @@ import { createContext } from "react";
 import type ActiveWorkout from "../types/activeWorkout";
 import type SetTagOption from "../types/setTagOption";
 import type { ActiveWorkoutAction } from "../reducers/activeWorkoutReducer";
+import type { CompletedWorkoutServices } from "../hooks/useCompletedWorkouts";
 
 export type ActiveWorkoutContext = {
     workout: ActiveWorkout | null,
@@ -19,7 +20,7 @@ export type ActiveWorkoutContext = {
     setTimerAppeared: React.Dispatch<React.SetStateAction<boolean>>,
     timerOffset: number,
     setTimerOffset: React.Dispatch<React.SetStateAction<number>>,
-    handleFinishWorkout: () => void
+    handleFinishWorkout: (services: CompletedWorkoutServices) => void
 }
 
 const ActiveWorkoutContext = createContext<ActiveWorkoutContext | null>(null);

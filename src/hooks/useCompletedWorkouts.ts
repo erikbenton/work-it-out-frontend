@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions, type UseMutateFunction } from "@tanstack/react-query";
 import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, deleteCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
@@ -11,6 +11,13 @@ import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { queryKey as historyQueryKey } from "./useExerciseHistory";
 
 const queryKey = 'completedWorkouts';
+
+export interface CompletedWorkoutServices {
+  create: UseMutateFunction<CompletedWorkout, Error, CompletedWorkout, unknown>;
+  remove: (workout: CompletedWorkout, callBackFn?: () => void) => void;
+  createFromActiveWorkout: (activeWorkout: ActiveWorkout, options?: MutateOptions<CompletedWorkout, Error, CompletedWorkout, unknown>) => void;
+  getCompletedWorkoutById: (id: number) => CompletedWorkout;
+}
 
 export function useCompletedWorkouts() {
   const queryClient = useQueryClient();

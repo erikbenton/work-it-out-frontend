@@ -5,7 +5,7 @@ import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 import cacheTimes from "../utils/cacheTimes";
 
-const queryKey = 'userInfo';
+export const queryKey = 'userInfo';
 
 export type UserServices = {
   registerUser: UseMutateFunction<AuthenticationResponse, Error, AuthenticationRequest, unknown>,

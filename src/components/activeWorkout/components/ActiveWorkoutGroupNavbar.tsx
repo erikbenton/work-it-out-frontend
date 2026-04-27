@@ -10,11 +10,13 @@ import { Collapse, Stack } from "@mui/material";
 import { useState } from "react";
 import ElapsedTimer from "./ElapsedTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
+import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutGroupNavbar() {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate();
   const { workout, dispatch, handleFinishWorkout } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
 
   const handleClearWorkout = () => {
     dispatch({ type: 'endWorkout' });
@@ -34,7 +36,7 @@ export default function ActiveWorkoutGroupNavbar() {
   const menuItems = [
     {
       label: 'Finish Workout',
-      handleClick: handleFinishWorkout,
+      handleClick: () => handleFinishWorkout(services),
     },
     {
       label: "Cancel Workout",

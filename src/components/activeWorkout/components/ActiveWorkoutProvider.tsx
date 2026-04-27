@@ -3,7 +3,7 @@ import ActiveWorkoutContext from "../../../contexts/activeWorkoutContext";
 import activeWorkoutReducer from "../../../reducers/activeWorkoutReducer";
 import useSetTags from "../../../hooks/useSetTags";
 import type ActiveWorkout from "../../../types/activeWorkout";
-import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import { type CompletedWorkoutServices } from "../../../hooks/useCompletedWorkouts";
 import { useNavigate } from "react-router-dom";
 import { devConsole } from "../../../utils/debugLogger";
 
@@ -37,7 +37,6 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const [loading, setLoading] = useState(false);
   const [timerAppeared, setTimerAppeared] = useState(false);
   const [timerOffset, setTimerOffset] = useState(0);
-  const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
   const complete = useMemo(
     () => workout?.exerciseGroups.every(g => g.exerciseSets.every(s => s.completed)) ?? false,
@@ -54,7 +53,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
     }
   }
 
-  const handleFinishWorkout = () => {
+  const handleFinishWorkout = (services: CompletedWorkoutServices) => {
     if (workout) {
       setLoading(true);
       services.createFromActiveWorkout(workout, {

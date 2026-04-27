@@ -8,9 +8,11 @@ import { useState } from "react";
 import SummaryActionButtons from "./components/SummaryActionButtons";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
 import LoadingIcon from "../layout/LoadingIcon";
+import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutSummary() {
   const { workout, dispatch, loading, handleFinishWorkout } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
 
   const handleClearWorkout = () => {
@@ -35,7 +37,7 @@ export default function ActiveWorkoutSummary() {
     },
     {
       label: 'Finish Workout',
-      handleClick: handleFinishWorkout,
+      handleClick: () => handleFinishWorkout(services),
     },
     {
       label: "Cancel Workout",
@@ -86,7 +88,7 @@ export default function ActiveWorkoutSummary() {
         <SummaryActionButtons
           workout={workout}
           handleAddingExercises={handleAddingExercises}
-          handleFinishWorkout={handleFinishWorkout}
+          handleFinishWorkout={() => handleFinishWorkout(services)}
         />
       </Stack>
     </Box>

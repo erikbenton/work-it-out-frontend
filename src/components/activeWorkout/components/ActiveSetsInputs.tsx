@@ -12,6 +12,7 @@ import LiftingInputs from './LiftingInputs';
 import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
+import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -25,6 +26,7 @@ type Props = {
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { workout, complete: workoutCompleted, handleFinishWorkout } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(s => s.id === values?.setTagId);
@@ -75,7 +77,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
         <Collapse in={true} appear={true}>
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleFinishWorkout}>
+              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={() => handleFinishWorkout(services)}>
                 Finish Workout
               </Button>
             </Box>
