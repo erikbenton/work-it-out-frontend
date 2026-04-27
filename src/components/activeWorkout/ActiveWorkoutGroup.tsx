@@ -87,18 +87,22 @@ export default function ActiveWorkoutGroup() {
     );
   }
 
-  if (loading) {
-    return (<LoadingIcon />);
-  }
-
   return (
     <>
-      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2 }}>
+      {loading &&
+        <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
+          <LoadingIcon />
+        </Box>
+      }
+      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: loading ? 0.5 : undefined }}>
         <ActiveWorkoutGroupNavbar />
         <Box minHeight='100%'>
           <Box pb="20vh">
             <Stack spacing={1} sx={{ px: 1 }}>
-              <ActiveGroupExerciseCard exerciseGroup={exerciseGroup} setReplacingExercise={setReplacingExercise} />
+              <ActiveGroupExerciseCard
+                exerciseGroup={exerciseGroup}
+                setReplacingExercise={setReplacingExercise}
+              />
               <ActiveGroupSetsCard
                 exerciseGroup={exerciseGroup}
                 onDoubleClick={copyCompletedSet}

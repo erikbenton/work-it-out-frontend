@@ -1,6 +1,7 @@
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
+import useActiveWorkout from "../../../hooks/useActiveWorkout";
 
 type Props = {
   values?: ActiveExerciseSet,
@@ -9,6 +10,7 @@ type Props = {
 }
 
 export default function LiftingInputs({ values, setValues, size }: Props) {
+  const { loading } = useActiveWorkout();
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
@@ -31,6 +33,7 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
         name="weight"
         label="Weight (lbs)"
         type="number"
+        disabled={loading}
         fullWidth
         variant="filled"
         value={values?.weight ? values.weight : ""}
@@ -45,6 +48,7 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
         name="reps"
         label="Repetitions"
         type="number"
+        disabled={loading}
         fullWidth
         variant="filled"
         value={values?.reps ? values.reps : ""}

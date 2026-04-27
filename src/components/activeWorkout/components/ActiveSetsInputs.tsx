@@ -25,7 +25,7 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { workout, complete: workoutCompleted, handleFinishWorkout } = useActiveWorkout();
+  const { workout, complete: workoutCompleted, handleFinishWorkout, loading } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
@@ -50,7 +50,8 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
   }
 
   return (
-    <Box position='fixed'
+    <Box
+      position='fixed'
       bottom={0}
       component='form'
       onSubmit={handleSubmit}
@@ -60,7 +61,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
         alignItems: 'center',
         width: '100%',
         px: size === 'small' ? 0 : 2,
-        zIndex: 3,
+        zIndex: 3
       }}
       id="exercise-set-input-form"
     >
@@ -77,13 +78,23 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
         <Collapse in={true} appear={true}>
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-              <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={() => handleFinishWorkout(services)}>
+              <Button
+                disabled={loading}
+                sx={{ width: '90%', borderRadius: 5 }}
+                variant='contained'
+                onClick={() => handleFinishWorkout(services)}
+              >
                 Finish Workout
               </Button>
             </Box>
             : allSetsCompleted
               ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
-                <Button sx={{ width: '90%', borderRadius: 5 }} variant='contained' onClick={handleNextExercise}>
+                <Button
+                  disabled={loading}
+                  sx={{ width: '90%', borderRadius: 5 }}
+                  variant='contained'
+                  onClick={handleNextExercise}
+                >
                   Next Exercise
                 </Button>
               </Box>
@@ -94,10 +105,18 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                     sx={{ width: '45%', borderRadius: 5 }}
                     variant='outlined'
                     onClick={() => setExpanded(!expanded)}
+                    disabled={loading}
                   >
                     {setTag ? setTag.name : 'Tag'}
                   </Button>
-                  <Button type='submit' sx={{ width: '45%', borderRadius: 5 }} variant='contained'>Complete</Button>
+                  <Button
+                    type='submit'
+                    sx={{ width: '45%', borderRadius: 5 }}
+                    variant='contained'
+                    disabled={loading}
+                  >
+                    Complete
+                  </Button>
                 </Stack>
                 <SetTagsInput expanded={expanded} setValues={setValues} values={values} />
               </Stack>

@@ -1,15 +1,15 @@
 import Button from "@mui/material/Button";
 import useActiveWorkout from "../../../hooks/useActiveWorkout"
 import type ActiveWorkout from "../../../types/activeWorkout";
-import type { CompletedWorkoutServices } from "../../../hooks/useCompletedWorkouts";
+import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 type Props = {
   workout: ActiveWorkout,
-  handleAddingExercises: () => void,
-  handleFinishWorkout: (services: CompletedWorkoutServices) => void
+  handleAddingExercises: () => void
 }
-export default function SummaryActionButtons({ workout, handleAddingExercises, handleFinishWorkout }: Props) {
-  const { complete } = useActiveWorkout();
+export default function SummaryActionButtons({ workout, handleAddingExercises }: Props) {
+  const { complete, handleFinishWorkout } = useActiveWorkout();
+  const { services } = useCompletedWorkouts();
 
   return (
     workout.exerciseGroups.length === 0
@@ -24,7 +24,7 @@ export default function SummaryActionButtons({ workout, handleAddingExercises, h
         ? <Button
           sx={{ textTransform: 'none', borderRadius: 5 }}
           variant="contained"
-          onClick={() => handleFinishWorkout}
+          onClick={() => handleFinishWorkout(services)}
         >
           Finish Workout
         </Button>

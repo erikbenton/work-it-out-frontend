@@ -54,43 +54,45 @@ export default function ActiveWorkoutSummary() {
     );
   }
 
-  if (loading) {
-    return (<LoadingIcon />);
-  }
-
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 2 }} role='form'>
-      <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
-        <Stack
-          direction='row'
-          sx={{
-            flex: 1,
-            justifyContent: "space-between",
-            alignItems: "center",
-            pl: 1
-          }}
-        >
-          <ElapsedTimer startTime={workout.startTime} />
-          <VerticalIconMenu
-            buttonId={"active-workout-options"}
-            menuItems={menuItems}
-            size="medium"
+    <>
+      {loading &&
+        <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
+          <LoadingIcon />
+        </Box>
+      }
+      <Box className="w-full md:w-2/3" sx={{ mt: 2, opacity: loading ? 0.5 : undefined }} role='form'>
+        <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
+          <Stack
+            direction='row'
+            sx={{
+              flex: 1,
+              justifyContent: "space-between",
+              alignItems: "center",
+              pl: 1
+            }}
+          >
+            <ElapsedTimer startTime={workout.startTime} />
+            <VerticalIconMenu
+              buttonId={"active-workout-options"}
+              menuItems={menuItems}
+              size="medium"
+            />
+          </Stack>
+          <ExerciseSelect
+            open={selectingExercises}
+            setOpen={setSelectingExercises}
+            addExercises={addExercises}
+          />
+          {workout.exerciseGroups.map(group => (
+            <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
+          ))}
+          <SummaryActionButtons
+            workout={workout}
+            handleAddingExercises={handleAddingExercises}
           />
         </Stack>
-        <ExerciseSelect
-          open={selectingExercises}
-          setOpen={setSelectingExercises}
-          addExercises={addExercises}
-        />
-        {workout.exerciseGroups.map(group => (
-          <ActiveWorkoutGroupCard key={group.key} exerciseGroup={group} />
-        ))}
-        <SummaryActionButtons
-          workout={workout}
-          handleAddingExercises={handleAddingExercises}
-          handleFinishWorkout={() => handleFinishWorkout(services)}
-        />
-      </Stack>
-    </Box>
+      </Box>
+    </>
   );
 }
