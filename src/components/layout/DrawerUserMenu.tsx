@@ -7,24 +7,30 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { grey } from "@mui/material/colors";
 import LoadingIcon from "./LoadingIcon";
-import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
 import UserErrorList from "./UserErrorList";
 
 export default function DrawerUserMenu() {
-  const { userInfo, loading, userMessages, setUserMessages, handleLoginAttempt, handleLogoutAttempt, handleRegisterAttempt } = useUser();
+  const {
+    userInfo,
+    loading,
+    userMessages,
+    setUserMessages,
+    handleLoginAttempt,
+    handleLogoutAttempt,
+    handleRegisterAttempt
+  } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
 
   const resetState = () => {
-    setEmail('')
+    setEmail('');
     setPassword('');
   }
 
   const logout = () => {
     resetState();
-    navigate('/');
+    handleLogoutAttempt();
   }
 
   const handleLogin = (event?: React.SyntheticEvent<HTMLFormElement>) => {
@@ -44,7 +50,7 @@ export default function DrawerUserMenu() {
         : userInfo.isLoggedIn
           ? <Stack spacing={1} sx={{ pt: 1 }}>
             <Typography>Hello, {userInfo.email!.split('@')[0]}</Typography>
-            <Button variant="contained" sx={{ borderRadius: 5 }} onClick={() => handleLogoutAttempt(logout)}>Logout</Button>
+            <Button variant="contained" sx={{ borderRadius: 5 }} onClick={logout}>Logout</Button>
           </Stack> :
           <form onSubmit={handleLogin}>
             <Stack spacing={1} sx={{ pt: 1 }}>

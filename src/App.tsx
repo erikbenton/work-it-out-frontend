@@ -39,10 +39,10 @@ export default function App() {
         pt: '64px'
       }}
     >
-      <Navbar />
       <QueryErrorResetBoundary>
         {({ reset }) => (
           <ErrorBoundary FallbackComponent={ErrorMessage} onReset={() => { handleReset(reset) }}>
+            <Navbar />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/workouts" element={

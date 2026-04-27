@@ -60,11 +60,10 @@ export default function ActiveWorkoutProvider({ children }: Props) {
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
-          setLoading(false);
           dispatch({ type: 'endWorkout' });
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         },
-        onError: () => {
+        onSettled: () => {
           setLoading(false);
         }
       });

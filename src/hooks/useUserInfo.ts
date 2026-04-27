@@ -32,11 +32,6 @@ export default function useUserInfo() {
     return await login(request);
   }
 
-  const loggingOut = async (): Promise<boolean> => {
-    queryClient.invalidateQueries({ queryKey: [queryKey] });
-    return await logout();
-  }
-
   const registerUser = useMutation({
     mutationFn: async (request: AuthenticationRequest) => await registering(request),
     onSuccess: (response: AuthenticationResponse) => {
@@ -66,14 +61,11 @@ export default function useUserInfo() {
   }).mutate;
 
   const logoutUser = useMutation({
-    mutationFn: async () => await loggingOut(),
+    mutationFn: async () => await logout(),
     onSuccess: () => {
       try {
         const user: UserInfo = { isLoggedIn: false, email: undefined };
         queryClient.setQueryData([queryKey], user);
-        queryClient.cancelQueries();
-        queryClient.clear();
-        queryClient.invalidateQueries({ queryKey: [queryKey] });
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
