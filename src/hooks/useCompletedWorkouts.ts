@@ -9,12 +9,13 @@ import { calculateNumberOfReps, calculateVolume } from "../utils/charts";
 import cacheTimes from "../utils/cacheTimes";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { queryKey as historyQueryKey } from "./useExerciseHistory";
+import { devConsole } from "../utils/debugLogger";
 
 const queryKey = 'completedWorkouts';
 
 export interface CompletedWorkoutServices {
   create: UseMutateFunction<CompletedWorkout, Error, CompletedWorkout, unknown>;
-  remove: (workout: CompletedWorkout, callBackFn?: () => void) => void;
+  remove: UseMutateFunction<number, Error, number, unknown>;
   createFromActiveWorkout: (activeWorkout: ActiveWorkout, options?: MutateOptions<CompletedWorkout, Error, CompletedWorkout, unknown>) => void;
   getCompletedWorkoutById: (id: number) => CompletedWorkout;
 }
@@ -163,29 +164,23 @@ export function useCompletedWorkouts() {
     }
   }).mutate;
 
-  const removeMutation = useMutation({
-    mutationFn: async (workout: CompletedWorkout) => deleteCompletedWorkout(workout)
-  }).mutate;
-
-  // wrap removeMutation so that we can use the
-  // id to filter the deleted CompletedWorkout onSuccess
-  const remove = (workout: CompletedWorkout, callBackFn?: () => void) => {
-    removeMutation(workout, {
-      onSuccess: () => {
+  const remove = useMutation({
+    mutationFn: async (workoutId: number) => deleteCompletedWorkout(workoutId),
+    onSuccess: (deletedId: number) => {
         try {
           const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
-          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id));
-          removeHistories(workout);
-          removeStats();
-          if (callBackFn) {
-            callBackFn();
+          const workout = prevWorkouts.find(w => w.id === deletedId);
+          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== deletedId));
+          if (workout) {
+            devConsole(`deleted workout: ${deletedId}`)
+            removeHistories(workout);
           }
+          removeStats();
         } catch {
           queryClient.invalidateQueries({ queryKey: [queryKey] });
         }
       }
-    });
-  }
+  }).mutate;
 
   return {
     completedWorkouts,
