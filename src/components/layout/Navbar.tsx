@@ -55,7 +55,7 @@ const pages: PageLink[] = [
 
 export default function Navbar() {
   const { userInfo } = useUser();
-  const { workout: activeWorkout, loading } = useActiveWorkout();
+  const { workout: activeWorkout, saving } = useActiveWorkout();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -85,7 +85,7 @@ export default function Navbar() {
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
               color="inherit"
-              disabled={loading}
+              disabled={saving}
             >
               <MenuIcon />
             </IconButton>
@@ -99,11 +99,11 @@ export default function Navbar() {
           {/* Expanded Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", sm: "flex" } }}>
             {navbarLinks.map((page) => (
-              <Link to={loading ? '#' : page.url} key={page.text}>
+              <Link to={saving ? '#' : page.url} key={page.text}>
                 <Button
                   onClick={handleCloseNavMenu}
                   sx={{ height: '100%', color: "white", display: "block" }}
-                  disabled={loading}
+                  disabled={saving}
                 >
                   {page.text}
                 </Button>
@@ -111,7 +111,7 @@ export default function Navbar() {
             ))}
           </Box>
 
-          {activeWorkout && activeWorkout.currentRestStart && activeWorkout.currentRestTime && !loading &&
+          {activeWorkout && activeWorkout.currentRestStart && activeWorkout.currentRestTime && !saving &&
             <Box sx={{ mr: 2 }}>
               <CountdownTimer
                 key={activeWorkout.currentRestStart}
@@ -127,7 +127,7 @@ export default function Navbar() {
               variant="h5"
               alignContent='center'
             >
-              <Link to={loading ? '#' : '/'}>
+              <Link to={saving ? '#' : '/'}>
                 Work-It-Out
               </Link>
             </Typography>

@@ -14,7 +14,7 @@ import ExerciseSelect from "../exercises/components/ExerciseSelect";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
-  const { workout, dispatch, loading, setTimerAppeared, setTimerOffset } = useActiveWorkout();
+  const { workout, dispatch, saving, setTimerAppeared, setTimerOffset } = useActiveWorkout();
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
@@ -89,12 +89,12 @@ export default function ActiveWorkoutGroup() {
 
   return (
     <>
-      {loading &&
+      {saving &&
         <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
           <LoadingIcon />
         </Box>
       }
-      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: loading ? 0.5 : undefined }}>
+      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}>
         <ActiveWorkoutGroupNavbar />
         <Box minHeight='100%'>
           <Box pb="20vh">

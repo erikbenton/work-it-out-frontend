@@ -10,7 +10,7 @@ type Props = {
 }
 
 export default function LiftingInputs({ values, setValues, size }: Props) {
-  const { loading } = useActiveWorkout();
+  const { saving } = useActiveWorkout();
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
@@ -33,7 +33,7 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
         name="weight"
         label="Weight (lbs)"
         type="number"
-        disabled={loading}
+        disabled={saving}
         fullWidth
         variant="filled"
         value={values?.weight ? values.weight : ""}
@@ -48,7 +48,7 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
         name="reps"
         label="Repetitions"
         type="number"
-        disabled={loading}
+        disabled={saving}
         fullWidth
         variant="filled"
         value={values?.reps ? values.reps : ""}

@@ -25,7 +25,7 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { workout, complete: workoutCompleted, handleFinishWorkout, loading } = useActiveWorkout();
+  const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
@@ -79,7 +79,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
               <Button
-                disabled={loading}
+                disabled={saving}
                 sx={{ width: '90%', borderRadius: 5 }}
                 variant='contained'
                 onClick={() => handleFinishWorkout(services)}
@@ -90,7 +90,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
             : allSetsCompleted
               ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
                 <Button
-                  disabled={loading}
+                  disabled={saving}
                   sx={{ width: '90%', borderRadius: 5 }}
                   variant='contained'
                   onClick={handleNextExercise}
@@ -105,7 +105,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                     sx={{ width: '45%', borderRadius: 5 }}
                     variant='outlined'
                     onClick={() => setExpanded(!expanded)}
-                    disabled={loading}
+                    disabled={saving}
                   >
                     {setTag ? setTag.name : 'Tag'}
                   </Button>
@@ -113,7 +113,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                     type='submit'
                     sx={{ width: '45%', borderRadius: 5 }}
                     variant='contained'
-                    disabled={loading}
+                    disabled={saving}
                   >
                     Complete
                   </Button>

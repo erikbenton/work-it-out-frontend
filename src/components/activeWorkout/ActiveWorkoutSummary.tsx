@@ -11,7 +11,7 @@ import LoadingIcon from "../layout/LoadingIcon";
 import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 
 export default function ActiveWorkoutSummary() {
-  const { workout, dispatch, loading, handleFinishWorkout } = useActiveWorkout();
+  const { workout, dispatch, saving, handleFinishWorkout } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const [selectingExercises, setSelectingExercises] = useState(false);
 
@@ -56,12 +56,12 @@ export default function ActiveWorkoutSummary() {
 
   return (
     <>
-      {loading &&
+      {saving &&
         <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
           <LoadingIcon />
         </Box>
       }
-      <Box className="w-full md:w-2/3" sx={{ mt: 2, opacity: loading ? 0.5 : undefined }} role='form'>
+      <Box className="w-full md:w-2/3" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }} role='form'>
         <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
           <Stack
             direction='row'

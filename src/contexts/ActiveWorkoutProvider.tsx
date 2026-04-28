@@ -34,7 +34,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
   const { setTags } = useSetTags();
   const [activeGroupKey, setActiveGroupKey] = useState<string | undefined>(undefined);
   const [editing, setEditing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [timerAppeared, setTimerAppeared] = useState(false);
   const [timerOffset, setTimerOffset] = useState(0);
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
 
   const handleFinishWorkout = (services: CompletedWorkoutServices) => {
     if (workout) {
-      setLoading(true);
+      setSaving(true);
       services.createFromActiveWorkout(workout, {
         onSuccess: (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
@@ -63,7 +63,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
           navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
         },
         onSettled: () => {
-          setLoading(false);
+          setSaving(false);
         }
       });
     }
@@ -75,8 +75,8 @@ export default function ActiveWorkoutProvider({ children }: Props) {
     setTags,
     editing,
     setEditing,
-    loading,
-    setLoading,
+    saving,
+    setSaving,
     emptyWorkout: Boolean(workout?.workoutId),
     activeGroupKey,
     handleSetActiveGroupKey,
