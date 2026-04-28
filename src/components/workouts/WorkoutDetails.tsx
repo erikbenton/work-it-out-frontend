@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useWorkouts } from "../../hooks/useWorkouts";
 import WorkoutForm from "./components/WorkoutForm";
-import { WorkoutFormProvider } from "./components/WorkoutFormProvider";
+import { WorkoutFormProvider } from "../../contexts/WorkoutFormProvider";
 
 export default function WorkoutDetails() {
   const id = Number(useParams().id)

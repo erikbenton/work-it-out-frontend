@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useReducer, useState, type ReactNode } from "react";
-import ActiveWorkoutContext from "../../../contexts/activeWorkoutContext";
-import activeWorkoutReducer from "../../../reducers/activeWorkoutReducer";
-import useSetTags from "../../../hooks/useSetTags";
-import type ActiveWorkout from "../../../types/activeWorkout";
-import { type CompletedWorkoutServices } from "../../../hooks/useCompletedWorkouts";
+import ActiveWorkoutContext from "./activeWorkoutContext";
+import activeWorkoutReducer from "../reducers/activeWorkoutReducer";
+import useSetTags from "../hooks/useSetTags";
+import type ActiveWorkout from "../types/activeWorkout";
+import { type CompletedWorkoutServices } from "../hooks/useCompletedWorkouts";
 import { useNavigate } from "react-router-dom";
-import { devConsole } from "../../../utils/debugLogger";
+import { devConsole } from "../utils/debugLogger";
 
 type Props = {
   children: ReactNode

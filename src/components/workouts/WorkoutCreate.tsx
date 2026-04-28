@@ -1,5 +1,5 @@
 import WorkoutForm from "./components/WorkoutForm";
-import { WorkoutFormProvider } from "./components/WorkoutFormProvider";
+import { WorkoutFormProvider } from "../../contexts/WorkoutFormProvider";
 import type Workout from "../../types/workout";
 import { useLocation } from "react-router-dom";
 

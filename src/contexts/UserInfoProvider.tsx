@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from "react";
-import useUserInfo from "../../hooks/useUserInfo";
-import UserInfoContext from "../../contexts/userInfoContext";
-import AuthenticationError from "../../types/authenticationError";
+import useUserInfo from "../hooks/useUserInfo";
+import UserInfoContext from "./userInfoContext";
+import AuthenticationError from "../types/authenticationError";
 import { useNavigate } from "react-router-dom";
 
 type Props = {

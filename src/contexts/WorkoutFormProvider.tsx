@@ -1,12 +1,12 @@
 import { useReducer, useState, type ReactNode } from "react";
-import type Workout from "../../../types/workout";
-import WorkoutFormContext from "../../../contexts/workoutFormContext";
-import workoutReducer from "../../../reducers/workoutReducer";
-import useSetTags from "../../../hooks/useSetTags";
-import { useWorkouts } from "../../../hooks/useWorkouts";
+import type Workout from "../types/workout";
+import WorkoutFormContext from "./workoutFormContext";
+import workoutReducer from "../reducers/workoutReducer";
+import useSetTags from "../hooks/useSetTags";
+import { useWorkouts } from "../hooks/useWorkouts";
 import { useNavigate } from "react-router-dom";
-import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import type { VerticalMenuItemProps } from "../../layout/VerticalIconMenu";
+import useActiveWorkout from "../hooks/useActiveWorkout";
+import type { VerticalMenuItemProps } from "../components/layout/VerticalIconMenu";
 
 type Props = {
   initWorkout: Workout,
