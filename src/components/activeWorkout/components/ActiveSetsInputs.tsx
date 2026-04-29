@@ -13,6 +13,9 @@ import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
+import useKeyboardDetection from '../../../hooks/useKeyboardDetection';
+import ScrollLock from '../../layout/ScrollLock';
+import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -25,6 +28,7 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const { isKeyboardOpen } = useKeyboardDetection();
   const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
@@ -49,6 +53,8 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
     }
   }
 
+  devConsole(isKeyboardOpen);
+
   return (
     <Box
       position='fixed'
@@ -69,12 +75,13 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
         className="w-full md:w-2/3"
         sx={{
           overflow: 'auto',
-          bgcolor: bgBlue,
+          bgcolor: !isKeyboardOpen ? bgBlue : 'white',
           pt: 3,
           pb: 1,
           boxShadow: 1,
         }}
       >
+        {isKeyboardOpen && <ScrollLock />}
         <Collapse in={true} appear={true}>
           {workoutCompleted
             ? <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2 }}>
