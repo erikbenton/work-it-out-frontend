@@ -19,8 +19,8 @@ export default function ActiveWorkoutGroupNavbar() {
   const { services } = useCompletedWorkouts();
 
   const handleClearWorkout = () => {
-    dispatch({ type: 'endWorkout' });
     navigate('/activeWorkout');
+    dispatch({ type: 'endWorkout' });
   }
 
   if (workout === null) {

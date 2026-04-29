@@ -75,7 +75,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
         className="w-full md:w-2/3"
         sx={{
           overflow: 'auto',
-          bgcolor: !isKeyboardOpen ? bgBlue : 'white',
+          bgcolor: bgBlue,
           pt: 3,
           pb: 1,
           boxShadow: 1,
