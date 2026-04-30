@@ -49,7 +49,8 @@ export default function App() {
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  pt: '64px'
+                  pt: '64px',
+                  position: 'relative'
                 }}
               >
                 <Navbar />
