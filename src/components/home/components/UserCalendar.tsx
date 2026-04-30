@@ -5,24 +5,27 @@ import { PickerDay, type PickerDayProps } from '@mui/x-date-pickers/PickerDay';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { bgBlue } from '../../../utils/styling';
 import dayjs from 'dayjs';
+import { useMemo, useState } from 'react';
+import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
+import type CompletedWorkout from '../../../types/completedWorkout';
 import { devConsole } from '../../../utils/debugLogger';
-import { useState } from 'react';
 
-function ServerDay(props: PickerDayProps & { highlightedDays?: number[] }) {
-  const { highlightedDays = [], day, outsideCurrentMonth, ...other } = props;
+function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
+  const { completedWorkoutsByDate = new Map<number, Map<number, CompletedWorkout[]>>(), day, outsideCurrentMonth, ...other } = props;
+  const highlightedDays = getWorkoutsByDate(props.day, completedWorkoutsByDate);
 
   const isSelected =
-    !props.outsideCurrentMonth && highlightedDays.indexOf(props.day.date()) >= 0;
+    !props.outsideCurrentMonth && highlightedDays && highlightedDays.length > 0;
 
   return (
     <Badge
       key={props.day.toString()}
       overlap="circular"
-      badgeContent={isSelected ? 1 : undefined}
+      badgeContent={isSelected ? highlightedDays.length : undefined}
       sx={{
         "& .MuiBadge-badge": {
           color: isSelected ? "white" : undefined,
-          backgroundColor: isSelected ? "green" : undefined
+          backgroundColor: isSelected ? '#1976d2' : undefined
         }
       }}
     >
@@ -35,14 +38,50 @@ function calculateNumberOfWeeks(month: dayjs.Dayjs): number {
   const startOfMonth = month.startOf('month');
   const firstWeekOffset = startOfMonth.day();
   const numWeeks = Math.ceil((firstWeekOffset + month.daysInMonth()) / 7);
-  devConsole('calc weeks', numWeeks, month.format('MM/DD/YYYY'))
   return numWeeks;
 }
 
+function getWorkoutsByDate(date: dayjs.Dayjs, datesMap: Map<number, Map<number, CompletedWorkout[]>>): CompletedWorkout[] | null {
+  const year = date.year();
+  const month = date.month();
+  const day = date.date();
+  const yearEntry = datesMap.get(year);
+  if (!yearEntry) return null;
+  const monthEntry = yearEntry.get(month);
+  if (!monthEntry) return null;
+  return monthEntry.filter(w => {
+    const workoutDay = dayjs(w.createdAt);
+    return workoutDay.year() === year && workoutDay.month() === month && workoutDay.date() === day;
+  });
+}
+
 export default function UserCalendar() {
-  const highlightedDays = [8, 15, 27];
-  const [numWeeks, setNumWeeks] = useState(() => calculateNumberOfWeeks(dayjs()))
-  const slideTransition = 182 + (numWeeks - 4) * 44;
+  const { completedWorkouts } = useCompletedWorkouts();
+  const [numWeeks, setNumWeeks] = useState(() => calculateNumberOfWeeks(dayjs()));
+
+  const completedWorkoutsByDate = useMemo(() => {
+    devConsole('running calendar memo');
+    // Map<year, Map<month, workout>>
+    const workoutDateMap = new Map<number, Map<number, CompletedWorkout[]>>();
+    for (const workout of completedWorkouts) {
+      const date = dayjs(workout.createdAt);
+      const yearEntry = workoutDateMap.get(date.year());
+      if (yearEntry) {
+        const monthEntry = yearEntry.get(date.month());
+        yearEntry.set(date.month(), monthEntry ? [...monthEntry, workout] : [workout]);
+      } else {
+        const newMap = new Map<number, CompletedWorkout[]>();
+        newMap.set(date.month(), [workout]);
+        workoutDateMap.set(date.year(), newMap);
+      }
+    }
+    return workoutDateMap;
+  }, [completedWorkouts]);
+
+  const rowHeight = 44;
+  const minWeeks = 4;
+  const minWeeksHeight = 182;
+  const slideTransition = minWeeksHeight + (numWeeks - minWeeks) * rowHeight;
 
   const handleMonthChange = (month: dayjs.Dayjs) => {
     setNumWeeks(calculateNumberOfWeeks(month));
@@ -112,8 +151,8 @@ export default function UserCalendar() {
         slotProps={{
           day: {
             sx: { fontSize: '1rem' },
-            highlightedDays,
-          } as (PickerDayProps & { highlightedDays?: number[] }),
+            completedWorkoutsByDate,
+          } as (PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }),
         }}
       />
     </LocalizationProvider>
