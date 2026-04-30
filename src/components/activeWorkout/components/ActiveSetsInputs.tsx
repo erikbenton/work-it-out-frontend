@@ -27,7 +27,7 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { isKeyboardOpen, keyboardHeight } = useKeyboardDetection();
+  const { isKeyboardOpen } = useKeyboardDetection();
   const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
@@ -57,7 +57,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
   return (
     <Box
       position='fixed'
-      bottom={isKeyboardOpen ? keyboardHeight : 0}
+      bottom={0}
       component='form'
       onSubmit={handleSubmit}
       sx={{
