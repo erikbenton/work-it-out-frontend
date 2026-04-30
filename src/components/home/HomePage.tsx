@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { Suspense } from 'react';
 import LoadingIcon from '../layout/LoadingIcon';
 import HomePageTitle from './components/HomePageTitle';
+import UserCalendar from './components/UserCalendar';
 
 export default function HomePage() {
   const { userInfo, loading: userLoading } = useUser();
@@ -28,8 +29,9 @@ export default function HomePage() {
       {userLoading
         ? <LoadingIcon />
         : userInfo.isLoggedIn
-          ? <Stack spacing={2}>
+          ? <Stack spacing={2} sx={{ alignItems: 'center' }}>
             <UserStats />
+            <UserCalendar />
             {workout
               ? <Button
                 fullWidth

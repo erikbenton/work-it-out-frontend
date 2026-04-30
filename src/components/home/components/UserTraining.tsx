@@ -6,7 +6,7 @@ import ActiveWorkoutsList from "../../activeWorkout/components/ActiveWorkoutsLis
 export default function UserTraining() {
 
   return (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       <ActiveWorkoutsList titleVariant="h6" titleComponent="h3" titlePaddingX={1} />
     </Box>
   )
