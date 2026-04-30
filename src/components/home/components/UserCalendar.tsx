@@ -112,6 +112,12 @@ export default function UserCalendar() {
             '& .MuiPickersFadeTransitionGroup-root > div': {
               borderRadius: '0 0 15px 15px',
             },
+            '& .MuiPickersFadeTransitionGroup-root > .MuiPickersCalendarHeader-label': {
+              borderRadius: 0,
+            },
+            '& .MuiPickersCalendarHeader-labelContainer > .MuiPickersFadeTransitionGroup-root': {
+              backgroundColor: bgBlue,
+            },
             '& .MuiDayCalendar-header': {
               backgroundColor: bgBlue,
             },
