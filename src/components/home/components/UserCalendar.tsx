@@ -10,28 +10,90 @@ import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import type CompletedWorkout from '../../../types/completedWorkout';
 import { devConsole } from '../../../utils/debugLogger';
 import Typography from '@mui/material/Typography';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import { useNavigate } from 'react-router-dom';
+import ScrollLock from '../../layout/ScrollLock';
 
 function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const { completedWorkoutsByDate = new Map<number, Map<number, CompletedWorkout[]>>(), day, outsideCurrentMonth, ...other } = props;
   const highlightedDays = getWorkoutsByDate(props.day, completedWorkoutsByDate);
 
   const isSelected =
     !props.outsideCurrentMonth && highlightedDays && highlightedDays.length > 0;
 
+  const openMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onClick = (menuItem: { handleClick: () => void }) => {
+    return () => {
+      menuItem.handleClick();
+      handleClose();
+    };
+  }
+
+  const options = highlightedDays
+    ? highlightedDays.map(w => ({
+      label: `View ${w.name}`,
+      handleClick: () => {
+        handleClose();
+        navigate(`/completedWorkouts/${w.id}`)
+      },
+      id: w.id
+    }))
+    : [];
+
   return (
-    <Badge
-      key={props.day.toString()}
-      overlap="circular"
-      badgeContent={isSelected ? highlightedDays.length : undefined}
-      sx={{
-        "& .MuiBadge-badge": {
-          color: isSelected ? "white" : undefined,
-          backgroundColor: isSelected ? '#1976d2' : undefined
-        }
-      }}
-    >
-      <PickerDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
-    </Badge>
+    <>
+    {open && <ScrollLock />}
+      <Badge
+        key={props.day.toString()}
+        onClick={isSelected ? (e) => openMenu(e) : undefined}
+        overlap="circular"
+        badgeContent={isSelected ? highlightedDays.length : undefined}
+        sx={{
+          "& .MuiBadge-badge": {
+            color: isSelected ? "white" : undefined,
+            backgroundColor: isSelected ? '#1976d2' : undefined
+          }
+        }}
+      >
+        <PickerDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+      </Badge>
+      <Menu
+        id="long-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        slotProps={{
+          list: {
+            'aria-labelledby': props.day.format('YYYY/MM/DD'),
+          },
+          paper: {
+            sx: { borderRadius: 5 }
+          }
+        }}
+        disableScrollLock={true}
+      >
+        {options.map(item => (
+          <MenuItem
+            key={`${item.label}-${item.id}`}
+            onClick={onClick(item)}
+            id={`${item.id}`}
+          >
+            {item.label}
+          </MenuItem>
+        ))}
+      </Menu>
+    </>
   );
 }
 
