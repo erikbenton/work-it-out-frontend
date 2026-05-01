@@ -14,9 +14,12 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import ScrollLock from '../../layout/ScrollLock';
+import { getMaxMuscleGroup } from '../../../utils/muscles';
+import { useExercises } from '../../../hooks/useExercises';
 
 function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
   const navigate = useNavigate();
+  const { services } = useExercises();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { completedWorkoutsByDate = new Map<number, Map<number, CompletedWorkout[]>>(), day, outsideCurrentMonth, ...other } = props;
@@ -24,6 +27,10 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
 
   const isSelected =
     !props.outsideCurrentMonth && highlightedDays && highlightedDays.length > 0;
+
+  const maxMuscle = isSelected
+    ? getMaxMuscleGroup(highlightedDays[0].completedExerciseGroups, services)
+    : null;
 
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,7 +60,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
 
   return (
     <>
-    {open && <ScrollLock />}
+      {open && <ScrollLock />}
       <Badge
         key={props.day.toString()}
         onClick={isSelected ? (e) => openMenu(e) : undefined}
@@ -62,7 +69,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
         sx={{
           "& .MuiBadge-badge": {
             color: isSelected ? "white" : undefined,
-            backgroundColor: isSelected ? '#1976d2' : undefined
+            backgroundColor: isSelected ? maxMuscle?.colorRgb : undefined
           }
         }}
       >
