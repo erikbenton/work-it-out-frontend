@@ -28,10 +28,6 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
   const isSelected =
     !props.outsideCurrentMonth && highlightedDays && highlightedDays.length > 0;
 
-  const maxMuscle = isSelected
-    ? getMaxMuscleGroup(highlightedDays[0].completedExerciseGroups, services)
-    : null;
-
   const openMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -47,7 +43,11 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
     };
   }
 
-  const options = highlightedDays
+  const maxMuscle = isSelected
+    ? getMaxMuscleGroup(highlightedDays[0].completedExerciseGroups, services)
+    : null;
+
+  const options = isSelected
     ? highlightedDays.map(w => ({
       label: `View ${w.name}`,
       handleClick: () => {
