@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import type CompletedWorkout from '../../../types/completedWorkout';
 import { devConsole } from '../../../utils/debugLogger';
+import Typography from '@mui/material/Typography';
 
 function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
   const { completedWorkoutsByDate = new Map<number, Map<number, CompletedWorkout[]>>(), day, outsideCurrentMonth, ...other } = props;
@@ -80,7 +81,7 @@ export default function UserCalendar() {
 
   const rowHeight = 44;
   const minWeeks = 4;
-  const minWeeksHeight = 182;
+  const minWeeksHeight = 186;
   const slideTransition = minWeeksHeight + (numWeeks - minWeeks) * rowHeight;
 
   const handleMonthChange = (month: dayjs.Dayjs) => {
@@ -89,6 +90,9 @@ export default function UserCalendar() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <Typography variant="h6" component="h3" width='100%' sx={{ px: 1 }}>
+        History
+      </Typography>
       <DateCalendar
         sx={{
           '&.MuiDateCalendar-root': {
@@ -100,6 +104,7 @@ export default function UserCalendar() {
             boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
             '& .MuiDayCalendar-monthContainer': {
               paddingTop: '0.25rem',
+              paddingBottom: '0.25rem',
               backgroundColor: bgBlue,
               boxShadow: '0px 2px 1px -1px rgba(0,0,0,0.2), 0px 1px 1px 0px rgba(0,0,0,0.14), 0px 1px 3px 0px rgba(0,0,0,0.12)',
               borderRadius: '0 0 15px 15px',
