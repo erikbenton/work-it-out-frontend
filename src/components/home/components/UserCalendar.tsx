@@ -194,6 +194,9 @@ export default function UserCalendar() {
             '& .MuiDayCalendar-header': {
               backgroundColor: bgBlue,
             },
+            '& .MuiPickersSlideTransition-root': {
+              overflowY: 'hidden'
+            },
             '& .MuiDayCalendar-root': {
               backgroundColor: bgBlue,
               borderRadius: '0 0 15px 15px',
