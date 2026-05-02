@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import ScrollLock from '../../layout/ScrollLock';
 import { getMaxMuscleGroup } from '../../../utils/muscles';
 import { useExercises } from '../../../hooks/useExercises';
 
@@ -60,7 +59,6 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
 
   return (
     <>
-      {open && <ScrollLock />}
       <Badge
         key={props.day.toString()}
         onClick={isSelected ? (e) => openMenu(e) : undefined}
@@ -88,6 +86,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
             sx: { borderRadius: 5 }
           }
         }}
+        anchorReference='anchorEl'
         disableScrollLock={true}
       >
         {options.map(item => (
