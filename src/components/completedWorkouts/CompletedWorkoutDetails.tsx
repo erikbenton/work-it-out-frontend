@@ -64,6 +64,8 @@ export default function CompletedWorkoutDetails() {
               exerciseId: g.exerciseId,
               sort: i,
               key: g.key,
+              restTime: g.restTime,
+              note: g.note,
               workoutId: 0,
               exerciseSets
             };
