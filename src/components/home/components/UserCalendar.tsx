@@ -52,7 +52,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
       label: `View ${w.name}`,
       handleClick: () => {
         handleClose();
-        navigate(`/completedWorkouts/${w.id}`)
+        navigate(`/history/${w.id}`)
       },
       id: w.id
     }))

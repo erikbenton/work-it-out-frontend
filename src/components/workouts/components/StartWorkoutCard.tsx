@@ -57,7 +57,7 @@ export default function StartWorkoutCard({ workout }: Props) {
           variant="text"
           onClick={() => {
             dispatch({ type: 'initializeWorkout', payload: { initialWorkout: workout } });
-            navigate('/activeWorkout');
+            navigate('/training');
           }}
         >
           Start Workout

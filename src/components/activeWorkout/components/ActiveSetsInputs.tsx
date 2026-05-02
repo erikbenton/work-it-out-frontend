@@ -48,7 +48,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
     if (nextGroup) {
       const nextSet = nextGroup.exerciseSets[0];
       setValues(nextSet);
-      navigate(`/activeWorkout/${nextGroup.key}`);
+      navigate(`/training/${nextGroup.key}`);
     }
   }
 

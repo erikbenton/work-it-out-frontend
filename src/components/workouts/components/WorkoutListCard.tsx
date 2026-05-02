@@ -32,7 +32,7 @@ export default function WorkoutListCard({ workout }: Props) {
           type: 'initializeWorkout',
           payload: { initialWorkout: workout }
         });
-        navigate(`/activeWorkout`);
+        navigate('/training');
       }
     },
     {

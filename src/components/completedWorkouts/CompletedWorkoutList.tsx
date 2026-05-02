@@ -78,7 +78,7 @@ export default function CompletedWorkoutList() {
                   <ListItemButton
                     disableGutters
                     sx={{ p: 0, mb: 1 }}
-                    onClick={() => navigate(`/completedWorkouts/${workout.id}`)}>
+                    onClick={() => navigate(`/history/${workout.id}`)}>
                     <CompletedWorkoutListRow workout={workout} />
                   </ListItemButton>
                 </ListItem>

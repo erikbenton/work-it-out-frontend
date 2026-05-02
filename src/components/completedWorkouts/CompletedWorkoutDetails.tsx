@@ -33,7 +33,7 @@ export default function CompletedWorkoutDetails() {
           type: 'redoWorkout',
           payload: { completedWorkout: workout }
         });
-        navigate('/activeWorkout');
+        navigate('/training');
       },
       disabled: (activeWorkout !== null)
     },
@@ -81,7 +81,7 @@ export default function CompletedWorkoutDetails() {
         setDeleting(true);
         services.remove(workout.id, {
           onSuccess: () => {
-            navigate('/completedWorkouts');
+            navigate('/history');
           }
         });
       },

@@ -20,7 +20,7 @@ export default function ActiveWorkoutsList({ titleVariant = 'h4', titleComponent
 
   const handleEmptyWorkout = () => {
     dispatch({ type: 'startEmptyWorkout', payload: null });
-    navigate('/activeWorkout');
+    navigate('/training');
   }
 
   return (

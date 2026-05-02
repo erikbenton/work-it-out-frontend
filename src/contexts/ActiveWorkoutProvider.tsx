@@ -60,7 +60,7 @@ export default function ActiveWorkoutProvider({ children }: Props) {
         onSuccess: (savedCompletedWorkout) => {
           devConsole(savedCompletedWorkout);
           dispatch({ type: 'endWorkout' });
-          navigate(`/completedWorkouts/${savedCompletedWorkout.id}`);
+          navigate(`/history/${savedCompletedWorkout.id}`);
         },
         onSettled: () => {
           setSaving(false);

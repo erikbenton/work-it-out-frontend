@@ -50,22 +50,22 @@ export default function Router() {
           <ExerciseEdit />
         </Suspense>
       } />
-      <Route path="/activeWorkout" element={
+      <Route path="/training" element={
         <Suspense fallback={<LoadingIcon label='Workouts' />}>
           <ActiveWorkoutSummary />
         </Suspense>
       } />
-      <Route path="/activeWorkout/:key" element={
+      <Route path="/training/:key" element={
         <Suspense fallback={<LoadingIcon label='Exercise' />}>
           <ActiveWorkoutGroup />
         </Suspense>
       } />
-      <Route path="/completedWorkouts" element={
+      <Route path="/history" element={
         <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
           <CompletedWorkoutList />
         </Suspense>
       } />
-      <Route path="/completedWorkouts/:id" element={
+      <Route path="/history/:id" element={
         <Suspense fallback={<LoadingIcon label='Workout History' />}>
           <CompletedWorkoutDetails />
         </Suspense>

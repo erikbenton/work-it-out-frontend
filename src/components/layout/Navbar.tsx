@@ -33,7 +33,7 @@ const pages: PageLink[] = [
   },
   {
     text: "Training",
-    url: "/activeWorkout",
+    url: "/training",
     icon: (active) => <DirectionsRunIcon sx={{ color: active ? 'white' : 'primary.main' }} />
   },
   {
@@ -48,7 +48,7 @@ const pages: PageLink[] = [
   },
   {
     text: "History",
-    url: "/completedWorkouts",
+    url: "/history",
     icon: (active) => <EventAvailableOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
   },
 ];

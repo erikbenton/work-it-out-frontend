@@ -75,7 +75,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
           </Box>
         }
         title={
-          <Link className="block min-w-[80%] w-fit" to={`/activeWorkout/${exerciseGroup.key}`}>
+          <Link className="block min-w-[80%] w-fit" to={`/training/${exerciseGroup.key}`}>
             {exercise.name}
           </Link>
         }

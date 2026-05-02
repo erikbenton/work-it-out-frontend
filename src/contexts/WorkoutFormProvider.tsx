@@ -63,7 +63,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
       type: 'initializeWorkout',
       payload: { initialWorkout: workout }
     });
-    navigate('/activeWorkout');
+    navigate('/training');
   }
 
   const getTitleMenuOptions = (): VerticalMenuItemProps[] => {

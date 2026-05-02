@@ -19,7 +19,7 @@ export default function ActiveWorkoutGroupNavbar() {
   const { services } = useCompletedWorkouts();
 
   const handleClearWorkout = () => {
-    navigate('/activeWorkout');
+    navigate('/training');
     dispatch({ type: 'endWorkout' });
   }
 
@@ -81,7 +81,7 @@ export default function ActiveWorkoutGroupNavbar() {
                   timeout={100}
                   in={open}
                   appear={true}
-                  onExited={() => navigate('/activeWorkout')}
+                  onExited={() => navigate('/training')}
                 >
                   <Box sx={{ display: 'flex', alignItems: 'center', pr: 1 }}>
                     <ArrowBackIcon />

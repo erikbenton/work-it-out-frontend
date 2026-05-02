@@ -19,7 +19,7 @@ export default function HomePage() {
 
   const handleResumeWorkout = () => {
     if (workout) {
-      navigate('/activeWorkout');
+      navigate('/training');
     }
   }
 
