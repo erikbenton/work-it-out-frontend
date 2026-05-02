@@ -13,8 +13,6 @@ import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
-import useKeyboardDetection from '../../../hooks/useKeyboardDetection';
-import { devConsole } from '../../../utils/debugLogger';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -27,7 +25,6 @@ type Props = {
 
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
-  const { isKeyboardOpen } = useKeyboardDetection();
   const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
   const navigate = useNavigate();
@@ -51,8 +48,6 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
       navigate(`/training/${nextGroup.key}`);
     }
   }
-
-  devConsole(isKeyboardOpen);
 
   return (
     <Box
