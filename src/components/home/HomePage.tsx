@@ -24,7 +24,7 @@ export default function HomePage() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3">
+    <Box className="w-full md:w-2/3 px-3" sx={{ pb: workout ? '10vh' : undefined }}>
       <HomePageTitle />
       {userLoading
         ? <LoadingIcon />
@@ -37,7 +37,7 @@ export default function HomePage() {
                 fullWidth
                 type='button'
                 variant='contained'
-                sx={{ borderRadius: 5, textTransform: 'none' }}
+                sx={{ borderRadius: 5, textTransform: 'none', mb: '10vh' }}
                 onClick={handleResumeWorkout}
               >
                 Resume Workout
