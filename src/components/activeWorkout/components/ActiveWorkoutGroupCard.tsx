@@ -83,7 +83,7 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
           <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
             {numberCompletedSets}/{numberOfSets} Sets done
             {numberOfSets !== 0 && numberCompletedSets === numberOfSets &&
-              (<AllSetsCompleteIcon />)
+              (<AllSetsCompleteIcon avatarSx={{ ml: 0.75 }} />)
             }
           </Stack>
         }

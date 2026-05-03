@@ -14,6 +14,7 @@ import CardActions from "@mui/material/CardActions";
 import ExpandMoreButton from "../../layout/ExpandMoreButton";
 import { useState } from "react";
 import { CardContent, Collapse, Typography } from "@mui/material";
+import AlarmOutlinedIcon from '@mui/icons-material/AlarmOutlined';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -77,10 +78,22 @@ export default function ActiveGroupExerciseCard({ exerciseGroup, setReplacingExe
           </Link>
         }
         subheader={
-          <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
-            {numberCompleted}/{numberOfSets} Sets done
-            {numberOfSets !== 0 && numberCompleted === numberOfSets &&
-              (<AllSetsCompleteIcon />)
+          <Stack spacing={1} direction='row' sx={{ alignItems: 'center', mt: 0.25 }}>
+            <Box>
+              {numberOfSets !== 0 && numberCompleted === numberOfSets
+                ? <AllSetsCompleteIcon avatarSx={{ mr: 0.5 }} />
+                : `${numberCompleted}/${numberOfSets}`
+              } Sets done
+            </Box>
+            {exerciseGroup.restTime &&
+              <Stack direction='row'>
+                <AlarmOutlinedIcon className='mr-1' fontSize="small" />
+                <Typography
+                  sx={{ flex: 1, textAlign: 'left' }}
+                >
+                  {exerciseGroup.restTime.slice(exerciseGroup.restTime.search(/[1-9]/))}
+                </Typography>
+              </Stack>
             }
           </Stack>
         }
