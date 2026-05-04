@@ -72,7 +72,7 @@ export default function ActiveWorkoutGroupNavbar() {
                 edge="start"
                 color="inherit"
                 aria-label="menu"
-                sx={{ mx: 1, p: 0 }}
+                sx={{ ml: 1, mr: 2, p: 0 }}
                 onClick={() => setOpen(false)}
               >
 
@@ -83,7 +83,7 @@ export default function ActiveWorkoutGroupNavbar() {
                   appear={true}
                   onExited={() => navigate('/training')}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', pr: 1 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <ArrowBackIcon />
                   </Box>
                 </Collapse>
