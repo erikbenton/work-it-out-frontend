@@ -8,6 +8,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import useUserStats from "../../../hooks/useUserStats";
 import { Grid } from "@mui/material";
 import StatIcon from "../../layout/StatIcon";
+import { formatLargeNumber } from "../../../utils/formatters";
 
 type Props = {
   numberOfDays: number
@@ -65,7 +66,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<FitnessCenterIcon />}
           color={cyan[700]}
-          text={`${userStats.totalVolume} lbs`}
+          text={`${formatLargeNumber(userStats.totalVolume, userStats.totalVolume > 10_000)} lbs`}
           label="Volume"
         />
       </Grid>

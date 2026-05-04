@@ -2,6 +2,8 @@ type DurationOptions = {
   format: ('always-hours' | 'no-hours' | 'include-hours')
 }
 
+const formatter = new Intl.NumberFormat('en-US');
+
 export function msToDuration(ms: number, options?: DurationOptions): string {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / (1000 * 60)) % 60);
@@ -66,4 +68,16 @@ export function daysSince(year: number, month: number, day: number): number {
   const diffInMs = now.getTime() - pastDate.getTime();
   const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
   return diffInDays;
+}
+
+export function formatLargeNumber(num: number, shorten?: boolean): string {
+  if (shorten) {
+    if (num > 1000) {
+      return formatter.format(Math.round(num / 100) / 10) + 'k';
+    } else {
+      return formatter.format(Math.round(num));
+    }
+  } else {
+    return formatter.format(num);
+  }
 }
