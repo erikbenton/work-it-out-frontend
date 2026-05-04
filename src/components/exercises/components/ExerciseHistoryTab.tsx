@@ -14,6 +14,7 @@ type Props = {
 const fullScreenStyle = {
   width: '100%',
   bgcolor: 'background.paper',
+  pb: '10vh'
 }
 
 export default function ExerciseHistoryTab({ exerciseId }: Props) {
