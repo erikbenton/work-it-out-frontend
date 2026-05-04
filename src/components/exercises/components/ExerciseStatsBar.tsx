@@ -9,6 +9,7 @@ import TimelineIcon from '@mui/icons-material/Timeline';
 import { blue, cyan, green, grey, pink } from "@mui/material/colors";
 import { calculateEstimatedOneRepMax, calculateVolume } from "../../../utils/charts";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
+import { formatLargeNumber } from "../../../utils/formatters";
 
 type Props = {
   history: CompletedExerciseGroup[]
@@ -32,7 +33,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <TimelineIcon />
         </Avatar>
         <Typography variant="body1">
-          {Math.round(history.length)}
+          {history.length}
         </Typography>
         <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Workouts</Typography>
       </Stack>
@@ -41,7 +42,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <FormatListBulletedIcon />
         </Avatar>
         <Typography variant="body1">
-          {Math.round(totalSets)}
+          {formatLargeNumber(totalSets, totalSets >= 10_000)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Sets</Typography>
       </Stack>
@@ -50,7 +51,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <DoneAllIcon />
         </Avatar>
         <Typography variant="body1">
-          {Math.round(totalReps)}
+          {formatLargeNumber(totalReps, totalReps >= 10_000)}
         </Typography>
         <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Reps</Typography>
       </Stack>
@@ -68,7 +69,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <FitnessCenterIcon />
         </Avatar>
         <Typography variant="body1">
-          {Math.round(totalVolume)} lbs
+          {formatLargeNumber(totalVolume, totalVolume >= 10_000)} lbs
         </Typography>
         <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Volume</Typography>
       </Stack>

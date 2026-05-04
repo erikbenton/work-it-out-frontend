@@ -42,7 +42,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<WhatshotIcon />}
           color={red[700]}
-          text={calories}
+          text={formatLargeNumber(calories, calories >= 10_000)}
           label="Calories"
         />
       </Grid>
@@ -50,7 +50,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<FormatListBulletedIcon />}
           color={grey[700]}
-          text={userStats.numberOfSets}
+          text={formatLargeNumber(userStats.numberOfSets, userStats.numberOfSets >= 10_000)}
           label="Sets"
         />
       </Grid>
@@ -58,7 +58,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<DoneAllIcon />}
           color={green[700]}
-          text={userStats.numberOfReps}
+          text={formatLargeNumber(userStats.numberOfReps, userStats.numberOfReps >= 10_000)}
           label="Reps"
         />
       </Grid>
@@ -66,7 +66,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<FitnessCenterIcon />}
           color={cyan[700]}
-          text={`${formatLargeNumber(userStats.totalVolume, userStats.totalVolume > 10_000)} lbs`}
+          text={`${formatLargeNumber(userStats.totalVolume, userStats.totalVolume >= 10_000)} lbs`}
           label="Volume"
         />
       </Grid>
