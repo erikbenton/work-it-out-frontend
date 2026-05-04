@@ -10,6 +10,7 @@ import Card from "@mui/material/Card";
 import Stack from "@mui/material/Stack";
 import AllSetsCompleteIcon from "./AllSetsCompleteIcon";
 import { bgBlue } from "../../../utils/styling";
+import { Typography } from "@mui/material";
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup
@@ -80,11 +81,13 @@ export default function ActiveWorkoutGroupCard({ exerciseGroup }: Props) {
           </Link>
         }
         subheader={
-          <Stack spacing={3} direction='row' sx={{ alignItems: 'flex-start' }}>
-            {numberCompletedSets}/{numberOfSets} Sets done
-            {numberOfSets !== 0 && numberCompletedSets === numberOfSets &&
-              (<AllSetsCompleteIcon avatarSx={{ ml: 0.75 }} />)
-            }
+          <Stack direction='row' sx={{ alignItems: 'center', mt: 0.25 }}>
+            <Typography component='div'>
+              {numberCompletedSets}/{numberOfSets} Sets done
+              {numberOfSets !== 0 && numberCompletedSets === numberOfSets &&
+                (<AllSetsCompleteIcon avatarSx={{ ml: 0.75 }} />)
+              }
+            </Typography>
           </Stack>
         }
         slotProps={{ title: { variant: 'h6' } }}
