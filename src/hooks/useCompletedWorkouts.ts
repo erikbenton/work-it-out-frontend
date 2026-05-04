@@ -57,7 +57,7 @@ export function useCompletedWorkouts() {
       const key = [historyQueryKey, group.exerciseId]
       try {
         const prevHistory = queryClient.getQueryData(key) as CompletedExerciseGroup[];
-        queryClient.setQueryData(key, prevHistory.filter(h => h.id === group.id));
+        queryClient.setQueryData(key, prevHistory.filter(h => h.id !== group.id));
       } catch {
         queryClient.invalidateQueries({ queryKey: key });
       }
