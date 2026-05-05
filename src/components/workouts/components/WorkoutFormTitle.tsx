@@ -8,16 +8,35 @@ import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import WorkoutFormNameInput from "./WorkoutFormNameInput";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
-import { useState } from "react";
 import ExerciseSelect from "../../exercises/components/ExerciseSelect";
 
 export default function WorkoutFormTitle() {
-  const { workout, editing, handleEditSaveClick, getTitleMenuOptions, addExercises } = useWorkoutForm();
-  const [selectingExercises, setSelectingExercises] = useState(false);
+  const {
+    workout,
+    editing,
+    handleEditSaveClick,
+    getTitleMenuOptions,
+    addExercises,
+    selectingExercises,
+    setSelectingExercises,
+    replacementKey,
+    setReplacementKey,
+    replaceExercise
+  } = useWorkoutForm();
+
+  const replacingExercise = Boolean(replacementKey);
 
   const handleClickOpen = () => {
     setSelectingExercises(true);
   };
+
+  const handleClickClose = () => {
+    setSelectingExercises(false);
+  }
+
+  const closeReplaceExercise = () => {
+    setReplacementKey(undefined);
+  }
 
   const menuItems = getTitleMenuOptions();
 
@@ -65,9 +84,10 @@ export default function WorkoutFormTitle() {
         </Grow>
       </Stack>
       <ExerciseSelect
-        open={selectingExercises && editing}
-        setOpen={setSelectingExercises}
-        addExercises={addExercises}
+        open={(selectingExercises || replacingExercise) && editing}
+        handleClose={replacingExercise ? closeReplaceExercise : handleClickClose}
+        addExercises={replacingExercise ? replaceExercise : addExercises}
+        limit={replacingExercise ? 1 : undefined}
       />
     </>
   );

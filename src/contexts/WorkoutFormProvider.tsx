@@ -21,6 +21,8 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const newWorkout = initWorkout.id === 0;
   const { setTags } = useSetTags();
   const [editing, setEditing] = useState(newWorkout);
+  const [selectingExercises, setSelectingExercises] = useState(false);
+  const [replacementKey, setReplacementKey] = useState<string | undefined>(undefined);
   const [expanded, setExpanded] = useState<Map<string, boolean>>(() => {
     const expandedMap = new Map<string, boolean>();
     for (const group of initWorkout.exerciseGroups) {
@@ -120,17 +122,35 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
     });
   }
 
+  const replaceExercise = (exerciseIds: number[]) => {
+    if (!replacementKey) return;
+
+    const group = workout.exerciseGroups.find(g => g.key === replacementKey);
+    if (!group) return;
+
+    const updatedGroup = { ...group, exerciseId: exerciseIds[0] };
+    dispatch({
+      type: 'updateGroup',
+      payload: { group: updatedGroup }
+    });
+  }
+
   const workoutContext = {
     workout,
     setTags,
     editing,
     newWorkout,
     setEditing,
+    selectingExercises,
+    setSelectingExercises,
+    replacementKey,
+    setReplacementKey,
     expanded,
     handleExpandClick,
     handleEditSaveClick,
     getTitleMenuOptions,
     addExercises,
+    replaceExercise,
     dispatch
   };
 

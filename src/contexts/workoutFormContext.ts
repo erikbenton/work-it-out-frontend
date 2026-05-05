@@ -11,11 +11,16 @@ export type WorkoutFormContext = {
   newWorkout: boolean,
   expanded: Map<string, boolean>,
   setEditing: React.Dispatch<React.SetStateAction<boolean>>,
+  selectingExercises: boolean,
+  setSelectingExercises: React.Dispatch<React.SetStateAction<boolean>>,
+  replacementKey?: string,
+  setReplacementKey: React.Dispatch<React.SetStateAction<string | undefined>>,
   handleExpandClick: (expanded: boolean, key?: string) => () => void,
   handleEditSaveClick: () => void,
   dispatch: React.ActionDispatch<[action: WorkoutAction]>,
   getTitleMenuOptions: () => VerticalMenuItemProps[],
-  addExercises: (exercises: number[]) => void;
+  addExercises: (exercises: number[]) => void,
+  replaceExercise: (exerciseIds: number[]) => void
 }
 
 export const WorkoutFormContext = createContext<WorkoutFormContext | null>(null);

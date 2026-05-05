@@ -81,7 +81,7 @@ export default function ActiveWorkoutSummary() {
           </Stack>
           <ExerciseSelect
             open={selectingExercises}
-            setOpen={setSelectingExercises}
+            handleClose={() => setSelectingExercises(false)}
             addExercises={addExercises}
           />
           {workout.exerciseGroups.map(group => (

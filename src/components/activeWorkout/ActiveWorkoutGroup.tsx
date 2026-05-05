@@ -45,6 +45,10 @@ export default function ActiveWorkoutGroup() {
     }
   }
 
+  const handleCloseReplacement = () => {
+    setReplacingExercise(false);
+  }
+
   const completeSet = (completedSet: ActiveExerciseSet) => {
     dispatch({
       type: 'updateSet',
@@ -80,7 +84,7 @@ export default function ActiveWorkoutGroup() {
     return (
       <ExerciseSelect
         open={replacingExercise}
-        setOpen={setReplacingExercise}
+        handleClose={handleCloseReplacement}
         addExercises={replaceExercise}
         limit={1}
       />

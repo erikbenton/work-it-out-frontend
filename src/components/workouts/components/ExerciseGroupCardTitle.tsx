@@ -13,7 +13,7 @@ type Props = {
 }
 
 export default function ExerciseGroupCardTitle({ exerciseName, muscles, exerciseGroup }: Props) {
-  const { editing, dispatch } = useWorkoutForm();
+  const { editing, dispatch, setReplacementKey } = useWorkoutForm();
 
   const numberOfSets = exerciseGroup.exerciseSets?.length ?? 0;
 
@@ -28,6 +28,12 @@ export default function ExerciseGroupCardTitle({ exerciseName, muscles, exercise
       label: "Shift down",
       handleClick: () => {
         dispatch({ type: 'shiftGroup', payload: { group: exerciseGroup, shift: 1 } });
+      },
+    },
+    {
+      label: "Replace",
+      handleClick: () => {
+        setReplacementKey(exerciseGroup.key);
       },
     },
     {

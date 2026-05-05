@@ -18,12 +18,12 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   open: boolean,
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  handleClose: () => void,
   addExercises: (exercises: number[]) => void,
   limit?: number
 }
 
-export default function ExerciseSelect({ open, setOpen, addExercises, limit }: Props) {
+export default function ExerciseSelect({ open, handleClose, addExercises, limit }: Props) {
   const { exercises } = useExercises();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
@@ -32,12 +32,12 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
 
   const handleSave = () => {
     addExercises(selected);
-    handleClose();
+    handleCloseDialog();
   }
 
-  const handleClose = () => {
+  const handleCloseDialog = () => {
     setSelected([]);
-    setOpen(false);
+    handleClose();
   };
 
   const exerciseLetterMap = new Map<string, Exercise[]>();
@@ -64,7 +64,7 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
       fullWidth
       maxWidth='sm'
       open={open}
-      onClose={handleClose}
+      onClose={handleCloseDialog}
       slots={{
         transition: Transition,
       }}
@@ -82,7 +82,7 @@ export default function ExerciseSelect({ open, setOpen, addExercises, limit }: P
           <IconButton
             edge="start"
             color="inherit"
-            onClick={handleClose}
+            onClick={handleCloseDialog}
             aria-label="close"
           >
             <CloseIcon />

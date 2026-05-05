@@ -31,7 +31,7 @@ export function useWorkouts() {
       });
     }
 
-    return workout;
+    return { ...workout };
   }
 
   const createClone = (workout: Workout): Workout => {
