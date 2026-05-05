@@ -1,7 +1,7 @@
 import Avatar from "@mui/material/Avatar";
 import CardHeader from "@mui/material/CardHeader";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
-import { Box, Grow } from "@mui/material";
+import { Box, Grow, Typography } from "@mui/material";
 import type MuscleData from "../../../types/muscleData";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import type ExerciseGroup from "../../../types/exerciseGroup";
@@ -64,7 +64,10 @@ export default function ExerciseGroupCardTitle({ exerciseName, muscles, exercise
         </Grow>
       }
       title={exerciseName}
-      subheader={`${numberOfSets} Sets`}
+      subheader={
+        <Typography>
+          {`${numberOfSets} Sets`}
+        </Typography>}
       slotProps={{ title: { variant: 'h6' } }}
       className='pb-0'
     />
