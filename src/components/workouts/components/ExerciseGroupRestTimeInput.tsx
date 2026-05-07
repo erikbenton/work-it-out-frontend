@@ -38,10 +38,12 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
 
     let restTime: string | undefined = undefined;
 
-    if (seconds !== undefined && minutes !== undefined) {
-      if (seconds > 0 || minutes > 0) {
-        const minutesText = minutes < 9 ? `0${minutes}` : minutes;
-        const secondsText = seconds < 9 ? `0${seconds}` : seconds;
+    if (seconds !== undefined || minutes !== undefined) {
+      const saveSeconds = seconds ?? 0;
+      const saveMinutes = minutes ?? 0;
+      if (saveMinutes !== 0 || saveSeconds !== 0) {
+        const minutesText = saveMinutes < 10 ? `0${saveMinutes}` : saveMinutes;
+        const secondsText = saveSeconds < 10 ? `0${saveSeconds}` : saveSeconds;
         restTime = `00:${minutesText}:${secondsText}`;
       }
     }
@@ -67,7 +69,7 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
       if (!seconds) {
         setSeconds(0);
       }
-      setMinutes(newMinutes);
+      setMinutes(newMinutes < 0 ? 0 : newMinutes > 59 ? 59 : newMinutes);
     }
   }
 
@@ -81,8 +83,18 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
       if (!minutes) {
         setMinutes(0);
       }
-      const newSeconds = Number(e.target.value);
-      setSeconds(newSeconds);
+      const newSeconds = Number(e.target.value.replace(/^0+(?=\d)/, ''));
+      setSeconds(newSeconds < 0 ? 0 : newSeconds > 59 ? 59 : newSeconds);
+    }
+  }
+
+  const handleMinutesCheck = () => {
+    if (!minutes && (seconds ?? 0) > 0) {
+      setMinutes(0);
+    }
+    if (!seconds && !minutes) {
+      setSeconds(undefined);
+      setMinutes(undefined);
     }
   }
 
@@ -95,6 +107,10 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
       setMinutes(undefined);
     }
   }
+
+  const [restMinutes, restSeconds] = exerciseGroup.restTime
+    ? exerciseGroup.restTime.split(':').splice(-2)
+    : [null, null];
 
   return (
     <>
@@ -114,6 +130,7 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
                   value={minutes ?? ""}
                   slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
                   onChange={handleMinutesChange}
+                  onBlur={handleMinutesCheck}
                 />
                 <TextField
                   id="seconds"
@@ -121,7 +138,8 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
                   label="Seconds"
                   type="number"
                   variant="standard"
-                  value={seconds ?? ""}
+                  // need to do conversion here to deal with leading zeroes bc type=number
+                  value={seconds === undefined ? '' : seconds < 10 ? `0${seconds ?? 0}` : `${seconds}`.replace(/^0+(?=\d)/, '')}
                   onChange={handleSecondsChange}
                   onBlur={handleSecondsCheck}
                 />
@@ -150,7 +168,7 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
           sx={{ flex: 1, textAlign: 'left' }}
           className={exerciseGroup.restTime ? '' : 'text-gray-400'}
         >
-          {exerciseGroup.restTime ? exerciseGroup.restTime.slice(exerciseGroup.restTime.search(/[1-9]/)) : ''}
+          {restMinutes || restSeconds ? `${restMinutes ?? '00'}:${restSeconds ?? '00'}` : ''}
         </Typography>
       </Button>
     </>
