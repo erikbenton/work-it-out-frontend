@@ -21,7 +21,7 @@ const getInitRestTime = (rest: string | undefined): number | undefined => {
   return undefined;
 }
 
-export default function ExerciseGroupRestDurationInput({ exerciseGroup }: Props) {
+export default function DurationInput({ exerciseGroup }: Props) {
   const { editing, dispatch } = useWorkoutForm();
   const [open, setOpen] = useState(false);
   const [restTime, setRestTime] = useState(getInitRestTime(exerciseGroup.restTime));
@@ -30,8 +30,13 @@ export default function ExerciseGroupRestDurationInput({ exerciseGroup }: Props)
     let updatedRestTime: string | undefined = undefined;
 
     if (restTime) {
-      const minutes = Math.floor(restTime / 100);
-      const seconds = Math.floor(restTime % 100);
+      let minutes = Math.floor(restTime / 100);
+      let seconds = Math.floor(restTime % 100);
+      if (seconds > 59) {
+        const mins = Math.floor(seconds / 60);
+        minutes += mins;
+        seconds = Math.floor(seconds % 60);
+      }
       const minutesText = minutes < 10 ? `0${minutes}` : minutes;
       const secondsText = seconds < 10 ? `0${seconds}` : seconds;
       updatedRestTime = `00:${minutesText}:${secondsText}`;
@@ -71,6 +76,18 @@ export default function ExerciseGroupRestDurationInput({ exerciseGroup }: Props)
       : `${seconds}`;
   }
 
+  const handleBlur = () => {
+    if (!restTime) return '';
+    let minutes = Math.floor(restTime / 100);
+    let seconds = Math.floor(restTime % 100);
+    if (seconds > 59) {
+      const mins = Math.floor(seconds / 60);
+      minutes += mins;
+      seconds = Math.floor(seconds % 60);
+      setRestTime(minutes * 100 + seconds);
+    }
+  }
+
   const [, restMinutes, restSeconds] = exerciseGroup.restTime
     ? exerciseGroup.restTime.split(':')
     : [null, null];
@@ -90,6 +107,7 @@ export default function ExerciseGroupRestDurationInput({ exerciseGroup }: Props)
             inputMode="numeric"
             slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
             onChange={handleChangeRestTime}
+            onBlur={handleBlur}
           />
         </DialogContent>
         <DialogActions>
