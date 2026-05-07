@@ -33,6 +33,12 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
     setOpen(false);
   };
 
+  const handleCancel = () => {
+    setMinutes(initRestTime?.minutes);
+    setSeconds(initRestTime?.seconds);
+    handleClose();
+  }
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -148,7 +154,7 @@ export default function ExerciseGroupRestTimeInput({ exerciseGroup }: Props) {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>
+          <Button onClick={handleCancel}>
             Cancel
           </Button>
           <Button type="submit" form="exercise-group-rest-time-form">
