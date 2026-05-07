@@ -113,6 +113,11 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
           services.clone(workout, {
             onSuccess: (savedWorkout) => {
               setEditing(!editing);
+              const cloneWorkout = services.getWorkoutById(savedWorkout.id, true);
+              dispatch({
+                type: 'setWorkout',
+                payload: { workout: cloneWorkout }
+              });
               navigate(`/workouts/${savedWorkout.id}`);
             }
           });
