@@ -21,6 +21,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
   const newWorkout = initWorkout.id === 0;
   const { setTags } = useSetTags();
   const [editing, setEditing] = useState(newWorkout);
+  const [saving, setSaving] = useState(false);
   const [selectingExercises, setSelectingExercises] = useState(false);
   const [replacementKey, setReplacementKey] = useState<string | undefined>(undefined);
   const [expanded, setExpanded] = useState<Map<string, boolean>>(() => {
@@ -40,11 +41,15 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
 
   const handleEditSaveClick = () => {
     if (editing) {
+      setSaving(true);
       if (newWorkout) {
         services.create(workout, {
           onSuccess: (savedWorkout) => {
             setEditing(!editing);
             navigate(`/workouts/${savedWorkout.id}`);
+          },
+          onSettled: () => {
+            setSaving(false);
           }
         });
       } else {
@@ -52,6 +57,9 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
           onSuccess: (savedWorkout) => {
             setEditing(!editing);
             navigate(`/workouts/${savedWorkout.id}`);
+          },
+          onSettled: () => {
+            setSaving(false);
           }
         });
       }
@@ -141,6 +149,8 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
     editing,
     newWorkout,
     setEditing,
+    saving,
+    setSaving,
     selectingExercises,
     setSelectingExercises,
     replacementKey,
