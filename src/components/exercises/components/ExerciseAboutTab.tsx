@@ -20,8 +20,18 @@ export default function ExerciseAboutTab({ exercise }: Props) {
 
   return (
     <Box className="pt-2 px-3">
-      <Typography variant="body1" className='capitalize mb-2'>Equipment: {exercise?.equipment}</Typography>
-      <Typography variant="body1">Instructions: {exercise?.instructions ?? "No instructions"}</Typography>
+      {exercise?.equipment &&
+        <Box sx={{ mb: 1 }}>
+          <Typography variant="h6" sx={{ mr: 1, display: 'inline-block' }}>Equipment:</Typography>
+          <Typography variant="body1" sx={{ display: 'inline-block', fontSize: '1.25rem' }}>{capitalize(exercise.equipment)}</Typography>
+        </Box>
+      }
+      {exercise?.instructions &&
+        <Box>
+          <Typography variant="h6" sx={{ mr: 1, display: 'block' }}>Instructions</Typography>
+          <Typography variant="body1" sx={{ display: 'block' }}>{exercise.instructions}</Typography>
+        </Box>
+      }
       <PieChart
         sx={{ mt: 3, mx: 'auto', width: { xs: '100%', md: '66%' } }}
         series={[{
