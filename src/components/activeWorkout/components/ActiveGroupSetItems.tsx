@@ -25,7 +25,7 @@ interface CompletedProps extends Props {
 
 export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
-  const setTag = setTags?.find(tag => tag.id === set.setTagId);
+  const setTag = setTags.find(tag => tag.id === set.setTagId);
 
   const menuItems = [
     {

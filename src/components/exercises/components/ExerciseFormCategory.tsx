@@ -7,18 +7,20 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
 import { bgBlue } from "../../../utils/styling";
-
-const categories = ['lift', 'timed', 'conditioning'];
+import useExerciseCategories from "../../../hooks/useExerciseCategories";
 
 type Props = {
-  category: string | undefined,
+  categoryId: number,
   dispatch: React.ActionDispatch<[action: ExerciseAction]>
 }
 
-export default function ExerciseFormCategory({ category, dispatch }: Props) {
+export default function ExerciseFormCategory({ categoryId, dispatch }: Props) {
+  const { categories, services } = useExerciseCategories();
+  const category = services.getCategoryById(categoryId) ?? categories[0];
 
-  const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, newCategory: string) => {
-    dispatch({ type: 'setCategory', payload: { category: newCategory } });
+  const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, category: string) => {
+    const categoryId = Number(category);
+    dispatch({ type: 'setCategory', payload: { categoryId } });
   }
 
   return (
@@ -33,11 +35,11 @@ export default function ExerciseFormCategory({ category, dispatch }: Props) {
             row
             aria-labelledby="exercise-category-group-label"
             name="exercise-category-group"
-            value={category}
+            value={category.id ?? categories[0].id}
             onChange={handleCategory}
           >
             {categories.map(category => (
-              <FormControlLabel key={category} value={category} control={<Radio />} label={category} className="capitalize" />
+              <FormControlLabel key={category.id} value={category.id} control={<Radio />} label={category.name} className="capitalize" />
             ))}
           </RadioGroup>
         </FormControl>

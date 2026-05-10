@@ -114,6 +114,8 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
         key: set.key,
         minReps: set.minReps,
         maxReps: set.maxReps,
+        targetDuration: set.targetDuration,
+        targetDistance: set.targetDistance,
         sort: set.sort,
         setTagId: set.setTagId,
         exerciseGroupId: set.exerciseGroupId

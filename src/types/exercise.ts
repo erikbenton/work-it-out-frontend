@@ -6,5 +6,5 @@ export default interface Exercise {
   instructions: string | null,
   equipment: string | null,
   muscles?: MuscleData[],
-  category?: 'lift' | 'timed' | 'conditioning'
+  categoryId: number
 }

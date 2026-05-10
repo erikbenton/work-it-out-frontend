@@ -5,38 +5,42 @@ export type ExerciseAction =
   { type: string, payload: never }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setInstructions', payload: { instructions: string } }
-  | { type: 'setCategory', payload: { category: string } }
+  | { type: 'setCategory', payload: { categoryId: number } }
   | { type: 'setMuscles', payload: { muscles: MuscleData[] } }
   | { type: 'setEquipment', payload: { equipment: string } };
 
 export default function exerciseReducer(exercise: Exercise, action: ExerciseAction) {
   switch (action.type) {
-    case 'setName':
+    case 'setName': {
       return {
         ...exercise,
         name: action.payload.name === ""
           ? null
           : action.payload.name
       };
+    }
 
-    case 'setInstructions':
+    case 'setInstructions': {
       return {
         ...exercise,
         instructions: action.payload.instructions === ""
           ? null
           : action.payload.instructions
       };
-
-    case 'setCategory': {
-      const castedEquipment = action.payload.category as 'lift' | 'timed' | 'conditioning';
-      return ({ ...exercise, category: castedEquipment });
     }
 
-    case 'setMuscles':
-      return ({ ...exercise, muscles: action.payload.muscles });
+    case 'setCategory': {
+      const { categoryId } = action.payload;
+      return ({ ...exercise, categoryId });
+    }
 
-    case 'setEquipment':
+    case 'setMuscles': {
+      return ({ ...exercise, muscles: action.payload.muscles });
+    }
+
+    case 'setEquipment': {
       return ({ ...exercise, equipment: action.payload.equipment });
+    }
 
     default:
       throw new Error("Unhandled action " + action.type)
@@ -49,5 +53,5 @@ export const initialExercise: Exercise = {
   instructions: null,
   equipment: 'assisted',
   muscles: [],
-  category: 'lift'
+  categoryId: 1
 };
