@@ -40,6 +40,49 @@ export function durationToSeconds(duration: string): number {
   return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
 }
 
+export function durationToHhMmSs(duration?: string): string | undefined {
+  if (!duration) return undefined;
+
+  const times = duration.split(':').map(t => Number(t));
+
+  if (times.length === 3) {
+    const hours = times[0] ? `${times[0]} hr` : '';
+
+    const minutes = times[1] ?
+      hours ?
+        times[1] < 10 ?
+          `0${times[1]} min`
+          : `${times[1]} min`
+        : `${times[1]} min`
+      : '';
+
+    const seconds = times[2] ?
+      minutes ?
+        times[2] < 10 ?
+          `0${times[2]} sec`
+          : `${times[2]} sec`
+        : `${times[2]} sec`
+      : '';
+
+    return `${hours} ${minutes} ${seconds}`;
+  }
+
+  if (times.length === 2) {
+    const minutes = times[0] ? `${times[0]} min` : '';
+
+    const seconds = times[1] ?
+      minutes ?
+        times[1] < 10 ?
+          `0${times[1]} sec`
+          : `${times[1]} sec`
+        : `${times[1]} sec`
+      : '';
+    return `${minutes} ${seconds}`;
+  }
+
+  return times[0] ? `${times[0]} sec` : undefined;
+}
+
 export function checkPluralization(word: string, amount: number | undefined): string {
   return (amount ?? 0) === 1 ? word : word + 's';
 }
