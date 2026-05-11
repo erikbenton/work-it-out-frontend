@@ -2,6 +2,7 @@ import type ExerciseGroup from "../types/exerciseGroup";
 import type ExerciseSet from "../types/exerciseSet";
 import { populateKey } from "../types/keyId";
 import type Workout from "../types/workout";
+import { formatDuration } from "../utils/formatters";
 
 export type WorkoutAction =
   { type: string, payload: never }
@@ -114,7 +115,7 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
         key: set.key,
         minReps: set.minReps,
         maxReps: set.maxReps,
-        targetDuration: set.targetDuration,
+        targetDuration: formatDuration(set.targetDuration),
         targetDistance: set.targetDistance,
         sort: set.sort,
         setTagId: set.setTagId,

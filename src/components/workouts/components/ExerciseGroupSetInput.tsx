@@ -9,7 +9,6 @@ import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
-import TextField from "@mui/material/TextField";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import type ExerciseGroup from "../../../types/exerciseGroup";
@@ -27,54 +26,42 @@ import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styli
 import { useExercises } from "../../../hooks/useExercises";
 import useExerciseCategories from "../../../hooks/useExerciseCategories";
 import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
-import { checkPluralization, durationToHhMmSs } from "../../../utils/formatters";
+import { formattedDistanceText, formattedRepsText, formattedStretchText } from "../../../utils/formatters";
 import { Typography } from "@mui/material";
-
-function formattedRepsText(set: ExerciseSet): string {
-  if (!set.minReps && !set.maxReps) return '';
-  const repText = checkPluralization('rep', Math.max(set.minReps ?? 0, set.maxReps ?? 0));
-  return (`${set.minReps ?? ""}` +
-    `${set.minReps && set.maxReps ? " - " : ""}` +
-    `${set.maxReps ?? ""} ${repText}`);
-}
-
-function formattedDistanceText(set: ExerciseSet): string {
-  const distanceText = set.targetDistance ? `${set.targetDistance}mi` : undefined;
-  const durationText = durationToHhMmSs(set.targetDuration);
-  return (`${distanceText ?? ""}` +
-    `${distanceText && durationText ? " in " : ""}` +
-    `${durationText ?? ""}`);
-}
-
-function formattedStretchText(set: ExerciseSet): string {
-  const repText = set.maxReps ? `${set.maxReps} ${checkPluralization('rep', set.maxReps)}` : undefined;
-  const durationText = durationToHhMmSs(set.targetDuration);
-  return (`${repText ?? ""}` +
-    `${repText && durationText ? " for " : ""}` +
-    `${durationText ?? ""}`);
-}
+import MinRepsInput from "./inputs/MinRepsInput";
+import MaxRepsInput from "./inputs/MaxRepsInput";
+import TargetDurationInput from "./inputs/TargetDurationInput";
+import TargetDistanceInput from "./inputs/TargetDistanceInput";
 
 function formattedSetText(set: ExerciseSet, category: ExerciseCategoryOption): string {
-  switch (category.firstTargetInput) {
-    case 'reps': {
+  const key = `${category.firstTargetInput}_${category.secondTargetInput}`
+  switch (key) {
+    case 'reps_reps': {
       return formattedRepsText(set);
     }
 
-    case 'distance': {
+    case 'distance_duration': {
       return formattedDistanceText(set);
     }
-    case 'duration': {
+
+    case 'reps_duration': {
       return formattedStretchText(set);
     }
 
     default:
-      return '';
+      return 'No set formatter found';
   }
 }
 
 type Props = {
   exerciseGroup: ExerciseGroup,
   set: ExerciseSet
+};
+
+export type SetInputProps = {
+  values: ExerciseSet,
+  setValues: React.Dispatch<React.SetStateAction<ExerciseSet>>,
+  label?: string
 }
 
 export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
@@ -104,6 +91,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
     setValues(prev => ({ ...prev, setTagId: set.setTagId }));
     handleClose();
   }
+
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -127,13 +115,23 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   const firstInput = () => {
     switch (category.firstTargetInput) {
       case 'reps': {
-        return (<MinRepsInput values={values} setValues={setValues} label="Min Reps" />)
+        return (<MinRepsInput
+          values={values}
+          setValues={setValues}
+          label={category.secondTargetInput === 'reps' ? 'Min Reps' : undefined}
+        />);
       }
       case 'duration': {
-        return (<TargetDurationInput values={values} setValues={setValues} />)
+        return (<TargetDurationInput
+          values={values}
+          setValues={setValues}
+        />);
       }
       case 'distance': {
-        return (<TargetDistanceInput values={values} setValues={setValues} />)
+        return (<TargetDistanceInput
+          values={values}
+          setValues={setValues}
+        />);
       }
     }
   }
@@ -144,14 +142,20 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
         return (<MaxRepsInput
           values={values}
           setValues={setValues}
-          label={category.firstTargetInput === 'reps' ? 'Max Reps' : undefined}
-        />)
+          label='Max Reps'
+        />);
       }
       case 'duration': {
-        return (<TargetDurationInput values={values} setValues={setValues} />)
+        return (<TargetDurationInput
+          values={values}
+          setValues={setValues}
+        />);
       }
       case 'distance': {
-        return (<TargetDistanceInput values={values} setValues={setValues} />)
+        return (<TargetDistanceInput
+          values={values}
+          setValues={setValues}
+        />);
       }
     }
   }
@@ -255,150 +259,4 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
       </ListItem>
     </>
   );
-}
-
-type SetInputProps = {
-  values: ExerciseSet,
-  setValues: React.Dispatch<React.SetStateAction<ExerciseSet>>,
-  label?: string
-}
-
-function MinRepsInput({ values, setValues, label }: SetInputProps) {
-  const handleMinRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const minReps = Number(e.target.value);
-    if (minReps < 0) return;
-    const newSet = { ...values, minReps: minReps === 0 ? undefined : minReps }
-    setValues(newSet);
-  }
-
-  return (
-    <TextField
-      autoFocus
-      id="minReps"
-      name="minReps"
-      label={label ?? 'Reps'}
-      type="number"
-      fullWidth
-      variant="standard"
-      value={values.minReps ? values.minReps : ""}
-      onChange={handleMinRepsChange}
-    />
-  )
-}
-
-function MaxRepsInput({ values, setValues, label }: SetInputProps) {
-  const handleMaxRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const maxReps = Number(e.target.value);
-    if (maxReps < 0) return;
-    const newSet = { ...values, maxReps: maxReps === 0 ? undefined : maxReps }
-    setValues(newSet);
-  }
-
-  return (
-    <TextField
-      id="maxReps"
-      name="maxReps"
-      label={label ?? 'Reps'}
-      type="number"
-      fullWidth
-      variant="standard"
-      value={values.maxReps ? values.maxReps : ""}
-      onChange={handleMaxRepsChange}
-    />
-  )
-}
-
-function TargetDistanceInput({ values, setValues, label }: SetInputProps) {
-  const handleDistanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetDistance = Number(e.target.value);
-    if (targetDistance < 0) return;
-    const newSet = { ...values, targetDistance: targetDistance === 0 ? undefined : targetDistance }
-    setValues(newSet);
-  }
-
-  return (
-    <TextField
-      id="targetDistance"
-      name="targetDistance"
-      label={label ?? 'Distance'}
-      type="number"
-      fullWidth
-      variant="standard"
-      value={values.targetDistance ? values.targetDistance : ""}
-      onChange={handleDistanceChange}
-    />
-  )
-}
-
-function TargetDurationInput({ values, setValues, label }: SetInputProps) {
-  const duration = values.targetDuration;
-
-  const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let duration = e.target.value;
-    const parsedText = duration.replaceAll(':', '');
-    const newDuration = Number(parsedText);
-    if (isNaN(newDuration)) return;
-    if (newDuration < 0) return;
-
-    if (parsedText.length > 2) {
-      const durationArr = parsedText.split('');
-      if (parsedText.length > 4) {
-        durationArr.splice(-4, 0, ':');
-      }
-      durationArr.splice(-2, 0, ':');
-      duration = durationArr.join('');
-    } else {
-      duration = parsedText;
-    }
-
-    const newSet = { ...values, targetDuration: duration === '' ? undefined : duration }
-    setValues(newSet);
-  }
-
-  const handleBlur = () => {
-    if (!duration) return '';
-    let updated = false;
-
-    const durationNum = Number(duration.replaceAll(':', ''));
-    let hours = Math.floor(durationNum / 10_000)
-    let minutes = Math.floor(durationNum / 100) - hours * 100;
-    let seconds = Math.floor(durationNum % 100);
-
-    if (seconds > 59) {
-      const mins = Math.floor(seconds / 60);
-      minutes += mins;
-      seconds = Math.floor(seconds % 60);
-      updated = true;
-    }
-
-    if (minutes > 59) {
-      const hrs = Math.floor(minutes / 60);
-      hours += hrs;
-      minutes = Math.floor(minutes % 60);
-      updated = true;
-    }
-
-    if (updated) {
-      const minutesText = hours > 0 && minutes < 10 ? `0${minutes}` : `${minutes}`
-      const updatedDuration = `${hours ?? ''}:${minutesText}:${seconds < 10 ? `0${seconds}` : seconds}`;
-      const newSet = { ...values, targetDuration: updatedDuration === '' ? undefined : updatedDuration }
-      setValues(newSet);
-    }
-  }
-
-  return (
-    <TextField
-      id="duration"
-      name="duration"
-      label={label ?? 'Duration'}
-      type="text"
-      fullWidth
-      variant="standard"
-      value={duration ?? ''}
-      inputMode="numeric"
-      slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
-      onChange={handleDurationChange}
-      onBlur={handleBlur}
-    />
-  )
 }

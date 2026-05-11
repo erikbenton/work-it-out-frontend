@@ -5,6 +5,7 @@ import { Box, Grow, Typography } from "@mui/material";
 import type MuscleData from "../../../types/muscleData";
 import useWorkoutForm from "../../../hooks/useWorkoutForm";
 import type ExerciseGroup from "../../../types/exerciseGroup";
+import { checkPluralization } from "../../../utils/formatters";
 
 type Props = {
   exerciseName: string,
@@ -66,7 +67,7 @@ export default function ExerciseGroupCardTitle({ exerciseName, muscles, exercise
       title={exerciseName}
       subheader={
         <Typography>
-          {`${numberOfSets} Sets`}
+          {`${numberOfSets} ${checkPluralization('Set', numberOfSets)}`}
         </Typography>}
       slotProps={{ title: { variant: 'h6' } }}
       className='pb-0'

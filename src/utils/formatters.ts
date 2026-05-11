@@ -1,3 +1,5 @@
+import type ExerciseSet from "../types/exerciseSet";
+
 type DurationOptions = {
   format: ('always-hours' | 'no-hours' | 'include-hours')
 }
@@ -38,6 +40,35 @@ export function secondsToDuration(seconds: number): string {
 export function durationToSeconds(duration: string): number {
   const [hours, minutes, seconds] = duration.split(':');
   return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
+}
+
+export function formatDuration(duration?: string): string | undefined {
+  if (!duration) return undefined;
+  const times = duration.split(':');
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 0;
+
+  if (times.length === 1) {
+    seconds = Number(times[0]);
+  }
+
+  if (times.length === 2) {
+    minutes = Number(times[0]);
+    seconds = Number(times[1]);
+  }
+
+  if (times.length === 3) {
+    hours = Number(times[0]);
+    minutes = Number(times[1]);
+    seconds = Number(times[2]);
+  }
+
+  const hoursText = hours < 10 ? `0${hours}` : `${hours}`;
+  const minutesText = minutes < 10 ? `0${minutes}` : `${minutes}`;
+  const secondsText = seconds < 10 ? `0${seconds}` : `${seconds}`;
+  
+  return `${hoursText}:${minutesText}:${secondsText}`;
 }
 
 export function durationToHhMmSs(duration?: string): string | undefined {
@@ -123,4 +154,28 @@ export function formatLargeNumber(num: number, shorten?: boolean): string {
   } else {
     return formatter.format(num);
   }
+}
+
+export function formattedRepsText(set: ExerciseSet): string {
+  if (!set.minReps && !set.maxReps) return '';
+  const repText = checkPluralization('rep', Math.max(set.minReps ?? 0, set.maxReps ?? 0));
+  return (`${set.minReps ?? ""}` +
+    `${set.minReps && set.maxReps ? " - " : ""}` +
+    `${set.maxReps ?? ""} ${repText}`);
+}
+
+export function formattedDistanceText(set: ExerciseSet): string {
+  const distanceText = set.targetDistance ? `${set.targetDistance} ${checkPluralization('mile', set.targetDistance)}` : undefined;
+  const durationText = durationToHhMmSs(set.targetDuration);
+  return (`${distanceText ?? ""}` +
+    `${distanceText && durationText ? " in " : ""}` +
+    `${durationText ?? ""}`);
+}
+
+export function formattedStretchText(set: ExerciseSet): string {
+  const repText = set.minReps ? `${set.minReps} ${checkPluralization('rep', set.minReps)}` : undefined;
+  const durationText = durationToHhMmSs(set.targetDuration);
+  return (`${repText ?? ""}` +
+    `${repText && durationText ? " @ " : ""}` +
+    `${durationText ?? ""}`);
 }
