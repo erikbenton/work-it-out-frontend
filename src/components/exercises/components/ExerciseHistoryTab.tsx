@@ -6,6 +6,8 @@ import ExerciseHistoryItemStats from './ExerciseHistoryItemStats';
 import { useExerciseHistory } from '../../../hooks/useExerciseHistory';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
+import useExerciseCategories from '../../../hooks/useExerciseCategories';
+import { useExercises } from '../../../hooks/useExercises';
 
 type Props = {
   exerciseId: number
@@ -19,6 +21,9 @@ const fullScreenStyle = {
 
 export default function ExerciseHistoryTab({ exerciseId }: Props) {
   const { data: history } = useExerciseHistory(exerciseId);
+  const { categories } = useExerciseCategories();
+  const { services: exerciseService } = useExercises();
+  const category = exerciseService.getExerciseCategory(exerciseId) ?? categories[0];
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
@@ -50,7 +55,7 @@ export default function ExerciseHistoryTab({ exerciseId }: Props) {
         <Box className="pb-1" key={`group-history-${group.id}`}>
           <ExerciseHistoryItemTitle group={group} />
           {group.completedExerciseSets.map(set => (
-            <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} />
+            <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} category={category} />
           ))}
           <ExerciseHistoryItemStats id={group.id} completedSets={group.completedExerciseSets} />
         </Box>

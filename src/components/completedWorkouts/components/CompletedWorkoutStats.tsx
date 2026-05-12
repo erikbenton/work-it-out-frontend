@@ -25,8 +25,8 @@ export default function CompletedWorkoutStats({ workout }: Props) {
 
   workout.completedExerciseGroups.forEach(group => {
     stats.sets += group.completedExerciseSets.length;
-    stats.reps += group.completedExerciseSets.reduce((acc, curr) => curr.reps + acc, 0);
-    stats.volume += group.completedExerciseSets.reduce((acc, curr) => ((curr.weight ?? 0) * curr.reps) + acc, 0);
+    stats.reps += group.completedExerciseSets.reduce((acc, curr) => (curr.reps ?? 0) + acc, 0);
+    stats.volume += group.completedExerciseSets.reduce((acc, curr) => ((curr.weight ?? 0) * (curr.reps ?? 0)) + acc, 0);
   });
 
   return (

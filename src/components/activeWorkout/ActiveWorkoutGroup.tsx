@@ -65,8 +65,14 @@ export default function ActiveWorkoutGroup() {
     setTimerOffset(0);
     if (currentIndex < exerciseGroup?.exerciseSets.length - 1) {
       const nextSet = exerciseGroup?.exerciseSets[currentIndex + 1];
-      // keep the weight and reps but update everything else
-      setValues({ ...nextSet, weight: completedSet.weight, reps: completedSet.reps })
+      // keep the weight, reps, duration, and distance, but update everything else
+      setValues({
+        ...nextSet,
+        weight: completedSet.weight,
+        reps: completedSet.reps,
+        duration: completedSet.duration,
+        distance: completedSet.distance
+      });
     }
   }
 

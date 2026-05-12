@@ -2,14 +2,19 @@ import { Box, Typography } from "@mui/material";
 import type Exercise from "../../../types/exercise";
 import { PieChart } from '@mui/x-charts/PieChart';
 import { capitalize } from "../../../utils/formatters";
+import useExerciseCategories from "../../../hooks/useExerciseCategories";
+import { useExercises } from "../../../hooks/useExercises";
 
 type Props = {
-  exercise: Exercise | undefined
+  exercise: Exercise
 }
 
 export default function ExerciseAboutTab({ exercise }: Props) {
+  const { categories } = useExerciseCategories();
+  const { services: exerciseServices } = useExercises();
+  const category = exerciseServices.getExerciseCategory(exercise.id) ?? categories[0];
   let totalWeight = 0;
-  const muscleData = exercise?.muscles?.map(muscle => {
+  const muscleData = exercise.muscles?.map(muscle => {
     totalWeight += muscle.weight;
     return {
       label: capitalize(muscle.name),
@@ -20,17 +25,10 @@ export default function ExerciseAboutTab({ exercise }: Props) {
 
   return (
     <Box className="pt-2 px-3">
-      {exercise?.equipment &&
-        <Box sx={{ mb: 1 }}>
-          <Typography variant="h6" sx={{ mr: 1, display: 'inline-block' }}>
-            Equipment:
-          </Typography>
-          <Typography variant="body1" sx={{ display: 'inline-block', fontSize: '1.25rem', textTransform: 'capitalize' }}>
-            {exercise.equipment}
-          </Typography>
-        </Box>
-      }
-      {exercise?.instructions &&
+      <Typography variant="h6" sx={{ mb: 1, mr: 1, display: 'inline-block', textTransform: "capitalize" }}>
+        {category.name}{exercise.equipment ? ` - ${exercise.equipment}` : ''}
+      </Typography>
+      {exercise.instructions &&
         <Box>
           <Typography variant="h6" sx={{ mr: 1, display: 'block' }}>
             Instructions

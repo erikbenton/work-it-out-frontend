@@ -13,6 +13,8 @@ import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
+import { useExercises } from '../../../hooks/useExercises';
+import useExerciseCategories from '../../../hooks/useExerciseCategories';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -26,10 +28,13 @@ type Props = {
 export default function ActiveSetsInputs({ exerciseGroup, values, setValues, allSetsCompleted, completeSet, size }: Props) {
   const [expanded, setExpanded] = useState(false);
   const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
-  const { services } = useCompletedWorkouts();
+  const { services: completedServices } = useCompletedWorkouts();
+  const { services: exerciseServices } = useExercises();
+  const { categories } = useExerciseCategories();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(s => s.id === values?.setTagId);
+  const category = exerciseServices.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,7 +87,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                 disabled={saving}
                 sx={{ width: '90%', borderRadius: 5 }}
                 variant='contained'
-                onClick={() => handleFinishWorkout(services)}
+                onClick={() => handleFinishWorkout(completedServices)}
               >
                 Finish Workout
               </Button>
@@ -99,7 +104,12 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                 </Button>
               </Box>
               : <Stack spacing={1} sx={{ bgcolor: bgBlue }}>
-                <LiftingInputs values={values} setValues={setValues} size={size} />
+                <LiftingInputs
+                  values={values}
+                  setValues={setValues}
+                  size={size}
+                  category={category}
+                />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
                   <Button
                     sx={{ width: '45%', borderRadius: 5 }}

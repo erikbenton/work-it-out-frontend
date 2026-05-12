@@ -12,6 +12,9 @@ import { Tooltip } from "@mui/material";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { devConsole } from "../../../utils/debugLogger";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
+import { useExercises } from "../../../hooks/useExercises";
+import useExerciseCategories from "../../../hooks/useExerciseCategories";
+import { formattedSetCompletedText, formattedSetTargetsText } from "../../../utils/formatters";
 
 type Props = {
   index: number,
@@ -25,7 +28,10 @@ interface CompletedProps extends Props {
 
 export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
+  const { services: exerciseServices } = useExercises();
+  const { categories } = useExerciseCategories();
   const setTag = setTags.find(tag => tag.id === set.setTagId);
+  const category = exerciseServices.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
 
   const menuItems = [
     {
@@ -52,8 +58,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
     onDoubleClick(set)
   }
 
-  const weight = set.weight ? `${set.weight} lbs x ` : '';
-  const reps = `${set.reps ?? 0} rep${set.reps !== 1 ? 's' : ''}`
+  const placeholderText = formattedSetCompletedText(set, category);
 
   return (
     <ListItem
@@ -89,7 +94,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
         </ListItemAvatar>
         <ListItemText
           slotProps={{ primary: { fontWeight: 100 } }}
-          primary={`${weight} ${reps}`}
+          primary={placeholderText}
         />
       </ListItemButton>
     </ListItem>
@@ -97,12 +102,14 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
 }
 
 export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
+  const { services: exerciseService } = useExercises();
+  const { categories } = useExerciseCategories();
   const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
-  const minReps = set.minReps ? `${set.minReps}` : '';
-  const maxReps = set.maxReps ? `${set.maxReps}` : '';
-  const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
-  const placeholderReps = minReps + hyphen + maxReps;
+  const category = exerciseService.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+
+  const placeholderText = formattedSetTargetsText(set, category)
+
   const menuItems = [
     {
       label: "Delete",
@@ -147,7 +154,7 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
           </Tooltip>
         </ListItemAvatar>
         <ListItemText
-          primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}
+          primary={placeholderText.length ? placeholderText : `Set ${index + 1}`}
         />
       </ListItemButton>
     </ListItem>
@@ -156,11 +163,12 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
 
 export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
   const { dispatch, setTags = [] } = useActiveWorkout();
+  const { services: exerciseService } = useExercises();
+  const { categories } = useExerciseCategories();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
-  const minReps = set.minReps ? `${set.minReps}` : '';
-  const maxReps = set.maxReps ? `${set.maxReps}` : '';
-  const hyphen = (set.minReps && set.maxReps) ? ' - ' : '';
-  const placeholderReps = minReps + hyphen + maxReps;
+  const category = exerciseService.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+
+  const placeholderText = formattedSetTargetsText(set, category);
 
   const menuItems = [
     {
@@ -200,7 +208,7 @@ export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
         </Tooltip>
       </ListItemAvatar>
       <ListItemText
-        primary={placeholderReps.length ? placeholderReps + ' reps' : `Set ${index + 1}`}
+        primary={placeholderText.length ? placeholderText : `Set ${index + 1}`}
       />
     </ListItem>
   );

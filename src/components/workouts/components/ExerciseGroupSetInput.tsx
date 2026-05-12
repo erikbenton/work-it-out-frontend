@@ -25,33 +25,12 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
 import useExerciseCategories from "../../../hooks/useExerciseCategories";
-import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
-import { formattedDistanceText, formattedRepsText, formattedStretchText } from "../../../utils/formatters";
+import { formattedSetTargetsText } from "../../../utils/formatters";
 import { Typography } from "@mui/material";
 import MinRepsInput from "./inputs/MinRepsInput";
 import MaxRepsInput from "./inputs/MaxRepsInput";
 import TargetDurationInput from "./inputs/TargetDurationInput";
 import TargetDistanceInput from "./inputs/TargetDistanceInput";
-
-function formattedSetText(set: ExerciseSet, category: ExerciseCategoryOption): string {
-  const key = `${category.firstTargetInput}_${category.secondTargetInput}`
-  switch (key) {
-    case 'reps_reps': {
-      return formattedRepsText(set);
-    }
-
-    case 'distance_duration': {
-      return formattedDistanceText(set);
-    }
-
-    case 'reps_duration': {
-      return formattedStretchText(set);
-    }
-
-    default:
-      return 'No set formatter found';
-  }
-}
 
 type Props = {
   exerciseGroup: ExerciseGroup,
@@ -250,7 +229,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           <ListItemText
             primary={
               <Typography>
-                {formattedSetText(set, category)}
+                {formattedSetTargetsText(set, category)}
               </Typography>
             }
             slotProps={{ primary: { fontSize: 16 } }}

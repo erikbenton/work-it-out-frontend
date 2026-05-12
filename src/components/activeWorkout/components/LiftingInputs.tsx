@@ -2,14 +2,45 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
+import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
 
-type Props = {
+export type ActiveSetInputProps = {
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
-  size: 'small' | 'large'
+  size?: 'small' | 'large',
+  label?: string,
+  category: ExerciseCategoryOption
 }
 
-export default function LiftingInputs({ values, setValues, size }: Props) {
+export default function LiftingInputs(inputProps: ActiveSetInputProps) {
+  const { category } = inputProps;
+
+  const getInput = (inputType: ("weight" | "reps" | "duration" | "distance")) => {
+    switch (inputType) {
+      case 'weight': {
+        return (<WeightInput {...inputProps} />);
+      }
+      case 'reps': {
+        return (<RepInput {...inputProps} />);
+      }
+      case 'duration': {
+        return (<DurationInput {...inputProps} />);
+      }
+      case 'distance': {
+        return (<DistanceInput {...inputProps} />);
+      }
+    }
+  }
+
+  return (
+    <Stack direction='row' spacing={2} sx={{ px: 2 }}>
+      {getInput(category.firstInput)}
+      {getInput(category.secondInput)}
+    </Stack>
+  )
+}
+
+function WeightInput({ values, setValues, size }: ActiveSetInputProps) {
   const { saving } = useActiveWorkout();
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +50,28 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
     setValues(newSet);
   }
 
+  return (
+    <TextField
+      id="weight"
+      name="weight"
+      label="Weight (lbs)"
+      type="number"
+      disabled={saving}
+      fullWidth
+      variant="filled"
+      value={values?.weight ? values.weight : ""}
+      onChange={handleWeightChange}
+      slotProps={{
+        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+      }}
+    />
+  );
+}
+
+function RepInput({ values, setValues, size }: ActiveSetInputProps) {
+  const { saving } = useActiveWorkout();
+
   const handleRepsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reps = Number(e.target.value);
     if (!values || reps < 0) return;
@@ -27,37 +80,125 @@ export default function LiftingInputs({ values, setValues, size }: Props) {
   }
 
   return (
-    <Stack direction='row' spacing={2} sx={{ px: 2 }}>
-      <TextField
-        id="weight"
-        name="weight"
-        label="Weight (lbs)"
-        type="number"
-        disabled={saving}
-        fullWidth
-        variant="filled"
-        value={values?.weight ? values.weight : ""}
-        onChange={handleWeightChange}
-        slotProps={{
-          input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-          inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
-        }}
-      />
-      <TextField
-        id="reps"
-        name="reps"
-        label="Repetitions"
-        type="number"
-        disabled={saving}
-        fullWidth
-        variant="filled"
-        value={values?.reps ? values.reps : ""}
-        onChange={handleRepsChange}
-        slotProps={{
-          input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-          inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
-        }}
-      />
-    </Stack>
-  )
+    <TextField
+      id="reps"
+      name="reps"
+      label="Repetitions"
+      type="number"
+      disabled={saving}
+      fullWidth
+      variant="filled"
+      value={values?.reps ? values.reps : ""}
+      onChange={handleRepsChange}
+      slotProps={{
+        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+      }}
+    />
+  );
+}
+
+function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
+  const distance = values?.distance;
+  const handleDistanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const distance = Number(e.target.value);
+    if (!values || distance < 0) return;
+    const newSet = { ...values, distance: distance === 0 ? undefined : distance }
+    setValues(newSet);
+  }
+
+  return (
+    <TextField
+      id="distance"
+      name="distance"
+      label='Distance'
+      type="number"
+      fullWidth
+      variant="filled"
+      value={distance ?? ""}
+      onChange={handleDistanceChange}
+      slotProps={{
+        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+      }}
+    />
+  );
+}
+
+function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
+  const duration = values?.duration;
+
+  const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!values) return;
+    let duration = e.target.value;
+    const parsedText = duration.replaceAll(':', '');
+    const newDuration = Number(parsedText);
+    if (isNaN(newDuration)) return;
+    if (newDuration < 0) return;
+
+    if (parsedText.length > 2) {
+      const durationArr = parsedText.split('');
+      if (parsedText.length > 4) {
+        durationArr.splice(-4, 0, ':');
+      }
+      durationArr.splice(-2, 0, ':');
+      duration = durationArr.join('');
+    } else {
+      duration = parsedText;
+    }
+
+    const newSet = { ...values, duration: duration === '' ? undefined : duration }
+    setValues(newSet);
+  }
+
+  const handleBlur = () => {
+    if (!values || !duration) return '';
+    let updated = false;
+
+    const durationNum = Number(duration.replaceAll(':', ''));
+    let hours = Math.floor(durationNum / 10_000)
+    let minutes = Math.floor(durationNum / 100) - hours * 100;
+    let seconds = Math.floor(durationNum % 100);
+
+    if (seconds > 59) {
+      const mins = Math.floor(seconds / 60);
+      minutes += mins;
+      seconds = Math.floor(seconds % 60);
+      updated = true;
+    }
+
+    if (minutes > 59) {
+      const hrs = Math.floor(minutes / 60);
+      hours += hrs;
+      minutes = Math.floor(minutes % 60);
+      updated = true;
+    }
+
+    if (updated) {
+      const minutesText = hours > 0 && minutes < 10 ? `0${minutes}` : `${minutes}`
+      const updatedDuration = `${hours ?? ''}:${minutesText}:${seconds < 10 ? `0${seconds}` : seconds}`;
+      const newSet = { ...values, targetDuration: updatedDuration === '' ? undefined : updatedDuration }
+      setValues(newSet);
+    }
+  }
+
+  return (
+    <TextField
+      id="duration"
+      name="duration"
+      label='Duration'
+      type="text"
+      fullWidth
+      variant="filled"
+      value={duration ?? ''}
+      inputMode="numeric"
+      onChange={handleDurationChange}
+      onBlur={handleBlur}
+      slotProps={{
+        htmlInput: { style: { textAlign: 'end' } },
+        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        inputLabel: { sx: { textAlign: 'end', fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+      }}
+    />
+  );
 }

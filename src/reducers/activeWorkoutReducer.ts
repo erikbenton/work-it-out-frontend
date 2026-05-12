@@ -70,7 +70,10 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
             s = populateKey(s);
             return {
               ...s,
-              reps: null,
+              reps: undefined,
+              weight: undefined,
+              duration: undefined,
+              distance: undefined,
               activeExerciseGroupId: g.id,
               completed: false
             };
@@ -96,8 +99,10 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
             s = populateKey(s);
             return {
               ...s,
-              reps: null,
+              reps: undefined,
               weight: undefined,
+              duration: undefined,
+              distance: undefined,
               activeExerciseGroupId: g.id,
               completed: false
             };
@@ -219,8 +224,12 @@ export default function activeWorkoutReducer(workout: ActiveWorkout | null, acti
         key: set.key,
         minReps: set.minReps,
         maxReps: set.maxReps,
+        targetDistance: set.targetDistance,
+        targetDuration: set.targetDuration,
         reps: set.reps,
         weight: set.weight,
+        duration: set.duration,
+        distance: set.distance,
         completed: set.completed,
         sort: set.sort,
         setTagId: set.setTagId,
@@ -276,7 +285,7 @@ export function createNewGroupSet(group: ActiveExerciseGroup): ActiveExerciseSet
     ? populateKey({
       ...group.exerciseSets[numberOfSets - 1],
       id: 0,
-      reps: null,
+      reps: undefined,
       weight: undefined,
       completed: false,
       sort: numberOfSets
@@ -284,7 +293,7 @@ export function createNewGroupSet(group: ActiveExerciseGroup): ActiveExerciseSet
     : populateKey<ActiveExerciseSet>({
       id: 0,
       activeExerciseGroupId: group.id,
-      reps: null,
+      reps: undefined,
       weight: undefined,
       completed: false,
       sort: numberOfSets,

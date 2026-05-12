@@ -10,14 +10,14 @@ export const calculateMaxWeight = (history: CompletedExerciseGroup): number => {
 
 export const calculateNumberOfReps = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
-    .reduce((acc, curr) => acc + curr.reps, 0);
+    .reduce((acc, curr) => acc + (curr.reps ?? 0), 0);
 }
 
 export const calculateEstimatedOneRepMax = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets.reduce(
     (max, curr) => {
       const weight = (curr.weight ?? 0);
-      const personalRecord = weight * (1.0 + (curr.reps / 30.0))
+      const personalRecord = weight * (1.0 + ((curr.reps ?? 0) / 30.0))
       return personalRecord > max ? personalRecord : max
     }, 0);
 }
@@ -25,7 +25,7 @@ export const calculateEstimatedOneRepMax = (history: CompletedExerciseGroup): nu
 export const calculateVolume = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
     .reduce((acc, curr) => {
-      const volume = curr.reps * (curr.weight ?? 1);
+      const volume = (curr.reps ?? 0) * (curr.weight ?? 1);
       return acc += volume;
     }, 0);
 }

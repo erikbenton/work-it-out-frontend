@@ -2,7 +2,7 @@ import type KeyId from "./keyId";
 
 export default interface ActiveExerciseSet extends KeyId {
   id: number,
-  reps: number | null,
+  reps?: number,
   weight?: number,
   duration?: string,
   distance?: number,

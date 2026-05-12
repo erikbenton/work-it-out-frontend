@@ -7,14 +7,17 @@ import { Link } from "react-router-dom";
 import { CardContent, List } from "@mui/material";
 import ExerciseHistoryItemSet from "../../exercises/components/ExerciseHistoryItemSet";
 import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
+import useExerciseCategories from "../../../hooks/useExerciseCategories";
 
 type Props = {
   group: CompletedExerciseGroup
 }
 
 export default function CompletedGroupCard({ group }: Props) {
-  const { services: exerciseService } = useExercises();
-  const exercise = exerciseService.getExerciseById(group.exerciseId);
+  const { services: exerciseServices } = useExercises();
+  const { categories } = useExerciseCategories();
+  const category = exerciseServices.getExerciseCategory(group.exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(group.exerciseId);
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
     : "?";
@@ -43,7 +46,7 @@ export default function CompletedGroupCard({ group }: Props) {
       <CardContent sx={{ p: 0, '&:last-child': { pb: 1 } }}>
         <List>
           {group.completedExerciseSets.map(set => (
-            <ExerciseHistoryItemSet key={set.id} set={set} />
+            <ExerciseHistoryItemSet key={set.id} set={set} category={category} />
           ))}
         </List>
         <ExerciseHistoryItemStats id={group.id} completedSets={group.completedExerciseSets} />

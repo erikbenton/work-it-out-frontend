@@ -7,10 +7,10 @@ type Props = {
 }
 
 const totalReps = (sets: CompletedExerciseSet[]) => {
-  return sets.reduce((acc, curr) => acc + curr.reps, 0)
+  return sets.reduce((acc, curr) => acc + (curr.reps ?? 0), 0)
 }
 const totalVolume = (sets: CompletedExerciseSet[]) => {
-  return sets.reduce((acc, curr) => acc + (curr.weight ?? 0) * (curr.reps), 0)
+  return sets.reduce((acc, curr) => acc + (curr.weight ?? 0) * (curr.reps ?? 0), 0)
 };
 
 export default function ExerciseHistoryItemStats({ id, completedSets }: Props) {

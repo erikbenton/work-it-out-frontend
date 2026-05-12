@@ -17,7 +17,7 @@ export default function MuscleSummaryChart({ groups }: Props) {
 
   const totalVolume = groups.reduce((volume, group) => {
     const groupVolume = group.completedExerciseSets
-      .reduce((acc, curr) => ((curr.weight ?? 150) * curr.reps) + acc, 0);
+      .reduce((acc, curr) => ((curr.weight ?? 150) * (curr.reps ?? 0)) + acc, 0);
 
     // populate the muscleVolumes map
     const exercise = exerciseServices.getExerciseById(group.exerciseId);

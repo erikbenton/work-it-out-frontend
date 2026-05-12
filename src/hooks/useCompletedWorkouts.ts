@@ -2,7 +2,7 @@ import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions, type
 import type CompletedWorkout from "../types/completedWorkout";
 import { createCompletedWorkout, deleteCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
-import { durationToSeconds, msToDuration, secondsToDuration } from "../utils/formatters";
+import { durationToSeconds, formatDuration, msToDuration, secondsToDuration } from "../utils/formatters";
 import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
 import type UserStats from "../types/userStats";
 import { calculateNumberOfReps, calculateVolume } from "../utils/charts";
@@ -128,10 +128,14 @@ export function useCompletedWorkouts() {
               return {
                 id: 0,
                 completedExerciseGroupId: g.id,
-                reps: s.reps ?? 0,
+                reps: s.reps,
                 weight: s.weight,
+                duration: formatDuration(s.duration),
+                distance: s.distance,
                 minReps: s.minReps,
                 maxReps: s.maxReps,
+                targetDuration: s.targetDuration,
+                targetDistance: s.targetDistance,
                 setTagId: s.setTagId,
                 sort: index,
               };

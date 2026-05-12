@@ -9,18 +9,17 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
+import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
+import { formattedSetCompletedText } from "../../../utils/formatters";
 
 type Props = {
   set: CompletedExerciseSet,
   onDoubleClick?: (completedSet: CompletedExerciseSet) => void,
-  isCurrent?: boolean
+  isCurrent?: boolean,
+  category: ExerciseCategoryOption
 }
 
-function displaySetText(set: CompletedExerciseSet) {
-  return (set.weight ? `${set.weight} lbs x ${set.reps}` : `${set.reps}`) + ' reps'
-}
-
-export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }: Props) {
+export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, category }: Props) {
   const { setTags } = useSetTags();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
 
@@ -49,7 +48,7 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent }
             </Badge>
           </Tooltip>
         </ListItemAvatar>
-        <ListItemText id={`list-label-${set.id}`} primary={displaySetText(set)} />
+        <ListItemText id={`list-label-${set.id}`} primary={formattedSetCompletedText(set, category)} />
       </ListItemButton>
     </ListItem>
   );

@@ -1,3 +1,6 @@
+import type ActiveExerciseSet from "../types/activeExerciseSet";
+import type { CompletedExerciseSet } from "../types/completedExerciseSet";
+import type ExerciseCategoryOption from "../types/exerciseCategoryOption";
 import type ExerciseSet from "../types/exerciseSet";
 
 type DurationOptions = {
@@ -67,7 +70,7 @@ export function formatDuration(duration?: string): string | undefined {
   const hoursText = hours < 10 ? `0${hours}` : `${hours}`;
   const minutesText = minutes < 10 ? `0${minutes}` : `${minutes}`;
   const secondsText = seconds < 10 ? `0${seconds}` : `${seconds}`;
-  
+
   return `${hoursText}:${minutesText}:${secondsText}`;
 }
 
@@ -156,7 +159,7 @@ export function formatLargeNumber(num: number, shorten?: boolean): string {
   }
 }
 
-export function formattedRepsText(set: ExerciseSet): string {
+export function formattedTargetRepsText(set: ExerciseSet | ActiveExerciseSet): string {
   if (!set.minReps && !set.maxReps) return '';
   const repText = checkPluralization('rep', Math.max(set.minReps ?? 0, set.maxReps ?? 0));
   return (`${set.minReps ?? ""}` +
@@ -164,7 +167,7 @@ export function formattedRepsText(set: ExerciseSet): string {
     `${set.maxReps ?? ""} ${repText}`);
 }
 
-export function formattedDistanceText(set: ExerciseSet): string {
+export function formattedTargetDistanceText(set: ExerciseSet | ActiveExerciseSet): string {
   const distanceText = set.targetDistance ? `${set.targetDistance} ${checkPluralization('mile', set.targetDistance)}` : undefined;
   const durationText = durationToHhMmSs(set.targetDuration);
   return (`${distanceText ?? ""}` +
@@ -172,10 +175,73 @@ export function formattedDistanceText(set: ExerciseSet): string {
     `${durationText ?? ""}`);
 }
 
-export function formattedStretchText(set: ExerciseSet): string {
+export function formattedTargetStretchText(set: ExerciseSet | ActiveExerciseSet): string {
   const repText = set.minReps ? `${set.minReps} ${checkPluralization('rep', set.minReps)}` : undefined;
   const durationText = durationToHhMmSs(set.targetDuration);
   return (`${repText ?? ""}` +
     `${repText && durationText ? " @ " : ""}` +
     `${durationText ?? ""}`);
+}
+
+export function formattedCompletedRepsText(set: ActiveExerciseSet | CompletedExerciseSet): string {
+  if (!set.weight && !set.reps) return '';
+  const weight = set.weight ? `${set.weight} lbs x ` : '';
+  const reps = `${set.reps ?? 0} ${checkPluralization('rep', set.reps)}`
+  return `${weight} ${reps}`;
+}
+
+export function formattedCompletedDistanceText(set: ActiveExerciseSet | CompletedExerciseSet): string {
+  const distanceText = set.distance ? `${set.distance} ${checkPluralization('mile', set.distance)}` : undefined;
+  const durationText = durationToHhMmSs(set.duration);
+  return (`${distanceText ?? ""}` +
+    `${distanceText && durationText ? " in " : ""}` +
+    `${durationText ?? ""}`);
+}
+
+export function formattedCompletedStretchText(set: ActiveExerciseSet | CompletedExerciseSet): string {
+  const repText = set.reps ? `${set.reps} ${checkPluralization('rep', set.reps)}` : undefined;
+  const durationText = durationToHhMmSs(set.duration);
+  return (`${repText ?? ""}` +
+    `${repText && durationText ? " @ " : ""}` +
+    `${durationText ?? ""}`);
+}
+
+export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, category: ExerciseCategoryOption): string {
+  const key = `${category.firstTargetInput}_${category.secondTargetInput}`
+  switch (key) {
+    case 'reps_reps': {
+      return formattedTargetRepsText(set);
+    }
+
+    case 'distance_duration': {
+      return formattedTargetDistanceText(set);
+    }
+
+    case 'reps_duration': {
+      return formattedTargetStretchText(set);
+    }
+
+    default:
+      return 'No set formatter found';
+  }
+}
+
+export function formattedSetCompletedText(set: ActiveExerciseSet | CompletedExerciseSet, category: ExerciseCategoryOption): string {
+  const key = `${category.firstInput}_${category.secondInput}`
+  switch (key) {
+    case 'weight_reps': {
+      return formattedCompletedRepsText(set);
+    }
+
+    case 'distance_duration': {
+      return formattedCompletedDistanceText(set);
+    }
+
+    case 'reps_duration': {
+      return formattedCompletedStretchText(set);
+    }
+
+    default:
+      return 'No set formatter found';
+  }
 }

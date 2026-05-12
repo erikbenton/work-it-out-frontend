@@ -18,7 +18,7 @@ type Props = {
 export default function ExerciseStatsBar({ history }: Props) {
   const totalSets = history.reduce((acc, group) => acc + group.completedExerciseSets.length, 0);
   const totalReps = history.reduce((acc, group) => (
-    acc + group.completedExerciseSets.reduce((acc, set) => acc + set.reps, 0)
+    acc + group.completedExerciseSets.reduce((acc, set) => acc + (set.reps ?? 0), 0)
   ), 0);
   const totalVolume = history.reduce((acc, group) => acc + calculateVolume(group), 0);
   const oneRepMax = history.reduce((acc, group) => {
