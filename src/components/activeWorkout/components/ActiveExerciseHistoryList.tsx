@@ -47,10 +47,7 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
               </React.Fragment>
             ))}
             <Box sx={{ pt: 1 }}>
-              <ExerciseHistoryItemStats
-                id={group.id}
-                completedSets={group.completedExerciseSets}
-              />
+              <ExerciseHistoryItemStats group={group} />
             </Box>
           </CardContent>
         </Card>

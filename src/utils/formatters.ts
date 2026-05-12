@@ -7,6 +7,8 @@ type DurationOptions = {
   format: ('always-hours' | 'no-hours' | 'include-hours')
 }
 
+type DurationFormat = ('long' | 'short');
+
 const formatter = new Intl.NumberFormat('en-US');
 
 export function msToDuration(ms: number, options?: DurationOptions): string {
@@ -36,11 +38,12 @@ export function msToDuration(ms: number, options?: DurationOptions): string {
   return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
 }
 
-export function secondsToDuration(seconds: number): string {
-  return msToDuration(seconds * 1000);
+export function secondsToDuration(seconds: number, options?: DurationOptions): string {
+  return msToDuration(seconds * 1000, options);
 }
 
-export function durationToSeconds(duration: string): number {
+export function durationToSeconds(duration?: string): number {
+  if (!duration) return 0;
   const [hours, minutes, seconds] = duration.split(':');
   return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
 }
@@ -74,47 +77,51 @@ export function formatDuration(duration?: string): string | undefined {
   return `${hoursText}:${minutesText}:${secondsText}`;
 }
 
-export function durationToHhMmSs(duration?: string): string | undefined {
+export function durationToHhMmSs(duration?: string, options?: DurationFormat): string | undefined {
   if (!duration) return undefined;
+
+  const [hrUnits, minUnits, secUnits] = options && options === 'short'
+  ? ['h', 'm', 's']
+  : [' hr', ' min', ' sec'];
 
   const times = duration.split(':').map(t => Number(t));
 
   if (times.length === 3) {
-    const hours = times[0] ? `${times[0]} hr` : '';
+    const hours = times[0] ? `${times[0]} ${hrUnits}` : '';
 
     const minutes = times[1] ?
       hours ?
         times[1] < 10 ?
-          `0${times[1]} min`
-          : `${times[1]} min`
-        : `${times[1]} min`
+          `0${times[1]}${minUnits}`
+          : `${times[1]}${minUnits}`
+        : `${times[1]}${minUnits}`
       : '';
 
     const seconds = times[2] ?
       minutes ?
         times[2] < 10 ?
-          `0${times[2]} sec`
-          : `${times[2]} sec`
-        : `${times[2]} sec`
+          `0${times[2]}${secUnits}`
+          : `${times[2]}${secUnits}`
+        : `${times[2]}${secUnits}`
       : '';
 
     return `${hours} ${minutes} ${seconds}`;
   }
 
   if (times.length === 2) {
-    const minutes = times[0] ? `${times[0]} min` : '';
+    const minutes = times[0] ? `${times[0]}${minUnits}` : '';
 
     const seconds = times[1] ?
       minutes ?
         times[1] < 10 ?
-          `0${times[1]} sec`
-          : `${times[1]} sec`
-        : `${times[1]} sec`
+          `0${times[1]}${secUnits}`
+          : `${times[1]}${secUnits}`
+        : `${times[1]}${secUnits}`
       : '';
     return `${minutes} ${seconds}`;
   }
 
-  return times[0] ? `${times[0]} sec` : undefined;
+  return times[0] ? `${times[0]}${secUnits}` : undefined;
 }
 
 export function checkPluralization(word: string, amount: number | undefined): string {

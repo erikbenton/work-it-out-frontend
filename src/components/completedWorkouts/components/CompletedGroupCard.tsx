@@ -49,7 +49,7 @@ export default function CompletedGroupCard({ group }: Props) {
             <ExerciseHistoryItemSet key={set.id} set={set} category={category} />
           ))}
         </List>
-        <ExerciseHistoryItemStats id={group.id} completedSets={group.completedExerciseSets} />
+        <ExerciseHistoryItemStats group={group} />
       </CardContent>
     </Card>
   );
