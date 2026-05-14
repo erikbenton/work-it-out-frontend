@@ -48,6 +48,11 @@ export function durationToSeconds(duration?: string): number {
   return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
 }
 
+export function secondsToHhMmDd(seconds: number, options?: DurationFormat) {
+  const duration = secondsToDuration(seconds);
+  return durationToHhMmSs(duration, options) ?? null;
+}
+
 export function formatDuration(duration?: string): string | undefined {
   if (!duration) return undefined;
   const times = duration.split(':');

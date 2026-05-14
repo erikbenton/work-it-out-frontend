@@ -1,11 +1,44 @@
 import type ChartPoint from "../types/chartPoint";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { getDateTime, type DateTime } from "./dateTime";
-import { daysSince } from "./formatters";
+import { daysSince, durationToSeconds } from "./formatters";
 
 export const calculateMaxWeight = (history: CompletedExerciseGroup): number => {
   return history.completedExerciseSets
     .reduce((acc, curr) => (curr.weight ?? 0) > acc ? (curr.weight ?? 0) : acc, 0);
+}
+
+export const calculateTotalReps = (history: CompletedExerciseGroup): number => {
+  return history.completedExerciseSets
+    .reduce((acc, curr) => acc + (curr.reps ?? 0), 0);
+}
+
+export const calculateTotalDistance = (history: CompletedExerciseGroup): number => {
+  return history.completedExerciseSets
+    .reduce((acc, curr) => acc + (curr.distance ?? 0), 0);
+}
+
+export const calculateTotalSeconds = (history: CompletedExerciseGroup): number => {
+  return history.completedExerciseSets
+    .reduce((acc, curr) => acc + durationToSeconds(curr.duration), 0);
+}
+
+export const calculateTotalStretchSeconds = (history: CompletedExerciseGroup): number => {
+  return history.completedExerciseSets
+    .reduce((acc, curr) => acc + durationToSeconds(curr.duration) * (curr.reps ?? 1), 0);
+}
+
+export const calculateBestPace = (history: CompletedExerciseGroup) => {
+  return history.completedExerciseSets.reduce((acc, curr) => {
+    if (curr.distance && curr.duration !== undefined) {
+      const pace = durationToSeconds(curr.duration) / curr.distance;
+      return !acc || pace < acc
+        ? pace
+        : acc;
+    } else {
+      return acc;
+    }
+  }, null as (null | number));
 }
 
 export const calculateNumberOfReps = (history: CompletedExerciseGroup): number => {

@@ -1,6 +1,6 @@
 import { Chip, ListItemText, Stack, Tooltip, Typography } from "@mui/material";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
-import { teal, green, red, cyan } from "@mui/material/colors";
+import { teal, green, cyan, pink } from "@mui/material/colors";
 import { durationToHhMmSs, secondsToDuration } from "../../../utils/formatters";
 import { useExercises } from "../../../hooks/useExercises";
 import TimerIcon from '@mui/icons-material/Timer';
@@ -85,7 +85,7 @@ export function ExerciseHistoryLiftGroupStats({ group }: Props) {
                 </Typography>
               }
               variant='filled'
-              sx={{ ...statsChipStyle, backgroundColor: red[600] }}
+              sx={{ ...statsChipStyle, backgroundColor: pink[700] }}
             />
           </Tooltip>
         }
@@ -141,7 +141,7 @@ export function ExerciseHistoryTimedGroupStats({ group }: Props) {
                 </Typography>
               }
               variant='filled'
-              sx={{ ...statsChipStyle, backgroundColor: red[600] }}
+              sx={{ ...statsChipStyle, backgroundColor: pink[700] }}
             />
           </Tooltip>
         }

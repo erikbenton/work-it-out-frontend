@@ -88,7 +88,7 @@ export const calculateStretchStats = (group: CompletedExerciseGroup) => {
 
     newStats.totalSeconds = !curr.duration
       ? acc.totalSeconds
-      : (acc.totalSeconds ?? 0) + durationToSeconds(curr.duration);
+      : (acc.totalSeconds ?? 0) + durationToSeconds(curr.duration) * (curr.reps ?? 1);
 
     return newStats;
   }, initStretchStats);
