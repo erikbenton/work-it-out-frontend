@@ -44,7 +44,7 @@ type HistoryStatProps = {
   group: CompletedExerciseGroup
 }
 
-const touchDelay = 250;
+const touchDelay = 0;
 
 export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
   const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
@@ -69,7 +69,7 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {totalVolume !== undefined && totalVolume > 0 &&
-          <Tooltip title="Total Volume" enterTouchDelay={0}>
+          <Tooltip title="Total Volume" enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
