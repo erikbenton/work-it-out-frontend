@@ -10,6 +10,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
+import { devConsole } from "../../../utils/debugLogger";
 
 type Props = {
   group: CompletedExerciseGroup,
@@ -43,14 +44,18 @@ type HistoryStatProps = {
   group: CompletedExerciseGroup
 }
 
+const touchDelay = 250;
+
 export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
   const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
+  devConsole('total vol', totalVolume)
+  devConsole('one rep max', oneRepMax)
 
   return (
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
-          <Tooltip title="Total Reps">
+          <Tooltip title="Total Reps" enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -63,8 +68,8 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
             />
           </Tooltip>
         }
-        {totalVolume &&
-          <Tooltip title="Total Volume">
+        {totalVolume !== undefined && totalVolume > 0 &&
+          <Tooltip title="Total Volume" enterTouchDelay={0}>
             <Chip
               size="small"
               label={
@@ -78,7 +83,7 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {oneRepMax !== undefined && oneRepMax > 0 &&
-          <Tooltip title='Estimated 1 Rep Max'>
+          <Tooltip title='Estimated 1 Rep Max' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -104,8 +109,8 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
   return (
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
-        {totalDistance &&
-          <Tooltip title='Total Distance'>
+        {totalDistance !== undefined && totalDistance > 0 &&
+          <Tooltip title='Total Distance' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -118,8 +123,8 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
             />
           </Tooltip>
         }
-        {totalTime &&
-          <Tooltip title='Total Duration'>
+        {totalTime !== undefined &&
+          <Tooltip title='Total Duration' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -134,7 +139,7 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {bestPace &&
-          <Tooltip title='Fastest Pace'>
+          <Tooltip title='Fastest Pace' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -160,7 +165,7 @@ export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
-          <Tooltip title='Total Reps'>
+          <Tooltip title='Total Reps' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
@@ -174,7 +179,7 @@ export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {totalTime &&
-          <Tooltip title='Total Duration'>
+          <Tooltip title='Total Duration' enterTouchDelay={touchDelay}>
             <Chip
               size="small"
               label={
