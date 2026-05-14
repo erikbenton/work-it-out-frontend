@@ -1,11 +1,12 @@
 import type Exercise from "../types/exercise";
+import type { ExerciseCategory } from "../types/exerciseCategory";
 import type MuscleData from "../types/muscleData";
 
 export type ExerciseAction =
   { type: string, payload: never }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setInstructions', payload: { instructions: string } }
-  | { type: 'setCategory', payload: { categoryId: number } }
+  | { type: 'setCategory', payload: { category: ExerciseCategory } }
   | { type: 'setMuscles', payload: { muscles: MuscleData[] } }
   | { type: 'setEquipment', payload: { equipment: string } };
 
@@ -30,8 +31,8 @@ export default function exerciseReducer(exercise: Exercise, action: ExerciseActi
     }
 
     case 'setCategory': {
-      const { categoryId } = action.payload;
-      return ({ ...exercise, categoryId });
+      const { category } = action.payload;
+      return ({ ...exercise, category });
     }
 
     case 'setMuscles': {
@@ -53,5 +54,5 @@ export const initialExercise: Exercise = {
   instructions: null,
   equipment: 'assisted',
   muscles: [],
-  categoryId: 1
+  category: 'lift'
 };

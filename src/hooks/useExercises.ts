@@ -2,8 +2,6 @@ import { useMutation, useQueryClient, useSuspenseQuery, type UseMutateFunction }
 import { createExercise, deleteExercise, getExerciseList, updateExercise } from "../requests/exercises";
 import type Exercise from "../types/exercise";
 import cacheTimes from "../utils/cacheTimes";
-import type ExerciseCategoryOption from "../types/exerciseCategoryOption";
-import useExerciseCategories from "./useExerciseCategories";
 
 const queryKey = 'exercises';
 
@@ -22,7 +20,6 @@ export function useExercises() {
     gcTime: cacheTimes.week * 2, // 14 days
     queryFn: getExerciseList
   });
-  const { services: categoryService } = useExerciseCategories();
 
   const getExerciseById = (id: number) => {
     const exercises = queryClient.getQueryData([queryKey]) as Exercise[];
@@ -33,11 +30,6 @@ export function useExercises() {
     }
 
     return exercise;
-  }
-
-  const getExerciseCategory = (id: number): ExerciseCategoryOption | null => {
-    const exercise = getExerciseById(id);
-    return categoryService.getCategoryById(exercise.categoryId);
   }
 
   const create = useMutation({
@@ -100,8 +92,7 @@ export function useExercises() {
       create,
       update,
       remove,
-      getExerciseById,
-      getExerciseCategory
+      getExerciseById
     }
   };
 }

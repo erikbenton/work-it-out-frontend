@@ -2,7 +2,6 @@ import { Chip, ListItemText, Stack, Tooltip, Typography } from "@mui/material";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import { teal, green, cyan, pink } from "@mui/material/colors";
 import { durationToHhMmSs, secondsToDuration } from "../../../utils/formatters";
-import { useExercises } from "../../../hooks/useExercises";
 import TimerIcon from '@mui/icons-material/Timer';
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
@@ -10,38 +9,41 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
+import type { ExerciseCategory } from "../../../types/exerciseCategory";
 
 type Props = {
-  group: CompletedExerciseGroup
+  group: CompletedExerciseGroup,
+  category: ExerciseCategory
 }
 
 const statsChipStyle = {
   color: '#fff', py: 1.75, pr: 0.75, cursor: 'pointer'
 };
 
-export default function ExerciseHistoryItemStats({ group }: Props) {
-  const { services: exerciseServices } = useExercises();
-  const exercise = exerciseServices.getExerciseById(group.exerciseId);
-
-  switch (exercise.categoryId) {
-    case 1: {
+export default function ExerciseHistoryItemStats({ group, category }: Props) {
+  switch (category) {
+    case 'lift': {
       return (<ExerciseHistoryLiftGroupStats group={group} />)
     }
-    case 2: {
+    case 'timed': {
       return (<ExerciseHistoryTimedGroupStats group={group} />)
     }
-    case 3: {
+    case 'conditioning': {
       return (<ExerciseHistoryStretchGroupStats group={group} />)
     }
-    case 4: {
+    case 'stretch': {
       return (<ExerciseHistoryStretchGroupStats group={group} />)
     }
     default:
-      return (<>No Stats available for exercise category: {exercise.categoryId}</>);
+      return (<>No Stats available for exercise category: {category}</>);
   }
 }
 
-export function ExerciseHistoryLiftGroupStats({ group }: Props) {
+type HistoryStatProps = {
+  group: CompletedExerciseGroup
+}
+
+export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
   const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
 
   return (
@@ -94,7 +96,7 @@ export function ExerciseHistoryLiftGroupStats({ group }: Props) {
   );
 }
 
-export function ExerciseHistoryTimedGroupStats({ group }: Props) {
+export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
   const { totalDistance, totalSeconds, bestPaceSeconds} = calculateTimedStats(group);
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
   const bestPace = bestPaceSeconds ? secondsToDuration(bestPaceSeconds) : undefined;
@@ -150,7 +152,7 @@ export function ExerciseHistoryTimedGroupStats({ group }: Props) {
   );
 }
 
-export function ExerciseHistoryStretchGroupStats({ group }: Props) {
+export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
   const { totalReps, totalSeconds } = calculateStretchStats(group);
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
 

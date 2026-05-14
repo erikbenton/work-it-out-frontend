@@ -47,7 +47,7 @@ export default function ExerciseDetails() {
       {activeTab === 0 ? <ExerciseAboutTab exercise={exercise} />
         : activeTab === 1 ? (
           <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseHistoryTab exerciseId={id} />
+            <ExerciseHistoryTab exerciseId={id} category={exercise.category} />
           </Suspense>)
           : <Suspense fallback={<LoadingIcon label='Histories' />}>
             <ExerciseStats exerciseId={id} period={period} setPeriod={setPeriod} />

@@ -14,7 +14,6 @@ import { bgBlue } from '../../../utils/styling';
 import { Collapse } from '@mui/material';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import { useExercises } from '../../../hooks/useExercises';
-import useExerciseCategories from '../../../hooks/useExerciseCategories';
 
 type Props = {
   exerciseGroup: ActiveExerciseGroup,
@@ -30,11 +29,10 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
   const { workout, complete: workoutCompleted, handleFinishWorkout, saving } = useActiveWorkout();
   const { services: completedServices } = useCompletedWorkouts();
   const { services: exerciseServices } = useExercises();
-  const { categories } = useExerciseCategories();
   const navigate = useNavigate();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(s => s.id === values?.setTagId);
-  const category = exerciseServices.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
   const handleSubmit = (event: React.SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -108,7 +106,7 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                   values={values}
                   setValues={setValues}
                   size={size}
-                  category={category}
+                  category={exercise.category}
                 />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
                   <Button

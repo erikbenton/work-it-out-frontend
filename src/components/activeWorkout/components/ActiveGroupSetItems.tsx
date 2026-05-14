@@ -13,7 +13,6 @@ import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { devConsole } from "../../../utils/debugLogger";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
-import useExerciseCategories from "../../../hooks/useExerciseCategories";
 import { formattedSetCompletedText, formattedSetTargetsText } from "../../../utils/formatters";
 
 type Props = {
@@ -29,9 +28,8 @@ interface CompletedProps extends Props {
 export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
   const { services: exerciseServices } = useExercises();
-  const { categories } = useExerciseCategories();
   const setTag = setTags.find(tag => tag.id === set.setTagId);
-  const category = exerciseServices.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
   const menuItems = [
     {
@@ -58,7 +56,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
     onDoubleClick(set)
   }
 
-  const placeholderText = formattedSetCompletedText(set, category);
+  const placeholderText = formattedSetCompletedText(set, exercise.category);
 
   return (
     <ListItem
@@ -102,13 +100,12 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
 }
 
 export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
-  const { services: exerciseService } = useExercises();
-  const { categories } = useExerciseCategories();
+  const { services: exerciseServices } = useExercises();
   const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
-  const category = exerciseService.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
-  const placeholderText = formattedSetTargetsText(set, category)
+  const placeholderText = formattedSetTargetsText(set, exercise.category);
 
   const menuItems = [
     {
@@ -163,12 +160,11 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
 
 export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
   const { dispatch, setTags = [] } = useActiveWorkout();
-  const { services: exerciseService } = useExercises();
-  const { categories } = useExerciseCategories();
+  const { services: exerciseServices } = useExercises();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
-  const category = exerciseService.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
-  const placeholderText = formattedSetTargetsText(set, category);
+  const placeholderText = formattedSetTargetsText(set, exercise.category);
 
   const menuItems = [
     {

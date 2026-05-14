@@ -1,3 +1,4 @@
+import type { ExerciseCategory } from "./exerciseCategory";
 import type MuscleData from "./muscleData";
 
 export default interface Exercise {
@@ -6,5 +7,5 @@ export default interface Exercise {
   instructions: string | null,
   equipment: string | null,
   muscles?: MuscleData[],
-  categoryId: number
+  category: ExerciseCategory
 }

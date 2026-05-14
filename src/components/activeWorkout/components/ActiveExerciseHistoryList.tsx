@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 import { bgBlue } from "../../../utils/styling";
-import useExerciseCategories from "../../../hooks/useExerciseCategories";
 import { useExercises } from "../../../hooks/useExercises";
 
 type Props = {
@@ -22,8 +21,7 @@ type Props = {
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
   const { data: history } = useExerciseHistory(exerciseId);
   const { services: exerciseServices } = useExercises();
-  const { categories } = useExerciseCategories();
-  const category = exerciseServices.getExerciseCategory(exerciseId) ?? categories[0];
+  const exercise = exerciseServices.getExerciseById(exerciseId);
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
@@ -41,13 +39,13 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
                   set={set}
                   onDoubleClick={onDoubleClick}
                   isCurrent={currentIndex === index}
-                  category={category}
+                  category={exercise.category}
                 />
                 <Divider sx={{ opacity: 0.3 }} />
               </React.Fragment>
             ))}
             <Box sx={{ pt: 1 }}>
-              <ExerciseHistoryItemStats group={group} />
+              <ExerciseHistoryItemStats group={group} category={exercise.category} />
             </Box>
           </CardContent>
         </Card>

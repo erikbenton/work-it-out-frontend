@@ -12,6 +12,7 @@ import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { useExercises } from "../../../hooks/useExercises";
 import { devConsole } from "../../../utils/debugLogger";
+import type { ExerciseCategory } from "../../../types/exerciseCategory";
 
 type Props = {
   history: CompletedExerciseGroup[],
@@ -25,23 +26,23 @@ const fullScreenStyle = {
   bgcolor: 'background.paper',
 }
 
-function getChart(categoryId: number, historyPoints: ChartPoint[]) {
-  switch (categoryId) {
-    case 1: {
+function getChart(category: ExerciseCategory, historyPoints: ChartPoint[]) {
+  switch (category) {
+    case 'lift': {
       return (<LiftExerciseCharts historyPoints={historyPoints} />)
     }
 
-    case 2: {
+    case 'timed': {
       return (<TimedExerciseCharts historyPoints={historyPoints} />)
     }
 
-    case 3:
-    case 4: {
+    case 'conditioning':
+    case 'stretch': {
       return (<StretchExerciseCharts historyPoints={historyPoints} />)
     }
 
     default: {
-      return (<>{`No charts were found for exercise category ${categoryId}`}</>)
+      return (<>{`No charts were found for exercise category ${category}`}</>)
     }
   }
 }
@@ -53,7 +54,7 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(history[0].exerciseId)
 
-  devConsole('category id', exercise.categoryId)
+  devConsole('category id', exercise.category)
 
   const headerPixelsOffset = 252.02;
 
@@ -72,7 +73,7 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
         period={period}
         setPeriod={setPeriod}
       />
-      {getChart(exercise.categoryId, historyPoints)}
+      {getChart(exercise.category, historyPoints)}
     </Box>
   );
 }

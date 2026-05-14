@@ -2,40 +2,65 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
+import type { ExerciseCategory } from "../../../types/exerciseCategory";
 
 export type ActiveSetInputProps = {
   values?: ActiveExerciseSet,
   setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
   size?: 'small' | 'large',
   label?: string,
-  category: ExerciseCategoryOption
+  category: ExerciseCategory
 }
 
 export default function LiftingInputs(inputProps: ActiveSetInputProps) {
   const { category } = inputProps;
 
-  const getInput = (inputType: ("weight" | "reps" | "duration" | "distance")) => {
-    switch (inputType) {
-      case 'weight': {
+  const getFirstInput = (category: ExerciseCategory) => {
+    switch (category) {
+      case 'lift': {
         return (<WeightInput {...inputProps} />);
       }
-      case 'reps': {
+
+      case 'timed': {
+        return (<DistanceInput {...inputProps} />);
+      }
+
+      case 'stretch':
+      case 'conditioning': {
         return (<RepInput {...inputProps} />);
       }
-      case 'duration': {
+
+      default: {
+        return (<>{`No input was found for exercise category ${category}`}</>)
+      }
+    }
+  }
+
+  const getSecondInput = (category: ExerciseCategory) => {
+    switch (category) {
+      case 'lift': {
+        return (<RepInput {...inputProps} />);
+      }
+
+      case 'timed': {
         return (<DurationInput {...inputProps} />);
       }
-      case 'distance': {
-        return (<DistanceInput {...inputProps} />);
+
+      case 'stretch':
+      case 'conditioning': {
+        return (<DurationInput {...inputProps} />);
+      }
+
+      default: {
+        return (<>{`No input was found for exercise category ${category}`}</>)
       }
     }
   }
 
   return (
     <Stack direction='row' spacing={2} sx={{ px: 2 }}>
-      {getInput(category.firstInput)}
-      {getInput(category.secondInput)}
+      {getFirstInput(category)}
+      {getSecondInput(category)}
     </Stack>
   )
 }

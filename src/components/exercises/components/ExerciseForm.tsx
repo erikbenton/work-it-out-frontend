@@ -28,7 +28,7 @@ export default function ExerciseForm({ exercise, dispatch, handleSubmit }: Props
     <Box component="form" className="w-full md:w-2/3 p-3">
       <Stack spacing={1}>
         <ExerciseFormTextFields name={exercise.name} instructions={exercise.instructions} dispatch={dispatch} />
-        <ExerciseFormCategory categoryId={exercise.categoryId} dispatch={dispatch} />
+        <ExerciseFormCategory category={exercise.category} dispatch={dispatch} />
         <ExerciseFormMuscles muscles={exercise.muscles} dispatch={dispatch} />
         <ExerciseFormEquipment equipment={exercise.equipment} dispatch={dispatch} />
         <Button sx={{ borderRadius: 5 }} variant="contained" onClick={handleSubmit}>Save</Button>

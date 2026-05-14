@@ -1,6 +1,6 @@
 import type ActiveExerciseSet from "../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../types/completedExerciseSet";
-import type ExerciseCategoryOption from "../types/exerciseCategoryOption";
+import type { ExerciseCategory } from "../types/exerciseCategory";
 import type ExerciseSet from "../types/exerciseSet";
 
 type DurationOptions = {
@@ -86,8 +86,8 @@ export function durationToHhMmSs(duration?: string, options?: DurationFormat): s
   if (!duration) return undefined;
 
   const [hrUnits, minUnits, secUnits] = options && options === 'short'
-  ? ['h', 'm', 's']
-  : [' hr', ' min', ' sec'];
+    ? ['h', 'm', 's']
+    : [' hr', ' min', ' sec'];
 
   const times = duration.split(':').map(t => Number(t));
 
@@ -218,18 +218,18 @@ export function formattedCompletedStretchText(set: ActiveExerciseSet | Completed
     `${durationText ?? ""}`);
 }
 
-export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, category: ExerciseCategoryOption): string {
-  const key = `${category.firstTargetInput}_${category.secondTargetInput}`
-  switch (key) {
-    case 'reps_reps': {
+export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, category: ExerciseCategory): string {
+  switch (category) {
+    case 'lift': {
       return formattedTargetRepsText(set);
     }
 
-    case 'distance_duration': {
+    case 'timed': {
       return formattedTargetDistanceText(set);
     }
 
-    case 'reps_duration': {
+    case 'stretch':
+    case 'conditioning': {
       return formattedTargetStretchText(set);
     }
 
@@ -238,18 +238,18 @@ export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, ca
   }
 }
 
-export function formattedSetCompletedText(set: ActiveExerciseSet | CompletedExerciseSet, category: ExerciseCategoryOption): string {
-  const key = `${category.firstInput}_${category.secondInput}`
-  switch (key) {
-    case 'weight_reps': {
+export function formattedSetCompletedText(set: ActiveExerciseSet | CompletedExerciseSet, category: ExerciseCategory): string {
+  switch (category) {
+    case 'lift': {
       return formattedCompletedRepsText(set);
     }
 
-    case 'distance_duration': {
+    case 'timed': {
       return formattedCompletedDistanceText(set);
     }
 
-    case 'reps_duration': {
+    case 'stretch':
+    case 'conditioning': {
       return formattedCompletedStretchText(set);
     }
 

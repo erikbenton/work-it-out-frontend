@@ -9,14 +9,14 @@ import Badge from "@mui/material/Badge";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
-import type ExerciseCategoryOption from "../../../types/exerciseCategoryOption";
 import { formattedSetCompletedText } from "../../../utils/formatters";
+import type { ExerciseCategory } from "../../../types/exerciseCategory";
 
 type Props = {
   set: CompletedExerciseSet,
   onDoubleClick?: (completedSet: CompletedExerciseSet) => void,
   isCurrent?: boolean,
-  category: ExerciseCategoryOption
+  category: ExerciseCategory
 }
 
 export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, category }: Props) {

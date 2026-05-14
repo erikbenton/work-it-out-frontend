@@ -24,7 +24,6 @@ import Box from "@mui/material/Box";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
-import useExerciseCategories from "../../../hooks/useExerciseCategories";
 import { formattedSetTargetsText } from "../../../utils/formatters";
 import { Typography } from "@mui/material";
 import MinRepsInput from "./inputs/MinRepsInput";
@@ -46,11 +45,10 @@ export type SetInputProps = {
 export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   const { editing, dispatch, setTags = [] } = useWorkoutForm();
   const { services } = useExercises();
-  const { categories } = useExerciseCategories();
   const [values, setValues] = useState<ExerciseSet>(set);
   const [open, setOpen] = useState(false);
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
-  const category = services.getExerciseCategory(exerciseGroup.exerciseId) ?? categories[0];
+  const exercise = services.getExerciseById(exerciseGroup.exerciseId);
 
   const menuItems = [
     {
@@ -92,21 +90,17 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   }
 
   const firstInput = () => {
-    switch (category.firstTargetInput) {
-      case 'reps': {
+    switch (exercise.category) {
+      case 'lift':
+      case 'stretch':
+      case 'conditioning': {
         return (<MinRepsInput
           values={values}
           setValues={setValues}
-          label={category.secondTargetInput === 'reps' ? 'Min Reps' : undefined}
+          label={exercise.category === 'lift' ? 'Min Reps' : undefined}
         />);
       }
-      case 'duration': {
-        return (<TargetDurationInput
-          values={values}
-          setValues={setValues}
-        />);
-      }
-      case 'distance': {
+      case 'timed': {
         return (<TargetDistanceInput
           values={values}
           setValues={setValues}
@@ -116,22 +110,18 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
   }
 
   const secondInput = () => {
-    switch (category.secondTargetInput) {
-      case 'reps': {
+    switch (exercise.category) {
+      case 'lift': {
         return (<MaxRepsInput
           values={values}
           setValues={setValues}
           label='Max Reps'
         />);
       }
-      case 'duration': {
+      case 'timed':
+      case 'stretch':
+      case 'conditioning': {
         return (<TargetDurationInput
-          values={values}
-          setValues={setValues}
-        />);
-      }
-      case 'distance': {
-        return (<TargetDistanceInput
           values={values}
           setValues={setValues}
         />);
@@ -229,7 +219,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           <ListItemText
             primary={
               <Typography>
-                {formattedSetTargetsText(set, category)}
+                {formattedSetTargetsText(set, exercise.category)}
               </Typography>
             }
             slotProps={{ primary: { fontSize: 16 } }}

@@ -7,20 +7,17 @@ import RadioGroup from "@mui/material/RadioGroup";
 import Stack from "@mui/material/Stack";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
 import { bgBlue } from "../../../utils/styling";
-import useExerciseCategories from "../../../hooks/useExerciseCategories";
+import { exerciseCategories, type ExerciseCategory } from "../../../types/exerciseCategory";
 
 type Props = {
-  categoryId: number,
+  category: ExerciseCategory,
   dispatch: React.ActionDispatch<[action: ExerciseAction]>
 }
 
-export default function ExerciseFormCategory({ categoryId, dispatch }: Props) {
-  const { categories, services } = useExerciseCategories();
-  const category = services.getCategoryById(categoryId) ?? categories[0];
-
-  const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, category: string) => {
-    const categoryId = Number(category);
-    dispatch({ type: 'setCategory', payload: { categoryId } });
+export default function ExerciseFormCategory({ category, dispatch }: Props) {
+  const handleCategory = (_event: React.ChangeEvent<HTMLInputElement, Element>, categoryText: string) => {
+    const category = categoryText as ExerciseCategory;
+    dispatch({ type: 'setCategory', payload: { category } });
   }
 
   return (
@@ -35,11 +32,11 @@ export default function ExerciseFormCategory({ categoryId, dispatch }: Props) {
             row
             aria-labelledby="exercise-category-group-label"
             name="exercise-category-group"
-            value={category.id ?? categories[0].id}
+            value={category}
             onChange={handleCategory}
           >
-            {categories.map(category => (
-              <FormControlLabel key={category.id} value={category.id} control={<Radio />} label={category.name} className="capitalize" />
+            {exerciseCategories.map(category => (
+              <FormControlLabel key={category} value={category} control={<Radio />} label={category} className="capitalize" />
             ))}
           </RadioGroup>
         </FormControl>
