@@ -216,12 +216,11 @@ function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
       fullWidth
       variant="filled"
       value={duration ?? ''}
-      inputMode="numeric"
       onChange={handleDurationChange}
       onBlur={handleBlur}
       slotProps={{
         htmlInput: { style: { textAlign: 'end' } },
-        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' }, inputMode: 'numeric' },
         inputLabel: { sx: { textAlign: 'end', fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
       }}
     />

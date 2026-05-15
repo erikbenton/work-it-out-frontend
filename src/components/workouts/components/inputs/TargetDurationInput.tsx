@@ -66,7 +66,7 @@ export default function TargetDurationInput({ values, setValues, label }: SetInp
       fullWidth
       variant="standard"
       value={duration ?? ''}
-      inputMode="numeric"
+      inputMode="decimal"
       slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
       onChange={handleDurationChange}
       onBlur={handleBlur}
