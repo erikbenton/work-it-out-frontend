@@ -219,7 +219,7 @@ function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
       onChange={handleDurationChange}
       onBlur={handleBlur}
       slotProps={{
-        htmlInput: { style: { textAlign: 'end' } },
+        htmlInput: { style: { textAlign: 'end' }, inputMode: 'numeric' },
         input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' }, inputMode: 'numeric' },
         inputLabel: { sx: { textAlign: 'end', fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
       }}
