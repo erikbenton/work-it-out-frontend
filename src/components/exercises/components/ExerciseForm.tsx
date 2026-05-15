@@ -25,7 +25,7 @@ export default function ExerciseForm({ exercise, dispatch, handleSubmit }: Props
   }
 
   return (
-    <Box component="form" className="w-full md:w-2/3 p-3">
+    <Box component="form" className="w-full md:w-2/3" sx={{ pt: 2, px: 1, pb: '10vh' }}>
       <Stack spacing={1}>
         <ExerciseFormTextFields name={exercise.name} instructions={exercise.instructions} dispatch={dispatch} />
         <ExerciseFormCategory category={exercise.category} dispatch={dispatch} />

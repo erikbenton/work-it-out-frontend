@@ -1,7 +1,7 @@
 import Stack from "@mui/material/Stack";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { chartDate, secondsToHhMmDd } from "../../../utils/formatters";
-import { deepPurple, indigo, red } from "@mui/material/colors";
+import { deepPurple, indigo, pink, red } from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { calculateBestPace, calculateEstimatedOneRepMax, calculateMaxWeight, calculateTotalDistance, calculateTotalReps, calculateTotalSeconds, calculateTotalStretchSeconds, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
@@ -173,7 +173,7 @@ function LiftExerciseCharts({ historyPoints }: ChartProps) {
       <LineChart
         series={[{
           data: oneRepMax,
-          color: red[700],
+          color: pink[700],
           area: true,
           baseline: 'min',
           label: 'Est. 1RM (lbs)',
