@@ -200,8 +200,10 @@ function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
     }
 
     if (updated) {
-      const minutesText = hours > 0 && minutes < 10 ? `0${minutes}` : `${minutes}`
-      const updatedDuration = `${hours ?? ''}:${minutesText}:${seconds < 10 ? `0${seconds}` : seconds}`;
+      const minutesText = hours > 0 && minutes < 10
+        ? `0${minutes}:`
+        : `${minutes}:`
+      const updatedDuration = `${hours ? `${hours}:` : ''}${minutesText}${seconds < 10 ? `0${seconds}` : seconds}`;
       const newSet = { ...values, duration: updatedDuration === '' ? undefined : updatedDuration }
       setValues(newSet);
     }

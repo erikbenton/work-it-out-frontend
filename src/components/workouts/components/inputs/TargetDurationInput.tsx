@@ -31,7 +31,7 @@ export default function TargetDurationInput({ values, setValues, label }: SetInp
     let updated = false;
 
     const durationNum = Number(duration.replaceAll(':', ''));
-    let hours = Math.floor(durationNum / 10_000)
+    let hours = Math.floor(durationNum / 10_000);
     let minutes = Math.floor(durationNum / 100) - hours * 100;
     let seconds = Math.floor(durationNum % 100);
 
@@ -50,8 +50,10 @@ export default function TargetDurationInput({ values, setValues, label }: SetInp
     }
 
     if (updated) {
-      const minutesText = hours > 0 && minutes < 10 ? `0${minutes}` : `${minutes}`
-      const updatedDuration = `${hours ?? ''}:${minutesText}:${seconds < 10 ? `0${seconds}` : seconds}`;
+      const minutesText = hours > 0 && minutes < 10
+        ? `0${minutes}:`
+        : `${minutes}:`
+      const updatedDuration = `${hours ? `${hours}:` : ''}${minutesText}${seconds < 10 ? `0${seconds}` : seconds}`;
       const newSet = { ...values, targetDuration: updatedDuration === '' ? undefined : updatedDuration }
       setValues(newSet);
     }
@@ -66,8 +68,14 @@ export default function TargetDurationInput({ values, setValues, label }: SetInp
       fullWidth
       variant="standard"
       value={duration ?? ''}
-      inputMode="decimal"
-      slotProps={{ htmlInput: { style: { textAlign: 'end' } }, inputLabel: { style: { textAlign: 'end' } } }}
+      inputMode="numeric"
+      slotProps={{
+        htmlInput: {
+          style: { textAlign: 'end' },
+          inputMode: 'numeric'
+        },
+        inputLabel: { style: { textAlign: 'end' } }
+      }}
       onChange={handleDurationChange}
       onBlur={handleBlur}
     />
