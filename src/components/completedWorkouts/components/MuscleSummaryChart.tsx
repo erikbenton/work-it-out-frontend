@@ -3,6 +3,8 @@ import { useExercises } from "../../../hooks/useExercises";
 import useMuscleOptions from "../../../hooks/useMuscleOptions";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup"
 import { capitalize } from "../../../utils/formatters";
+import Box from '@mui/material/Box';
+import { Typography } from '@mui/material';
 
 type Props = {
   groups: CompletedExerciseGroup[]
@@ -11,20 +13,24 @@ type Props = {
 export default function MuscleSummaryChart({ groups }: Props) {
   const { services: muscleServices } = useMuscleOptions();
   const { services: exerciseServices } = useExercises();
+  let hasLifts = false;
 
   // Create map for summing up volume for each muscle
   const muscleVolumes = new Map<string, number>();
 
   const totalVolume = groups.reduce((volume, group) => {
-    const groupVolume = group.completedExerciseSets
-      .reduce((acc, curr) => ((curr.weight ?? 150) * (curr.reps ?? 0)) + acc, 0);
-
-    // populate the muscleVolumes map
     const exercise = exerciseServices.getExerciseById(group.exerciseId);
-    const totalMuscleWeights = (exercise.muscles ?? []).reduce((acc, curr) => acc + curr.weight, 0);
-    for (const muscle of exercise.muscles ?? []) {
-      const muscleVolume = (muscle.weight / totalMuscleWeights) * groupVolume;
-      muscleVolumes.set(muscle.name, (muscleVolumes.get(muscle.name) ?? 0) + muscleVolume);
+    let groupVolume = 0;
+    // only calculate if the exercise is a lift
+    if (exercise.category === 'lift') {
+      hasLifts = true;
+      groupVolume = group.completedExerciseSets
+        .reduce((acc, curr) => ((curr.weight ?? 150) * (curr.reps ?? 0)) + acc, 0);
+      const totalMuscleWeights = (exercise.muscles ?? []).reduce((acc, curr) => acc + curr.weight, 0);
+      for (const muscle of exercise.muscles ?? []) {
+        const muscleVolume = (muscle.weight / totalMuscleWeights) * groupVolume;
+        muscleVolumes.set(muscle.name, (muscleVolumes.get(muscle.name) ?? 0) + muscleVolume);
+      }
     }
 
     return volume + groupVolume;
@@ -36,13 +42,20 @@ export default function MuscleSummaryChart({ groups }: Props) {
     color: muscleServices.getColorByName(name),
   }));
 
+  if (!hasLifts) {
+    return (<></>);
+  }
+
   return (
-    <PieChart
-      sx={{ my: 4, height: '200px' }}
-      series={[{
-        data: muscleSummary,
-        valueFormatter: (item: { value: number }) => `${item.value.toFixed(1)}%`
-      }]}
-    />
+    <Box sx={{ mt: 3, mb: 4 }}>
+      <Typography variant='h6' sx={{ mb: 1 }}>Lifting Muscles by Volume</Typography>
+      <PieChart
+        sx={{ height: '200px' }}
+        series={[{
+          data: muscleSummary,
+          valueFormatter: (item: { value: number }) => `${item.value.toFixed(1)}%`
+        }]}
+      />
+    </Box>
   )
 }

@@ -10,7 +10,6 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
-import { devConsole } from "../../../utils/debugLogger";
 
 type Props = {
   group: CompletedExerciseGroup,
@@ -48,8 +47,6 @@ const touchDelay = 0;
 
 export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
   const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
-  devConsole('total vol', totalVolume)
-  devConsole('one rep max', oneRepMax)
 
   return (
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={

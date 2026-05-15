@@ -2,36 +2,36 @@ import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { calculateEstimatedOneRepMax } from "./charts";
 import { durationToSeconds } from "./formatters";
 
-type LiftStats = {
+export type LiftStats = {
   totalReps?: number,
   totalVolume?: number,
   oneRepMax?: number
 }
 
-type TimedStats = {
+export type TimedStats = {
   totalDistance?: number,
   totalSeconds?: number,
   bestPaceSeconds?: number
 }
 
-type StretchStats = {
+export type StretchStats = {
   totalReps?: number,
   totalSeconds?: number
 }
 
-const initLiftStats: LiftStats = {
+export const initLiftStats: LiftStats = {
   totalReps: undefined,
   totalVolume: undefined,
   oneRepMax: undefined
 };
 
-const initTimedStats: TimedStats = {
+export const initTimedStats: TimedStats = {
   totalDistance: undefined,
   totalSeconds: undefined,
   bestPaceSeconds: undefined
 };
 
-const initStretchStats: StretchStats = {
+export const initStretchStats: StretchStats = {
   totalReps: undefined,
   totalSeconds: undefined
 };
