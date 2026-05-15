@@ -13,7 +13,7 @@ export default function TargetDistanceInput({ values, setValues, label }: SetInp
     <TextField
       id="targetDistance"
       name="targetDistance"
-      label={label ?? 'Distance'}
+      label={label ?? 'Distance (mi)'}
       type="number"
       fullWidth
       variant="standard"

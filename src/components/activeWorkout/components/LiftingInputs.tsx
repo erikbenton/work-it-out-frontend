@@ -136,7 +136,7 @@ function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
     <TextField
       id="distance"
       name="distance"
-      label='Distance'
+      label='Distance (mi)'
       type="number"
       fullWidth
       variant="filled"
