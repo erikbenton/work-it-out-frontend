@@ -201,7 +201,12 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           onClick={() => { if (editing) { setOpen(true) } }}
         >
           <ListItemAvatar>
-            <Tooltip title={setTag?.name} placement="right">
+            <Tooltip
+              title={setTag?.name}
+              placement="right"
+              enterTouchDelay={0}
+              slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+            >
               <Badge
                 slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
                 badgeContent={setTag?.name[0] ?? ''}

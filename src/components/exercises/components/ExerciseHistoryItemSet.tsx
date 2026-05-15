@@ -33,7 +33,12 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, 
     <ListItem disablePadding>
       <ListItemButton onDoubleClick={handleDoubleClick}>
         <ListItemAvatar>
-          <Tooltip title={setTag?.name} placement="right">
+          <Tooltip
+            title={setTag?.name}
+            placement="right"
+            enterTouchDelay={0}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Badge
               slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
               badgeContent={setTag?.name[0] ?? ''}

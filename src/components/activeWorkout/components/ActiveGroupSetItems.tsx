@@ -75,7 +75,12 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
         onDoubleClick={handleDoubleClick}
       >
         <ListItemAvatar>
-          <Tooltip title={setTag?.name} placement="right">
+          <Tooltip
+            title={setTag?.name}
+            placement="right"
+            enterTouchDelay={0}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Badge
               slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
               badgeContent={setTag?.name[0] ?? ''}
@@ -134,7 +139,12 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
         onClick={() => setEditing(curr => !curr)}
       >
         <ListItemAvatar>
-          <Tooltip title={setTag?.name} placement="right">
+          <Tooltip
+            title={setTag?.name}
+            placement="right"
+            enterTouchDelay={0}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
 
             <Badge
               slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}
@@ -187,7 +197,12 @@ export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
         />
       }>
       <ListItemAvatar>
-        <Tooltip title={setTag?.name} placement="right">
+        <Tooltip
+          title={setTag?.name}
+          placement="right"
+          enterTouchDelay={0}
+          slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+        >
 
           <Badge
             slotProps={{ badge: { sx: { ...badgeStyle(setTag) } } }}

@@ -52,7 +52,11 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
-          <Tooltip title="Total Reps" enterTouchDelay={touchDelay}>
+          <Tooltip
+            title="Total Reps"
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -66,7 +70,11 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {totalVolume !== undefined && totalVolume > 0 &&
-          <Tooltip title="Total Volume" enterTouchDelay={touchDelay}>
+          <Tooltip
+            title="Total Volume"
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -80,7 +88,11 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {oneRepMax !== undefined && oneRepMax > 0 &&
-          <Tooltip title='Estimated 1 Rep Max' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Estimated 1 Rep Max'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -99,7 +111,7 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
 }
 
 export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
-  const { totalDistance, totalSeconds, bestPaceSeconds} = calculateTimedStats(group);
+  const { totalDistance, totalSeconds, bestPaceSeconds } = calculateTimedStats(group);
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
   const bestPace = bestPaceSeconds ? secondsToDuration(bestPaceSeconds) : undefined;
 
@@ -107,7 +119,11 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalDistance !== undefined && totalDistance > 0 &&
-          <Tooltip title='Total Distance' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Total Distance'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -121,7 +137,11 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {totalTime !== undefined &&
-          <Tooltip title='Total Duration' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Total Duration'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -136,7 +156,11 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {bestPace &&
-          <Tooltip title='Fastest Pace' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Fastest Pace'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -162,7 +186,11 @@ export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
-          <Tooltip title='Total Reps' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Total Reps'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
@@ -176,7 +204,11 @@ export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
           </Tooltip>
         }
         {totalTime &&
-          <Tooltip title='Total Duration' enterTouchDelay={touchDelay}>
+          <Tooltip
+            title='Total Duration'
+            enterTouchDelay={touchDelay}
+            slotProps={{ tooltip: { sx: { textTransform: 'capitalize' } } }}
+          >
             <Chip
               size="small"
               label={
