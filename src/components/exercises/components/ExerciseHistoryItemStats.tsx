@@ -10,6 +10,8 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
+import { useMemo } from "react";
+import { devConsole } from "../../../utils/debugLogger";
 
 type Props = {
   group: CompletedExerciseGroup,
@@ -21,6 +23,7 @@ const statsChipStyle = {
 };
 
 export default function ExerciseHistoryItemStats({ group, category }: Props) {
+  devConsole('restating')
   switch (category) {
     case 'lift': {
       return (<ExerciseHistoryLiftGroupStats group={group} />)
@@ -46,7 +49,8 @@ type HistoryStatProps = {
 const touchDelay = 0;
 
 export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
-  const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
+  const { totalReps, totalVolume, oneRepMax } =
+    useMemo(() => calculateLiftStats(group), [group]);
 
   return (
     <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
@@ -111,7 +115,8 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
 }
 
 export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
-  const { totalDistance, totalSeconds, bestPaceSeconds } = calculateTimedStats(group);
+  const { totalDistance, totalSeconds, bestPaceSeconds } =
+    useMemo(() => calculateTimedStats(group), [group]);
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
   const bestPace = bestPaceSeconds ? secondsToDuration(bestPaceSeconds) : undefined;
 
@@ -179,7 +184,8 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
 }
 
 export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
-  const { totalReps, totalSeconds } = calculateStretchStats(group);
+  const { totalReps, totalSeconds } =
+    useMemo(() => calculateStretchStats(group), [group]);
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
 
   return (

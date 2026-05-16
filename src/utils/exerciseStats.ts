@@ -1,5 +1,6 @@
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { calculateEstimatedOneRepMax } from "./charts";
+import { devConsole } from "./debugLogger";
 import { durationToSeconds } from "./formatters";
 
 export type LiftStats = {
@@ -37,6 +38,7 @@ export const initStretchStats: StretchStats = {
 };
 
 export const calculateLiftStats = (group: CompletedExerciseGroup) => {
+  devConsole('calculating lifts')
   const stats = group.completedExerciseSets.reduce((acc, curr) => {
     const newStats = { ...initLiftStats };
     newStats.totalReps = curr.reps === undefined
@@ -54,6 +56,7 @@ export const calculateLiftStats = (group: CompletedExerciseGroup) => {
 }
 
 export const calculateTimedStats = (group: CompletedExerciseGroup) => {
+  devConsole('calculating times')
   const stats = group.completedExerciseSets.reduce((acc, curr) => {
     const newStats = { ...initTimedStats };
     newStats.totalDistance = curr.distance === undefined
@@ -80,6 +83,7 @@ export const calculateTimedStats = (group: CompletedExerciseGroup) => {
 }
 
 export const calculateStretchStats = (group: CompletedExerciseGroup) => {
+  devConsole('calculating stretch')
   const stats = group.completedExerciseSets.reduce((acc, curr) => {
     const newStats = { ...initStretchStats };
     // if only a time is entered (reps are undefined), assume it was 1 rep
