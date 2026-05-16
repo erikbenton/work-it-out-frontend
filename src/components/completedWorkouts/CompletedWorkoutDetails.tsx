@@ -11,7 +11,6 @@ import type Workout from "../../types/workout";
 import { populateKey } from "../../types/keyId";
 import type ExerciseSet from "../../types/exerciseSet";
 import MuscleSummaryChart from "./components/MuscleSummaryChart";
-import { devConsole } from "../../utils/debugLogger";
 import { useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
 
@@ -21,7 +20,6 @@ export default function CompletedWorkoutDetails() {
   const { dispatch, workout: activeWorkout } = useActiveWorkout();
   const navigate = useNavigate();
   const [deleting, setDeleting] = useState(false);
-  devConsole(id);
   const workout = deleting ? null : services.getCompletedWorkoutById(id);
 
   const menuItems = [

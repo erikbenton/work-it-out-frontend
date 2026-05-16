@@ -3,7 +3,7 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import TimelineIcon from '@mui/icons-material/Timeline';
+import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import TimerIcon from '@mui/icons-material/Timer';
 import useUserStats from "../../../hooks/useUserStats";
 import { Grid } from "@mui/material";
@@ -24,7 +24,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
     <Grid container spacing={2} sx={{ width: '100%' }}>
       <Grid size={4}>
         <StatIcon
-          icon={<TimelineIcon />}
+          icon={<DownloadDoneIcon />}
           color={purple[700]}
           text={userStats.numberOfWorkouts}
           label="Workouts"

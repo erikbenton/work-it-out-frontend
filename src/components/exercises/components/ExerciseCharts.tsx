@@ -54,8 +54,6 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(history[0].exerciseId)
 
-  devConsole('category id', exercise.category)
-
   const headerPixelsOffset = 252.02;
 
   const mobileScreenStyle = {

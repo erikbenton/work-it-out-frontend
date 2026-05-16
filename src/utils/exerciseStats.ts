@@ -82,9 +82,10 @@ export const calculateTimedStats = (group: CompletedExerciseGroup) => {
 export const calculateStretchStats = (group: CompletedExerciseGroup) => {
   const stats = group.completedExerciseSets.reduce((acc, curr) => {
     const newStats = { ...initStretchStats };
-    newStats.totalReps = !curr.reps
+    // if only a time is entered (reps are undefined), assume it was 1 rep
+    newStats.totalReps = !curr.duration && !curr.reps
       ? acc.totalReps
-      : (acc.totalReps ?? 0) + curr.reps;
+      : (acc.totalReps ?? 0) + (curr.reps ?? 1);
 
     newStats.totalSeconds = !curr.duration
       ? acc.totalSeconds

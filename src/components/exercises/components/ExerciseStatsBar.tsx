@@ -5,9 +5,9 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import DownloadDoneIcon from '@mui/icons-material/DownloadDone';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
-import TimelineIcon from '@mui/icons-material/Timeline';
+import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import TimerIcon from '@mui/icons-material/Timer';
-import { blue, cyan, green, grey, pink, teal } from "@mui/material/colors";
+import { blue, cyan, green, grey, pink, purple, teal } from "@mui/material/colors";
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
@@ -80,8 +80,8 @@ export default function ExerciseStatsBar({ history }: Props) {
   return (
     <Stack direction='row' sx={{ overflowX: 'auto', justifyContent: 'space-around' }}>
       <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
-        <Avatar sx={{ bgcolor: blue[700] }}>
-          <TimelineIcon />
+        <Avatar sx={{ bgcolor: purple[700] }}>
+          <DownloadDoneIcon />
         </Avatar>
         <Typography variant="body1">
           {history.length}
@@ -111,7 +111,7 @@ export default function ExerciseStatsBar({ history }: Props) {
       {stats.oneRepMax && stats.oneRepMax > 0 &&
         <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
           <Avatar sx={{ bgcolor: pink[700] }}>
-            <DownloadDoneIcon />
+            <EmojiEventsSharpIcon />
           </Avatar>
           <Typography variant="body1">
             {Math.round(stats.oneRepMax)} lbs

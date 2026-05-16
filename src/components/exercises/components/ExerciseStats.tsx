@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import ExerciseStatsBar from "./ExerciseStatsBar";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
+import LoadingIcon from "../../layout/LoadingIcon";
 
 type Props = {
   exerciseId: number,
@@ -11,7 +12,11 @@ type Props = {
 }
 
 export default function ExerciseStats({ exerciseId, period, setPeriod }: Props) {
-  const { data: history } = useExerciseHistory(exerciseId);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId);
+
+  if (isLoading || !history) {
+    return (<LoadingIcon label='Histories' />);
+  }
 
   if (history.length === 0) {
     return (

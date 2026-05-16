@@ -29,7 +29,7 @@ export default function ExerciseHistoryItemTitle({ group }: Props) {
           alignItems: "center",
         }}
       >
-        <Typography variant='body1' className='grow'>{formatDate(dateTime)}</Typography>
+        <Typography variant='body1' sx={{ fontSize: '1.125rem' }} className='grow'>{formatDate(dateTime)}</Typography>
         <Typography variant='body2'>{daysDiff} {checkPluralization('day', daysDiff)} ago</Typography>
       </Stack>
     } />

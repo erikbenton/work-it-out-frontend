@@ -7,6 +7,7 @@ import { useExerciseHistory } from '../../../hooks/useExerciseHistory';
 import { Typography, useMediaQuery, useTheme } from '@mui/material';
 import useWindowDimensions from '../../../hooks/useWindowDimensions';
 import type { ExerciseCategory } from '../../../types/exerciseCategory';
+import LoadingIcon from '../../layout/LoadingIcon';
 
 type Props = {
   exerciseId: number,
@@ -20,7 +21,7 @@ const fullScreenStyle = {
 }
 
 export default function ExerciseHistoryTab({ exerciseId, category }: Props) {
-  const { data: history } = useExerciseHistory(exerciseId);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId);
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
@@ -33,6 +34,10 @@ export default function ExerciseHistoryTab({ exerciseId, category }: Props) {
     position: 'relative',
     maxHeight: `${height - headerPixelsOffset}px`
   };
+
+  if (isLoading || !history) {
+    return (<LoadingIcon label='Histories' />);
+  }
 
   if (history.length === 0) {
     return (
@@ -49,7 +54,7 @@ export default function ExerciseHistoryTab({ exerciseId, category }: Props) {
       sx={mobileScreen ? mobileScreenStyle : fullScreenStyle}
     >
       {history.map(group => (
-        <Box className="pb-1" key={`group-history-${group.id}`}>
+        <Box sx={{ pb: 1 }} key={`group-history-${group.id}`}>
           <ExerciseHistoryItemTitle group={group} />
           {group.completedExerciseSets.map(set => (
             <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} category={category} />

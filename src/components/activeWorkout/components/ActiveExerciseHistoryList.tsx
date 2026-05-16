@@ -11,6 +11,7 @@ import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 import { bgBlue } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
+import LoadingIcon from "../../layout/LoadingIcon";
 
 type Props = {
   exerciseId: number,
@@ -19,13 +20,17 @@ type Props = {
 }
 
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
-  const { data: history } = useExerciseHistory(exerciseId);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId);
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(exerciseId);
 
+  if (isLoading || !history) {
+    return (<LoadingIcon label='Histories' />);
+  }
+
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
-      {history?.map(group => (
+      {history.map(group => (
         <Card
           sx={{ bgcolor: bgBlue, py: 1, borderRadius: 4 }}
           key={`group-history-${group.id}`}

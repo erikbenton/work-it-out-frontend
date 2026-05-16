@@ -10,6 +10,8 @@ type Props = {
   groups: CompletedExerciseGroup[]
 }
 
+const avgBodyWeight = 150;
+
 export default function MuscleSummaryChart({ groups }: Props) {
   const { services: muscleServices } = useMuscleOptions();
   const { services: exerciseServices } = useExercises();
@@ -25,7 +27,7 @@ export default function MuscleSummaryChart({ groups }: Props) {
     if (exercise.category === 'lift') {
       hasLifts = true;
       groupVolume = group.completedExerciseSets
-        .reduce((acc, curr) => ((curr.weight ?? 150) * (curr.reps ?? 0)) + acc, 0);
+        .reduce((acc, curr) => ((curr.weight ?? (avgBodyWeight / 4)) * (curr.reps ?? 0)) + acc, 0);
       const totalMuscleWeights = (exercise.muscles ?? []).reduce((acc, curr) => acc + curr.weight, 0);
       for (const muscle of exercise.muscles ?? []) {
         const muscleVolume = (muscle.weight / totalMuscleWeights) * groupVolume;

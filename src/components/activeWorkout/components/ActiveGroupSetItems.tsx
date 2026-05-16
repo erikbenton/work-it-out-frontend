@@ -10,7 +10,6 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import Badge from "@mui/material/Badge";
 import { Tooltip } from "@mui/material";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
-import { devConsole } from "../../../utils/debugLogger";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
 import { formattedSetCompletedText, formattedSetTargetsText } from "../../../utils/formatters";
@@ -52,7 +51,6 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
   ];
 
   const handleDoubleClick = () => {
-    devConsole('here')
     onDoubleClick(set)
   }
 
