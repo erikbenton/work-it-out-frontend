@@ -6,16 +6,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { calculateBestPace, calculateEstimatedOneRepMax, calculateMaxWeight, calculateTotalDistance, calculateTotalReps, calculateTotalSeconds, calculateTotalStretchSeconds, calculateVolume, getChartHistoryPoints } from "../../../utils/charts";
 import type ChartPoint from "../../../types/chartPoint";
-import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, useTheme, useMediaQuery } from "@mui/material";
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { useExercises } from "../../../hooks/useExercises";
 import { devConsole } from "../../../utils/debugLogger";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
+import type { ExerciseHistory } from "../../../types/exerciseHistory";
 
 type Props = {
-  history: CompletedExerciseGroup[],
+  history: ExerciseHistory[],
   period: number,
   setPeriod: React.Dispatch<React.SetStateAction<number>>
 }
@@ -52,7 +52,7 @@ export default function ExerciseCharts({ history, period, setPeriod }: Props) {
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
   const { services: exerciseServices } = useExercises();
-  const exercise = exerciseServices.getExerciseById(history[0].exerciseId)
+  const exercise = exerciseServices.getExerciseById(history[0].group.exerciseId)
 
   const headerPixelsOffset = 252.02;
 

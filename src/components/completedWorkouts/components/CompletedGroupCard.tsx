@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { CardContent, List } from "@mui/material";
 import ExerciseHistoryItemSet from "../../exercises/components/ExerciseHistoryItemSet";
 import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
+import { calculateHistory } from "../../../workers/historyWorker";
 
 type Props = {
   group: CompletedExerciseGroup
@@ -22,6 +23,7 @@ export default function CompletedGroupCard({ group }: Props) {
     ? exercise.muscles[0].colorRgb
     : "red";
   const numberOfSets = group.completedExerciseSets.length;
+  const history = calculateHistory(group, exercise.category);
 
   return (
     <Card elevation={0} sx={{ width: '100%' }} >
@@ -46,7 +48,7 @@ export default function CompletedGroupCard({ group }: Props) {
             <ExerciseHistoryItemSet key={set.id} set={set} category={exercise.category} />
           ))}
         </List>
-        <ExerciseHistoryItemStats group={group} category={exercise.category} />
+        <ExerciseHistoryItemStats history={history} />
       </CardContent>
     </Card>
   );

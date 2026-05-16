@@ -10,13 +10,11 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { blue, cyan, green, grey, pink, purple, teal } from "@mui/material/colors";
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
-import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import { durationToHhMmSs, formatLargeNumber, secondsToDuration } from "../../../utils/formatters";
-import { useExercises } from "../../../hooks/useExercises";
-import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
+import type { ExerciseHistory } from "../../../types/exerciseHistory";
 
 type Props = {
-  history: CompletedExerciseGroup[]
+  history: ExerciseHistory[]
 }
 
 type ExerciseStats = {
@@ -31,21 +29,13 @@ type ExerciseStats = {
   bestPace?: string
 }
 
-const initializeExerciseStats = (): ExerciseStats => {
-  return {
-    sets: 0
-  }
-}
-
 export default function ExerciseStatsBar({ history }: Props) {
-  const { services: exerciseServices } = useExercises();
+  const stats: ExerciseStats = { sets: 0 };
 
-  const stats = initializeExerciseStats();
-  history.forEach(group => {
-    stats.sets += group.completedExerciseSets.length;
-    const exercise = exerciseServices.getExerciseById(group.exerciseId);
-    if (exercise.category === 'lift') {
-      const { totalReps, totalVolume, oneRepMax } = calculateLiftStats(group);
+  history.forEach(h => {
+    stats.sets += h.group.completedExerciseSets.length;
+    if (h.category === 'lift') {
+      const { totalReps, totalVolume, oneRepMax } = h.stats;
       stats.reps = totalReps
         ? (stats.reps ?? 0) + totalReps
         : stats.reps;
@@ -55,8 +45,8 @@ export default function ExerciseStatsBar({ history }: Props) {
       stats.volume = totalVolume
         ? (stats.volume ?? 0) + totalVolume
         : stats.volume;
-    } else if (exercise.category === 'timed') {
-      const { totalDistance, totalSeconds, bestPaceSeconds } = calculateTimedStats(group);
+    } else if (h.category === 'timed') {
+      const { totalDistance, totalSeconds, bestPaceSeconds } = h.stats;
       stats.distance = totalDistance
         ? (stats.distance ?? 0) + totalDistance
         : stats.distance;
@@ -66,8 +56,8 @@ export default function ExerciseStatsBar({ history }: Props) {
       stats.bestPaceSeconds = bestPaceSeconds
         ? bestPaceSeconds <= (stats.bestPaceSeconds ?? bestPaceSeconds) ? bestPaceSeconds : stats.bestPaceSeconds
         : stats.bestPaceSeconds;
-    } else if (exercise.category === 'stretch' || exercise.category === 'conditioning') {
-      const { totalReps } = calculateStretchStats(group);
+    } else if (h.category === 'stretch' || h.category === 'conditioning') {
+      const { totalReps } = h.stats;
       stats.reps = totalReps
         ? (stats.reps ?? 0) + totalReps
         : stats.reps;

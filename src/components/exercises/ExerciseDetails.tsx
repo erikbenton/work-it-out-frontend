@@ -50,7 +50,7 @@ export default function ExerciseDetails() {
             <ExerciseHistoryTab exerciseId={id} category={exercise.category} />
           </Suspense>)
           : <Suspense fallback={<LoadingIcon label='Histories' />}>
-            <ExerciseStats exerciseId={id} period={period} setPeriod={setPeriod} />
+            <ExerciseStats exerciseId={id} category={exercise.category} period={period} setPeriod={setPeriod} />
           </Suspense>
       }
     </Box>

@@ -1,5 +1,4 @@
 import { Chip, ListItemText, Stack, Tooltip, Typography } from "@mui/material";
-import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import { teal, green, cyan, pink } from "@mui/material/colors";
 import { durationToHhMmSs, secondsToDuration } from "../../../utils/formatters";
 import TimerIcon from '@mui/icons-material/Timer';
@@ -8,52 +7,47 @@ import RoomSharpIcon from '@mui/icons-material/RoomSharp';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
-import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
-import type { ExerciseCategory } from "../../../types/exerciseCategory";
-import { useMemo } from "react";
-import { devConsole } from "../../../utils/debugLogger";
+import { type LiftStats, type StretchStats, type TimedStats } from "../../../utils/exerciseStats";
+import type { ExerciseHistory } from "../../../types/exerciseHistory";
 
 type Props = {
-  group: CompletedExerciseGroup,
-  category: ExerciseCategory
+  history: ExerciseHistory
 }
 
 const statsChipStyle = {
   color: '#fff', py: 1.75, pr: 0.75, cursor: 'pointer'
 };
 
-export default function ExerciseHistoryItemStats({ group, category }: Props) {
-  devConsole('restating')
-  switch (category) {
+export default function ExerciseHistoryItemStats({ history }: Props) {
+  switch (history.category) {
     case 'lift': {
-      return (<ExerciseHistoryLiftGroupStats group={group} />)
+      return (<ExerciseHistoryLiftGroupStats history={history} />)
     }
     case 'timed': {
-      return (<ExerciseHistoryTimedGroupStats group={group} />)
+      return (<ExerciseHistoryTimedGroupStats history={history} />)
     }
     case 'conditioning': {
-      return (<ExerciseHistoryStretchGroupStats group={group} />)
+      return (<ExerciseHistoryStretchGroupStats history={history} />)
     }
     case 'stretch': {
-      return (<ExerciseHistoryStretchGroupStats group={group} />)
+      return (<ExerciseHistoryStretchGroupStats history={history} />)
     }
     default:
-      return (<>No Stats available for exercise category: {category}</>);
+      return (<>No Stats available for exercise category: {history}</>);
   }
 }
 
 type HistoryStatProps = {
-  group: CompletedExerciseGroup
+  history: ExerciseHistory
 }
 
 const touchDelay = 0;
 
-export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
-  const { totalReps, totalVolume, oneRepMax } =
-    useMemo(() => calculateLiftStats(group), [group]);
+export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
+  const { totalReps, totalVolume, oneRepMax } = history.stats as LiftStats;
 
   return (
-    <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
+    <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
           <Tooltip
@@ -114,14 +108,13 @@ export function ExerciseHistoryLiftGroupStats({ group }: HistoryStatProps) {
   );
 }
 
-export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
-  const { totalDistance, totalSeconds, bestPaceSeconds } =
-    useMemo(() => calculateTimedStats(group), [group]);
+export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
+  const { totalDistance, totalSeconds, bestPaceSeconds } = history.stats as TimedStats;
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
   const bestPace = bestPaceSeconds ? secondsToDuration(bestPaceSeconds) : undefined;
 
   return (
-    <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
+    <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalDistance !== undefined && totalDistance > 0 &&
           <Tooltip
@@ -183,13 +176,12 @@ export function ExerciseHistoryTimedGroupStats({ group }: HistoryStatProps) {
   );
 }
 
-export function ExerciseHistoryStretchGroupStats({ group }: HistoryStatProps) {
-  const { totalReps, totalSeconds } =
-    useMemo(() => calculateStretchStats(group), [group]);
+export function ExerciseHistoryStretchGroupStats({ history }: HistoryStatProps) {
+  const { totalReps, totalSeconds } = history.stats as StretchStats;
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
 
   return (
-    <ListItemText id={`list-label-${group.id}`} className='px-3' primary={
+    <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
       <Stack direction='row' spacing={1}>
         {totalReps &&
           <Tooltip

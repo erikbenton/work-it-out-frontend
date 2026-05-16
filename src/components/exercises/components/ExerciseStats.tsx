@@ -4,15 +4,17 @@ import Box from "@mui/material/Box";
 import ExerciseStatsBar from "./ExerciseStatsBar";
 import { useExerciseHistory } from "../../../hooks/useExerciseHistory";
 import LoadingIcon from "../../layout/LoadingIcon";
+import type { ExerciseCategory } from "../../../types/exerciseCategory";
 
 type Props = {
   exerciseId: number,
+  category: ExerciseCategory,
   period: number,
   setPeriod: React.Dispatch<React.SetStateAction<number>>
 }
 
-export default function ExerciseStats({ exerciseId, period, setPeriod }: Props) {
-  const { data: history, isLoading } = useExerciseHistory(exerciseId);
+export default function ExerciseStats({ exerciseId, category, period, setPeriod }: Props) {
+  const { data: history, isLoading } = useExerciseHistory(exerciseId, category);
 
   if (isLoading || !history) {
     return (<LoadingIcon label='Histories' />);

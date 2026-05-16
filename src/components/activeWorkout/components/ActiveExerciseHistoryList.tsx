@@ -20,9 +20,9 @@ type Props = {
 }
 
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
-  const { data: history, isLoading } = useExerciseHistory(exerciseId);
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(exerciseId);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId, exercise.category);
 
   if (isLoading || !history) {
     return (<LoadingIcon label='Histories' />);
@@ -30,15 +30,15 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
 
   return (
     <Stack spacing={1} sx={{ width: '100%' }}>
-      {history.map(group => (
+      {history.map(h => (
         <Card
           sx={{ bgcolor: bgBlue, py: 1, borderRadius: 4 }}
-          key={`group-history-${group.id}`}
+          key={`group-history-${h.group.id}`}
         >
           <CardContent className="pb-0" sx={{ p: 0 }}>
-            <ExerciseHistoryItemTitle group={group} />
+            <ExerciseHistoryItemTitle group={h.group} />
             <Divider sx={{ opacity: 0.3 }} />
-            {group.completedExerciseSets.map((set, index) => (
+            {h.group.completedExerciseSets.map((set, index) => (
               <React.Fragment key={`set-history-${set.id}`}>
                 <ExerciseHistoryItemSet
                   set={set}
@@ -50,7 +50,7 @@ export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, c
               </React.Fragment>
             ))}
             <Box sx={{ pt: 1 }}>
-              <ExerciseHistoryItemStats group={group} category={exercise.category} />
+              <ExerciseHistoryItemStats history={h} />
             </Box>
           </CardContent>
         </Card>

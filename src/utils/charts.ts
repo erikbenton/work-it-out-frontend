@@ -1,5 +1,6 @@
 import type ChartPoint from "../types/chartPoint";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
+import type { ExerciseHistory } from "../types/exerciseHistory";
 import { getDateTime, type DateTime } from "./dateTime";
 import { daysSince, durationToSeconds } from "./formatters";
 
@@ -67,9 +68,9 @@ const getDateHistoryKey = (dateTime: DateTime): string => {
   return `${dateTime.month}/${dateTime.dayOfMonth}/${dateTime.year % 100}`
 }
 
-export function getChartHistoryPoints(history: CompletedExerciseGroup[], numOfDays: number): ChartPoint[] {
-  const mostRecent = history[0];
-  const earliest = history[history.length - 1];
+export function getChartHistoryPoints(history: ExerciseHistory[], numOfDays: number): ChartPoint[] {
+  const mostRecent = history[0].group;
+  const earliest = history[history.length - 1].group;
   const mostRecentDate = getDateTime(mostRecent.createdAt);
   const latestDate = new Date(mostRecentDate.year, mostRecentDate.month - 1, mostRecentDate.dayOfMonth);
   const timePeriod = 1000 * 60 * 60 * 24 * numOfDays;
@@ -85,9 +86,9 @@ export function getChartHistoryPoints(history: CompletedExerciseGroup[], numOfDa
   // create map of date-to-history for days in the time period
   const dateHistory = new Map<string, (CompletedExerciseGroup | null)>();
   for (const entry of history ?? []) {
-    const entryDateTime = getDateTime(entry.createdAt);
+    const entryDateTime = getDateTime(entry.group.createdAt);
     if (entryDateTime.date.getTime() >= startDate.date.getTime()) {
-      dateHistory.set(getDateHistoryKey(entryDateTime), entry);
+      dateHistory.set(getDateHistoryKey(entryDateTime), entry.group);
     }
   }
 

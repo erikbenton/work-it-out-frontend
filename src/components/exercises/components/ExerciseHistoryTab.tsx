@@ -21,7 +21,7 @@ const fullScreenStyle = {
 }
 
 export default function ExerciseHistoryTab({ exerciseId, category }: Props) {
-  const { data: history, isLoading } = useExerciseHistory(exerciseId);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId, category);
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
@@ -53,13 +53,13 @@ export default function ExerciseHistoryTab({ exerciseId, category }: Props) {
     <List
       sx={mobileScreen ? mobileScreenStyle : fullScreenStyle}
     >
-      {history.map(group => (
-        <Box sx={{ pb: 1 }} key={`group-history-${group.id}`}>
-          <ExerciseHistoryItemTitle group={group} />
-          {group.completedExerciseSets.map(set => (
+      {history.map(h => (
+        <Box sx={{ pb: 1 }} key={`group-history-${h.group.id}`}>
+          <ExerciseHistoryItemTitle group={h.group} />
+          {h.group.completedExerciseSets.map(set => (
             <ExerciseHistoryItemSet key={`set-history-${set.id}`} set={set} category={category} />
           ))}
-          <ExerciseHistoryItemStats group={group} category={category} />
+          <ExerciseHistoryItemStats history={h} />
         </Box>
       ))}
     </List>
