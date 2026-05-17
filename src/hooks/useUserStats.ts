@@ -65,7 +65,6 @@ function calculateUserStats(
     }
   }, initialStats);
 
-  // return the stats
   return stats;
 }
 

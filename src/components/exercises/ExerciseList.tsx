@@ -70,7 +70,7 @@ function ExerciseSubheaderList({ exercises }: Props) {
 
   const sortedKeys = keys.sort();
 
-  const headerOffsetPixels = 113.98;
+  const headerOffsetPixels = 122.98;
 
   return (
     <List
