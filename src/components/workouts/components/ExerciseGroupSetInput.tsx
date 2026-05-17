@@ -24,7 +24,7 @@ import Box from "@mui/material/Box";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
-import { formattedSetTargetsText } from "../../../utils/formatters";
+import { formattedSetTargetsText, parseDuration } from "../../../utils/formatters";
 import { Typography } from "@mui/material";
 import MinRepsInput from "./inputs/MinRepsInput";
 import MaxRepsInput from "./inputs/MaxRepsInput";
@@ -76,7 +76,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
       type: 'updateSet',
       payload: {
         group: exerciseGroup,
-        set: { ...values }
+        set: { ...values, targetDuration: parseDuration(values.targetDuration) }
       }
     });
 

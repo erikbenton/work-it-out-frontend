@@ -11,6 +11,37 @@ type DurationFormat = ('long' | 'short');
 
 const formatter = new Intl.NumberFormat('en-US');
 
+export function parseDuration(duration?: string) {
+  if (!duration) return undefined;
+  let updated = false;
+
+  const durationNum = Number(duration.replaceAll(':', ''));
+  let hours = Math.floor(durationNum / 10_000)
+  let minutes = Math.floor(durationNum / 100) - hours * 100;
+  let seconds = Math.floor(durationNum % 100);
+
+  if (seconds > 59) {
+    const mins = Math.floor(seconds / 60);
+    minutes += mins;
+    seconds = Math.floor(seconds % 60);
+    updated = true;
+  }
+
+  if (minutes > 59) {
+    const hrs = Math.floor(minutes / 60);
+    hours += hrs;
+    minutes = Math.floor(minutes % 60);
+    updated = true;
+  }
+
+  if (updated) {
+    const minutesText = hours > 0 && minutes < 10 ? `0${minutes}` : `${minutes}`
+    return `${hours ?? ''}:${minutesText}:${seconds < 10 ? `0${seconds}` : seconds}`;
+  } else {
+    return duration;
+  }
+}
+
 export function msToDuration(ms: number, options?: DurationOptions): string {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / (1000 * 60)) % 60);
