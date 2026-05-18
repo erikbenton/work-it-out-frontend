@@ -120,6 +120,7 @@ export default function CompletedWorkoutDetails() {
             ))}
           </Stack>
           <MuscleSummaryChart groups={workout!.completedExerciseGroups} />
+          <Box sx={{ height: '10vh', minHeight: '10vh' }}></Box>
         </>
       }
     </Box>

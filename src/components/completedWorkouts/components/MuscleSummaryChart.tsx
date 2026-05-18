@@ -49,7 +49,7 @@ export default function MuscleSummaryChart({ groups }: Props) {
   }
 
   return (
-    <Box sx={{ mt: 3, mb: 4 }}>
+    <Box sx={{ mt: 3 }}>
       <Typography variant='h6' sx={{ mb: 1 }}>Lifting Muscles by Volume</Typography>
       <PieChart
         sx={{ height: '200px' }}
