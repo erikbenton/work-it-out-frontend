@@ -12,6 +12,7 @@ import { queryKey as historyQueryKey } from "./useExerciseHistory";
 import { devConsole } from "../utils/debugLogger";
 import { useExercises } from "./useExercises";
 import type { ExerciseHistory } from "../types/exerciseHistory";
+import { calculateHistory } from "../workers/historyWorker";
 
 const queryKey = 'completedWorkouts';
 
@@ -48,7 +49,7 @@ export function useCompletedWorkouts() {
       const key = [historyQueryKey, group.exerciseId]
       const { category } = exerciseServices.getExerciseById(group.exerciseId)
       try {
-        const newHistory: ExerciseHistory = { group, category, stats: {} }
+        const newHistory = calculateHistory(group, category);
         const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
         queryClient.setQueryData(key, [{ ...newHistory }, ...prevHistory]);
       } catch {
