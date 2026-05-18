@@ -10,6 +10,8 @@ import cacheTimes from "../utils/cacheTimes";
 import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import { queryKey as historyQueryKey } from "./useExerciseHistory";
 import { devConsole } from "../utils/debugLogger";
+import { useExercises } from "./useExercises";
+import type { ExerciseHistory } from "../types/exerciseHistory";
 
 const queryKey = 'completedWorkouts';
 
@@ -21,6 +23,7 @@ export interface CompletedWorkoutServices {
 }
 
 export function useCompletedWorkouts() {
+  const { services: exerciseServices } = useExercises();
   const queryClient = useQueryClient();
   const { data: completedWorkouts, isError } = useSuspenseQuery<CompletedWorkout[]>({
     queryKey: [queryKey],
@@ -43,9 +46,11 @@ export function useCompletedWorkouts() {
   const updateHistories = (completedWorkout: CompletedWorkout) => {
     for (const group of completedWorkout.completedExerciseGroups) {
       const key = [historyQueryKey, group.exerciseId]
+      const { category } = exerciseServices.getExerciseById(group.exerciseId)
       try {
-        const prevHistory = queryClient.getQueryData(key) as CompletedExerciseGroup[];
-        queryClient.setQueryData(key, [{ ...group }, ...prevHistory]);
+        const newHistory: ExerciseHistory = { group, category, stats: {} }
+        const prevHistory = queryClient.getQueryData(key) as ExerciseHistory[];
+        queryClient.setQueryData(key, [{ ...newHistory }, ...prevHistory]);
       } catch {
         queryClient.invalidateQueries({ queryKey: key });
       }
@@ -171,19 +176,19 @@ export function useCompletedWorkouts() {
   const remove = useMutation({
     mutationFn: async (workoutId: number) => deleteCompletedWorkout(workoutId),
     onSuccess: (deletedId: number) => {
-        try {
-          const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
-          const workout = prevWorkouts.find(w => w.id === deletedId);
-          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== deletedId));
-          if (workout) {
-            devConsole(`deleted workout: ${deletedId}`)
-            removeHistories(workout);
-          }
-          removeStats();
-        } catch {
-          queryClient.invalidateQueries({ queryKey: [queryKey] });
+      try {
+        const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
+        const workout = prevWorkouts.find(w => w.id === deletedId);
+        queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== deletedId));
+        if (workout) {
+          devConsole(`deleted workout: ${deletedId}`)
+          removeHistories(workout);
         }
+        removeStats();
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
+    }
   }).mutate;
 
   return {
