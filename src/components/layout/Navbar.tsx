@@ -42,6 +42,11 @@ const pages: PageLink[] = [
     icon: (active) => <FitnessCenterIcon sx={{ color: active ? 'white' : 'primary.main' }} />
   },
   {
+    text: "Programs",
+    url: "/programs",
+    icon: (active) => <NoteAltOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
     text: "Workouts",
     url: "/workouts",
     icon: (active) => <NoteAltOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
