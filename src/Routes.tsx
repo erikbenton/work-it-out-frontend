@@ -14,6 +14,7 @@ import CompletedWorkoutDetails from './components/completedWorkouts/CompletedWor
 import HomePage from './components/home/HomePage';
 import LoadingIcon from './components/layout/LoadingIcon';
 import ProgramsList from './components/programs/ProgramList';
+import { ProgramDetails } from './components/programs/ProgramDetails';
 
 export default function Router() {
 
@@ -24,58 +25,63 @@ export default function Router() {
         <Suspense fallback={<LoadingIcon label='Programs' />}>
           <ProgramsList />
         </Suspense>
-      }/>
+      } />
+      <Route path="/programs/:id" element={
+        <Suspense fallback={<LoadingIcon label='Program' />}>
+          <ProgramDetails />
+        </Suspense>
+      } />
       <Route path="/workouts" element={
         <Suspense fallback={<LoadingIcon label='Workouts' />}>
           <WorkoutList />
         </Suspense>
-      }/>
+      } />
       <Route path="/workouts/create" element={
         <Suspense fallback={<LoadingIcon label='Workout' />}>
           <WorkoutCreate />
         </Suspense>
-      }/>
+      } />
       <Route path="/workouts/:id" element={
         <Suspense fallback={<LoadingIcon label='Workout' />}>
           <WorkoutDetails />
         </Suspense>
-      }/>
+      } />
       <Route path="/exercises" element={
         <Suspense fallback={<LoadingIcon label='Exercises' />}>
           <ExerciseList />
         </Suspense>
-      }/>
+      } />
       <Route path="/exercises/create" element={<ExerciseCreate />} />
       <Route path="/exercises/:id" element={
         <Suspense fallback={<LoadingIcon label='Exercise' />}>
           <ExerciseDetails />
         </Suspense>
-      }/>
+      } />
       <Route path="/exercises/:id/edit" element={
         <Suspense fallback={<LoadingIcon label='Exercise' />}>
           <ExerciseEdit />
         </Suspense>
-      }/>
+      } />
       <Route path="/training" element={
         <Suspense fallback={<LoadingIcon label='Workouts' />}>
           <ActiveWorkoutSummary />
         </Suspense>
-      }/>
+      } />
       <Route path="/training/:key" element={
         <Suspense fallback={<LoadingIcon label='Exercise' />}>
           <ActiveWorkoutGroup />
         </Suspense>
-      }/>
+      } />
       <Route path="/history" element={
         <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
           <CompletedWorkoutList />
         </Suspense>
-      }/>
+      } />
       <Route path="/history/:id" element={
         <Suspense fallback={<LoadingIcon label='Workout History' />}>
           <CompletedWorkoutDetails />
         </Suspense>
-      }/>
+      } />
     </Routes>
   )
 }

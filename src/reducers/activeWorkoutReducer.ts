@@ -53,7 +53,7 @@ export type ActiveWorkoutAction =
     payload: { startTime?: number, duration?: string }
   };
 
-export default function activeWorkoutReducer(workout: ActiveWorkout | null, action: ActiveWorkoutAction) {
+export default function activeWorkoutReducer(workout: ActiveWorkout | null, action: ActiveWorkoutAction): ActiveWorkout | null {
   switch (action.type) {
     case 'initializeWorkout': {
 

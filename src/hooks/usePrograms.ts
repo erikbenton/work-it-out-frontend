@@ -14,6 +14,14 @@ export function usePrograms() {
     queryFn: getPrograms
   });
 
+  const getProgramById = (id: number): WorkoutProgram => {
+    const program = programs.find(p => p.id === id);
+    if (!program) {
+      throw new Error(`Unable to find program with id: ${id}.`);
+    }
+    return program;
+  }
+
   const create = useMutation({
     mutationFn: async (newProgram: WorkoutProgram) => createProgram(newProgram),
     onSuccess: (savedProgram: WorkoutProgram) => {
@@ -34,7 +42,8 @@ export function usePrograms() {
     programs,
     isError,
     services: {
-      create
+      getProgramById,
+      create,
     }
   }
 }
