@@ -31,3 +31,23 @@ export async function createProgram(newProgram: WorkoutProgram): Promise<Workout
 
   return (await response.json()) as WorkoutProgram;
 }
+
+export async function updateProgram(program: WorkoutProgram): Promise<WorkoutProgram> {
+  devConsole('Updating program ' + program.id);
+  const config = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(program),
+  };
+
+  const response = await fetch(`${baseUrl}/programs/${program.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to update program with id: ' + program.id);
+  }
+
+  return (await response.json()) as WorkoutProgram;
+}

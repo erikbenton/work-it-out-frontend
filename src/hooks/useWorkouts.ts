@@ -91,10 +91,10 @@ export function useWorkouts() {
     onSuccess: (updatedWorkout: Workout) => {
       try {
         const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
-        queryClient.setQueryData([queryKey], prevWorkouts?.map(ex => (
-          ex.id === updatedWorkout.id
+        queryClient.setQueryData([queryKey], prevWorkouts?.map(w => (
+          w.id === updatedWorkout.id
             ? updatedWorkout
-            : ex)));
+            : w)));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }

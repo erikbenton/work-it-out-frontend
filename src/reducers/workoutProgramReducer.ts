@@ -44,10 +44,11 @@ export default function workoutProgramReducer(program: WorkoutProgram, action: W
       if (newIndex < 0 || newIndex > program.workoutIds.length) {
         return { ...program };
       }
-
-      program.workoutIds[oldIndex] = program.workoutIds[newIndex];
-      program.workoutIds[newIndex] = workoutId;
-      return { ...program, workoutIds: [...program.workoutIds] };
+      const shiftedIds = [...program.workoutIds];
+      const tmp = shiftedIds[newIndex]
+      shiftedIds[newIndex] = workoutId;
+      shiftedIds[oldIndex] = tmp;
+      return { ...program, workoutIds: [...shiftedIds] };
     }
 
     default:

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import type WorkoutProgram from "../types/workoutProgram";
 import cacheTimes from "../utils/cacheTimes";
-import { createProgram, getPrograms } from "../requests/programs";
+import { createProgram, getPrograms, updateProgram } from "../requests/programs";
 
 const queryKey = 'programs';
 
@@ -38,12 +38,28 @@ export function usePrograms() {
     }
   }).mutate;
 
+  const update = useMutation({
+    mutationFn: async (editedProgram: WorkoutProgram) => updateProgram(editedProgram),
+    onSuccess: (savedProgram: WorkoutProgram) => {
+      try {
+        const prevPrograms: WorkoutProgram[] = queryClient.getQueryData([queryKey]) as WorkoutProgram[];
+        queryClient.setQueryData(
+          [queryKey],
+          prevPrograms?.map(p => p.id === savedProgram.id ? savedProgram : p) ?? [savedProgram]
+        );
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
   return {
     programs,
     isError,
     services: {
       getProgramById,
       create,
+      update
     }
   }
 }

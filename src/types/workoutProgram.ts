@@ -1,5 +1,5 @@
 export default interface WorkoutProgram {
-  id: number,
+  id?: number,
   name: string,
   description?: string,
   workoutIds: number[]
