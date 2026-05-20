@@ -23,12 +23,11 @@ const Transition = React.forwardRef(function Transition(
 
 type Props = {
   open: boolean,
-  handleClose: () => void,
   limit?: number
 }
 
-export default function WorkoutSelect({ open, handleClose, limit }: Props) {
-  const { program, addWorkouts } = useProgramForm();
+export default function WorkoutSelect({ open, limit }: Props) {
+  const { program, addWorkouts, handleStopSelectingWorkouts } = useProgramForm();
   const { workouts } = useWorkouts();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
@@ -42,7 +41,7 @@ export default function WorkoutSelect({ open, handleClose, limit }: Props) {
 
   const handleCloseDialog = () => {
     setSelected([]);
-    handleClose();
+    handleStopSelectingWorkouts();
   };
 
   const filteredWorkouts = useMemo(() => {

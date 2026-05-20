@@ -12,9 +12,12 @@ export type WorkoutProgramFormContext = {
   setEditing: React.Dispatch<React.SetStateAction<boolean>>,
   saving: boolean,
   setSaving: React.Dispatch<React.SetStateAction<boolean>>,
+  selectingWorkouts: boolean,
   expanded: Map<number, boolean>,
   handleExpandClick: (expanded: boolean, workoutId: number) => () => void,
   handleEditSaveClick: () => void,
+  handleStartSelectingWorkouts: () => void,
+  handleStopSelectingWorkouts: () => void,
   getProgramOptions: () => VerticalMenuItemProps[],
   getProgramWorkoutOptions: (workout: Workout) => VerticalMenuItemProps[],
   addWorkouts: (newWorkoutIds: number[]) => void

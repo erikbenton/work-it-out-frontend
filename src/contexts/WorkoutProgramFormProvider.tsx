@@ -21,6 +21,7 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
   const { services: programServices } = usePrograms();
   const { services: workoutServices } = useWorkouts();
   const navigate = useNavigate();
+  const [selectingWorkouts, setSelectingWorkouts] = useState(false);
   const [saving, setSaving] = useState(false);
   const [editing, setEditing] = useState(newProgram);
   const [expanded, setExpanded] = useState<Map<number, boolean>>(() => {
@@ -148,6 +149,14 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     }
   }
 
+  const handleStartSelectingWorkouts = () => {
+    setSelectingWorkouts(true);
+  };
+
+  const handleStopSelectingWorkouts = () => {
+    setSelectingWorkouts(false);
+  }
+
   const workoutProgramContext = {
     program,
     workouts,
@@ -155,10 +164,13 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     saving,
     editing,
     expanded,
+    selectingWorkouts,
     setSaving,
     setEditing,
     handleExpandClick,
     handleEditSaveClick,
+    handleStartSelectingWorkouts,
+    handleStopSelectingWorkouts,
     getProgramOptions,
     getProgramWorkoutOptions,
     addWorkouts

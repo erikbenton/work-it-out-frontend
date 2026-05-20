@@ -28,6 +28,7 @@ export default function WorkoutForm() {
             />
           ))}
         </Stack>
+        <Box sx={{ height: '10vh', minHeight: '10vh' }}></Box>
       </Box>
     </>
   );
