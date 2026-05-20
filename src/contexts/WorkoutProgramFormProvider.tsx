@@ -6,6 +6,8 @@ import { useWorkouts } from "../hooks/useWorkouts";
 import type { VerticalMenuItemProps } from "../components/layout/VerticalIconMenu";
 import { usePrograms } from "../hooks/usePrograms";
 import { useNavigate } from "react-router-dom";
+import type Workout from "../types/workout";
+import useActiveWorkout from "../hooks/useActiveWorkout";
 
 type Props = {
   initProgram: WorkoutProgram,
@@ -14,6 +16,7 @@ type Props = {
 
 export default function WorktouProgramFormProvider({ initProgram, children }: Props) {
   const [program, dispatch] = useReducer(workoutProgramReducer, initProgram);
+  const { dispatch: activeDispatch } = useActiveWorkout();
   const { services: programServices } = usePrograms();
   const { services: workoutServices } = useWorkouts();
   const navigate = useNavigate();
@@ -34,6 +37,14 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
       expanded.set(workoutId, !currentValue);
       setExpanded(new Map(expanded));
     };
+  }
+
+  const addWorkouts = (newWorkoutIds: number[]) => {
+    const updatedWorkoutIds = program.workoutIds.concat(newWorkoutIds)
+    dispatch({
+      type: 'setWorkouts',
+      payload: { workoutIds: updatedWorkoutIds }
+    });
   }
 
   const getProgramOptions = (): VerticalMenuItemProps[] => {
@@ -58,6 +69,45 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
       },
       { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } }
     ]
+  }
+
+  const getProgramWorkoutOptions = (workout: Workout): VerticalMenuItemProps[] => {
+    const notEditingOptions = [
+      {
+        label: "Start",
+        handleClick: () => {
+          activeDispatch({
+            type: 'initializeWorkout',
+            payload: { initialWorkout: workout }
+          });
+          navigate('/training');
+        }
+      }
+    ];
+
+    const editingOptions = [
+      {
+        label: "Shift up",
+        handleClick: () => {
+          dispatch({ type: 'shiftWorkout', payload: { workoutId: workout.id, shift: -1 } });
+        },
+      },
+      {
+        label: "Shift down",
+        handleClick: () => {
+          dispatch({ type: 'shiftWorkout', payload: { workoutId: workout.id, shift: 1 } });
+        },
+      },
+      {
+        label: "Remove",
+        handleClick: () => {
+          dispatch({ type: 'removeWorkout', payload: { workoutId: workout.id } });
+        },
+        sx: { color: 'error.main' }
+      },
+    ]
+
+    return editing ? editingOptions : notEditingOptions;
   }
 
   const handleEditSaveClick = () => {
@@ -100,7 +150,9 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     setEditing,
     handleExpandClick,
     handleEditSaveClick,
-    getProgramOptions
+    getProgramOptions,
+    getProgramWorkoutOptions,
+    addWorkouts
   }
 
   return (

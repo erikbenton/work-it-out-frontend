@@ -1,16 +1,29 @@
 import Box from "@mui/material/Box";
 import useProgramForm from "../../../hooks/useProgramForm";
-import { Grow, IconButton, Stack } from "@mui/material";
+import { Grow, IconButton, Stack, Typography } from "@mui/material";
 import LoadingIcon from "../../layout/LoadingIcon";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
 import ProgramNameInput from "./ProgramNameInput";
 import ProgramWorkoutCard from "./ProgramWorkoutCard";
+import { checkPluralization } from "../../../utils/formatters";
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+import { useState } from "react";
+import WorkoutSelect from "./WorkoutSelect";
 
 
 export default function ProgramForm() {
-  const { saving, editing, workouts, handleEditSaveClick, getProgramOptions } = useProgramForm();
+  const { saving, editing, program, workouts, handleEditSaveClick, getProgramOptions } = useProgramForm();
+  const [selectingWorkouts, setSelectingWorkouts] = useState(false);
+
+  const handleStartSelectingWokouts = () => {
+    setSelectingWorkouts(true);
+  };
+
+  const handleStopSelectingWorkouts = () => {
+    setSelectingWorkouts(false);
+  }
 
   const programOptions = getProgramOptions();
 
@@ -48,7 +61,25 @@ export default function ProgramForm() {
             menuItems={programOptions}
             size="medium"
           />
-        </Stack >
+        </Stack>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            px: 1
+          }}
+        >
+          <Typography variant="body1" component="span">
+            {program.workoutIds.length} {checkPluralization("Workout", program.workoutIds.length)}
+          </Typography>
+          <Grow in={editing} >
+            <IconButton color="primary" onClick={handleStartSelectingWokouts}>
+              <AddCircleOutlinedIcon fontSize="large" />
+            </IconButton>
+          </Grow>
+        </Stack>
         <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
           {workouts.map(workout => (
             <ProgramWorkoutCard
@@ -57,6 +88,10 @@ export default function ProgramForm() {
             />
           ))}
         </Stack>
+        <WorkoutSelect
+          open={selectingWorkouts}
+          handleClose={handleStopSelectingWorkouts}
+        />
       </Box>
     </>
   )

@@ -9,7 +9,6 @@ import useProgramForm from '../../../hooks/useProgramForm';
 import type Workout from '../../../types/workout';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import Grow from '@mui/material/Grow';
 import Box from '@mui/material/Box';
 import VerticalIconMenu from '../../layout/VerticalIconMenu';
 import Typography from '@mui/material/Typography';
@@ -59,31 +58,9 @@ type CardProps = {
 }
 
 function ProgramWorkoutCardTitle({ workout }: CardProps) {
-  const { editing, dispatch } = useProgramForm();
-
+  const { getProgramWorkoutOptions } = useProgramForm();
   const numberOfExercises = workout.exerciseGroups.length;
-
-  const menuItems = [
-    {
-      label: "Shift up",
-      handleClick: () => {
-        dispatch({ type: 'shiftWorkout', payload: { workoutId: workout.id, shift: -1 } });
-      },
-    },
-    {
-      label: "Shift down",
-      handleClick: () => {
-        dispatch({ type: 'shiftWorkout', payload: { workoutId: workout.id, shift: 1 } });
-      },
-    },
-    {
-      label: "Delete",
-      handleClick: () => {
-        dispatch({ type: 'removeWorkout', payload: { workoutId: workout.id } });
-      },
-      sx: { color: 'error.main' }
-    },
-  ];
+  const menuItems = getProgramWorkoutOptions(workout);
 
   return (
     <CardHeader
@@ -94,14 +71,12 @@ function ProgramWorkoutCardTitle({ workout }: CardProps) {
         </Avatar>
       }
       action={
-        <Grow in={editing}>
-          <Box>
-            <VerticalIconMenu
-              buttonId={workout.name.split(' ').join('-').toLowerCase() + "-group-options"}
-              menuItems={menuItems}
-            />
-          </Box>
-        </Grow>
+        <Box>
+          <VerticalIconMenu
+            buttonId={workout.name.split(' ').join('-').toLowerCase() + "-group-options"}
+            menuItems={menuItems}
+          />
+        </Box>
       }
       title={workout.name}
       subheader={

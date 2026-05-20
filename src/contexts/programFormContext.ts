@@ -15,7 +15,9 @@ export type WorkoutProgramFormContext = {
   expanded: Map<number, boolean>,
   handleExpandClick: (expanded: boolean, workoutId: number) => () => void,
   handleEditSaveClick: () => void,
-  getProgramOptions: () => VerticalMenuItemProps[]
+  getProgramOptions: () => VerticalMenuItemProps[],
+  getProgramWorkoutOptions: (workout: Workout) => VerticalMenuItemProps[],
+  addWorkouts: (newWorkoutIds: number[]) => void
 }
 
 export const WorkoutProgramFormContext = createContext<WorkoutProgramFormContext | null>(null);
