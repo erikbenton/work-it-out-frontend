@@ -15,6 +15,7 @@ import HomePage from './components/home/HomePage';
 import LoadingIcon from './components/layout/LoadingIcon';
 import ProgramsList from './components/programs/ProgramList';
 import { ProgramDetails } from './components/programs/ProgramDetails';
+import ProgramCreate from './components/programs/ProgramCreate';
 
 export default function Router() {
 
@@ -24,6 +25,11 @@ export default function Router() {
       <Route path="/programs" element={
         <Suspense fallback={<LoadingIcon label='Programs' />}>
           <ProgramsList />
+        </Suspense>
+      } />
+      <Route path="/programs/create" element={
+        <Suspense fallback={<LoadingIcon label='Program' />}>
+          <ProgramCreate />
         </Suspense>
       } />
       <Route path="/programs/:id" element={

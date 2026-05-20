@@ -4,9 +4,15 @@ import Typography from "@mui/material/Typography";
 import { usePrograms } from "../../hooks/usePrograms";
 import Stack from "@mui/material/Stack";
 import ProgramCard from "./components/ProgramCard";
+import { useNavigate } from "react-router-dom";
 
 export default function ProgramsList() {
   const { programs } = usePrograms();
+  const navigate = useNavigate();
+
+  const handleAddProgramClick = () => {
+    navigate('/programs/create');
+  }
 
   return (
     <Box className="w-full md:w-2/3" sx={{ mt: 1, px: 1, pb: '10vh' }}>
@@ -26,7 +32,7 @@ export default function ProgramsList() {
           aria-label="start workout"
           sx={{ textTransform: "none", borderRadius: 5 }}
           variant="contained"
-          onClick={() => { }}
+          onClick={handleAddProgramClick}
         >
           Add Program
         </Button>

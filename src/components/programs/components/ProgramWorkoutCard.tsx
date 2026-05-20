@@ -4,7 +4,7 @@ import CardActions from '@mui/material/CardActions';
 import Stack from '@mui/material/Stack';
 import Collapse from '@mui/material/Collapse';
 import ExpandMoreButton from '../../layout/ExpandMoreButton';
-import { bgBlue, bgDarkBlue } from '../../../utils/styling';
+import { bgBlue } from '../../../utils/styling';
 import useProgramForm from '../../../hooks/useProgramForm';
 import type Workout from '../../../types/workout';
 import CardHeader from '@mui/material/CardHeader';
@@ -20,8 +20,11 @@ import ListItem from '@mui/material/ListItem';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import ListItemText from '@mui/material/ListItemText';
 import { useExercises } from '../../../hooks/useExercises';
-import { Suspense } from 'react';
-import LoadingIcon from '../../layout/LoadingIcon';
+import type Exercise from '../../../types/exercise';
+import { getMaxMuscleForExercises } from '../../../utils/muscles';
+
+type PopulatedGroup = ExerciseGroup & { exercise: Exercise }
+type PopulatedWorkout = Workout & { populatedGroups: PopulatedGroup[] }
 
 type Props = {
   workout: Workout
@@ -30,10 +33,14 @@ type Props = {
 export default function ProgramWorkoutCard({ workout }: Props) {
   const { expanded, handleExpandClick } = useProgramForm();
   const isExpanded = expanded.get(workout.id) ?? false;
+  const { services: exerciseServices } = useExercises();
+  const populatedGroups: PopulatedGroup[] = workout.exerciseGroups
+    .map(group => ({ ...group, exercise: exerciseServices.getExerciseById(group.exerciseId) }));
+  const populatedWorkout: PopulatedWorkout = { ...workout, populatedGroups }
 
   return (
     <Card sx={{ width: '100%', bgcolor: bgBlue, borderRadius: 5 }}>
-      <ProgramWorkoutCardTitle workout={workout} />
+      <ProgramWorkoutCardTitle workout={populatedWorkout} />
       <CardActions disableSpacing>
         <ExpandMoreButton
           expand={isExpanded}
@@ -45,7 +52,7 @@ export default function ProgramWorkoutCard({ workout }: Props) {
       <Collapse in={isExpanded} timeout="auto" unmountOnExit>
         <CardContent className='pt-0 pb-1'>
           <Stack spacing={1}>
-            <ProgramWorkoutExercises workout={workout} />
+            <ProgramWorkoutExercises workout={populatedWorkout} />
           </Stack>
         </CardContent>
       </Collapse>
@@ -54,20 +61,22 @@ export default function ProgramWorkoutCard({ workout }: Props) {
 }
 
 type CardProps = {
-  workout: Workout
+  workout: PopulatedWorkout
 }
 
 function ProgramWorkoutCardTitle({ workout }: CardProps) {
   const { getProgramWorkoutOptions } = useProgramForm();
   const numberOfExercises = workout.exerciseGroups.length;
   const menuItems = getProgramWorkoutOptions(workout);
+  const exercises = workout.populatedGroups.map(g => g.exercise);
+  const maxMuscle = getMaxMuscleForExercises(exercises);
 
   return (
     <CardHeader
       sx={{ overflow: 'hidden' }}
       avatar={
-        <Avatar sx={{ bgcolor: bgDarkBlue }} aria-label="workout group">
-          {workout.name[0].toUpperCase()}
+        <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
+          {maxMuscle.name[0].toUpperCase()}
         </Avatar>
       }
       action={
@@ -90,33 +99,30 @@ function ProgramWorkoutCardTitle({ workout }: CardProps) {
 }
 
 type CardExercisesProp = {
-  workout: Workout
+  workout: PopulatedWorkout,
 }
 
 function ProgramWorkoutExercises({ workout }: CardExercisesProp) {
 
   return (
-    <Suspense fallback={<LoadingIcon label='Exercises' />}>
-      <List dense={true} sx={{ pt: 0 }}>
-        <TransitionGroup>
-          {workout.exerciseGroups.map(group => (
-            <Collapse key={group.id} >
-              <ProgramExerciseGroupItem key={workout.id} group={group} />
-            </Collapse>
-          ))}
-        </TransitionGroup>
-      </List>
-    </Suspense>
+    <List dense={true} sx={{ pt: 0 }}>
+      <TransitionGroup>
+        {workout.populatedGroups.map(group => (
+          <Collapse key={group.id} >
+            <ProgramExerciseGroupItem key={workout.id} group={group} />
+          </Collapse>
+        ))}
+      </TransitionGroup>
+    </List>
   );
 }
 
 type CardExerciseGroupProp = {
-  group: ExerciseGroup
+  group: PopulatedGroup
 }
 
 function ProgramExerciseGroupItem({ group }: CardExerciseGroupProp) {
-  const { services: exerciseServices } = useExercises();
-  const exercise = exerciseServices.getExerciseById(group.exerciseId);
+  const { exercise } = group;
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
     : "?";

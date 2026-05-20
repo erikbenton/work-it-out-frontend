@@ -9,7 +9,7 @@ import ProgramNameInput from "./ProgramNameInput";
 import ProgramWorkoutCard from "./ProgramWorkoutCard";
 import { checkPluralization } from "../../../utils/formatters";
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import WorkoutSelect from "./WorkoutSelect";
 
 
@@ -62,36 +62,39 @@ export default function ProgramForm() {
             size="medium"
           />
         </Stack>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            justifyContent: "space-between",
-            alignItems: "center",
-            px: 1
-          }}
-        >
-          <Typography variant="body1" component="span">
-            {program.workoutIds.length} {checkPluralization("Workout", program.workoutIds.length)}
-          </Typography>
-          <Grow in={editing} >
-            <IconButton color="primary" onClick={handleStartSelectingWokouts}>
-              <AddCircleOutlinedIcon fontSize="large" />
-            </IconButton>
-          </Grow>
-        </Stack>
-        <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
-          {workouts.map(workout => (
-            <ProgramWorkoutCard
-              key={workout.id}
-              workout={workout}
-            />
-          ))}
-        </Stack>
-        <WorkoutSelect
-          open={selectingWorkouts}
-          handleClose={handleStopSelectingWorkouts}
-        />
+        <Suspense fallback={<LoadingIcon label='Exercises' />}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              justifyContent: "space-between",
+              alignItems: "center",
+              px: 1
+            }}
+          >
+            <Typography variant="body1" component="span">
+              {program.workoutIds.length} {checkPluralization("Workout", program.workoutIds.length)}
+            </Typography>
+            <Grow in={editing} >
+              <IconButton color="primary" onClick={handleStartSelectingWokouts}>
+                <AddCircleOutlinedIcon fontSize="large" />
+              </IconButton>
+            </Grow>
+          </Stack>
+          <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
+            {workouts.map(workout => (
+              <ProgramWorkoutCard
+                key={workout.id}
+                workout={workout}
+              />
+            ))}
+          </Stack>
+          <WorkoutSelect
+            open={selectingWorkouts}
+            handleClose={handleStopSelectingWorkouts}
+          />
+        </Suspense>
+        <Box sx={{ height: '10vh', minHeight: '10vh' }}></Box>
       </Box>
     </>
   )

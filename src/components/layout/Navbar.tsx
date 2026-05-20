@@ -17,6 +17,7 @@ import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import useUser from "../../hooks/useUser";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
 import CountdownTimer from "../activeWorkout/components/CountdownTimer";
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
 
 export type PageLink = {
   text: string,
@@ -44,7 +45,7 @@ const pages: PageLink[] = [
   {
     text: "Programs",
     url: "/programs",
-    icon: (active) => <NoteAltOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+    icon: (active) => <AssignmentOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
   },
   {
     text: "Workouts",

@@ -16,12 +16,13 @@ type Props = {
 
 export default function WorktouProgramFormProvider({ initProgram, children }: Props) {
   const [program, dispatch] = useReducer(workoutProgramReducer, initProgram);
+  const newProgram = Boolean(program.id) !== true;
   const { dispatch: activeDispatch } = useActiveWorkout();
   const { services: programServices } = usePrograms();
   const { services: workoutServices } = useWorkouts();
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
-  const [editing, setEditing] = useState(false);
+  const [editing, setEditing] = useState(newProgram);
   const [expanded, setExpanded] = useState<Map<number, boolean>>(() => {
     const expandedMap = new Map<number, boolean>();
     for (const workoutId of initProgram.workoutIds) {
@@ -30,7 +31,6 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     return expandedMap;
   });
   const workouts = program.workoutIds.map(p => workoutServices.getWorkoutById(p));
-  const newProgram = Boolean(program.id) !== true;
 
   const handleExpandClick = (currentValue: boolean, workoutId: number) => {
     return () => {
@@ -48,7 +48,7 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
   }
 
   const getProgramOptions = (): VerticalMenuItemProps[] => {
-    return [
+    const options: VerticalMenuItemProps[] = [
       {
         label: editing ? "Cancel" : "Edit",
         handleClick: () => {
@@ -67,12 +67,21 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
           }
         },
       },
-      { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } }
-    ]
+    ];
+
+    if (!newProgram) {
+      options.push({ label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } });
+    }
+
+    return options;
   }
 
   const getProgramWorkoutOptions = (workout: Workout): VerticalMenuItemProps[] => {
     const notEditingOptions = [
+      {
+        label: "View",
+        handleClick: () => navigate(`/workouts/${workout.id}`)
+      },
       {
         label: "Start",
         handleClick: () => {
