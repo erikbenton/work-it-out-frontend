@@ -3,7 +3,7 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import { Link } from "react-router-dom";
 import type WorkoutProgram from "../../../types/workoutProgram";
-import { bgBlue, bgDarkBlue } from "../../../utils/styling";
+import { bgBlue } from "../../../utils/styling";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 
@@ -33,7 +33,7 @@ export default function ProgramCard({ program }: Props) {
       <CardHeader
         avatar={
           <Link to={`/programs/${program.id}`}>
-            <Avatar aria-label="workout" sx={{ bgcolor: bgDarkBlue }}>
+            <Avatar aria-label="workout" sx={{ bgcolor: program.colorRgb }}>
               {program.name[0].toUpperCase()}
             </Avatar>
           </Link>

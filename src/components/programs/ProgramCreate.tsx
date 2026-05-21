@@ -2,10 +2,12 @@ import WorktouProgramFormProvider from "../../contexts/WorkoutProgramFormProvide
 import { useLocation } from "react-router-dom";
 import type WorkoutProgram from "../../types/workoutProgram";
 import ProgramForm from "./components/ProgramForm";
+import programColors from "../../types/programColors";
 
 const newProgram: WorkoutProgram = {
   id: 0,
   name: 'New Program',
+  colorRgb: programColors[0],
   workoutIds: []
 }
 

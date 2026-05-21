@@ -35,7 +35,7 @@ type Props = {
   expand: boolean,
   handleExpandClick: () => void,
   ariaLabel: string,
-  className: string
+  className?: string
 }
 
 export default function ExpandMoreButton({ expand, handleExpandClick, ariaLabel, className }: Props) {
