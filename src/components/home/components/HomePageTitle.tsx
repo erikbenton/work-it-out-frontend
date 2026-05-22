@@ -23,7 +23,7 @@ export default function HomePageTitle() {
       {userInfo.isLoggedIn &&
         <Button
           onClick={() => handleLogoutAttempt()}
-          sx={{ borderRadius: 5 }}
+          sx={{ borderRadius: 5, textTransform: 'capitalize' }}
         >
           Logout
         </Button>

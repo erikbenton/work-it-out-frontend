@@ -24,7 +24,7 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
 
   return (
     <Paper
-      sx={{ width: '100%', py: 2, bgcolor: bgBlue,borderRadius: 5 }}
+      sx={{ width: '100%', py: 2, bgcolor: bgBlue, borderRadius: 5 }}
       square={false}
     >
       <Stack sx={{ mx: 2 }}>
@@ -37,7 +37,7 @@ export default function ExerciseFormMuscles({ muscles, dispatch }: Props) {
         >
           {muscleOptions.map(option => (
             <ToggleButton key={option.name} className="rounded-full" value={option.name} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-              <Chip label={option.name} variant="outlined" />
+              <Chip label={option.name} variant="outlined" sx={{ textTransform: 'capitalize' }} />
             </ToggleButton>
           ))}
         </ToggleButtonGroup>

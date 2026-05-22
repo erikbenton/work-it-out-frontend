@@ -8,6 +8,7 @@ import { CardContent, List } from "@mui/material";
 import ExerciseHistoryItemSet from "../../exercises/components/ExerciseHistoryItemSet";
 import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
 import { calculateHistory } from "../../../workers/historyWorker";
+import { checkPluralization } from "../../../utils/formatters";
 
 type Props = {
   group: CompletedExerciseGroup
@@ -39,7 +40,7 @@ export default function CompletedGroupCard({ group }: Props) {
             {exercise.name}
           </Link>
         }
-        subheader={`${numberOfSets} Sets completed`}
+        subheader={`${numberOfSets} ${checkPluralization('Set', numberOfSets)} completed`}
         slotProps={{ title: { variant: 'h6' } }}
       />
       <CardContent sx={{ p: 0, '&:last-child': { pb: 1 } }}>

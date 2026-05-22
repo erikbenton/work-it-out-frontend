@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import LiftingInputs from './LiftingInputs';
 import useSetTags from '../../../hooks/useSetTags';
 import { bgBlue } from '../../../utils/styling';
-import { Collapse } from '@mui/material';
+import { Avatar, Collapse } from '@mui/material';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
 import { useExercises } from '../../../hooks/useExercises';
 
@@ -110,16 +110,21 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
                 />
                 <Stack direction='row' sx={{ justifyContent: 'space-evenly' }}>
                   <Button
-                    sx={{ width: '45%', borderRadius: 5 }}
+                    sx={{ width: '45%', borderRadius: 5, textTransform: 'capitalize' }}
                     variant='outlined'
                     onClick={() => setExpanded(!expanded)}
                     disabled={saving}
                   >
-                    {setTag ? setTag.name : 'Tag'}
+                    {setTag
+                      ? <>
+                        <Avatar sx={{ mr: 0.75, mb: 0.25, bgcolor: setTag.colorRgb, width: 16, height: 16 }}> </Avatar>
+                        {setTag.name}
+                      </>
+                      : 'Tag'}
                   </Button>
                   <Button
                     type='submit'
-                    sx={{ width: '45%', borderRadius: 5 }}
+                    sx={{ width: '45%', borderRadius: 5, textTransform: 'capitalize' }}
                     variant='contained'
                     disabled={saving}
                   >

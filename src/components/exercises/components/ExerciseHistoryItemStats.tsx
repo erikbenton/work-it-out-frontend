@@ -163,7 +163,7 @@ export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
               size="small"
               label={
                 <Typography variant="body2">
-                  <TimerIcon fontSize="small" sx={{ mr: 0.25 }} />{`${durationToHhMmSs(bestPace)} / mi`}
+                  <TimerIcon fontSize="small" sx={{ mr: 0.25 }} />{`${durationToHhMmSs(bestPace, 'short')} / mi`}
                 </Typography>
               }
               variant='filled'

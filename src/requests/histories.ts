@@ -2,12 +2,13 @@ import type CompletedWorkout from '../types/completedWorkout';
 import type { ExerciseCategory } from '../types/exerciseCategory';
 import { wrap } from 'comlink';
 
-export function getCompletedExerciseHistoryById(
+export async function getCompletedExerciseHistoryById(
   exerciseId: number,
   completedWorkouts: CompletedWorkout[],
-  category: ExerciseCategory
+  category: ExerciseCategory,
+  waitMs?: number
 ) {
   const worker = new Worker(new URL('../workers/historyWorker', import.meta.url))
   const historyWorker = wrap<import('../workers/historyWorker').HistoryWorker>(worker);
-  return historyWorker.getCompletedGroupsByExerciseId(exerciseId, completedWorkouts, category);
+  return await historyWorker.getCompletedGroupsByExerciseId(exerciseId, completedWorkouts, category, waitMs);
 }

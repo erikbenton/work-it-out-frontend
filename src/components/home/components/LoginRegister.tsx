@@ -63,8 +63,8 @@ export default function LoginRegister() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type='submit'>Login</Button>
-        <Button onClick={() => handleRegisterAttempt(email, password, resetState)}>New? Register</Button>
+        <Button type='submit' sx={{ textTransform: 'capitalize' }}>Login</Button>
+        <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password, resetState)}>New? Register</Button>
       </Stack>
     </>
   )

@@ -8,7 +8,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import useUserStats from "../../../hooks/useUserStats";
 import { Grid } from "@mui/material";
 import StatIcon from "../../layout/StatIcon";
-import { formatLargeNumber } from "../../../utils/formatters";
+import { checkPluralization, formatLargeNumber } from "../../../utils/formatters";
 
 type Props = {
   numberOfDays: number
@@ -27,7 +27,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
           icon={<DownloadDoneIcon />}
           color={purple[700]}
           text={userStats.numberOfWorkouts}
-          label="Workouts"
+          label={checkPluralization('Workout', userStats.numberOfWorkouts)}
         />
       </Grid>
       <Grid size={4}>
@@ -51,7 +51,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
           icon={<FormatListBulletedIcon />}
           color={grey[700]}
           text={formatLargeNumber(userStats.numberOfSets, userStats.numberOfSets >= 10_000)}
-          label="Sets"
+          label={checkPluralization('Set', userStats.numberOfSets)}
         />
       </Grid>
       <Grid size={4}>
@@ -59,7 +59,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
           icon={<DoneAllIcon />}
           color={green[700]}
           text={formatLargeNumber(userStats.numberOfReps, userStats.numberOfReps >= 10_000)}
-          label="Reps"
+          label={checkPluralization('Rep', userStats.numberOfReps)}
         />
       </Grid>
       <Grid size={4}>

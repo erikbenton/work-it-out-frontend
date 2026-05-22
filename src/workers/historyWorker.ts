@@ -4,17 +4,26 @@ import type CompletedWorkout from "../types/completedWorkout";
 import type { ExerciseCategory } from "../types/exerciseCategory";
 import type { ExerciseHistory } from "../types/exerciseHistory";
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../utils/exerciseStats";
+import { sleep } from '../utils/workerSleep';
 
-function getCompletedGroupsByExerciseId(
+async function getCompletedGroupsByExerciseId(
   exerciseId: number,
   completedWorkouts: CompletedWorkout[],
-  category: ExerciseCategory
-): ExerciseHistory[] {
-  return completedWorkouts.map(w =>
+  category: ExerciseCategory,
+  waitMs?: number
+): Promise<ExerciseHistory[]> {
+  const histories = completedWorkouts.map(w =>
     w.completedExerciseGroups.filter(group =>
       group.exerciseId === exerciseId))
     .flat()
     .map(g => calculateHistory(g, category));
+
+  // adding optional sleep to help with UI transitions when loading
+  if (waitMs) {
+    await sleep(waitMs);
+  }
+
+  return histories;
 }
 
 export function calculateHistory(group: CompletedExerciseGroup, category: ExerciseCategory): ExerciseHistory {

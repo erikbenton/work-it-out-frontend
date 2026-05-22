@@ -50,7 +50,13 @@ export default function DrawerUserMenu() {
         : userInfo.isLoggedIn
           ? <Stack spacing={1} sx={{ pt: 1 }}>
             <Typography>Hello, {userInfo.email!.split('@')[0]}</Typography>
-            <Button variant="contained" sx={{ borderRadius: 5 }} onClick={logout}>Logout</Button>
+            <Button
+              variant="contained"
+              sx={{ borderRadius: 5, textTransform: 'capitalize' }}
+              onClick={logout}
+            >
+              Logout
+            </Button>
           </Stack> :
           <form onSubmit={handleLogin}>
             <Stack spacing={1} sx={{ pt: 1 }}>
@@ -76,7 +82,7 @@ export default function DrawerUserMenu() {
               />
               <Button
                 variant="contained"
-                sx={{ borderRadius: 5 }}
+                sx={{ borderRadius: 5, textTransform: 'capitalize' }}
                 type="submit"
                 onClick={() => handleLoginAttempt(email, password, resetState)}
               >
@@ -84,7 +90,7 @@ export default function DrawerUserMenu() {
               </Button>
               <Button
                 variant="contained"
-                sx={{ bgcolor: grey[500], borderRadius: 5 }}
+                sx={{ bgcolor: grey[500], borderRadius: 5, textTransform: 'capitalize' }}
                 onClick={() => handleRegisterAttempt(email, password, resetState)}
               >
                 Register

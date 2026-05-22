@@ -35,11 +35,13 @@ export default function ActiveWorkoutGroup() {
 
   const copyCompletedSet = (completedSet: CompletedExerciseSet | ActiveExerciseSet) => {
     if (values) {
-      const { reps, weight, setTagId } = completedSet;
+      const { reps, weight, distance, duration, setTagId } = completedSet;
       const newSet: ActiveExerciseSet = {
         ...values,
         reps,
         weight,
+        distance,
+        duration,
         setTagId
       }
       setValues(newSet);

@@ -267,7 +267,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           area: true,
           baseline: 'min',
           label: 'Fastest Pace',
-          valueFormatter: (val) => val ? `${secondsToHhMmDd(val)} / mi` : null,
+          valueFormatter: (val) => val ? `${secondsToHhMmDd(val, 'short')} / mi` : null,
           connectNulls: true
         }]}
         xAxis={[{

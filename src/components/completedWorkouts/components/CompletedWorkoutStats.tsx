@@ -10,7 +10,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import { durationToHhMmSs, getShortDate, secondsToDuration } from "../../../utils/formatters";
+import { checkPluralization, durationToHhMmSs, getShortDate, secondsToDuration } from "../../../utils/formatters";
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import { useExercises } from "../../../hooks/useExercises";
 
@@ -93,7 +93,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
           <FormatListBulletedIcon />
         </Avatar>
         <Typography variant="body1" noWrap>{stats.sets}</Typography>
-        <Typography variant="body2" sx={{ color: 'gray' }}>Sets</Typography>
+        <Typography variant="body2" sx={{ color: 'gray' }}>{checkPluralization('Set', stats.sets)}</Typography>
       </Stack>
       {stats.reps !== undefined && stats.reps > 0 &&
         <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
@@ -101,7 +101,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
             <DoneAllIcon />
           </Avatar>
           <Typography variant="body1" noWrap>{stats.reps}</Typography>
-          <Typography variant="body2" sx={{ color: 'gray' }}>Reps</Typography>
+          <Typography variant="body2" sx={{ color: 'gray' }}>{checkPluralization('Rep', stats.reps)}</Typography>
         </Stack>
       }
       {stats.volume !== undefined && stats.volume > 0 &&

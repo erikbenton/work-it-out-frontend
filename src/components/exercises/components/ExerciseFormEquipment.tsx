@@ -39,7 +39,7 @@ export default function ExerciseFormEquipment({ equipment, dispatch }: Props) {
         >
           {equipmentOptions.map(option => (
             <ToggleButton key={option} className="rounded-full" value={option} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-              <Chip label={option} variant="outlined" />
+              <Chip label={option} variant="outlined" sx={{ textTransform: 'capitalize' }} />
             </ToggleButton>
           ))}
         </ToggleButtonGroup>
