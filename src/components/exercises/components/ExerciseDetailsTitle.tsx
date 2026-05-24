@@ -13,10 +13,6 @@ export default function ExerciseDetailsTitle({ exercise }: Props) {
 
   const menuItems = [
     {
-      label: "New",
-      handleClick: () => navigate("/exercises/create"),
-    },
-    {
       label: "Edit",
       handleClick: () => navigate(`/exercises/${exercise.id}/edit`),
     }
@@ -35,11 +31,15 @@ export default function ExerciseDetailsTitle({ exercise }: Props) {
       <Typography variant="h5" component="h2">
         {exercise.name}
       </Typography>
-      <VerticalIconMenu
-        buttonId='exercise-menu-button'
-        menuItems={menuItems}
-        size='medium'
-      />
+      {exercise.requestedByUser
+        ?
+        <VerticalIconMenu
+          buttonId='exercise-menu-button'
+          menuItems={menuItems}
+          size='medium'
+        />
+        : <></>
+      }
     </Stack>
   );
 }

@@ -7,5 +7,6 @@ export default interface Exercise {
   instructions: string | null,
   equipment: string | null,
   muscles?: MuscleData[],
-  category: ExerciseCategory
+  category: ExerciseCategory,
+  requestedByUser: boolean
 }

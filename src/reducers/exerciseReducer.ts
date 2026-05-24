@@ -54,5 +54,6 @@ export const initialExercise: Exercise = {
   instructions: null,
   equipment: 'assisted',
   muscles: [],
-  category: 'lift'
+  category: 'lift',
+  requestedByUser: false
 };
