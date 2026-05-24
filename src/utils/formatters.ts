@@ -2,7 +2,6 @@ import type ActiveExerciseSet from "../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../types/completedExerciseSet";
 import type { ExerciseCategory } from "../types/exerciseCategory";
 import type ExerciseSet from "../types/exerciseSet";
-
 type DurationOptions = {
   format: ('always-hours' | 'no-hours' | 'include-hours')
 }
@@ -45,7 +44,7 @@ export function parseDuration(duration?: string) {
 export function msToDuration(ms: number, options?: DurationOptions): string {
   const seconds = Math.floor((ms / 1000) % 60);
   const minutes = Math.floor((ms / (1000 * 60)) % 60);
-  const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+  const hours = Math.floor(ms / (1000 * 60 * 60));
 
   // Helper to pad single-digit numbers with a leading zero
   const pad = (num: number) => num.toString().padStart(2, '0');
@@ -76,7 +75,12 @@ export function secondsToDuration(seconds: number, options?: DurationOptions): s
 export function durationToSeconds(duration?: string): number {
   if (!duration) return 0;
   const [hours, minutes, seconds] = duration.split(':');
-  return (Number(hours) * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
+  let actualHours = Number(hours);
+  if (hours.includes('.')) {
+    const [days = '0', carriedHours] = hours.split('.');
+    actualHours = Number(days) * 24 + Number(carriedHours);
+  }
+  return (actualHours * 60 * 60) + (Number(minutes) * 60) + Number(seconds);
 }
 
 export function secondsToHhMmDd(seconds: number, options?: DurationFormat) {

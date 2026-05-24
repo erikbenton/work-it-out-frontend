@@ -58,12 +58,15 @@ function calculateUserStats(
       numberOfDays: numberOfDays,
       numberOfWorkouts: acc.numberOfWorkouts + 1,
       durationInSeconds: totalDurationSeconds,
-      duration: secondsToDuration(totalDurationSeconds),
+      duration: initialStats.duration, // calculate at the end
       numberOfSets: acc.numberOfSets + groupStats.numberOfSets,
       numberOfReps: acc.numberOfReps + groupStats.numberOfReps,
       totalVolume: acc.totalVolume + groupStats.totalVolume
     }
   }, initialStats);
+
+  // update the stats duration time
+  stats.duration = secondsToDuration(stats.durationInSeconds);
 
   return stats;
 }
