@@ -88,13 +88,15 @@ export default function CompletedWorkoutStats({ workout }: Props) {
         <Typography variant="body1" noWrap>{stats.duration}</Typography>
         <Typography variant="body2" sx={{ color: 'gray' }}>Duration</Typography>
       </Stack>
-      <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
-        <Avatar sx={{ bgcolor: grey[700] }}>
-          <FormatListBulletedIcon />
-        </Avatar>
-        <Typography variant="body1" noWrap>{stats.sets}</Typography>
-        <Typography variant="body2" sx={{ color: 'gray' }}>{checkPluralization('Set', stats.sets)}</Typography>
-      </Stack>
+      {stats.sets > 1 &&
+        <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
+          <Avatar sx={{ bgcolor: grey[700] }}>
+            <FormatListBulletedIcon />
+          </Avatar>
+          <Typography variant="body1" noWrap>{stats.sets}</Typography>
+          <Typography variant="body2" sx={{ color: 'gray' }}>{checkPluralization('Set', stats.sets)}</Typography>
+        </Stack>
+      }
       {stats.reps !== undefined && stats.reps > 0 &&
         <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
           <Avatar sx={{ bgcolor: green[700] }}>

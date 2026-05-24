@@ -148,7 +148,7 @@ function ProgramExerciseGroupItem({ group }: CardExerciseGroupProp) {
           </Typography>
         }
         secondary={
-          `${exercise.category} - ${numberOfSets} Sets`
+          `${exercise.category} - ${numberOfSets} ${checkPluralization("Set", numberOfSets)}`
         }
         slotProps={{ secondary: { sx: { textTransform: 'capitalize' } } }}
       />

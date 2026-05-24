@@ -10,7 +10,7 @@ import TimerIcon from '@mui/icons-material/Timer';
 import { blue, cyan, green, grey, pink, purple, teal } from "@mui/material/colors";
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
-import { durationToHhMmSs, formatLargeNumber, secondsToDuration } from "../../../utils/formatters";
+import { checkPluralization, durationToHhMmSs, formatLargeNumber, secondsToDuration } from "../../../utils/formatters";
 import type { ExerciseHistory } from "../../../types/exerciseHistory";
 
 type Props = {
@@ -85,7 +85,7 @@ export default function ExerciseStatsBar({ history }: Props) {
         <Typography variant="body1">
           {formatLargeNumber(stats.sets, stats.sets >= 10_000)}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Sets</Typography>
+        <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>{checkPluralization("Set", stats.sets)}</Typography>
       </Stack>
       {stats.reps && stats.reps > 0 &&
         <Stack alignItems='center' sx={{ p: 1, pb: 0 }}>
@@ -95,7 +95,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <Typography variant="body1">
             {formatLargeNumber(stats.reps, stats.reps >= 10_000)}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Reps</Typography>
+          <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>{checkPluralization("Rep", stats.reps)}</Typography>
         </Stack>
       }
       {stats.oneRepMax && stats.oneRepMax > 0 &&
