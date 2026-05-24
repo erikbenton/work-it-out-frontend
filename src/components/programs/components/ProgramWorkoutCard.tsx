@@ -22,6 +22,7 @@ import ListItemText from '@mui/material/ListItemText';
 import { useExercises } from '../../../hooks/useExercises';
 import type Exercise from '../../../types/exercise';
 import { getMaxMuscleForExercises } from '../../../utils/muscles';
+import { Link } from 'react-router-dom';
 
 type PopulatedGroup = ExerciseGroup & { exercise: Exercise }
 type PopulatedWorkout = Workout & { populatedGroups: PopulatedGroup[] }
@@ -122,6 +123,7 @@ type CardExerciseGroupProp = {
 }
 
 function ProgramExerciseGroupItem({ group }: CardExerciseGroupProp) {
+  const { editing } = useProgramForm();
   const { exercise } = group;
   const muscleAvatar = exercise.muscles
     ? exercise.muscles[0].name[0].toUpperCase()
@@ -143,8 +145,11 @@ function ProgramExerciseGroupItem({ group }: CardExerciseGroupProp) {
       </ListItemAvatar>
       <ListItemText
         primary={
-          <Typography variant='h6'>
-            {exercise.name}
+          <Typography variant='h6' sx={{ fontSize: '1.125rem' }}>
+            {editing
+              ? exercise.name
+              : <Link to={`/exercises/${exercise.id}`}>{exercise.name}</Link>
+            }
           </Typography>
         }
         secondary={
