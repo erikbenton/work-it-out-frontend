@@ -22,7 +22,7 @@ type Props = {
 export default function ActiveExerciseHistoryList({ exerciseId, onDoubleClick, currentIndex }: Props) {
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(exerciseId);
-  const { data: history, isLoading } = useExerciseHistory(exerciseId, exercise.category, 200);
+  const { data: history, isLoading } = useExerciseHistory(exerciseId, exercise.category, { totalTime: 350 });
 
   if (isLoading || !history) {
     return (<LoadingIcon />);
