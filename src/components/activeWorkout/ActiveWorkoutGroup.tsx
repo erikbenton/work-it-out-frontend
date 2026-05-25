@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
-import { Box, Stack, Typography, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ActiveGroupExerciseCard from "./components/ActiveGroupExerciseCard";
 import ActiveGroupSetsCard from "./components/ActiveGroupSetsCard";
 import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
@@ -12,6 +12,7 @@ import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
 import ActiveSetsInputs from "./components/ActiveSetsInputs";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
 import { parseDuration } from "../../utils/formatters";
+import NoWorkoutSelected from "./components/NoWorkoutSelected";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -26,7 +27,7 @@ export default function ActiveWorkoutGroup() {
   const allSetsCompleted = currentIndex === -1;
 
   if (!workout) {
-    return (<Typography>No workout selected</Typography>);
+    return (<NoWorkoutSelected />);
   }
 
   if (!exerciseGroup) {

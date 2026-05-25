@@ -44,7 +44,7 @@ export default function HomePage() {
               </Button>
               : <UserTraining />}
           </Stack>
-          : <Suspense fallback={<LoadingIcon label='Workout Histories' />}>
+          : <Suspense fallback={<LoadingIcon />}>
             <LoginRegister />
           </Suspense>
       }
