@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import LoginRegister from './components/LoginRegister';
 import Stack from '@mui/material/Stack';
 import UserStats from './components/UserStats';
-import UserTraining from './components/UserTraining';
+import { UserPrograms } from './components/UserTraining';
 import useActiveWorkout from '../../hooks/useActiveWorkout';
 import { useNavigate } from 'react-router-dom';
 import { Suspense } from 'react';
@@ -42,7 +42,7 @@ export default function HomePage() {
               >
                 Resume Workout
               </Button>
-              : <UserTraining />}
+              : <UserPrograms />}
           </Stack>
           : <Suspense fallback={<LoadingIcon />}>
             <LoginRegister />
