@@ -127,22 +127,14 @@ export function durationToHhMmSs(duration?: string, options?: DurationFormat): s
   const times = duration.split(':').map(t => Number(t));
 
   if (times.length === 3) {
-    const hours = times[0] ? `${times[0]} ${hrUnits}` : '';
+    const hours = times[0] ? `${times[0]}${hrUnits}` : '';
 
-    const minutes = times[1] ?
-      hours ?
-        times[1] < 10 ?
-          `0${times[1]}${minUnits}`
-          : `${times[1]}${minUnits}`
-        : `${times[1]}${minUnits}`
+    const minutes = times[1]
+      ? `${times[1]}${minUnits}`
       : '';
 
-    const seconds = times[2] ?
-      minutes ?
-        times[2] < 10 ?
-          `0${times[2]}${secUnits}`
-          : `${times[2]}${secUnits}`
-        : `${times[2]}${secUnits}`
+    const seconds = times[2]
+      ? `${times[2]}${secUnits}`
       : '';
 
     return `${hours} ${minutes} ${seconds}`;
@@ -151,13 +143,10 @@ export function durationToHhMmSs(duration?: string, options?: DurationFormat): s
   if (times.length === 2) {
     const minutes = times[0] ? `${times[0]}${minUnits}` : '';
 
-    const seconds = times[1] ?
-      minutes ?
-        times[1] < 10 ?
-          `0${times[1]}${secUnits}`
-          : `${times[1]}${secUnits}`
-        : `${times[1]}${secUnits}`
+    const seconds = times[1]
+      ? `${times[1]}${secUnits}`
       : '';
+
     return `${minutes} ${seconds}`;
   }
 

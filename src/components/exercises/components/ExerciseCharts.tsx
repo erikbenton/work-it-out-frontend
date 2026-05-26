@@ -10,7 +10,6 @@ import { FormControl, InputLabel, Select, MenuItem, type SelectChangeEvent, useT
 import { numberOfDaysKeys } from "../../../hooks/useUserStats";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { useExercises } from "../../../hooks/useExercises";
-import { devConsole } from "../../../utils/debugLogger";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
 import type { ExerciseHistory } from "../../../types/exerciseHistory";
 
@@ -221,8 +220,6 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
       </Box>
     );
   }
-
-  devConsole('dates', dates)
 
   return (
     <Stack spacing={2} sx={{ pb: 5 }}>

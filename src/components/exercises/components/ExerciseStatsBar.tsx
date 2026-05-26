@@ -143,7 +143,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <Avatar sx={{ bgcolor: pink[700] }}>
             <WatchLaterRoundedIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{durationToHhMmSs(stats.bestPace)}</Typography>
+          <Typography variant="body1" noWrap>{`${durationToHhMmSs(stats.bestPace, 'short')} / mi`}</Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Best Pace</Typography>
         </Stack>
       }
