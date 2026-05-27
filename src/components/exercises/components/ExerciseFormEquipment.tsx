@@ -6,11 +6,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import type { ExerciseAction } from "../../../reducers/exerciseReducer";
 import { bgBlue } from "../../../utils/styling";
-
-const equipmentOptions = ['assisted', 'band', 'barbell', 'body weight', 'cable',
-  'dumbbell', 'machine', 'ez barbell', 'kettlebell', 'medicine ball',
-  'resistance band', 'roller', 'rope', 'stability ball', 'trap bar', 'weighted'
-];
+import { equipmentOptions } from "../../../types/equipmentOptions";
 
 type Props = {
   equipment: string | null,
