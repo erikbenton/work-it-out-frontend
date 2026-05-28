@@ -38,7 +38,7 @@ export default function ExerciseList() {
 
         if (keep && filter.muscles && filter.muscles.length) {
           if (!ex.muscles || !ex.muscles.length) return false;
-          keep = ex.muscles.reduce((acc, curr) => acc && (filter.muscles?.includes(curr.name) ?? false), true);
+          keep = ex.muscles.reduce((acc, curr) => acc || (filter.muscles?.includes(curr.name) ?? false), false);
         }
 
         if (keep && filter.equipment && filter.equipment.length) {
@@ -69,7 +69,7 @@ export default function ExerciseList() {
           Exercises
         </Typography>
         <Stack direction='row' spacing={1}>
-          <FilterExerciseButton setParentFilter={setFilter} isParentFilterSet={isFilterSet} />
+          <FilterExerciseButton initFilter={filter} setParentFilter={setFilter} isParentFilterSet={isFilterSet} />
           <IconButton color="primary" onClick={handleAddExercise}>
             <AddCircleOutlinedIcon fontSize="large" />
           </IconButton>

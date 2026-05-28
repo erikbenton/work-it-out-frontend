@@ -19,7 +19,6 @@ import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import ExpandMoreButton from "../../layout/ExpandMoreButton";
 import { Badge } from "@mui/material";
-import { devConsole } from "../../../utils/debugLogger";
 import LoadingIcon from "../../layout/LoadingIcon";
 
 export type ExerciseFilterConfig = {
@@ -30,21 +29,26 @@ export type ExerciseFilterConfig = {
 }
 
 type Props = {
+  initFilter: ExerciseFilterConfig,
   setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
   isParentFilterSet: boolean
 }
 
-export default function FilterExerciseButton({ setParentFilter, isParentFilterSet }: Props) {
+export default function FilterExerciseButton({ initFilter, setParentFilter, isParentFilterSet }: Props) {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
   }
-  devConsole('is parent filter set', isParentFilterSet)
 
   return (
     <>
-      <FilterDialog open={open} handleClose={handleClose} setParentFilter={setParentFilter} />
+      <FilterDialog
+        initFilter={initFilter}
+        open={open}
+        handleClose={handleClose}
+        setParentFilter={setParentFilter}
+      />
       <IconButton color="default" onClick={() => setOpen(true)}>
         <Badge badgeContent={isParentFilterSet ? true : 0} variant="dot" color='primary'>
           <FilterAltIcon fontSize="large" />
@@ -55,13 +59,14 @@ export default function FilterExerciseButton({ setParentFilter, isParentFilterSe
 }
 
 type FilterDialogProps = {
+  initFilter: ExerciseFilterConfig,
   open: boolean,
   handleClose: () => void,
   setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
 }
 
-function FilterDialog({ open, handleClose, setParentFilter }: FilterDialogProps) {
-  const [filter, setFilter] = useState<ExerciseFilterConfig>({});
+function FilterDialog({ initFilter, open, handleClose, setParentFilter }: FilterDialogProps) {
+  const [filter, setFilter] = useState<ExerciseFilterConfig>(initFilter);
 
   const handleSubmit = (event?: React.SubmitEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
@@ -75,6 +80,11 @@ function FilterDialog({ open, handleClose, setParentFilter }: FilterDialogProps)
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value === "" ? undefined : e.target.value;
     setFilter(curr => ({ ...curr, name }));
+  }
+
+  const handleCancel = () => {
+    setFilter(initFilter);
+    handleClose();
   }
 
   const handleClear = () => {
@@ -121,7 +131,7 @@ function FilterDialog({ open, handleClose, setParentFilter }: FilterDialogProps)
             </>
             : <></>
           }
-          <Button sx={{ textTransform: 'capitalize' }} onClick={handleClose}>
+          <Button sx={{ textTransform: 'capitalize' }} onClick={handleCancel}>
             Cancel
           </Button>
           <Button sx={{ textTransform: 'capitalize' }} type="submit" form="exercise-filter-form">
