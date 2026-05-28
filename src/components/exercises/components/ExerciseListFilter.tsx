@@ -77,11 +77,6 @@ function FilterDialog({ initFilter, open, handleClose, setParentFilter }: Filter
     handleClose();
   }
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.value === "" ? undefined : e.target.value;
-    setFilter(curr => ({ ...curr, name }));
-  }
-
   const handleCancel = () => {
     setFilter(initFilter);
     handleClose();
@@ -103,19 +98,7 @@ function FilterDialog({ initFilter, open, handleClose, setParentFilter }: Filter
         <DialogContent>
           <form onSubmit={handleSubmit} id="exercise-filter-form">
             <Stack spacing={2}>
-              <FormControl>
-                <TextField
-                  autoFocus
-                  id="name-filter"
-                  name="name-filter"
-                  label="Name Filter"
-                  type="text"
-                  fullWidth
-                  variant="standard"
-                  value={filter.name ?? ""}
-                  onChange={handleNameChange}
-                />
-              </FormControl>
+              <NameFilter filter={filter} setFilter={setFilter} />
               <CategoriesFilter filter={filter} setFilter={setFilter} />
               <MusclesFilter filter={filter} setFilter={setFilter} />
               <EquipmentFilter filter={filter} setFilter={setFilter} />
@@ -148,8 +131,30 @@ type FilterProps = {
   setFilter: (value: React.SetStateAction<ExerciseFilterConfig>) => void
 }
 
+function NameFilter({ filter, setFilter }: FilterProps) {
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const name = e.target.value === "" ? undefined : e.target.value;
+    setFilter(curr => ({ ...curr, name }));
+  }
+
+  return (
+    <FormControl>
+      <TextField
+        id="name-filter"
+        name="name-filter"
+        label="Name Filter"
+        type="text"
+        fullWidth
+        variant="standard"
+        value={filter.name ?? ""}
+        onChange={handleNameChange}
+      />
+    </FormControl>
+  )
+}
+
 function CategoriesFilter({ filter, setFilter }: FilterProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(!filter.categories ? false : filter.categories.length > 0);
 
   const handleExpand = () => {
     setExpanded(!expanded);
@@ -202,7 +207,7 @@ function CategoriesFilter({ filter, setFilter }: FilterProps) {
 
 function MusclesFilter({ filter, setFilter }: FilterProps) {
   const { muscleOptions } = useMuscleOptions();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(!filter.muscles ? false : filter.muscles.length > 0);
 
   const handleExpand = () => {
     setExpanded(!expanded);
@@ -254,7 +259,7 @@ function MusclesFilter({ filter, setFilter }: FilterProps) {
 }
 
 function EquipmentFilter({ filter, setFilter }: FilterProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(!filter.equipment ? false : filter.equipment.length > 0);
 
   const handleExpand = () => {
     setExpanded(!expanded);
