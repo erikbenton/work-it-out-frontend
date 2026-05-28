@@ -11,10 +11,16 @@ import TextField from "@mui/material/TextField";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import useMuscleOptions from "../../../hooks/useMuscleOptions";
 import { exerciseCategories } from "../../../types/exerciseCategory";
 import { equipmentOptions } from "../../../types/equipmentOptions";
+import Collapse from "@mui/material/Collapse";
+import Box from "@mui/material/Box";
+import ExpandMoreButton from "../../layout/ExpandMoreButton";
+import { Badge } from "@mui/material";
+import { devConsole } from "../../../utils/debugLogger";
+import LoadingIcon from "../../layout/LoadingIcon";
 
 export type ExerciseFilterConfig = {
   name?: string,
@@ -23,13 +29,38 @@ export type ExerciseFilterConfig = {
   categories?: string[]
 }
 
-type FilterProps = {
-  setParentFilter?: (newFilter: ExerciseFilterConfig) => void
+type Props = {
+  setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
+  isParentFilterSet: boolean
 }
 
-export default function FilterExerciseButton({ setParentFilter }: FilterProps) {
-  const { muscleOptions } = useMuscleOptions();
+export default function FilterExerciseButton({ setParentFilter, isParentFilterSet }: Props) {
   const [open, setOpen] = useState(false);
+
+  const handleClose = () => {
+    setOpen(false);
+  }
+  devConsole('is parent filter set', isParentFilterSet)
+
+  return (
+    <>
+      <FilterDialog open={open} handleClose={handleClose} setParentFilter={setParentFilter} />
+      <IconButton color="default" onClick={() => setOpen(true)}>
+        <Badge badgeContent={isParentFilterSet ? true : 0} variant="dot" color='primary'>
+          <FilterAltIcon fontSize="large" />
+        </Badge>
+      </IconButton>
+    </>
+  )
+}
+
+type FilterDialogProps = {
+  open: boolean,
+  handleClose: () => void,
+  setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
+}
+
+function FilterDialog({ open, handleClose, setParentFilter }: FilterDialogProps) {
   const [filter, setFilter] = useState<ExerciseFilterConfig>({});
 
   const handleSubmit = (event?: React.SubmitEvent<HTMLFormElement>) => {
@@ -46,21 +77,6 @@ export default function FilterExerciseButton({ setParentFilter }: FilterProps) {
     setFilter(curr => ({ ...curr, name }));
   }
 
-  const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
-    const muscles = newMuscles.length === 0 ? undefined : newMuscles;
-    setFilter(curr => ({ ...curr, muscles }));
-  };
-
-  const handleCategories = (_event: React.MouseEvent<HTMLElement>, newCategories: string[]) => {
-    const categories = newCategories.length === 0 ? undefined : newCategories;
-    setFilter(curr => ({ ...curr, categories }));
-  };
-
-  const handleEquipment = (_event: React.MouseEvent<HTMLElement>, newEquipment: string[]) => {
-    const equipment = newEquipment.length === 0 ? undefined : newEquipment;
-    setFilter(curr => ({ ...curr, equipment }));
-  };
-
   const handleClear = () => {
     setFilter({});
     if (setParentFilter) {
@@ -69,18 +85,17 @@ export default function FilterExerciseButton({ setParentFilter }: FilterProps) {
     handleClose();
   }
 
-  const handleClose = () => {
-    setOpen(false);
-  }
+  const isFilterSet = Boolean(filter.name || filter.categories || filter.muscles || filter.equipment);
 
   return (
-    <>
-      <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
+    <Dialog fullWidth open={open} onClose={handleClose} disableRestoreFocus>
+      <Suspense fallback={<LoadingIcon />}>
         <DialogContent>
           <form onSubmit={handleSubmit} id="exercise-filter-form">
             <Stack spacing={2}>
               <FormControl>
                 <TextField
+                  autoFocus
                   id="name-filter"
                   name="name-filter"
                   label="Name Filter"
@@ -91,56 +106,14 @@ export default function FilterExerciseButton({ setParentFilter }: FilterProps) {
                   onChange={handleNameChange}
                 />
               </FormControl>
-              <FormControl>
-                <FormLabel id="exercise-category-filter-group-label">Categories</FormLabel>
-                <ToggleButtonGroup
-                  value={filter.categories ?? []}
-                  onChange={handleCategories}
-                  aria-label="Categories filter"
-                  sx={{ flexWrap: 'wrap' }}
-                >
-                  {exerciseCategories.map(category => (
-                    <ToggleButton key={category} className="rounded-full" value={category} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-                      <Chip label={category} variant="outlined" sx={{ textTransform: 'capitalize' }} />
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel id="exercise-muscles-filter-group-label">Muscles</FormLabel>
-                <ToggleButtonGroup
-                  value={filter.muscles ?? []}
-                  onChange={handleMuscles}
-                  aria-label="Muscles filter"
-                  sx={{ flexWrap: 'wrap' }}
-                >
-                  {muscleOptions.map(option => (
-                    <ToggleButton key={option.name} className="rounded-full" value={option.name} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-                      <Chip label={option.name} variant="outlined" sx={{ textTransform: 'capitalize' }} />
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel id="exercise-equipment-filter-group-label">Equipment</FormLabel>
-                <ToggleButtonGroup
-                  value={filter.equipment ?? []}
-                  onChange={handleEquipment}
-                  aria-label="Equipment filter"
-                  sx={{ flexWrap: 'wrap' }}
-                >
-                  {equipmentOptions.map(equipment => (
-                    <ToggleButton key={equipment} className="rounded-full" value={equipment} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
-                      <Chip label={equipment} variant="outlined" sx={{ textTransform: 'capitalize' }} />
-                    </ToggleButton>
-                  ))}
-                </ToggleButtonGroup>
-              </FormControl>
+              <CategoriesFilter filter={filter} setFilter={setFilter} />
+              <MusclesFilter filter={filter} setFilter={setFilter} />
+              <EquipmentFilter filter={filter} setFilter={setFilter} />
             </Stack>
           </form>
         </DialogContent>
         <DialogActions>
-          {filter.name || filter.categories || filter.muscles || filter.equipment
+          {isFilterSet
             ? <>
               <Button sx={{ mr: 'auto', textTransform: 'capitalize' }} onClick={handleClear} color='error'>
                 Clear
@@ -155,10 +128,169 @@ export default function FilterExerciseButton({ setParentFilter }: FilterProps) {
             Save
           </Button>
         </DialogActions>
-      </Dialog >
-      <IconButton color="default" onClick={() => setOpen(true)}>
-        <FilterAltIcon fontSize="large" />
-      </IconButton>
-    </>
+      </Suspense>
+    </Dialog >
+  )
+}
+
+type FilterProps = {
+  filter: ExerciseFilterConfig,
+  setFilter: (value: React.SetStateAction<ExerciseFilterConfig>) => void
+}
+
+function CategoriesFilter({ filter, setFilter }: FilterProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setExpanded(!expanded);
+  }
+
+  const handleCategories = (_event: React.MouseEvent<HTMLElement>, newCategories: string[]) => {
+    const categories = newCategories.length === 0 ? undefined : newCategories;
+    setFilter(curr => ({ ...curr, categories }));
+  };
+
+  return (
+    <FormControl>
+      <Box
+        sx={{
+          display: "flex",
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <FormLabel id="exercise-category-filter-group-label">
+          Categories
+          {filter.categories !== undefined &&
+            <Chip sx={{ ml: 1 }} size="small" label={filter.categories.length} />
+          }
+        </FormLabel>
+        <ExpandMoreButton
+          expand={expanded}
+          handleExpandClick={handleExpand}
+          ariaLabel="show exercise categories options"
+        />
+      </Box>
+      <Collapse in={expanded}>
+        <ToggleButtonGroup
+          value={filter.categories ?? []}
+          onChange={handleCategories}
+          aria-label="Categories filter"
+          sx={{ flexWrap: 'wrap' }}
+        >
+          {exerciseCategories.map(category => (
+            <ToggleButton key={category} className="rounded-full" value={category} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+              <Chip label={category} variant="outlined" sx={{ textTransform: 'capitalize' }} />
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Collapse>
+    </FormControl>
+  )
+}
+
+function MusclesFilter({ filter, setFilter }: FilterProps) {
+  const { muscleOptions } = useMuscleOptions();
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setExpanded(!expanded);
+  }
+
+  const handleMuscles = (_event: React.MouseEvent<HTMLElement>, newMuscles: string[]) => {
+    const muscles = newMuscles.length === 0 ? undefined : newMuscles;
+    setFilter(curr => ({ ...curr, muscles }));
+  };
+
+  return (
+    <FormControl>
+      <Box
+        sx={{
+          display: "flex",
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <FormLabel id="exercise-muscles-filter-group-label">
+          Muscles
+          {filter.muscles !== undefined &&
+            <Chip sx={{ ml: 1 }} size="small" label={filter.muscles.length} />
+          }
+        </FormLabel>
+        <ExpandMoreButton
+          expand={expanded}
+          handleExpandClick={handleExpand}
+          ariaLabel="show exercise muscles options"
+        />
+      </Box>
+      <Collapse in={expanded}>
+        <ToggleButtonGroup
+          value={filter.muscles ?? []}
+          onChange={handleMuscles}
+          aria-label="Muscles filter"
+          sx={{ flexWrap: 'wrap' }}
+        >
+          {muscleOptions.map(option => (
+            <ToggleButton key={option.name} className="rounded-full" value={option.name} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+              <Chip label={option.name} variant="outlined" sx={{ textTransform: 'capitalize' }} />
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Collapse>
+    </FormControl>
+  )
+}
+
+function EquipmentFilter({ filter, setFilter }: FilterProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  const handleExpand = () => {
+    setExpanded(!expanded);
+  }
+
+  const handleEquipment = (_event: React.MouseEvent<HTMLElement>, newEquipment: string[]) => {
+    const equipment = newEquipment.length === 0 ? undefined : newEquipment;
+    setFilter(curr => ({ ...curr, equipment }));
+  };
+
+  return (
+    <FormControl>
+      <Box
+        sx={{
+          display: "flex",
+          width: '100%',
+          justifyContent: 'space-between',
+          alignItems: 'center'
+        }}
+      >
+        <FormLabel id="exercise-equipment-filter-group-label">
+          Equipment
+          {filter.equipment !== undefined &&
+            <Chip sx={{ ml: 1 }} size="small" label={filter.equipment.length} />
+          }
+        </FormLabel>
+        <ExpandMoreButton
+          expand={expanded}
+          handleExpandClick={handleExpand}
+          ariaLabel="show exercise equipment options"
+        />
+      </Box>
+      <Collapse in={expanded}>
+        <ToggleButtonGroup
+          value={filter.equipment ?? []}
+          onChange={handleEquipment}
+          aria-label="Equipment filter"
+          sx={{ flexWrap: 'wrap' }}
+        >
+          {equipmentOptions.map(equipment => (
+            <ToggleButton key={equipment} className="rounded-full" value={equipment} sx={{ border: 'none', p: 0, mr: 1, mt: 1 }}>
+              <Chip label={equipment} variant="outlined" sx={{ textTransform: 'capitalize' }} />
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+      </Collapse>
+    </FormControl>
   )
 }
