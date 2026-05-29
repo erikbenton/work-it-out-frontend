@@ -29,7 +29,7 @@ export default function ExerciseList() {
         let keep = true;
         if (filter.name) {
           if (!ex.name) return false;
-          keep = ex.name.toLocaleLowerCase().includes(filter.name);
+          keep = ex.name.toLocaleLowerCase().includes(filter.name?.toLocaleLowerCase());
         }
 
         if (keep && filter.categories && filter.categories.length) {

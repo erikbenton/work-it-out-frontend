@@ -70,10 +70,11 @@ function FilterDialog({ initFilter, open, handleClose, setParentFilter }: Filter
 
   const handleSubmit = (event?: React.SubmitEvent<HTMLFormElement>) => {
     if (event) event.preventDefault();
+    const trimmedFilter = { ...filter, name: filter.name?.trim() };
     if (setParentFilter) {
-      const parsedFilter = { ...filter, name: filter.name?.toLocaleLowerCase() }
-      setParentFilter(parsedFilter);
+      setParentFilter(trimmedFilter);
     }
+    setFilter(trimmedFilter);
     handleClose();
   }
 
