@@ -51,3 +51,16 @@ export async function updateProgram(program: WorkoutProgram): Promise<WorkoutPro
 
   return (await response.json()) as WorkoutProgram;
 }
+
+export async function deleteProgram(programId: number): Promise<number> {
+  devConsole('Deleting program ' + programId);
+  const config = { method: 'DELETE' };
+
+  const response = await fetch(`${baseUrl}/programs/${programId}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to delete program with id: ' + programId);
+  }
+
+  return programId;
+}

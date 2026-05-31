@@ -6,6 +6,7 @@ import type WorkoutProgram from "../../../types/workoutProgram";
 import { bgBlue } from "../../../utils/styling";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
+import { usePrograms } from "../../../hooks/usePrograms";
 
 type Props = {
   program: WorkoutProgram
@@ -13,6 +14,7 @@ type Props = {
 
 export default function ProgramCard({ program }: Props) {
   const { services: workoutServices } = useWorkouts();
+  const { services: programServices } = usePrograms();
   const workouts = program.workoutIds.map(p => workoutServices.getWorkoutById(p));
   const workoutNames = workouts.map(w => w.name).join(', ');
 
@@ -23,7 +25,10 @@ export default function ProgramCard({ program }: Props) {
     },
     {
       label: "Delete",
-      handleClick: () => { },
+      handleClick: () => {
+        if (!program.id) return;
+        programServices.remove(program.id);
+      },
       sx: { color: 'error.main' }
     },
   ];

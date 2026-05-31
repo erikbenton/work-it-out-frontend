@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import type WorkoutProgram from "../types/workoutProgram";
 import cacheTimes from "../utils/cacheTimes";
-import { createProgram, getPrograms, updateProgram } from "../requests/programs";
+import { createProgram, deleteProgram, getPrograms, updateProgram } from "../requests/programs";
+import { devConsole } from "../utils/debugLogger";
 
 const queryKey = 'programs';
 
@@ -19,6 +20,11 @@ export function usePrograms() {
     if (!program) {
       throw new Error(`Unable to find program with id: ${id}.`);
     }
+    return program;
+  }
+
+  const getProgramByIdUnsafe = (id: number): WorkoutProgram | undefined => {
+    const program = programs.find(p => p.id === id);
     return program;
   }
 
@@ -53,13 +59,31 @@ export function usePrograms() {
     }
   }).mutate;
 
+  const remove = useMutation({
+    mutationFn: async (programId: number) => deleteProgram(programId),
+    onSuccess: (deletedId: number) => {
+      try {
+        const prevPrograms: WorkoutProgram[] = queryClient.getQueryData([queryKey]) as WorkoutProgram[];
+        const program = prevPrograms.find(w => w.id === deletedId);
+        queryClient.setQueryData([queryKey], prevPrograms.filter(ex => ex.id !== deletedId));
+        if (program) {
+          devConsole(`deleted program: ${deletedId}`)
+        }
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
   return {
     programs,
     isError,
     services: {
       getProgramById,
+      getProgramByIdUnsafe,
       create,
-      update
+      update,
+      remove
     }
   }
 }
