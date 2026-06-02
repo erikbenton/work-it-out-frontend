@@ -30,7 +30,7 @@ export type ExerciseFilterConfig = {
 
 type Props = {
   initFilter: ExerciseFilterConfig,
-  setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
+  setParentFilter: (newFilter: ExerciseFilterConfig) => void,
   color?: string,
   badgeColor?: string
 }

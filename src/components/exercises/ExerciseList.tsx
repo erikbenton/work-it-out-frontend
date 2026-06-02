@@ -1,5 +1,4 @@
 import { useNavigate, type NavigateFunction } from 'react-router-dom';
-import { useExercises } from '../../hooks/useExercises';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -7,48 +6,20 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import type Exercise from '../../types/exercise';
 import useWindowDimensions from '../../hooks/useWindowDimensions';
-import { capitalize } from '../../utils/formatters';
-import { useMemo, useState } from 'react';
-import { devConsole } from '../../utils/debugLogger';
-import FilterExerciseButton, { type ExerciseFilterConfig } from './components/ExerciseListFilter';
+import FilterExerciseButton from './components/ExerciseListFilter';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import { grey } from '@mui/material/colors';
+import { useFilteredExercises } from '../../hooks/useFilteredExercises';
+import { devConsole } from '../../utils/debugLogger';
 
 export default function ExerciseList() {
-  const { exercises } = useExercises();
-  const [filter, setFilter] = useState<ExerciseFilterConfig>({});
+  const { filteredExercises, filter, setFilter } = useFilteredExercises();
   const navigate = useNavigate();
-
-  const filteredExercises = useMemo(() => {
-    devConsole('running exercise filter memo');
-    return exercises
-      .filter(ex => {
-        let keep = true;
-        if (filter.name) {
-          if (!ex.name) return false;
-          keep = ex.name.toLocaleLowerCase().includes(filter.name?.toLocaleLowerCase());
-        }
-
-        if (keep && filter.categories && filter.categories.length) {
-          keep = filter.categories.includes(ex.category);
-        }
-
-        if (keep && filter.muscles && filter.muscles.length) {
-          if (!ex.muscles || !ex.muscles.length) return false;
-          keep = ex.muscles.reduce((acc, curr) => acc || (filter.muscles?.includes(curr.name) ?? false), false);
-        }
-
-        if (keep && filter.equipment && filter.equipment.length) {
-          if (!ex.equipment) return false;
-          keep = filter.equipment.includes(ex.equipment);
-        }
-        return keep;
-      });
-  }, [filter, exercises])
+  devConsole('filtered', filteredExercises.length)
 
   const handleAddExercise = () => {
     navigate("/exercises/create");
@@ -138,7 +109,8 @@ function ExerciseSubheaderList({ exercises }: Props) {
                 <ListItem>
                   <ListItemText
                     primary={exercise.name}
-                    secondary={`${exercise.muscles?.map(m => capitalize(m.name)).join(', ')}`}
+                    secondary={`${exercise.muscles?.map(m => m.name).join(', ')}`}
+                    sx={{ textTransform: 'capitalize' }}
                   />
                 </ListItem>
               </ListItemButton>

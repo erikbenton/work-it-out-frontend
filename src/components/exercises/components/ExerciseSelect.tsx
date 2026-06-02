@@ -1,15 +1,13 @@
-import { useExercises } from "../../../hooks/useExercises";
 import { useMediaQuery, List, ListSubheader, ListItem, useTheme, Dialog, Slide, DialogContent, AppBar, Toolbar, IconButton, Typography, Button } from "@mui/material";
 import type Exercise from "../../../types/exercise";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { type TransitionProps } from '@mui/material/transitions';
 import CloseIcon from '@mui/icons-material/Close';
 import ExerciseSelectionItem from "./ExerciseSelectionItem";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
-import type { ExerciseFilterConfig } from "./ExerciseListFilter";
-import { devConsole } from "../../../utils/debugLogger";
 import FilterExerciseButton from "./ExerciseListFilter";
 import { orange } from "@mui/material/colors";
+import { useFilteredExercises } from "../../../hooks/useFilteredExercises";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -28,39 +26,11 @@ type Props = {
 }
 
 export default function ExerciseSelect({ open, handleClose, addExercises, limit }: Props) {
-  const { exercises } = useExercises();
+  const { filteredExercises, filter, setFilter } = useFilteredExercises();
   const [selected, setSelected] = useState<number[]>([]);
   const theme = useTheme();
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { height } = useWindowDimensions();
-  const [filter, setFilter] = useState<ExerciseFilterConfig>({});
-
-  const filteredExercises = useMemo(() => {
-    devConsole('running exercise filter memo');
-    return exercises
-      .filter(ex => {
-        let keep = true;
-        if (filter.name) {
-          if (!ex.name) return false;
-          keep = ex.name.toLocaleLowerCase().includes(filter.name?.toLocaleLowerCase());
-        }
-
-        if (keep && filter.categories && filter.categories.length) {
-          keep = filter.categories.includes(ex.category);
-        }
-
-        if (keep && filter.muscles && filter.muscles.length) {
-          if (!ex.muscles || !ex.muscles.length) return false;
-          keep = ex.muscles.reduce((acc, curr) => acc || (filter.muscles?.includes(curr.name) ?? false), false);
-        }
-
-        if (keep && filter.equipment && filter.equipment.length) {
-          if (!ex.equipment) return false;
-          keep = filter.equipment.includes(ex.equipment);
-        }
-        return keep;
-      });
-  }, [filter, exercises])
 
   const handleSave = () => {
     addExercises(selected);
