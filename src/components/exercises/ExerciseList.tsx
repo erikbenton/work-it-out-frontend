@@ -16,6 +16,7 @@ import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
+import { grey } from '@mui/material/colors';
 
 export default function ExerciseList() {
   const { exercises } = useExercises();
@@ -53,8 +54,6 @@ export default function ExerciseList() {
     navigate("/exercises/create");
   }
 
-  const isFilterSet = Boolean(filter.name || filter.categories || filter.muscles || filter.equipment);
-
   return (
     <Box className="w-full md:w-2/3 border-x border-blue-100" sx={{ mt: 1 }}>
       <Stack
@@ -69,7 +68,11 @@ export default function ExerciseList() {
           Exercises
         </Typography>
         <Stack direction='row' spacing={1}>
-          <FilterExerciseButton initFilter={filter} setParentFilter={setFilter} isParentFilterSet={isFilterSet} />
+          <FilterExerciseButton
+            initFilter={filter}
+            setParentFilter={setFilter}
+            color={grey[500]}
+          />
           <IconButton color="primary" onClick={handleAddExercise}>
             <AddCircleOutlinedIcon fontSize="large" />
           </IconButton>

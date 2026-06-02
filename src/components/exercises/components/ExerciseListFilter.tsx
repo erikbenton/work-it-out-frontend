@@ -18,7 +18,7 @@ import { equipmentOptions } from "../../../types/equipmentOptions";
 import Collapse from "@mui/material/Collapse";
 import Box from "@mui/material/Box";
 import ExpandMoreButton from "../../layout/ExpandMoreButton";
-import { Badge } from "@mui/material";
+import { Badge, hexToRgb, useTheme } from "@mui/material";
 import LoadingIcon from "../../layout/LoadingIcon";
 
 export type ExerciseFilterConfig = {
@@ -31,11 +31,15 @@ export type ExerciseFilterConfig = {
 type Props = {
   initFilter: ExerciseFilterConfig,
   setParentFilter?: (newFilter: ExerciseFilterConfig) => void,
-  isParentFilterSet: boolean
+  color?: string,
+  badgeColor?: string
 }
 
-export default function FilterExerciseButton({ initFilter, setParentFilter, isParentFilterSet }: Props) {
+export default function FilterExerciseButton({ initFilter, setParentFilter, color, badgeColor }: Props) {
   const [open, setOpen] = useState(false);
+  const theme = useTheme();
+  const primaryColor = hexToRgb(theme.palette.primary.main);
+  const isParentFilterSet = Boolean(initFilter.name || initFilter.categories || initFilter.muscles || initFilter.equipment);
 
   const handleClose = () => {
     setOpen(false);
@@ -49,8 +53,12 @@ export default function FilterExerciseButton({ initFilter, setParentFilter, isPa
         handleClose={handleClose}
         setParentFilter={setParentFilter}
       />
-      <IconButton color="default" onClick={() => setOpen(true)}>
-        <Badge badgeContent={isParentFilterSet ? true : 0} variant="dot" color='primary'>
+      <IconButton sx={{ color: color ?? 'black' }} onClick={() => setOpen(true)}>
+        <Badge
+          badgeContent={isParentFilterSet ? true : 0}
+          variant="dot"
+          slotProps={{ badge: { sx: { backgroundColor: badgeColor ?? primaryColor } } }}
+        >
           <FilterAltIcon fontSize="large" />
         </Badge>
       </IconButton>
