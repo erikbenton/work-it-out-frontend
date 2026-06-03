@@ -19,6 +19,9 @@ export default function TargetDistanceInput({ values, setValues, label }: SetInp
       variant="standard"
       value={values.targetDistance ? values.targetDistance : ""}
       onChange={handleDistanceChange}
+      slotProps={{
+        htmlInput: { step: '0.001' }
+      }}
     />
   );
 }

@@ -144,7 +144,8 @@ function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
       onChange={handleDistanceChange}
       slotProps={{
         input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
+        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
+        htmlInput: { step: '0.001' }
       }}
     />
   );
