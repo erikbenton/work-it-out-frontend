@@ -42,7 +42,7 @@ export default function ActiveWorkoutGroup() {
         reps,
         weight,
         distance,
-        duration,
+        duration: duration ? duration.replace(/^[0:]+/, '') : undefined,
         setTagId
       }
       setValues(newSet);
