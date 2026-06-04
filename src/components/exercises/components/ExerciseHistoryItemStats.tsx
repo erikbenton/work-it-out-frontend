@@ -48,7 +48,7 @@ export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
 
   return (
     <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
-      <Stack direction='row' spacing={1}>
+      <Stack direction='row' spacing={1} sx={{ overflowX: 'auto' }}>
         {totalReps &&
           <Tooltip
             title="Total Reps"
@@ -115,7 +115,7 @@ export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
 
   return (
     <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
-      <Stack direction='row' spacing={1}>
+      <Stack direction='row' spacing={1} sx={{ overflowX: 'auto' }}>
         {totalDistance !== undefined && totalDistance > 0 &&
           <Tooltip
             title='Total Distance'
@@ -182,7 +182,7 @@ export function ExerciseHistoryStretchGroupStats({ history }: HistoryStatProps) 
 
   return (
     <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
-      <Stack direction='row' spacing={1}>
+      <Stack direction='row' spacing={1} sx={{ overflowX: 'auto' }}>
         {totalReps &&
           <Tooltip
             title='Total Reps'
