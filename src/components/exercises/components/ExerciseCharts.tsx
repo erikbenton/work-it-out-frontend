@@ -1,6 +1,6 @@
 import Stack from "@mui/material/Stack";
 import { LineChart } from "@mui/x-charts/LineChart";
-import { chartDate, secondsToHhMmDd } from "../../../utils/formatters";
+import { chartDate, secondsToHhMmDd, timeYAxisFormatter } from "../../../utils/formatters";
 import { deepPurple, indigo, pink, red } from "@mui/material/colors";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -246,7 +246,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           color: red[700],
           area: true,
           baseline: 'min',
-          label: 'Total Duration',
+          label: 'Total Duration (min)',
           valueFormatter: (val) => val ? secondsToHhMmDd(val, 'short') : null,
           connectNulls: true
         }]}
@@ -256,6 +256,11 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        yAxis={[
+          {
+            valueFormatter: timeYAxisFormatter
+          }
+        ]}
       />
       <LineChart
         series={[{
@@ -263,7 +268,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           color: deepPurple[700],
           area: true,
           baseline: 'min',
-          label: 'Fastest Pace',
+          label: 'Fastest Pace (min)',
           valueFormatter: (val) => val ? `${secondsToHhMmDd(val, 'short')} / mi` : null,
           connectNulls: true
         }]}
@@ -273,6 +278,11 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        yAxis={[
+          {
+            valueFormatter: timeYAxisFormatter
+          }
+        ]}
       />
     </Stack>
   );
@@ -318,7 +328,7 @@ function StretchExerciseCharts({ historyPoints }: ChartProps) {
           color: red[700],
           area: true,
           baseline: 'min',
-          label: 'Total Duration',
+          label: 'Total Duration (min)',
           valueFormatter: (val) => val ? secondsToHhMmDd(val, 'short') : null,
           connectNulls: true
         }]}
@@ -328,6 +338,11 @@ function StretchExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        yAxis={[
+          {
+            valueFormatter: timeYAxisFormatter
+          }
+        ]}
       />
     </Stack>
   );

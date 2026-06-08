@@ -281,3 +281,7 @@ export function formattedSetCompletedText(set: ActiveExerciseSet | CompletedExer
       return 'No set formatter found';
   }
 }
+
+export function timeYAxisFormatter(seconds: number) {
+  return `${Math.round(seconds / 6) / 10}`;
+}
