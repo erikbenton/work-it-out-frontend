@@ -72,7 +72,8 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
 
     if (!newProgram) {
       options.push({
-        label: "Delete", handleClick: () => {
+        label: "Delete",
+        handleClick: () => {
           if (saving) return;
           setSaving(true);
           programServices.remove(program.id ?? 0, {
@@ -80,7 +81,8 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
               navigate('/programs');
             }
           })
-        }, sx: { color: 'error.main' }
+        },
+        sx: { color: 'error.main' }
       });
     }
 

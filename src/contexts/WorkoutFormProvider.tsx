@@ -96,7 +96,22 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
           }
         },
       },
-      { label: "Delete", handleClick: () => { }, sx: { color: 'error.main' } }
+      {
+        label: "Delete",
+        handleClick: () => {
+          if (saving) return;
+          setSaving(true);
+          services.remove(workout.id ?? 0, {
+            onSuccess: () => {
+              navigate('/workouts');
+            },
+            onSettled: () => {
+              setSaving(false);
+            }
+          })
+        },
+        sx: { color: 'error.main' }
+      }
     ];
 
     if (newWorkout) {

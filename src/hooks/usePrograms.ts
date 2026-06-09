@@ -65,7 +65,7 @@ export function usePrograms() {
       try {
         const prevPrograms: WorkoutProgram[] = queryClient.getQueryData([queryKey]) as WorkoutProgram[];
         const program = prevPrograms.find(w => w.id === deletedId);
-        queryClient.setQueryData([queryKey], prevPrograms.filter(ex => ex.id !== deletedId));
+        queryClient.setQueryData([queryKey], prevPrograms.filter(w => w.id !== deletedId));
         if (program) {
           devConsole(`deleted program: ${deletedId}`)
         }

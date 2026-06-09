@@ -70,13 +70,15 @@ export async function updateWorkout(workout: Workout): Promise<Workout> {
   return (await response.json()) as Workout;
 }
 
-export async function deleteWorkout(workout: Workout): Promise<void> {
-  devConsole('Deleting workout ' + workout.id);
+export async function deleteWorkout(workoutId: number): Promise<number> {
+  devConsole('Deleting workout ' + workoutId);
   const config = { method: 'DELETE' };
 
-  const response = await fetch(`${baseUrl}/workouts/${workout.id}`, config);
+  const response = await fetch(`${baseUrl}/workouts/${workoutId}`, config);
 
   if (!response.ok) {
-    throw new Error('Failed to delete workout with id: ' + workout.id);
+    throw new Error('Failed to delete workout with id: ' + workoutId);
   }
+
+  return workoutId;
 }

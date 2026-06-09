@@ -92,9 +92,11 @@ export default function CompletedWorkoutDetails() {
   return (
     <Box className="w-full md:w-2/3 border-x border-blue-100 h-full" sx={{ mt: 1, px: 1 }}>
       {deleting
-        ? <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
-          <LoadingIcon />
-        </Box>
+        ? <>
+          <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
+            <LoadingIcon />
+          </Box>
+        </>
         : <>
           <Stack
             direction="row"

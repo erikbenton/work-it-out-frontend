@@ -15,13 +15,11 @@ export function useWorkouts() {
     queryFn: getWorkouts
   });
 
-  const getWorkoutById = (id: number, populateKeys = false) => {
+  const getWorkoutByIdUnsafe = (id: number, populateKeys = false): Workout | undefined => {
     const workouts = queryClient.getQueryData([queryKey]) as Workout[];
     const workout = workouts.find(ex => ex.id === id);
 
-    if (!workout) {
-      throw new Error(`Unable to find workout with id: ${id}.`);
-    }
+    if (!workout) return workout;
 
     // populate keys for exercise groups & sets
     if (populateKeys) {
@@ -32,6 +30,14 @@ export function useWorkouts() {
     }
 
     return { ...workout };
+  }
+
+  const getWorkoutById = (id: number, populateKeys = false) => {
+    const workout = getWorkoutByIdUnsafe(id, populateKeys);
+    if (!workout) {
+      throw new Error(`Unable to find workout with id: ${id}.`);
+    }
+    return workout;
   }
 
   const createClone = (workout: Workout): Workout => {
@@ -101,33 +107,24 @@ export function useWorkouts() {
     }
   }).mutate;
 
-  const removeMutation = useMutation({
-    mutationFn: async (workout: Workout) => deleteWorkout(workout)
-  }).mutate;
-
-  // wrap removeMutation so that we can use the
-  // id to filter the deleted workout onSuccess
-  const remove = (workout: Workout, callBackFn?: () => void) => {
-    removeMutation(workout, {
-      onSuccess: () => {
-        try {
-          const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
-          queryClient.setQueryData([queryKey], prevWorkouts.filter(ex => ex.id !== workout.id));
-          if (callBackFn) {
-            callBackFn();
-          }
-        } catch {
-          queryClient.invalidateQueries({ queryKey: [queryKey] });
-        }
+  const remove = useMutation({
+    mutationFn: async (workoutId: number) => deleteWorkout(workoutId),
+    onSuccess: (deleteId: number) => {
+      try {
+        const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
+        queryClient.setQueryData([queryKey], prevWorkouts.filter(w => w.id !== deleteId));
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
-    });
-  }
+    }
+  }).mutate;
 
   return {
     workouts,
     isError,
     services: {
       getWorkoutById,
+      getWorkoutByIdUnsafe,
       create,
       clone,
       update,

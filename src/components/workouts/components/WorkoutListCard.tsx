@@ -44,7 +44,7 @@ export default function WorkoutListCard({ workout }: Props) {
     {
       label: "Delete",
       handleClick: () => {
-        services.remove(workout);
+        services.remove(workout.id);
       },
       sx: { color: 'error.main' }
     },
