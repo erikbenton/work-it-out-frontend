@@ -67,9 +67,7 @@ export function useWorkouts() {
         const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
         queryClient.setQueryData(
           [queryKey],
-          prevWorkouts
-            ?.concat(savedWorkout)
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
+          prevWorkouts?.concat(savedWorkout));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
@@ -83,9 +81,7 @@ export function useWorkouts() {
         const prevWorkouts: Workout[] = queryClient.getQueryData([queryKey]) as Workout[];
         queryClient.setQueryData(
           [queryKey],
-          prevWorkouts
-            ?.concat(savedWorkout)
-            .sort((a, b) => (a.name ?? "").localeCompare(b.name ?? "")));
+          prevWorkouts?.concat(savedWorkout));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
