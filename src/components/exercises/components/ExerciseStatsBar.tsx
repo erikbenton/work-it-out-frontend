@@ -125,7 +125,9 @@ export default function ExerciseStatsBar({ history }: Props) {
           <Avatar sx={{ bgcolor: teal[700] }}>
             <RoomSharpIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{stats.distance} mi</Typography>
+          <Typography variant="body1" noWrap>
+            {formatLargeNumber(Math.round(stats.distance * 100) / 100)} mi
+          </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Distance</Typography>
         </Stack>
       }
