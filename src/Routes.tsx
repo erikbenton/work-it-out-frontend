@@ -16,12 +16,18 @@ import LoadingIcon from './components/layout/LoadingIcon';
 import ProgramsList from './components/programs/ProgramList';
 import { ProgramDetails } from './components/programs/ProgramDetails';
 import ProgramCreate from './components/programs/ProgramCreate';
+import RegisterLogin from './components/register/RegisterLogin';
 
 export default function Router() {
 
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/register" element={
+        <Suspense fallback={<LoadingIcon label='User Info' />}>
+          <RegisterLogin />
+        </Suspense>
+      } />
       <Route path="/programs" element={
         <Suspense fallback={<LoadingIcon label='Programs' />}>
           <ProgramsList />

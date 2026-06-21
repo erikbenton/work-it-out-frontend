@@ -3,6 +3,9 @@ import useUserInfo from "../hooks/useUserInfo";
 import UserInfoContext from "./userInfoContext";
 import AuthenticationError from "../types/authenticationError";
 import { useNavigate } from "react-router-dom";
+import type { MutateOptions } from "@tanstack/react-query";
+import type AuthenticationResponse from "../types/authenticationResponse";
+import type AuthenticationRequest from "../types/authenticationRequest";
 
 type Props = {
   children: ReactNode
@@ -70,6 +73,32 @@ export function UserInfoProvider({ children }: Props) {
     });
   }
 
+  const handleLoginAttempt2 = (
+    email: string,
+    password: string,
+    options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>
+  ) => {
+    setLoading(true);
+    setUserMessages([]);
+    services.loginUser({ email, password }, {
+      ...options,
+      onError: (error, variables, result, context) => {
+        if (error instanceof AuthenticationError) {
+          setUserMessages(error.userMessages);
+        }
+        if (options && options.onError) {
+          options.onError(error, variables, result, context);
+        }
+      },
+      onSettled: (data, error, variables, result, context) => {
+        if (options && options.onSettled) {
+          options.onSettled(data, error, variables, result, context);
+        }
+        setLoading(false);
+      }
+    });
+  }
+
   const handleLogoutAttempt = (
     onSuccessCallBack?: () => void,
     onErrorCallBack?: () => void
@@ -106,6 +135,7 @@ export function UserInfoProvider({ children }: Props) {
     setUserMessages,
     handleRegisterAttempt,
     handleLoginAttempt,
+    handleLoginAttempt2,
     handleLogoutAttempt
   };
 
