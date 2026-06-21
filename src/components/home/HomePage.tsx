@@ -25,25 +25,27 @@ export default function HomePage() {
 
   return (
     <Box className="w-full md:w-2/3 px-3" sx={{ pb: workout ? '10vh' : undefined }}>
-      <HomePageTitle />
       {userLoading
         ? <LoadingIcon />
         : userInfo.isLoggedIn
-          ? <Stack spacing={2} sx={{ alignItems: 'center' }}>
-            <UserStats />
-            <UserCalendar />
-            {workout
-              ? <Button
-                fullWidth
-                type='button'
-                variant='contained'
-                sx={{ borderRadius: 5, textTransform: 'none', mb: '10vh' }}
-                onClick={handleResumeWorkout}
-              >
-                Resume Workout
-              </Button>
-              : <UserPrograms />}
-          </Stack>
+          ? <>
+            <HomePageTitle />
+            <Stack spacing={2} sx={{ alignItems: 'center' }}>
+              <UserStats />
+              <UserCalendar />
+              {workout
+                ? <Button
+                  fullWidth
+                  type='button'
+                  variant='contained'
+                  sx={{ borderRadius: 5, textTransform: 'none', mb: '10vh' }}
+                  onClick={handleResumeWorkout}
+                >
+                  Resume Workout
+                </Button>
+                : <UserPrograms />}
+            </Stack>
+          </>
           : <Suspense fallback={<LoadingIcon />}>
             <WelcomePage />
           </Suspense>
@@ -59,28 +61,38 @@ function WelcomePage() {
     navigate('/register')
   }
 
+  const miniHeaderFontSize = '1.125rem';
+
   return (
-    <Stack spacing={2} sx={{ alignItems: 'center', display: 'flex' }}>
+    <Stack spacing={3} sx={{ alignItems: 'center', display: 'flex', mt: 3 }}>
+      <Typography variant='h4' textAlign='center'>
+        Welcome to Work-It-Out!
+      </Typography>
       <Stack direction='column' spacing={1} sx={{ alignItems: 'center', width: '100%' }}>
-        <Typography variant='h5'>Welcome to Work-It-Out!</Typography>
-        <Typography variant='h6'>Need help tracking your workouts?</Typography>
-        <Typography variant='h6'>Having trouble seeing your progress?</Typography>
-        <Typography variant='h6'>Let us help you Work-It-Out today!</Typography>
+        <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Tired of not seeing progress in your fitness?</Typography>
+        <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Stalling on one of your lifts over and over?</Typography>
+        <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Join today and Work-It-Out</Typography>
         <Button
           onClick={handleJoinClick}
           variant='contained'
-          sx={{ borderRadius: 5 }}
+          sx={{ borderRadius: 5, width: '33%', maxWidth: '200px', minWidth: '100px', textTransform: 'none' }}
         >
           Join
         </Button>
       </Stack>
+      <Typography fontSize={'1rem'} variant='body1'>
+        When it comes to fitness, tracking progress is the key to achieving goals.
+        But seeing the progress in the raw data can be tricky. That's where Work-It-Out comes in.
+        Workout sessions are transformed from simple entries into easy to interpret charts and stats.
+        Work hard, work smart, and take control of your fitness.
+      </Typography>
       <Stack direction='column' spacing={1} sx={{ width: '100%' }}>
-        <Typography variant='h6'>Take control of your fitness:</Typography>
-        <Typography>Build your own personal Workouts</Typography>
-        <Typography>Organize workouts into Programs</Typography>
-        <Typography>Easily track all your exercises</Typography>
+        <Typography fontSize={miniHeaderFontSize} variant='h6'>Let Work-It-Out replace your gym notebook</Typography>
+        <Typography>Easily build your own personal Workouts</Typography>
+        <Typography>Organize your workouts into Programs</Typography>
+        <Typography>Track all of your workout sessions</Typography>
+        <Typography>Create your own custom exercises</Typography>
         <Typography>View charts of your progress</Typography>
-        <Typography>Create your own exercises</Typography>
         <Typography>And more!</Typography>
       </Stack>
     </Stack>
