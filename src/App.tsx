@@ -45,7 +45,7 @@ export default function App() {
             <ActiveWorkoutProvider>
               <Box
                 sx={{
-                  height: '100%',
+                  minHeight: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
