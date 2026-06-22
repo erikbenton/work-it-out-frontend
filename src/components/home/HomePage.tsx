@@ -10,7 +10,7 @@ import { Suspense } from 'react';
 import LoadingIcon from '../layout/LoadingIcon';
 import HomePageTitle from './components/HomePageTitle';
 import UserCalendar from './components/UserCalendar';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 export default function HomePage() {
   const { userInfo, loading: userLoading } = useUser();
@@ -24,7 +24,7 @@ export default function HomePage() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3" sx={{ pb: workout ? '10vh' : undefined }}>
+    <Box className="w-full md:w-4/5 px-3" sx={{ pb: workout ? '10vh' : undefined }}>
       {userLoading
         ? <LoadingIcon />
         : userInfo.isLoggedIn
@@ -68,10 +68,10 @@ function WelcomePage() {
       <Typography variant='h4' textAlign='center'>
         Welcome to Work-It-Out!
       </Typography>
-      <Stack direction='column' spacing={1} sx={{ alignItems: 'center', width: '100%' }}>
+      <Stack direction='column' spacing={0.5} sx={{ alignItems: 'center', width: '100%' }}>
         <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Tired of not seeing progress in your fitness?</Typography>
         <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Stalling on one of your lifts over and over?</Typography>
-        <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Join today and Work-It-Out</Typography>
+        <Typography fontSize={miniHeaderFontSize} variant='h6' textAlign='center'>Join today and Work-It-Out!</Typography>
         <Button
           onClick={handleJoinClick}
           variant='contained'
@@ -80,21 +80,31 @@ function WelcomePage() {
           Join
         </Button>
       </Stack>
-      <Typography fontSize={'1rem'} variant='body1'>
-        When it comes to fitness, tracking progress is the key to achieving goals.
-        But seeing the progress in the raw data can be tricky. That's where Work-It-Out comes in.
-        Workout sessions are transformed from simple entries into easy to interpret charts and stats.
-        Work hard, work smart, and take control of your fitness.
-      </Typography>
-      <Stack direction='column' spacing={1} sx={{ width: '100%' }}>
-        <Typography fontSize={miniHeaderFontSize} variant='h6'>Let Work-It-Out replace your gym notebook</Typography>
-        <Typography>Easily build your own personal Workouts</Typography>
-        <Typography>Organize your workouts into Programs</Typography>
-        <Typography>Track all of your workout sessions</Typography>
-        <Typography>Create your own custom exercises</Typography>
-        <Typography>View charts of your progress</Typography>
-        <Typography>And more!</Typography>
-      </Stack>
+      <Grid container spacing={3}>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Stack spacing={1.5}>
+            <Typography fontSize={'1rem'} variant='body1'>
+              When it comes to fitness, tracking progress is the key to achieving goals.
+              But seeing the progress in the raw data can be tricky. That's where Work-It-Out comes in.
+            </Typography>
+            <Typography fontSize={'1rem'} variant='body1'>
+              Workout sessions are transformed from simple entries into easy to interpret charts and stats.
+              Work hard, work smart, and take control of your fitness.
+            </Typography>
+          </Stack>
+        </Grid>
+        <Grid size={{ xs: 12, md: 6 }}>
+          <Stack direction='column' spacing={1} sx={{ width: '100%' }}>
+            <Typography fontSize={miniHeaderFontSize} variant='h6'>Let Work-It-Out replace your gym notebook</Typography>
+            <Typography>Easily build your own personal Workouts</Typography>
+            <Typography>Organize your workouts into Programs</Typography>
+            <Typography>Track all of your workout sessions</Typography>
+            <Typography>Create your own custom exercises</Typography>
+            <Typography>View charts of your progress</Typography>
+            <Typography>And more!</Typography>
+          </Stack>
+        </Grid>
+      </Grid>
     </Stack>
   )
 }
