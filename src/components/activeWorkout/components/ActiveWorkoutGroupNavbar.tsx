@@ -10,13 +10,12 @@ import { Stack } from "@mui/material";
 import ElapsedTimer from "./ElapsedTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
-import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 
 type Props = {
-  exerciseGroup: ActiveExerciseGroup
+  groupIndex: number
 }
 
-export default function ActiveWorkoutGroupNavbar({ exerciseGroup }: Props) {
+export default function ActiveWorkoutGroupNavbar({ groupIndex }: Props) {
   const navigate = useNavigate();
   const { workout, dispatch, handleFinishWorkout } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -43,8 +42,6 @@ export default function ActiveWorkoutGroupNavbar({ exerciseGroup }: Props) {
     );
   }
 
-  const currentIndex = workout.exerciseGroups.findIndex(g => g.key === exerciseGroup.key);
-
   const menuItems = [
     {
       label: 'Finish Workout',
@@ -57,13 +54,13 @@ export default function ActiveWorkoutGroupNavbar({ exerciseGroup }: Props) {
     },
     {
       label: 'Next exercise',
-      disabled: currentIndex !== -1 && currentIndex >= workout.exerciseGroups.length - 1,
-      handleClick: () => handleChangeExercise(currentIndex, 1)
+      disabled: groupIndex !== -1 && groupIndex >= workout.exerciseGroups.length - 1,
+      handleClick: () => handleChangeExercise(groupIndex, 1)
     },
     {
       label: 'Prev exercise',
-      disabled: currentIndex < 1,
-      handleClick: () => handleChangeExercise(currentIndex, -1)
+      disabled: groupIndex < 1,
+      handleClick: () => handleChangeExercise(groupIndex, -1)
     }
   ];
 

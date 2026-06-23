@@ -14,6 +14,7 @@ import ExerciseSelect from "../exercises/components/ExerciseSelect";
 import { parseDuration } from "../../utils/formatters";
 import NoWorkoutSelected from "./components/NoWorkoutSelected";
 import type { SlideDirection } from "../../types/slideDirection";
+import useSwipe from "../../hooks/useSwipe";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
@@ -23,12 +24,30 @@ export default function ActiveWorkoutGroup() {
   const location = useLocation();
   const slideDirection: SlideDirection = (location.state?.slideDirection ?? 'up') as SlideDirection;
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
+  const groupIndex = workout?.exerciseGroups.findIndex(g => g.key === key) ?? -1;
+  const exerciseGroup = groupIndex > -1 ? workout?.exerciseGroups[groupIndex] : undefined;
   const currentIndex = exerciseGroup?.exerciseSets.findIndex(s => !s.completed) ?? -1;
   const currentSet = currentIndex > -1 ? exerciseGroup?.exerciseSets[currentIndex] : undefined;
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(currentSet);
   const [replacingExercise, setReplacingExercise] = useState(false);
   const allSetsCompleted = currentIndex === -1;
+  const workoutLength = (workout?.exerciseGroups.length ?? 0);
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: () => {
+      if (exerciseGroup && groupIndex < workoutLength - 1) {
+        const nextKey = workout?.exerciseGroups[groupIndex + 1].key;
+        const slideDirection = 'left'
+        navigate(`/training/${nextKey}`, { state: { slideDirection } });
+      }
+    },
+    onSwipedRight: () => {
+      if (groupIndex > 0) {
+        const nextKey = workout?.exerciseGroups[groupIndex - 1].key;
+        const slideDirection = 'right'
+        navigate(`/training/${nextKey}`, { state: { slideDirection } });
+      }
+    }
+  });
 
   // allows for resetting slide transition
   useEffect(() => {
@@ -126,8 +145,12 @@ export default function ActiveWorkoutGroup() {
         </Box>
       }
       <Slide direction={slideDirection} in={true} key={exerciseGroup.key}>
-        <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}>
-          <ActiveWorkoutGroupNavbar exerciseGroup={exerciseGroup} />
+        <Box
+          className="w-full md:w-2/3 h-full"
+          sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}
+          {...swipeHandlers}
+        >
+          <ActiveWorkoutGroupNavbar groupIndex={groupIndex} />
           <Box minHeight='100%'>
             <Box pb="20vh">
               <Stack spacing={1} sx={{ px: 1 }}>
