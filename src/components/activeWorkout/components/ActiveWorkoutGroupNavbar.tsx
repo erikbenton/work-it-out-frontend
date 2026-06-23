@@ -6,14 +6,17 @@ import Typography from "@mui/material/Typography";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import { Collapse, Stack } from "@mui/material";
-import { useState } from "react";
+import { Stack } from "@mui/material";
 import ElapsedTimer from "./ElapsedTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import type ActiveExerciseGroup from "../../../types/activeExerciseGroup";
 
-export default function ActiveWorkoutGroupNavbar() {
-  const [open, setOpen] = useState(true);
+type Props = {
+  exerciseGroup: ActiveExerciseGroup
+}
+
+export default function ActiveWorkoutGroupNavbar({ exerciseGroup }: Props) {
   const navigate = useNavigate();
   const { workout, dispatch, handleFinishWorkout } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -21,6 +24,13 @@ export default function ActiveWorkoutGroupNavbar() {
   const handleClearWorkout = () => {
     navigate('/training');
     dispatch({ type: 'endWorkout' });
+  }
+
+  const handleChangeExercise = (currentIndex: number, shift: number) => {
+    const nextIndex = currentIndex + shift;
+    const nextKey = workout?.exerciseGroups[nextIndex].key;
+    const slideDirection = nextIndex > currentIndex ? 'left' : 'right'
+    navigate(`/training/${nextKey}`, { state: { slideDirection } });
   }
 
   if (workout === null) {
@@ -33,6 +43,8 @@ export default function ActiveWorkoutGroupNavbar() {
     );
   }
 
+  const currentIndex = workout.exerciseGroups.findIndex(g => g.key === exerciseGroup.key);
+
   const menuItems = [
     {
       label: 'Finish Workout',
@@ -43,6 +55,16 @@ export default function ActiveWorkoutGroupNavbar() {
       handleClick: handleClearWorkout,
       sx: { color: 'error.main' }
     },
+    {
+      label: 'Next exercise',
+      disabled: currentIndex !== -1 && currentIndex >= workout.exerciseGroups.length - 1,
+      handleClick: () => handleChangeExercise(currentIndex, 1)
+    },
+    {
+      label: 'Prev exercise',
+      disabled: currentIndex < 1,
+      handleClick: () => handleChangeExercise(currentIndex, -1)
+    }
   ];
 
   return (
@@ -73,20 +95,11 @@ export default function ActiveWorkoutGroupNavbar() {
                 color="inherit"
                 aria-label="menu"
                 sx={{ ml: 1, mr: 2, p: 0 }}
-                onClick={() => setOpen(false)}
+                onClick={() => navigate('/training', { state: { slideDirection: 'right' } })}
               >
-
-                <Collapse
-                  orientation="horizontal"
-                  timeout={100}
-                  in={open}
-                  appear={true}
-                  onExited={() => navigate('/training')}
-                >
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <ArrowBackIcon />
-                  </Box>
-                </Collapse>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <ArrowBackIcon />
+                </Box>
               </IconButton>
               <ElapsedTimer startTime={workout.startTime} />
             </Stack>

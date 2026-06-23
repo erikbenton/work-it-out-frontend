@@ -1,11 +1,11 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
-import { Box, Stack, useMediaQuery, useTheme } from "@mui/material";
+import { Box, Slide, Stack, useMediaQuery, useTheme } from "@mui/material";
 import ActiveGroupExerciseCard from "./components/ActiveGroupExerciseCard";
 import ActiveGroupSetsCard from "./components/ActiveGroupSetsCard";
 import ActiveWorkoutGroupNavbar from "./components/ActiveWorkoutGroupNavbar";
 import ActiveExerciseHistoryList from "./components/ActiveExerciseHistoryList";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
 import type ActiveExerciseSet from "../../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../../types/completedExerciseSet";
@@ -13,11 +13,15 @@ import ActiveSetsInputs from "./components/ActiveSetsInputs";
 import ExerciseSelect from "../exercises/components/ExerciseSelect";
 import { parseDuration } from "../../utils/formatters";
 import NoWorkoutSelected from "./components/NoWorkoutSelected";
+import type { SlideDirection } from "../../types/slideDirection";
 
 export default function ActiveWorkoutGroup() {
   const { key } = useParams();
   const { workout, dispatch, saving, setTimerAppeared, setTimerOffset } = useActiveWorkout();
   const theme = useTheme();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const slideDirection: SlideDirection = (location.state?.slideDirection ?? 'up') as SlideDirection;
   const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const exerciseGroup = workout?.exerciseGroups.find(g => g.key === key);
   const currentIndex = exerciseGroup?.exerciseSets.findIndex(s => !s.completed) ?? -1;
@@ -25,6 +29,14 @@ export default function ActiveWorkoutGroup() {
   const [values, setValues] = useState<ActiveExerciseSet | undefined>(currentSet);
   const [replacingExercise, setReplacingExercise] = useState(false);
   const allSetsCompleted = currentIndex === -1;
+
+  // allows for resetting slide transition
+  useEffect(() => {
+    if (location.state) {
+      // Clear the history state by replacing it with null
+      navigate(location.pathname, { replace: true, state: null });
+    }
+  }, [location, navigate]);
 
   if (!workout) {
     return (<NoWorkoutSelected />);
@@ -113,32 +125,34 @@ export default function ActiveWorkoutGroup() {
           <LoadingIcon />
         </Box>
       }
-      <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}>
-        <ActiveWorkoutGroupNavbar />
-        <Box minHeight='100%'>
-          <Box pb="20vh">
-            <Stack spacing={1} sx={{ px: 1 }}>
-              <ActiveGroupExerciseCard
-                exerciseGroup={exerciseGroup}
-                setReplacingExercise={setReplacingExercise}
-              />
-              <ActiveGroupSetsCard
-                exerciseGroup={exerciseGroup}
-                onDoubleClick={copyCompletedSet}
-                setValues={setValues}
-                allSetsCompleted={allSetsCompleted}
-              />
-              <Suspense fallback={<LoadingIcon />}>
-                <ActiveExerciseHistoryList
-                  exerciseId={exerciseGroup.exerciseId}
-                  onDoubleClick={copyCompletedSet}
-                  currentIndex={currentIndex}
+      <Slide direction={slideDirection} in={true} key={exerciseGroup.key}>
+        <Box className="w-full md:w-2/3 h-full" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}>
+          <ActiveWorkoutGroupNavbar exerciseGroup={exerciseGroup} />
+          <Box minHeight='100%'>
+            <Box pb="20vh">
+              <Stack spacing={1} sx={{ px: 1 }}>
+                <ActiveGroupExerciseCard
+                  exerciseGroup={exerciseGroup}
+                  setReplacingExercise={setReplacingExercise}
                 />
-              </Suspense>
-            </Stack>
+                <ActiveGroupSetsCard
+                  exerciseGroup={exerciseGroup}
+                  onDoubleClick={copyCompletedSet}
+                  setValues={setValues}
+                  allSetsCompleted={allSetsCompleted}
+                />
+                <Suspense fallback={<LoadingIcon />}>
+                  <ActiveExerciseHistoryList
+                    exerciseId={exerciseGroup.exerciseId}
+                    onDoubleClick={copyCompletedSet}
+                    currentIndex={currentIndex}
+                  />
+                </Suspense>
+              </Stack>
+            </Box>
           </Box>
         </Box>
-      </Box>
+      </Slide>
       <ActiveSetsInputs
         exerciseGroup={exerciseGroup}
         values={values}

@@ -43,12 +43,15 @@ export default function ActiveSetsInputs({ exerciseGroup, values, setValues, all
   };
 
   const handleNextExercise = () => {
-    const nextGroup = workout?.exerciseGroups.find(g => (
-      g.exerciseSets.some(s => !s.completed) || (g.exerciseSets.length === 0 && g.key !== exerciseGroup.key)));
-    if (nextGroup) {
-      const nextSet = nextGroup.exerciseSets[0];
+    const nextGroupIndex = workout?.exerciseGroups.findIndex(g => (
+      g.exerciseSets.some(s => !s.completed) || (g.exerciseSets.length === 0 && g.key !== exerciseGroup.key))) ?? -1;
+    if (nextGroupIndex > -1) {
+      const currentIndex = workout?.exerciseGroups.findIndex(g => g.key === exerciseGroup.key) ?? 0;
+      const nextGroup = workout?.exerciseGroups[nextGroupIndex]
+      const nextSet = nextGroup?.exerciseSets[0];
+      const slideDirection = currentIndex > nextGroupIndex ? 'right' : 'left'
       setValues(nextSet);
-      navigate(`/training/${nextGroup.key}`);
+      navigate(`/training/${nextGroup?.key}`, { state: { slideDirection } });
     }
   }
 

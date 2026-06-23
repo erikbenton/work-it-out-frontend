@@ -1,0 +1,1 @@
+export type SlideDirection = "right" | "left" | "up" | "down" | undefined;
