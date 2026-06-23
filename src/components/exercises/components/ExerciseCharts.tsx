@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import { LineChart } from "@mui/x-charts/LineChart";
+import { LineChart, MarkElement, type MarkElementProps } from "@mui/x-charts/LineChart";
 import { chartDate, secondsToHhMmDd, timeYAxisFormatter } from "../../../utils/formatters";
 import { deepPurple, indigo, pink, red } from "@mui/material/colors";
 import Box from "@mui/material/Box";
@@ -132,6 +132,19 @@ type ChartProps = {
   historyPoints: ChartPoint[]
 }
 
+const SmallMark = (props: MarkElementProps) => {
+  // Access dataIndex or seriesId here if needed to make logic conditional
+  const { dataIndex, ...other } = props;
+
+  return (
+    <MarkElement
+      {...other}
+      dataIndex={dataIndex}
+      scale='0.01'
+    />
+  );
+};
+
 function LiftExerciseCharts({ historyPoints }: ChartProps) {
   const dates = historyPoints.map(({ date }) => new Date(date));
   const maxWeight = historyPoints.map(({ value }) => value ? calculateMaxWeight(value) : null);
@@ -166,6 +179,7 @@ function LiftExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        slots={{ mark: SmallMark }}
       />
       <LineChart
         series={[{
@@ -183,6 +197,7 @@ function LiftExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        slots={{ mark: SmallMark }}
       />
       <LineChart
         series={[{
@@ -200,6 +215,7 @@ function LiftExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        slots={{ mark: SmallMark }}
       />
     </Stack>
   );
@@ -239,6 +255,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        slots={{ mark: SmallMark }}
       />
       <LineChart
         series={[{
@@ -261,6 +278,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
             valueFormatter: timeYAxisFormatter
           }
         ]}
+        slots={{ mark: SmallMark }}
       />
       <LineChart
         series={[{
@@ -283,6 +301,7 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
             valueFormatter: timeYAxisFormatter
           }
         ]}
+        slots={{ mark: SmallMark }}
       />
     </Stack>
   );
@@ -321,6 +340,7 @@ function StretchExerciseCharts({ historyPoints }: ChartProps) {
           valueFormatter: (val) => chartDate(val),
           tickNumber: dates.length
         }]}
+        slots={{ mark: SmallMark }}
       />
       <LineChart
         series={[{
@@ -343,6 +363,7 @@ function StretchExerciseCharts({ historyPoints }: ChartProps) {
             valueFormatter: timeYAxisFormatter
           }
         ]}
+        slots={{ mark: SmallMark }}
       />
     </Stack>
   );
