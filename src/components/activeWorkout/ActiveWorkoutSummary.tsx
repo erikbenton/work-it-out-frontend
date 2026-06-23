@@ -32,7 +32,6 @@ export default function ActiveWorkoutSummary() {
   }, [location, navigate]);
 
   const handleClearWorkout = () => {
-    setTransitioning(false);
     dispatch({ type: 'endWorkout' });
   }
 
@@ -78,7 +77,13 @@ export default function ActiveWorkoutSummary() {
           <LoadingIcon />
         </Box>
       }
-      <Slide direction={slideDirection} in={true} unmountOnExit={true} timeout={{ enter: transitioning ? defaultTransitionTime : 0 }}>
+      <Slide
+        direction={slideDirection}
+        in={true}
+        unmountOnExit={true}
+        timeout={{ enter: transitioning ? defaultTransitionTime : 0 }}
+        onEntered={() => setTransitioning(false)}
+      >
         <Box className="w-full md:w-2/3" sx={{ mt: 2, opacity: saving ? 0.5 : undefined }} role='form'>
           <Stack spacing={1} sx={{ pb: 3, px: 1 }} >
             <Stack
