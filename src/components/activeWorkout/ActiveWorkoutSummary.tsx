@@ -20,7 +20,7 @@ export default function ActiveWorkoutSummary() {
   const location = useLocation();
   const theme = useTheme();
   const slideDirection: SlideDirection = location.state?.slideDirection as SlideDirection;
-  const [transitioning] = useState(slideDirection !== undefined);
+  const [transitioning, setTransitioning] = useState(Boolean(slideDirection));
   const defaultTransitionTime = theme.transitions.duration.enteringScreen;
 
   // allows for resetting slide transition
@@ -32,6 +32,7 @@ export default function ActiveWorkoutSummary() {
   }, [location, navigate]);
 
   const handleClearWorkout = () => {
+    setTransitioning(false);
     dispatch({ type: 'endWorkout' });
   }
 
