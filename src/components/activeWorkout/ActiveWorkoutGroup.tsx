@@ -41,7 +41,7 @@ export default function ActiveWorkoutGroup() {
       setValues(nextSet);
       const nextKey = nextGroup?.key;
       const slideDirection = nextGroupIndex > groupIndex ? 'left' : 'right';
-      navigate(`/training/${nextKey}`, { state: { slideDirection } });
+      navigate(`/training/${nextKey}`, { state: { slideDirection }, replace: true });
     }
   }
   const swipeHandlers = useSwipe({
