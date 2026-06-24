@@ -32,21 +32,21 @@ export default function ActiveWorkoutGroup() {
   const [replacingExercise, setReplacingExercise] = useState(false);
   const allSetsCompleted = currentIndex === -1;
   const workoutLength = (workout?.exerciseGroups.length ?? 0);
-  const swipeHandlers = useSwipe({
-    onSwipedLeft: () => {
-      if (exerciseGroup && groupIndex < workoutLength - 1) {
-        const nextKey = workout?.exerciseGroups[groupIndex + 1].key;
-        const slideDirection = 'left'
-        navigate(`/training/${nextKey}`, { state: { slideDirection } });
-      }
-    },
-    onSwipedRight: () => {
-      if (groupIndex > 0) {
-        const nextKey = workout?.exerciseGroups[groupIndex - 1].key;
-        const slideDirection = 'right'
-        navigate(`/training/${nextKey}`, { state: { slideDirection } });
-      }
+  const groupShift = (shift: number) => {
+    const nextGroupIndex = groupIndex + shift;
+    if (nextGroupIndex > -1 && nextGroupIndex < workoutLength) {
+      const nextGroup = workout?.exerciseGroups[nextGroupIndex];
+      const nextSetIndex = nextGroup?.exerciseSets.findIndex(s => !s.completed) ?? -1;
+      const nextSet = nextSetIndex > -1 ? nextGroup?.exerciseSets[nextSetIndex] : undefined;
+      setValues(nextSet);
+      const nextKey = nextGroup?.key;
+      const slideDirection = nextGroupIndex > groupIndex ? 'left' : 'right';
+      navigate(`/training/${nextKey}`, { state: { slideDirection } });
     }
+  }
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: () => groupShift(1),
+    onSwipedRight: () => groupShift(-1)
   });
 
   // allows for resetting slide transition
@@ -150,7 +150,7 @@ export default function ActiveWorkoutGroup() {
           sx={{ mt: 2, opacity: saving ? 0.5 : undefined }}
           {...swipeHandlers}
         >
-          <ActiveWorkoutGroupNavbar groupIndex={groupIndex} />
+          <ActiveWorkoutGroupNavbar groupIndex={groupIndex} groupShift={groupShift} />
           <Box minHeight='100%'>
             <Box pb="20vh">
               <Stack spacing={1} sx={{ px: 1 }}>

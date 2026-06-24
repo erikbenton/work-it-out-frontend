@@ -12,10 +12,11 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
 
 type Props = {
-  groupIndex: number
+  groupIndex: number,
+  groupShift: (shift: number) => void
 }
 
-export default function ActiveWorkoutGroupNavbar({ groupIndex }: Props) {
+export default function ActiveWorkoutGroupNavbar({ groupIndex, groupShift }: Props) {
   const navigate = useNavigate();
   const { workout, dispatch, handleFinishWorkout } = useActiveWorkout();
   const { services } = useCompletedWorkouts();
@@ -23,13 +24,6 @@ export default function ActiveWorkoutGroupNavbar({ groupIndex }: Props) {
   const handleClearWorkout = () => {
     navigate('/training');
     dispatch({ type: 'endWorkout' });
-  }
-
-  const handleChangeExercise = (currentIndex: number, shift: number) => {
-    const nextIndex = currentIndex + shift;
-    const nextKey = workout?.exerciseGroups[nextIndex].key;
-    const slideDirection = nextIndex > currentIndex ? 'left' : 'right'
-    navigate(`/training/${nextKey}`, { state: { slideDirection } });
   }
 
   if (workout === null) {
@@ -55,12 +49,12 @@ export default function ActiveWorkoutGroupNavbar({ groupIndex }: Props) {
     {
       label: 'Next exercise',
       disabled: groupIndex !== -1 && groupIndex >= workout.exerciseGroups.length - 1,
-      handleClick: () => handleChangeExercise(groupIndex, 1)
+      handleClick: () => groupShift(1)
     },
     {
       label: 'Prev exercise',
       disabled: groupIndex < 1,
-      handleClick: () => handleChangeExercise(groupIndex, -1)
+      handleClick: () => groupShift(-1)
     }
   ];
 
