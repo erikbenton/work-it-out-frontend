@@ -50,7 +50,8 @@ export default function App() {
                   flexDirection: 'column',
                   alignItems: 'center',
                   pt: '64px',
-                  position: 'relative'
+                  position: 'relative',
+                  overflowX: 'hidden'
                 }}
               >
                 <Navbar />
