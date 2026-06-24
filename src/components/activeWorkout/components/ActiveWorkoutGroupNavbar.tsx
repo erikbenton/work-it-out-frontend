@@ -86,7 +86,7 @@ export default function ActiveWorkoutGroupNavbar({ groupIndex, groupShift }: Pro
                 color="inherit"
                 aria-label="menu"
                 sx={{ ml: 1, mr: 2, p: 0 }}
-                onClick={() => navigate('/training', { state: { slideDirection: 'right' } })}
+                onClick={() => navigate('/training', { state: { slideDirection: 'right' }, replace: true })}
               >
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                   <ArrowBackIcon />
