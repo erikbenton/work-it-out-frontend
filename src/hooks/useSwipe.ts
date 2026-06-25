@@ -16,6 +16,7 @@ export default (input: SwipeInput): SwipeOutput => {
   const touchEndX = useRef<number | null>(null);
   const touchStartY = useRef<number | null>(null);
   const touchEndY = useRef<number | null>(null);
+  const touchStartTime = useRef<number | null>(null);
 
   // the required distance between touchStart and touchEnd to be detected as a swipe
   const minSwipeDistance = 50;
@@ -25,6 +26,7 @@ export default (input: SwipeInput): SwipeOutput => {
     touchEndY.current = null;
     touchStartX.current = e.targetTouches[0].clientX;
     touchStartY.current = e.targetTouches[0].clientY;
+    touchStartTime.current = Date.now();
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
@@ -33,9 +35,19 @@ export default (input: SwipeInput): SwipeOutput => {
   };
 
   const onTouchEnd = () => {
-    if (!touchStartX.current || !touchEndX.current || !touchStartY.current || !touchEndY.current) return;
+    if (!touchStartX.current
+      || !touchEndX.current
+      || !touchStartY.current
+      || !touchEndY.current
+      || !touchStartTime.current) return;
+
+    // swipe cannot last longer than 1 second
+    if (Date.now() - touchStartTime.current > 1000) {
+      return;
+    }
+
     const distanceX = touchStartX.current - touchEndX.current;
-    const distanceY = touchStartY.current - touchEndY.current;
+    const distanceY = Math.abs(touchStartY.current - touchEndY.current);
     const isLeftSwipe = distanceX > minSwipeDistance;
     const isRightSwipe = distanceX < -minSwipeDistance;
 
