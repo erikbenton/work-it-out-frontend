@@ -73,8 +73,18 @@ export default function RegisterLogin() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <Button type='submit' sx={{ textTransform: 'capitalize' }}>Login</Button>
-        <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password, resetState)}>New? Register</Button>
+        <Button
+          type='submit'
+          sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '33%', borderRadius: 5 }}
+        >
+          Login
+        </Button>
+        <Button
+          sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '33%', borderRadius: 5 }}
+          onClick={() => handleRegisterAttempt(email, password, resetState)}
+        >
+          New? Register
+        </Button>
       </Stack>
     </Box>
   )

@@ -5,7 +5,7 @@ import { useCompletedWorkouts } from "../../hooks/useCompletedWorkouts";
 import Stack from "@mui/material/Stack";
 import CompletedGroupCard from "./components/CompletedGroupCard";
 import CompletedWorkoutStats from "./components/CompletedWorkoutStats";
-import VerticalIconMenu from "../layout/VerticalIconMenu";
+import VerticalIconMenu, { type VerticalMenuItemProps } from "../layout/VerticalIconMenu";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
 import type Workout from "../../types/workout";
 import { populateKey } from "../../types/keyId";
@@ -13,6 +13,7 @@ import type ExerciseSet from "../../types/exerciseSet";
 import MuscleSummaryChart from "./components/MuscleSummaryChart";
 import { useState } from "react";
 import LoadingIcon from "../layout/LoadingIcon";
+import type CompletedWorkout from "../../types/completedWorkout";
 
 export default function CompletedWorkoutDetails() {
   const id = Number(useParams().id);
@@ -90,7 +91,7 @@ export default function CompletedWorkoutDetails() {
   ];
 
   return (
-    <Box className="w-full md:w-2/3 border-x border-blue-100" sx={{ mt: 1, px: 1, minHeight: `calc(100dvh - 64px - 8px)` }}>
+    <Box className="w-full md:w-2/3 border-x border-blue-100" sx={{ mt: 1, minHeight: `calc(100dvh - 64px - 8px)` }}>
       {deleting
         ? <>
           <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
@@ -98,33 +99,48 @@ export default function CompletedWorkoutDetails() {
           </Box>
         </>
         : <>
-          <Stack
-            direction="row"
-            spacing={0}
-            sx={{
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Typography variant="h5" component="h2">
-              {workout!.name}
-            </Typography>
-            <VerticalIconMenu
-              buttonId={"completed-workout-options"}
-              menuItems={menuItems}
-              size="medium"
-            />
-          </Stack>
-          <CompletedWorkoutStats workout={workout!} />
-          <Stack spacing={0}>
-            {workout!.completedExerciseGroups.map(group => (
-              <CompletedGroupCard key={group.id} group={group} />
-            ))}
-          </Stack>
-          <MuscleSummaryChart groups={workout!.completedExerciseGroups} />
+          <CompletedWorkoutInfo workout={workout} menuItems={menuItems} />
           <Box sx={{ height: '10vh', minHeight: '10vh' }}></Box>
         </>
       }
     </Box>
   );
+}
+
+type CompletedWorkoutProps = {
+  workout: CompletedWorkout | null,
+  menuItems?: VerticalMenuItemProps[]
+}
+
+function CompletedWorkoutInfo({ workout, menuItems }: CompletedWorkoutProps) {
+
+  return (
+    <>
+      <Stack
+        direction="row"
+        spacing={0}
+        sx={{
+          justifyContent: "space-between",
+          alignItems: "center",
+          px: 1
+        }}
+      >
+        <Typography variant="h5" component="h2">
+          {workout!.name}
+        </Typography>
+        <VerticalIconMenu
+          buttonId={"completed-workout-options"}
+          menuItems={menuItems ?? []}
+          size="medium"
+        />
+      </Stack>
+      <CompletedWorkoutStats workout={workout!} />
+      <Stack spacing={0}>
+        {workout!.completedExerciseGroups.map(group => (
+          <CompletedGroupCard key={group.id} group={group} />
+        ))}
+      </Stack>
+      <MuscleSummaryChart groups={workout!.completedExerciseGroups} />
+    </>
+  )
 }

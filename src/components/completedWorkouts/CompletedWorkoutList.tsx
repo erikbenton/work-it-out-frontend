@@ -76,6 +76,7 @@ export default function CompletedWorkoutList() {
               {monthYearWorkoutMap.get(monthYear)?.map(workout => (
                 <ListItem key={`item-${workout.id}`} disableGutters disablePadding>
                   <ListItemButton
+                    disableRipple
                     disableGutters
                     sx={{ p: 0, mb: 1 }}
                     onClick={() => navigate(`/history/${workout.id}`)}>
