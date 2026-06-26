@@ -32,7 +32,9 @@ export default function ExerciseDetails() {
   }
 
   return (
-    <Box className="relative w-full md:w-2/3 border-x border-blue-100 h-full" sx={{ mt: 1, bgcolor: 'background.paper' }}>
+    <Box className="relative w-full md:w-2/3 border-x border-blue-100 h-full"
+      sx={{ mt: 1, bgcolor: 'background.paper', minHeight: `calc(100dvh - 64px - 8px)` }}
+    >
       <ExerciseDetailsTitle exercise={exercise} />
       <Tabs value={activeTab}
         onChange={handleChange}
