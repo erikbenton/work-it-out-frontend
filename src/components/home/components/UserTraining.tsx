@@ -84,7 +84,7 @@ type CardProps = {
   program: WorkoutProgram
 }
 
-function ProgramWorkoutsCard({ program }: CardProps) {
+export function ProgramWorkoutsCard({ program }: CardProps) {
   const { services: workoutServices } = useWorkouts();
   const [isExpanded, setIsExpanded] = useState(false);
   const navigate = useNavigate();
@@ -154,7 +154,7 @@ function ProgramWorkoutItem({ workout }: ItemProps) {
 
   const handleStartWorkout = () => {
     dispatch({ type: 'initializeWorkout', payload: { initialWorkout: workout } });
-    navigate('/training');
+    navigate('/training', { state: { slideDirection: "left" } });
   }
 
   return (

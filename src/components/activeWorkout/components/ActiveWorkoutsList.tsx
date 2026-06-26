@@ -1,11 +1,11 @@
 import Button from '@mui/material/Button';
-import StartWorkoutCard from '../../workouts/components/StartWorkoutCard';
-import { useWorkouts } from '../../../hooks/useWorkouts';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import useActiveWorkout from '../../../hooks/useActiveWorkout';
 import { useNavigate } from 'react-router-dom';
+import { usePrograms } from '../../../hooks/usePrograms';
+import { ProgramWorkoutsCard } from '../../home/components/UserTraining';
 
 type Props = {
   titleVariant?: ('h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'),
@@ -14,7 +14,7 @@ type Props = {
 }
 
 export default function ActiveWorkoutsList({ titleVariant = 'h4', titleComponent = 'h2', titlePaddingX = 0 }: Props) {
-  const { workouts } = useWorkouts();
+  const { programs } = usePrograms();
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
 
@@ -44,8 +44,8 @@ export default function ActiveWorkoutsList({ titleVariant = 'h4', titleComponent
         </Button>
       </Stack>
       <Stack spacing={1}>
-        {workouts.map((workout) => (
-          <StartWorkoutCard key={workout.id} workout={workout} />
+        {programs.map((program) => (
+          <ProgramWorkoutsCard key={program.id} program={program} />
         ))}
       </Stack>
       <Box sx={{ height: '10vh' }}></Box>
