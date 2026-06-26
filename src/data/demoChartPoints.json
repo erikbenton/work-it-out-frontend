@@ -1,0 +1,459 @@
+[
+  {
+    "date": "3/13/26",
+    "value": {
+      "id": 1,
+      "note": "Try to go heavy. If you can do more than 5 reps on a work set, increase the total weight by 5lbs.",
+      "comment": null,
+      "restTime": null,
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-13T14:37:03.947",
+      "completedExerciseSets": [
+        {
+          "id": 1,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 10,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-03-13T14:37:03.953",
+          "completedExerciseGroupId": 1
+        },
+        {
+          "id": 2,
+          "reps": 8,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 8,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 1,
+          "createdAt": "2026-03-13T14:37:03.957",
+          "completedExerciseGroupId": 1
+        },
+        {
+          "id": 3,
+          "reps": 5,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 2,
+          "createdAt": "2026-03-13T14:37:03.957",
+          "completedExerciseGroupId": 1
+        },
+        {
+          "id": 4,
+          "reps": 5,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 3,
+          "createdAt": "2026-03-13T14:37:03.957",
+          "completedExerciseGroupId": 1
+        },
+        {
+          "id": 5,
+          "reps": 5,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 4,
+          "createdAt": "2026-03-13T14:37:03.96",
+          "completedExerciseGroupId": 1
+        }
+      ],
+      "completedWorkoutId": 1
+    }
+  },
+  {
+    "date": "3/14/26",
+    "value": null
+  },
+  {
+    "date": "3/15/26",
+    "value": {
+      "id": 7,
+      "note": "Try to go heavy. If you can do more than 5 reps on a work set, increase the total weight by 5lbs.",
+      "comment": null,
+      "restTime": "00:03:00",
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-15T09:35:01.183",
+      "completedExerciseSets": [
+        {
+          "id": 14,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 10,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-03-15T09:35:01.193",
+          "completedExerciseGroupId": 7
+        },
+        {
+          "id": 15,
+          "reps": 8,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 8,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 1,
+          "createdAt": "2026-03-15T09:35:01.193",
+          "completedExerciseGroupId": 7
+        },
+        {
+          "id": 16,
+          "reps": 6,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 2,
+          "createdAt": "2026-03-15T09:35:01.193",
+          "completedExerciseGroupId": 7
+        },
+        {
+          "id": 17,
+          "reps": 5,
+          "weight": 95,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 3,
+          "createdAt": "2026-03-15T09:35:01.197",
+          "completedExerciseGroupId": 7
+        },
+        {
+          "id": 18,
+          "reps": 5,
+          "weight": 95,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 4,
+          "createdAt": "2026-03-15T09:35:01.197",
+          "completedExerciseGroupId": 7
+        }
+      ],
+      "completedWorkoutId": 4
+    }
+  },
+  {
+    "date": "3/16/26",
+    "value": null
+  },
+  {
+    "date": "3/17/26",
+    "value": null
+  },
+  {
+    "date": "3/18/26",
+    "value": {
+      "id": 22,
+      "note": "Try to go heavy. If you can do more than 5 reps on a work set, increase the total weight by 5lbs.",
+      "comment": null,
+      "restTime": "00:03:00",
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-18T14:25:20.263",
+      "completedExerciseSets": [
+        {
+          "id": 38,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 10,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-03-18T14:25:20.273",
+          "completedExerciseGroupId": 22
+        },
+        {
+          "id": 39,
+          "reps": 8,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": 8,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 1,
+          "createdAt": "2026-03-18T14:25:20.277",
+          "completedExerciseGroupId": 22
+        },
+        {
+          "id": 40,
+          "reps": 6,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 2,
+          "createdAt": "2026-03-18T14:25:20.277",
+          "completedExerciseGroupId": 22
+        },
+        {
+          "id": 41,
+          "reps": 6,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 3,
+          "createdAt": "2026-03-18T14:25:20.277",
+          "completedExerciseGroupId": 22
+        },
+        {
+          "id": 42,
+          "reps": 6,
+          "weight": 90,
+          "duration": null,
+          "distance": null,
+          "minReps": 4,
+          "maxReps": 6,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 4,
+          "createdAt": "2026-03-18T14:25:20.28",
+          "completedExerciseGroupId": 22
+        }
+      ],
+      "completedWorkoutId": 18
+    }
+  },
+  {
+    "date": "3/19/26",
+    "value": null
+  },
+  {
+    "date": "3/20/26",
+    "value": null
+  },
+  {
+    "date": "3/21/26",
+    "value": null
+  },
+  {
+    "date": "3/22/26",
+    "value": null
+  },
+  {
+    "date": "3/23/26",
+    "value": null
+  },
+  {
+    "date": "3/24/26",
+    "value": {
+      "id": 26,
+      "note": null,
+      "comment": null,
+      "restTime": null,
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-24T17:54:28.65",
+      "completedExerciseSets": [
+        {
+          "id": 51,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": null,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-03-24T17:54:28.657",
+          "completedExerciseGroupId": 26
+        }
+      ],
+      "completedWorkoutId": 20
+    }
+  },
+  {
+    "date": "3/25/26",
+    "value": {
+      "id": 29,
+      "note": null,
+      "comment": null,
+      "restTime": null,
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-25T14:19:53.157",
+      "completedExerciseSets": [
+        {
+          "id": 56,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": null,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 4,
+          "sort": 0,
+          "createdAt": "2026-03-25T14:19:53.163",
+          "completedExerciseGroupId": 29
+        }
+      ],
+      "completedWorkoutId": 22
+    }
+  },
+  {
+    "date": "3/26/26",
+    "value": null
+  },
+  {
+    "date": "3/27/26",
+    "value": null
+  },
+  {
+    "date": "3/28/26",
+    "value": {
+      "id": 36,
+      "note": null,
+      "comment": null,
+      "restTime": null,
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-03-28T16:29:26.15",
+      "completedExerciseSets": [
+        {
+          "id": 74,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": null,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-03-28T16:29:26.16",
+          "completedExerciseGroupId": 36
+        }
+      ],
+      "completedWorkoutId": 26
+    }
+  },
+  {
+    "date": "3/29/26",
+    "value": null
+  },
+  {
+    "date": "3/30/26",
+    "value": null
+  },
+  {
+    "date": "3/31/26",
+    "value": null
+  },
+  {
+    "date": "4/1/26",
+    "value": {
+      "id": 40,
+      "note": null,
+      "comment": null,
+      "restTime": "00:02:00",
+      "sort": 0,
+      "exerciseId": 1,
+      "createdAt": "2026-04-01T15:13:58.913",
+      "completedExerciseSets": [
+        {
+          "id": 78,
+          "reps": 10,
+          "weight": 45,
+          "duration": null,
+          "distance": null,
+          "minReps": null,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 1,
+          "sort": 0,
+          "createdAt": "2026-04-01T15:13:58.92",
+          "completedExerciseGroupId": 40
+        },
+        {
+          "id": 79,
+          "reps": 5,
+          "weight": 135,
+          "duration": null,
+          "distance": null,
+          "minReps": null,
+          "maxReps": null,
+          "targetDuration": null,
+          "targetDistance": null,
+          "setTagId": 2,
+          "sort": 1,
+          "createdAt": "2026-04-01T15:13:58.92",
+          "completedExerciseGroupId": 40
+        }
+      ],
+      "completedWorkoutId": 28
+    }
+  }
+]

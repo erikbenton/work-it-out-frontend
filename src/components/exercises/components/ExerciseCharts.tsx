@@ -145,7 +145,7 @@ const SmallMark = (props: MarkElementProps) => {
   );
 };
 
-function LiftExerciseCharts({ historyPoints }: ChartProps) {
+export function LiftExerciseCharts({ historyPoints }: ChartProps) {
   const dates = historyPoints.map(({ date }) => new Date(date));
   const maxWeight = historyPoints.map(({ value }) => value ? calculateMaxWeight(value) : null);
   const oneRepMax = historyPoints.map(({ value }) => value ? calculateEstimatedOneRepMax(value) : null);
