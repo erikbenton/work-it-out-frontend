@@ -20,60 +20,30 @@ export function UserInfoProvider({ children }: Props) {
   const handleRegisterAttempt = (
     email: string,
     password: string,
-    onSuccessCallBack?: () => void,
-    onErrorCallBack?: () => void
+    options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>
   ) => {
     setLoading(true);
     setUserMessages([]);
     services.registerUser({ email, password }, {
-      onSuccess: () => {
-        if (onSuccessCallBack) {
-          onSuccessCallBack();
+      ...options,
+      onError: (error, variables, result, context) => {
+        if (options && options.onError) {
+          options.onError(error, variables, result, context);
         }
-      },
-      onError: (error) => {
         if (error instanceof AuthenticationError) {
           setUserMessages(error.userMessages);
         }
-        if (onErrorCallBack) {
-          onErrorCallBack();
-        }
       },
-      onSettled: () => {
+      onSettled: (data, error, variables, result, context) => {
+        if (options && options.onSettled) {
+          options.onSettled(data, error, variables, result, context);
+        }
         setLoading(false);
       }
     });
   }
 
   const handleLoginAttempt = (
-    email: string,
-    password: string,
-    onSuccessCallBack?: () => void,
-    onErrorCallBack?: () => void
-  ) => {
-    setLoading(true);
-    setUserMessages([]);
-    services.loginUser({ email, password }, {
-      onSuccess: () => {
-        if (onSuccessCallBack) {
-          onSuccessCallBack();
-        }
-      },
-      onError: (error) => {
-        if (error instanceof AuthenticationError) {
-          setUserMessages(error.userMessages);
-        }
-        if (onErrorCallBack) {
-          onErrorCallBack();
-        }
-      },
-      onSettled: () => {
-        setLoading(false);
-      }
-    });
-  }
-
-  const handleLoginAttempt2 = (
     email: string,
     password: string,
     options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>
@@ -83,11 +53,11 @@ export function UserInfoProvider({ children }: Props) {
     services.loginUser({ email, password }, {
       ...options,
       onError: (error, variables, result, context) => {
-        if (error instanceof AuthenticationError) {
-          setUserMessages(error.userMessages);
-        }
         if (options && options.onError) {
           options.onError(error, variables, result, context);
+        }
+        if (error instanceof AuthenticationError) {
+          setUserMessages(error.userMessages);
         }
       },
       onSettled: (data, error, variables, result, context) => {
@@ -100,27 +70,30 @@ export function UserInfoProvider({ children }: Props) {
   }
 
   const handleLogoutAttempt = (
-    onSuccessCallBack?: () => void,
-    onErrorCallBack?: () => void
+    options?: MutateOptions<boolean, Error, void, unknown>
   ) => {
     setLoading(true);
     setUserMessages([]);
     services.logoutUser(undefined, {
-      onSuccess: () => {
-        navigate("/");
-        if (onSuccessCallBack) {
-          onSuccessCallBack();
+      ...options,
+      onSuccess: (data, variables, result, context) => {
+        if (options && options.onSuccess) {
+          options.onSuccess(data, variables, result, context);
         }
+        navigate("/");
       },
-      onError: (error?) => {
+      onError: (error, variables, result, context) => {
+        if (options && options.onError) {
+          options.onError(error, variables, result, context);
+        }
         if (error instanceof AuthenticationError) {
           setUserMessages(error.userMessages);
         }
-        if (onErrorCallBack) {
-          onErrorCallBack();
-        }
       },
-      onSettled: () => {
+      onSettled: (data, error, variables, result, context) => {
+        if (options && options.onSettled) {
+          options.onSettled(data, error, variables, result, context);
+        }
         setLoading(false);
       }
     });
@@ -135,7 +108,6 @@ export function UserInfoProvider({ children }: Props) {
     setUserMessages,
     handleRegisterAttempt,
     handleLoginAttempt,
-    handleLoginAttempt2,
     handleLogoutAttempt
   };
 

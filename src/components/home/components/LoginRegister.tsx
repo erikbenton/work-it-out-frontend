@@ -13,16 +13,16 @@ export default function LoginRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const resetState = () => {
-    setEmail('')
-    setPassword('');
-  }
+  // const resetState = () => {
+  //   setEmail('')
+  //   setPassword('');
+  // }
 
   const handleLoginClick = (event?: React.SyntheticEvent<HTMLFormElement>) => {
     if (event) {
       event.preventDefault();
     }
-    handleLoginAttempt(email, password, resetState);
+    handleLoginAttempt(email, password);
   }
 
   if (loading) {
@@ -64,7 +64,7 @@ export default function LoginRegister() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type='submit' sx={{ textTransform: 'capitalize' }}>Login</Button>
-        <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password, resetState)}>New? Register</Button>
+        <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password)}>New? Register</Button>
       </Stack>
     </>
   )

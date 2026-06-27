@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function RegisterLogin() {
-  const { loading, userMessages, setUserMessages, handleLoginAttempt2, handleRegisterAttempt } = useUser();
+  const { loading, userMessages, setUserMessages, handleLoginAttempt, handleRegisterAttempt } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [redirecting, setRedirecting] = useState(false)
@@ -26,7 +26,20 @@ export default function RegisterLogin() {
     if (event) {
       event.preventDefault();
     }
-    handleLoginAttempt2(email, password, {
+    handleLoginAttempt(email, password, {
+      onSuccess: () => {
+        setRedirecting(true);
+        resetState();
+        navigate('/');
+      }
+    });
+  }
+
+  const handleRegisterClick = (event?: React.SyntheticEvent<EventTarget>) => {
+    if (event) {
+      event.preventDefault();
+    }
+    handleRegisterAttempt(email, password, {
       onSuccess: () => {
         setRedirecting(true);
         resetState();
@@ -81,7 +94,7 @@ export default function RegisterLogin() {
         </Button>
         <Button
           sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '33%', borderRadius: 5 }}
-          onClick={() => handleRegisterAttempt(email, password, resetState)}
+          onClick={(e) => handleRegisterClick(e)}
         >
           New? Register
         </Button>

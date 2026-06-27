@@ -39,7 +39,7 @@ export default function NavbarDrawer({ links, handleClose, open }: Props) {
     <Drawer open={open} onClose={handleClose}>
       <Box sx={{ width: 220, height: '100%', bgcolor: 'white' }} role="presentation">
         <Suspense fallback={<LoadingIcon />}>
-          <DrawerUserMenu />
+          <DrawerUserMenu handleClose={handleClose} />
         </Suspense>
         <Divider sx={{ pt: 1, mx: 1 }} />
         <List onClick={handleClose}>

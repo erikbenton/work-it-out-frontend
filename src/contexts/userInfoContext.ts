@@ -12,10 +12,9 @@ export type UserInfoContext = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   userMessages: string[],
   setUserMessages: React.Dispatch<React.SetStateAction<string[]>>,
-  handleRegisterAttempt: (email: string, password: string, onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void,
-  handleLoginAttempt: (email: string, password: string, onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void
-  handleLoginAttempt2: (email: string, password: string, options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>) => void
-  handleLogoutAttempt: (onSuccessCallBack?: (() => void), onErrorCallBack?: (() => void)) => void
+  handleRegisterAttempt: (email: string, password: string, options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>) => void,
+  handleLoginAttempt: (email: string, password: string, options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>) => void
+  handleLogoutAttempt: (options?: MutateOptions<boolean, Error, void, unknown>) => void
 }
 
 const UserInfoContext = createContext<UserInfoContext | null>(null);

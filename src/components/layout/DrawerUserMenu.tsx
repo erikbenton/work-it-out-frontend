@@ -9,8 +9,13 @@ import { grey } from "@mui/material/colors";
 import LoadingIcon from "./LoadingIcon";
 import Alert from "@mui/material/Alert";
 import UserErrorList from "./UserErrorList";
+import { useNavigate } from "react-router-dom";
 
-export default function DrawerUserMenu() {
+type Props = {
+  handleClose: () => void
+}
+
+export default function DrawerUserMenu({ handleClose }: Props) {
   const {
     userInfo,
     loading,
@@ -18,10 +23,10 @@ export default function DrawerUserMenu() {
     setUserMessages,
     handleLoginAttempt,
     handleLogoutAttempt,
-    handleRegisterAttempt
   } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const resetState = () => {
     setEmail('');
@@ -37,7 +42,19 @@ export default function DrawerUserMenu() {
     if (event) {
       event.preventDefault();
     }
-    handleLoginAttempt(email, password, resetState);
+    handleLoginAttempt(email, password, {
+      onSuccess: () => {
+        resetState();
+      }
+    });
+  }
+
+  const handleRegister = (event?: React.SyntheticEvent<EventTarget>) => {
+    if (event) {
+      event.preventDefault();
+    }
+    handleClose();
+    navigate('/register');
   }
 
   return (
@@ -84,14 +101,13 @@ export default function DrawerUserMenu() {
                 variant="contained"
                 sx={{ borderRadius: 5, textTransform: 'capitalize' }}
                 type="submit"
-                onClick={() => handleLoginAttempt(email, password, resetState)}
               >
                 Login
               </Button>
               <Button
                 variant="contained"
                 sx={{ bgcolor: grey[500], borderRadius: 5, textTransform: 'capitalize' }}
-                onClick={() => handleRegisterAttempt(email, password, resetState)}
+                onClick={(e) => handleRegister(e)}
               >
                 Register
               </Button>
