@@ -16,7 +16,7 @@ import demoChartPoints from "../../data/demoChartPoints.json";
 import { LiftExerciseCharts } from '../exercises/components/ExerciseCharts';
 
 export default function HomePage() {
-  const { userInfo, loading: userLoading } = useUser();
+  const { user, loading: userLoading } = useUser();
   const { workout } = useActiveWorkout();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ export default function HomePage() {
     <Box className="w-full md:w-4/5 px-3" sx={{ pb: workout ? '10vh' : undefined }}>
       {userLoading
         ? <LoadingIcon />
-        : userInfo.isLoggedIn
+        : user.isLoggedIn
           ? <>
             <HomePageTitle />
             <Stack spacing={2} sx={{ alignItems: 'center' }}>

@@ -5,7 +5,7 @@ import useUser from "../../../hooks/useUser";
 
 
 export default function HomePageTitle() {
-  const { userInfo, handleLogoutAttempt } = useUser();
+  const { user, handleLogoutAttempt } = useUser();
 
   return (
     <Stack
@@ -20,7 +20,7 @@ export default function HomePageTitle() {
       <Typography variant="h4" component="h2" sx={{ cursor: 'pointer' }}>
         Work-It-Out
       </Typography>
-      {userInfo.isLoggedIn &&
+      {user.isLoggedIn &&
         <Button
           onClick={() => handleLogoutAttempt()}
           sx={{ borderRadius: 5, textTransform: 'capitalize' }}

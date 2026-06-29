@@ -1,4 +1,6 @@
 export default interface UserInfo {
-  isLoggedIn: boolean,
-  email?: string
+  username?: string,
+  bodyWeight?: number,
+  weightUnit: ('lb | kg'),
+  distanceUnit: ('mi' | 'km')
 }

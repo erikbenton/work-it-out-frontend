@@ -1,5 +1,8 @@
+import type UserInfo from "./userInfo";
+
 export default interface AuthenticationResponse {
   succeeded: boolean,
   errors?: string[],
-  userName?: string
+  email: string,
+  userInfo?: UserInfo
 }

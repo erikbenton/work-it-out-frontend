@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient, useSuspenseQuery, type UseMutateFunction } from "@tanstack/react-query";
-import type UserInfo from "../types/userInfo";
 import { getUserInfo, login, logout, register } from "../requests/authentication";
 import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 import cacheTimes from "../utils/cacheTimes";
+import type LoginInfo from "../types/loginInfo";
 
 export const queryKey = 'userInfo';
 
@@ -15,7 +15,7 @@ export type UserServices = {
 
 export default function useUserInfo() {
   const queryClient = useQueryClient();
-  const { data: userInfo, isError } = useSuspenseQuery<UserInfo>({
+  const { data: userInfo, isError } = useSuspenseQuery<LoginInfo>({
     queryKey: [queryKey],
     staleTime: cacheTimes.day,
     gcTime: cacheTimes.day * 2,
@@ -38,7 +38,8 @@ export default function useUserInfo() {
       try {
         queryClient.cancelQueries();
         queryClient.clear();
-        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
+        const { succeeded, email, userInfo } = response;
+        const user: LoginInfo = { isLoggedIn: succeeded, email, userInfo };
         queryClient.setQueryData([queryKey], user);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -52,7 +53,8 @@ export default function useUserInfo() {
       try {
         queryClient.cancelQueries();
         queryClient.clear();
-        const user: UserInfo = { isLoggedIn: response.succeeded, email: response.userName };
+        const { succeeded, email, userInfo } = response;
+        const user: LoginInfo = { isLoggedIn: succeeded, email, userInfo: userInfo };
         queryClient.setQueryData([queryKey], user);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -64,7 +66,7 @@ export default function useUserInfo() {
     mutationFn: async () => await logout(),
     onSuccess: () => {
       try {
-        const user: UserInfo = { isLoggedIn: false, email: undefined };
+        const user: LoginInfo = { isLoggedIn: false, email: undefined, userInfo: undefined };
         queryClient.setQueryData([queryKey], user);
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });

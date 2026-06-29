@@ -17,7 +17,7 @@ type Props = {
 
 export default function DrawerUserMenu({ handleClose }: Props) {
   const {
-    userInfo,
+    user,
     loading,
     userMessages,
     setUserMessages,
@@ -57,6 +57,8 @@ export default function DrawerUserMenu({ handleClose }: Props) {
     navigate('/register');
   }
 
+  const username = user.userInfo?.username ?? user.email?.split('@')[0] ?? '';
+
   return (
     <Box sx={{ p: 1 }}>
       <Typography variant="h4" component="h2">
@@ -64,9 +66,9 @@ export default function DrawerUserMenu({ handleClose }: Props) {
       </Typography>
       {loading
         ? <LoadingIcon />
-        : userInfo.isLoggedIn
+        : user.isLoggedIn
           ? <Stack spacing={1} sx={{ pt: 1 }}>
-            <Typography>Hello, {userInfo.email!.split('@')[0]}</Typography>
+            <Typography>Hello, {username}</Typography>
             <Button
               variant="contained"
               sx={{ borderRadius: 5, textTransform: 'capitalize' }}

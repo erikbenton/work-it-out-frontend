@@ -9,7 +9,7 @@ import ActiveWorkoutProvider from './contexts/ActiveWorkoutProvider';
 import { UserInfoProvider } from './contexts/UserInfoProvider';
 import Router from './Routes';
 import { queryKey as userQueryKey } from './hooks/useUserInfo';
-import type UserInfo from './types/userInfo';
+import type LoginInfo from './types/loginInfo';
 
 interface ErrorDetailsShort {
   reason: "imperative-api";
@@ -29,7 +29,7 @@ export default function App() {
     queryClient.cancelQueries();
     if (details && details.reason === "imperative-api") {
       if (details.args[0] === 'reload') {
-        const user: UserInfo = { isLoggedIn: false, email: undefined };
+        const user: LoginInfo = { isLoggedIn: false, email: undefined, userInfo: undefined };
         queryClient.setQueryData([userQueryKey], user);
       }
     }

@@ -60,7 +60,7 @@ const pages: PageLink[] = [
 ];
 
 export default function Navbar() {
-  const { userInfo } = useUser();
+  const { user } = useUser();
   const { workout: activeWorkout, saving } = useActiveWorkout();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
 
@@ -72,7 +72,7 @@ export default function Navbar() {
     setAnchorElNav(null);
   };
 
-  const navbarLinks = userInfo.isLoggedIn ? pages : [pages[0]];
+  const navbarLinks = user.isLoggedIn ? pages : [pages[0]];
 
   return (
     <AppBar position="fixed">

@@ -12,7 +12,7 @@ type Props = {
 };
 
 export function UserInfoProvider({ children }: Props) {
-  const { userInfo, services } = useUserInfo();
+  const { userInfo: user, services } = useUserInfo();
   const [loading, setLoading] = useState(false);
   const [userMessages, setUserMessages] = useState<string[]>([]);
   const navigate = useNavigate();
@@ -100,7 +100,7 @@ export function UserInfoProvider({ children }: Props) {
   }
 
   const userInfoContext = {
-    userInfo,
+    user,
     services,
     loading,
     setLoading,

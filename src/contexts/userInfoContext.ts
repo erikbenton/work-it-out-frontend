@@ -1,12 +1,12 @@
 import { createContext } from "react";
-import type UserInfo from "../types/userInfo";
+import type LoginInfo from "../types/loginInfo";
 import type { UserServices } from "../hooks/useUserInfo";
 import type { MutateOptions } from "@tanstack/react-query";
 import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 
 export type UserInfoContext = {
-  userInfo: UserInfo,
+  user: LoginInfo,
   services: UserServices,
   loading: boolean,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
