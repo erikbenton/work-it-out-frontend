@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import type { MutateOptions } from "@tanstack/react-query";
 import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
+import type RegistrationRequest from "../types/registrationRequest";
+import type UserInfo from "../types/userInfo";
 
 type Props = {
   children: ReactNode
@@ -20,11 +22,12 @@ export function UserInfoProvider({ children }: Props) {
   const handleRegisterAttempt = (
     email: string,
     password: string,
-    options?: MutateOptions<AuthenticationResponse, Error, AuthenticationRequest, unknown>
+    userInfo: UserInfo,
+    options?: MutateOptions<AuthenticationResponse, Error, RegistrationRequest, unknown>
   ) => {
     setLoading(true);
     setUserMessages([]);
-    services.registerUser({ email, password }, {
+    services.registerUser({ email, password, ...userInfo }, {
       ...options,
       onError: (error, variables, result, context) => {
         if (options && options.onError) {

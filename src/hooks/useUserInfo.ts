@@ -4,11 +4,12 @@ import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 import cacheTimes from "../utils/cacheTimes";
 import type LoginInfo from "../types/loginInfo";
+import type RegistrationRequest from "../types/registrationRequest";
 
 export const queryKey = 'userInfo';
 
 export type UserServices = {
-  registerUser: UseMutateFunction<AuthenticationResponse, Error, AuthenticationRequest, unknown>,
+  registerUser: UseMutateFunction<AuthenticationResponse, Error, RegistrationRequest, unknown>,
   loginUser: UseMutateFunction<AuthenticationResponse, Error, AuthenticationRequest, unknown>,
   logoutUser: UseMutateFunction<boolean, Error, void, unknown>
 }
@@ -22,7 +23,7 @@ export default function useUserInfo() {
     queryFn: getUserInfo
   });
 
-  const registering = async (request: AuthenticationRequest): Promise<AuthenticationResponse> => {
+  const registering = async (request: RegistrationRequest): Promise<AuthenticationResponse> => {
     queryClient.invalidateQueries({ queryKey: [queryKey] });
     return await register(request);
   }
@@ -33,7 +34,7 @@ export default function useUserInfo() {
   }
 
   const registerUser = useMutation({
-    mutationFn: async (request: AuthenticationRequest) => await registering(request),
+    mutationFn: async (request: RegistrationRequest) => await registering(request),
     onSuccess: (response: AuthenticationResponse) => {
       try {
         queryClient.cancelQueries();

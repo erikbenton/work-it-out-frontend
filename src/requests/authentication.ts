@@ -1,10 +1,11 @@
-import type RegistrationRequest from "../types/authenticationRequest";
+import type AuthenticationRequest from "../types/authenticationRequest";
 import type AuthenticationResponse from "../types/authenticationResponse";
 import { baseUrl } from "../utils/config";
 import { devConsole } from "../utils/debugLogger";
 import AuthenticationError from "../types/authenticationError";
 import type ErrorMessages from "../types/errorMessages";
 import type LoginInfo from "../types/loginInfo";
+import type RegistrationRequest from "../types/registrationRequest";
 
 const usernameErrorRegex = /Username '.*' is already taken./;
 
@@ -27,7 +28,7 @@ export async function register(request: RegistrationRequest): Promise<Authentica
   return (await response.json()) as AuthenticationResponse;
 }
 
-export async function login(request: RegistrationRequest): Promise<AuthenticationResponse> {
+export async function login(request: AuthenticationRequest): Promise<AuthenticationResponse> {
   devConsole('login', Date.now());
   const config = {
     method: 'POST',

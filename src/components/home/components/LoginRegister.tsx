@@ -9,7 +9,7 @@ import UserErrorList from "../../layout/UserErrorList";
 
 
 export default function LoginRegister() {
-  const { loading, userMessages, setUserMessages, handleLoginAttempt, handleRegisterAttempt } = useUser();
+  const { loading, userMessages, setUserMessages, handleLoginAttempt } = useUser();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -64,7 +64,7 @@ export default function LoginRegister() {
           onChange={(e) => setPassword(e.target.value)}
         />
         <Button type='submit' sx={{ textTransform: 'capitalize' }}>Login</Button>
-        <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password)}>New? Register</Button>
+        {/* <Button sx={{ textTransform: 'capitalize' }} onClick={() => handleRegisterAttempt(email, password)}>New? Register</Button> */}
       </Stack>
     </>
   )
