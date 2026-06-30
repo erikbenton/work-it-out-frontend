@@ -1,0 +1,178 @@
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormLabel from "@mui/material/FormLabel";
+import Radio from "@mui/material/Radio";
+import RadioGroup from "@mui/material/RadioGroup";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import { weightUnits, type WeightUnit } from "../../types/weightUnit";
+import { distanceUnits, type DistanceUnit } from "../../types/distanceUnit";
+import useUser from "../../hooks/useUser";
+import { useState } from "react";
+import Box from "@mui/material/Box";
+import { Collapse } from "@mui/material";
+import LoadingIcon from "../layout/LoadingIcon";
+
+export default function AccountsPage() {
+  const { user, services } = useUser();
+  const [username, setUsername] = useState(user.userInfo?.username);
+  const [bodyWeight, setBodyWeight] = useState<number | undefined>(user.userInfo?.bodyWeight);
+  const [weightUnit, setWeightUnit] = useState<WeightUnit>(user.userInfo?.weightUnit ?? weightUnits[0]);
+  const [distanceUnit, setDistanceUnit] = useState<DistanceUnit>(user.userInfo?.distanceUnit ?? distanceUnits[0]);
+  const [editing, setEditing] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  const cancelEdits = () => {
+    setEditing(false);
+    setUsername(user.userInfo?.username);
+    setBodyWeight(user.userInfo?.bodyWeight);
+    setWeightUnit(user.userInfo?.weightUnit ?? weightUnits[0]);
+    setDistanceUnit(user.userInfo?.distanceUnit ?? distanceUnits[0]);
+  }
+
+  const submitUserInfo = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    if (editing) {
+      const newUserInfo = {
+        weightUnit,
+        distanceUnit,
+        bodyWeight,
+        username: username === '' ? undefined : username
+      }
+      setSaving(true);
+      services.updateUser(newUserInfo, {
+        onSuccess: (userInfo) => {
+          setUsername(userInfo.username);
+          setBodyWeight(userInfo.bodyWeight);
+          setWeightUnit(userInfo.weightUnit);
+          setDistanceUnit(userInfo.distanceUnit);
+          setEditing(false);
+        },
+        onSettled: () => {
+          setSaving(false);
+        }
+      });
+    }
+  }
+
+  const handleBodyWeight = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value === '') {
+      setBodyWeight(undefined);
+    }
+    const newWeight = Number(event.target.value);
+    if (newWeight > 0) {
+      setBodyWeight(newWeight);
+    }
+  }
+
+  const handleWeightUnit = (_event: React.ChangeEvent<HTMLInputElement, Element>, newUnit: string) => {
+    if (_event) {
+      _event.preventDefault();
+    }
+    const unit = newUnit as WeightUnit;
+    setWeightUnit(unit)
+  }
+
+  const handleDistanceUnit = (_event: React.ChangeEvent<HTMLInputElement, Element>, newUnit: string) => {
+    if (_event) {
+      _event.preventDefault();
+    }
+    const unit = newUnit as DistanceUnit;
+    setDistanceUnit(unit)
+  }
+
+  return (
+    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 3 }}>
+      {saving &&
+        <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
+          <LoadingIcon />
+        </Box>
+      }
+      <Stack component="form" spacing={2} sx={{ mt: 2, opacity: saving ? 0.5 : undefined }} onSubmit={submitUserInfo}>
+        <TextField
+          id="user-email"
+          name="user-email"
+          label="Email"
+          type="text"
+          fullWidth
+          variant="outlined"
+          value={user.email}
+          disabled={true}
+        />
+        <TextField
+          id="username"
+          name="username"
+          label="Username"
+          placeholder="(optional)"
+          type="text"
+          fullWidth
+          disabled={!editing}
+          variant="outlined"
+          value={username ?? ''}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          id="bodyweight"
+          name="bodyweight"
+          label={`Bodyweight (${weightUnit})`}
+          placeholder="(optional)"
+          type="number"
+          fullWidth
+          disabled={!editing}
+          variant="outlined"
+          value={bodyWeight ?? ''}
+          onChange={handleBodyWeight}
+        />
+        <FormControl disabled={!editing}>
+          <FormLabel id="sign-up-weight-units">Weight Units</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="sign-up-weight-units"
+            name="sign-up-weight-group"
+            value={weightUnit}
+            onChange={handleWeightUnit}
+          >
+            {weightUnits.map(unit => (
+              <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+        <FormControl disabled={!editing}>
+          <FormLabel id="sign-up-distance-units">Distance Units</FormLabel>
+          <RadioGroup
+            row
+            aria-labelledby="sign-up-distance-units"
+            name="sign-up-distance"
+            value={distanceUnit}
+            onChange={handleDistanceUnit}
+          >
+            {distanceUnits.map(unit => (
+              <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+            ))}
+          </RadioGroup>
+        </FormControl>
+        <Collapse sx={{ alignSelf: 'center', justifyContent: 'center', width: '50%' }} in={editing}>
+          <Button
+            variant="contained"
+            type="submit"
+            sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '100%', borderRadius: 5 }}
+          >
+            Update Account
+          </Button>
+        </Collapse>
+        <Button
+          variant="contained"
+          color={editing ? 'info' : 'primary'}
+          onClick={() => (editing ? cancelEdits() : setEditing(true))}
+          sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '50%', borderRadius: 5 }}
+        >
+          {editing ? 'Cancel' : 'Edit Account'}
+        </Button>
+      </Stack>
+    </Box>
+  );
+}

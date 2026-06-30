@@ -18,6 +18,7 @@ import useUser from "../../hooks/useUser";
 import useActiveWorkout from "../../hooks/useActiveWorkout";
 import CountdownTimer from "../activeWorkout/components/CountdownTimer";
 import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+import PersonIcon from '@mui/icons-material/Person';
 
 export type PageLink = {
   text: string,
@@ -31,6 +32,11 @@ const pages: PageLink[] = [
     text: "Home",
     url: "/",
     icon: (active) => <HomeIcon sx={{ color: active ? 'white' : 'primary.main' }} />
+  },
+  {
+    text: "Account",
+    url: "/account",
+    icon: (active) => <PersonIcon sx={{ color: active ? 'white' : 'primary.main' }} />
   },
   {
     text: "Training",
@@ -56,7 +62,7 @@ const pages: PageLink[] = [
     text: "History",
     url: "/history",
     icon: (active) => <EventAvailableOutlinedIcon sx={{ color: active ? 'white' : 'primary.main' }} />
-  },
+  }
 ];
 
 export default function Navbar() {

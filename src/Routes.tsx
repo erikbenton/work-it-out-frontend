@@ -17,12 +17,18 @@ import ProgramsList from './components/programs/ProgramList';
 import { ProgramDetails } from './components/programs/ProgramDetails';
 import ProgramCreate from './components/programs/ProgramCreate';
 import RegisterLogin from './components/register/RegisterLogin';
+import AccountsPage from './components/accounts/AccountPage';
 
 export default function Router() {
 
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
+      <Route path="/account" element={
+        <Suspense fallback={<LoadingIcon label='User Info' />}>
+          <AccountsPage />
+        </Suspense>
+      } />
       <Route path="/register" element={
         <Suspense fallback={<LoadingIcon label='User Info' />}>
           <RegisterLogin />

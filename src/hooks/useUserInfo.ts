@@ -5,13 +5,16 @@ import type AuthenticationRequest from "../types/authenticationRequest";
 import cacheTimes from "../utils/cacheTimes";
 import type LoginInfo from "../types/loginInfo";
 import type RegistrationRequest from "../types/registrationRequest";
+import type UserInfo from "../types/userInfo";
+import { updateUserInfo } from "../requests/userInfo";
 
 export const queryKey = 'userInfo';
 
 export type UserServices = {
   registerUser: UseMutateFunction<AuthenticationResponse, Error, RegistrationRequest, unknown>,
   loginUser: UseMutateFunction<AuthenticationResponse, Error, AuthenticationRequest, unknown>,
-  logoutUser: UseMutateFunction<boolean, Error, void, unknown>
+  logoutUser: UseMutateFunction<boolean, Error, void, unknown>,
+  updateUser: UseMutateFunction<UserInfo, Error, UserInfo, unknown>
 }
 
 export default function useUserInfo() {
@@ -75,13 +78,27 @@ export default function useUserInfo() {
     }
   }).mutate;
 
+  const updateUser = useMutation({
+    mutationFn: async (userInfo: UserInfo) => await updateUserInfo(userInfo),
+    onSuccess: (updatedInfo: UserInfo) => {
+      try {
+        const prevUser = queryClient.getQueryData([queryKey]) as LoginInfo;
+        const updateUser = { ...prevUser, userInfo: updatedInfo };
+        queryClient.setQueryData([queryKey], updateUser);
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
   return {
     userInfo,
     isError,
     services: {
       registerUser,
       loginUser,
-      logoutUser
+      logoutUser,
+      updateUser
     }
   };
 }
