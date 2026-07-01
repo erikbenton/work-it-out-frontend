@@ -9,6 +9,7 @@ import type UserInfo from "../types/userInfo";
 
 export type UserInfoContext = {
   user: LoginInfo,
+  defaultUserInfo: UserInfo,
   services: UserServices,
   loading: boolean,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,

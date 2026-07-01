@@ -9,16 +9,36 @@ import useUserStats from "../../../hooks/useUserStats";
 import { Grid } from "@mui/material";
 import StatIcon from "../../layout/StatIcon";
 import { checkPluralization, formatLargeNumber } from "../../../utils/formatters";
+import useUser from "../../../hooks/useUser";
+import type UserInfo from "../../../types/userInfo";
 
 type Props = {
   numberOfDays: number
 }
 
+const getUserWeightKg = (userInfo: UserInfo) => {
+  const defaultKgWeight = 68;
+  const { bodyWeight, weightUnit } = userInfo;
+  if (!bodyWeight) return defaultKgWeight;
+
+  if (weightUnit === 'kg') {
+    return bodyWeight;
+  }
+
+  if (weightUnit === 'lb') {
+    return bodyWeight / 2.205;
+  }
+
+  return defaultKgWeight;
+}
+
 export default function UserStatsIcons({ numberOfDays }: Props) {
+  const { user, defaultUserInfo } = useUser();
+  const { userInfo = defaultUserInfo } = user;
   const { userStats } = useUserStats(numberOfDays);
   const met = 3;
-  const avgWeightKg = 68;
-  const calories = Math.floor((userStats.durationInSeconds + numberOfDays) * met * avgWeightKg / (60 * 60));
+  const weightInKg = getUserWeightKg(userInfo)
+  const calories = Math.floor((userStats.durationInSeconds + numberOfDays) * met * weightInKg / (60 * 60));
 
   return (
     <Grid container spacing={2} sx={{ width: '100%' }}>
@@ -66,7 +86,7 @@ export default function UserStatsIcons({ numberOfDays }: Props) {
         <StatIcon
           icon={<FitnessCenterIcon />}
           color={cyan[700]}
-          text={`${formatLargeNumber(userStats.totalVolume, userStats.totalVolume >= 10_000)} lbs`}
+          text={`${formatLargeNumber(userStats.totalVolume, userStats.totalVolume >= 10_000)} ${userInfo.weightUnit}`}
           label="Volume"
         />
       </Grid>

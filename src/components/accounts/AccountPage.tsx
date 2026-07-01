@@ -11,7 +11,7 @@ import { distanceUnits, type DistanceUnit } from "../../types/distanceUnit";
 import useUser from "../../hooks/useUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import { Collapse } from "@mui/material";
+import { Collapse, Typography } from "@mui/material";
 import LoadingIcon from "../layout/LoadingIcon";
 
 export default function AccountsPage() {
@@ -86,13 +86,16 @@ export default function AccountsPage() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 3 }}>
+    <Box className="w-full md:w-2/3 px-3 border-x border-blue-100" sx={{ minHeight: `calc(100dvh - 64px)` }}>
       {saving &&
         <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
           <LoadingIcon />
         </Box>
       }
-      <Stack component="form" spacing={2} sx={{ mt: 2, opacity: saving ? 0.5 : undefined }} onSubmit={submitUserInfo}>
+      <Stack component="form" spacing={2} sx={{ mt: 1, opacity: saving ? 0.5 : undefined }} onSubmit={submitUserInfo}>
+        <Typography variant="h4" component="h2">
+          Account
+        </Typography>
         <TextField
           id="user-email"
           name="user-email"

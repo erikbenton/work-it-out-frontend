@@ -8,10 +8,18 @@ import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 import type RegistrationRequest from "../types/registrationRequest";
 import type UserInfo from "../types/userInfo";
+import { weightUnits } from "../types/weightUnit";
+import { distanceUnits } from "../types/distanceUnit";
 
 type Props = {
   children: ReactNode
 };
+
+const defaultUserInfo: UserInfo = {
+  bodyWeight: 68,
+  weightUnit: weightUnits[0],
+  distanceUnit: distanceUnits[0]
+}
 
 export function UserInfoProvider({ children }: Props) {
   const { userInfo: user, services } = useUserInfo();
@@ -104,6 +112,7 @@ export function UserInfoProvider({ children }: Props) {
 
   const userInfoContext = {
     user,
+    defaultUserInfo,
     services,
     loading,
     setLoading,
