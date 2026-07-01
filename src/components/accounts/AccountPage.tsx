@@ -159,20 +159,22 @@ export default function AccountsPage() {
           <Button
             variant="contained"
             type="submit"
-            sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '100%', borderRadius: 5 }}
+            sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '100%', borderRadius: 5, mb: 1 }}
           >
             Update Account
           </Button>
         </Collapse>
+      </Stack>
+      <Box display='flex' sx={{ justifyContent: 'center', width: '100%' }}>
         <Button
           variant="contained"
           color={editing ? 'info' : 'primary'}
           onClick={() => (editing ? cancelEdits() : setEditing(true))}
-          sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '50%', borderRadius: 5 }}
+          sx={{ textTransform: 'capitalize', width: '50%', borderRadius: 5 }}
         >
           {editing ? 'Cancel' : 'Edit Account'}
         </Button>
-      </Stack>
+      </Box>
     </Box>
   );
 }
