@@ -101,7 +101,7 @@ export default function RegisterLogin() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 2 }}>
+    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 2, pb: '10vh' }}>
       {userMessages.length > 0 &&
         <Alert
           severity="error"

@@ -87,7 +87,7 @@ export default function AccountsPage() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3 border-x border-blue-100" sx={{ minHeight: `calc(100dvh - 64px)` }}>
+    <Box className="w-full md:w-2/3 px-3 border-x border-blue-100" sx={{ minHeight: `calc(100dvh - 64px)`, pb: '10vh' }}>
       {saving &&
         <Box position="fixed" sx={{ zIndex: 99, width: '100%', height: '100%' }}>
           <LoadingIcon />
@@ -154,7 +154,7 @@ export default function AccountsPage() {
           <Stack spacing={1.5} sx={{ flexGrow: 1, mx: 2 }}>
             <Typography color="textDisabled">Preferences</Typography>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>
-              <FormControl>
+              <FormControl disabled={!editing}>
                 <FormLabel id="sign-up-weight-units">Weight</FormLabel>
                 <RadioGroup
                   row
@@ -168,7 +168,7 @@ export default function AccountsPage() {
                   ))}
                 </RadioGroup>
               </FormControl>
-              <FormControl>
+              <FormControl disabled={!editing}>
                 <FormLabel id="sign-up-distance-units">Distance</FormLabel>
                 <RadioGroup
                   row
