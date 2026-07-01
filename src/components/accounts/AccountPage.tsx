@@ -11,8 +11,9 @@ import { distanceUnits, type DistanceUnit } from "../../types/distanceUnit";
 import useUser from "../../hooks/useUser";
 import { useState } from "react";
 import Box from "@mui/material/Box";
-import { Collapse, Typography } from "@mui/material";
+import { Collapse, Paper, Typography } from "@mui/material";
 import LoadingIcon from "../layout/LoadingIcon";
+import { bgBlue } from "../../utils/styling";
 
 export default function AccountsPage() {
   const { user, services } = useUser();
@@ -96,68 +97,94 @@ export default function AccountsPage() {
         <Typography variant="h4" component="h2">
           Account
         </Typography>
-        <TextField
-          id="user-email"
-          name="user-email"
-          label="Email"
-          type="text"
-          fullWidth
-          variant="outlined"
-          value={user.email}
-          disabled={true}
-        />
-        <TextField
-          id="username"
-          name="username"
-          label="Username"
-          placeholder="(optional)"
-          type="text"
-          fullWidth
-          disabled={!editing}
-          variant="outlined"
-          value={username ?? ''}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <TextField
-          id="bodyweight"
-          name="bodyweight"
-          label={`Bodyweight (${weightUnit})`}
-          placeholder="(optional)"
-          type="number"
-          fullWidth
-          disabled={!editing}
-          variant="outlined"
-          value={bodyWeight ?? ''}
-          onChange={handleBodyWeight}
-        />
-        <FormControl disabled={!editing}>
-          <FormLabel id="sign-up-weight-units">Weight Units</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="sign-up-weight-units"
-            name="sign-up-weight-group"
-            value={weightUnit}
-            onChange={handleWeightUnit}
-          >
-            {weightUnits.map(unit => (
-              <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
-            ))}
-          </RadioGroup>
-        </FormControl>
-        <FormControl disabled={!editing}>
-          <FormLabel id="sign-up-distance-units">Distance Units</FormLabel>
-          <RadioGroup
-            row
-            aria-labelledby="sign-up-distance-units"
-            name="sign-up-distance"
-            value={distanceUnit}
-            onChange={handleDistanceUnit}
-          >
-            {distanceUnits.map(unit => (
-              <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
-            ))}
-          </RadioGroup>
-        </FormControl>
+        <Paper
+          sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+          square={false}
+        >
+          <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
+
+            <TextField
+              id="user-email"
+              name="user-email"
+              label="Email"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={user.email}
+              disabled={true}
+            />
+          </Stack>
+        </Paper>
+        <Paper
+          sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+          square={false}
+        >
+          <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
+            <Typography color="textDisabled">Optional</Typography>
+            <TextField
+              id="username"
+              name="username"
+              label="Username"
+              placeholder="(optional)"
+              type="text"
+              fullWidth
+              disabled={!editing}
+              variant="outlined"
+              value={username ?? ''}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <TextField
+              id="bodyweight"
+              name="bodyweight"
+              label={`Bodyweight (${weightUnit})`}
+              placeholder="(optional)"
+              type="number"
+              fullWidth
+              disabled={!editing}
+              variant="outlined"
+              value={bodyWeight ?? ''}
+              onChange={handleBodyWeight}
+            />
+          </Stack>
+        </Paper>
+        <Paper
+          sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+          square={false}
+        >
+          <Stack spacing={1.5} sx={{ flexGrow: 1, mx: 2 }}>
+            <Typography color="textDisabled">Preferences</Typography>
+            <Stack spacing={2} sx={{ flexGrow: 1 }}>
+              <FormControl>
+                <FormLabel id="sign-up-weight-units">Weight</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="sign-up-weight-units"
+                  name="sign-up-weight-group"
+                  value={weightUnit}
+                  onChange={handleWeightUnit}
+                >
+                  {weightUnits.map(unit => (
+                    <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+              <FormControl>
+                <FormLabel id="sign-up-distance-units">Distance</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="sign-up-distance-units"
+                  name="sign-up-distance"
+                  value={distanceUnit}
+                  onChange={handleDistanceUnit}
+                >
+                  {distanceUnits.map(unit => (
+                    <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+                  ))}
+                </RadioGroup>
+              </FormControl>
+            </Stack>
+          </Stack>
+        </Paper>
         <Collapse sx={{ alignSelf: 'center', justifyContent: 'center', width: '50%' }} in={editing}>
           <Button
             variant="contained"

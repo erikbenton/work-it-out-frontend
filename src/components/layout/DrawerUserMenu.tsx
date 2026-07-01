@@ -9,7 +9,7 @@ import { grey } from "@mui/material/colors";
 import LoadingIcon from "./LoadingIcon";
 import Alert from "@mui/material/Alert";
 import UserErrorList from "./UserErrorList";
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 
 type Props = {
   handleClose: () => void
@@ -27,6 +27,7 @@ export default function DrawerUserMenu({ handleClose }: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const match = useMatch('/:path') ?? { params: { path: '/' } };
 
   const resetState = () => {
     setEmail('');
@@ -45,6 +46,9 @@ export default function DrawerUserMenu({ handleClose }: Props) {
     handleLoginAttempt(email, password, {
       onSuccess: () => {
         resetState();
+        if (match.params.path === 'register') {
+          navigate('/');
+        }
       }
     });
   }

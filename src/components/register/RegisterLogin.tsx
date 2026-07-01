@@ -8,9 +8,10 @@ import LoadingIcon from "../layout/LoadingIcon";
 import UserErrorList from "../layout/UserErrorList";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom";
-import { Collapse, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@mui/material";
+import { Collapse, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup, Typography } from "@mui/material";
 import { weightUnits, type WeightUnit } from "../../types/weightUnit";
 import { distanceUnits, type DistanceUnit } from "../../types/distanceUnit";
+import { bgBlue } from "../../utils/styling";
 
 export default function RegisterLogin() {
   const { loading, userMessages, setUserMessages, handleLoginAttempt, handleRegisterAttempt } = useUser();
@@ -100,7 +101,7 @@ export default function RegisterLogin() {
   }
 
   return (
-    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 3 }}>
+    <Box className="w-full md:w-2/3 px-3" sx={{ mt: 2 }}>
       {userMessages.length > 0 &&
         <Alert
           severity="error"
@@ -113,27 +114,35 @@ export default function RegisterLogin() {
       }
       <Collapse in={!registering}>
         <Stack component="form" spacing={2} sx={{ pt: 1, mb: 2 }} onSubmit={handleLoginClick}>
-          <TextField
-            autoFocus
-            id="email"
-            name="email"
-            label="Email"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            id="password"
-            name="password"
-            label="Password"
-            type="password"
-            fullWidth
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <Paper
+            sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+            square={false}
+          >
+            <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
+              <Typography color="textDisabled">Login</Typography>
+              <TextField
+                autoFocus
+                id="email"
+                name="email"
+                label="Email"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                id="password"
+                name="password"
+                label="Password"
+                type="password"
+                fullWidth
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Stack>
+          </Paper>
           <Button
             type='submit'
             sx={{ alignSelf: 'center', textTransform: 'capitalize', width: '33%', borderRadius: 5 }}
@@ -152,76 +161,102 @@ export default function RegisterLogin() {
       </Box>
       <Collapse in={registering}>
         <Stack component="form" spacing={2} sx={{ mt: 2 }} onSubmit={handleRegisterClick}>
-          <TextField
-            id="new-email"
-            name="new-email"
-            label="Email"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            id="new-password"
-            name="new-password"
-            label="Password"
-            type="password"
-            fullWidth
-            variant="outlined"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <TextField
-            id="username"
-            name="username"
-            label="Username"
-            placeholder="(optional)"
-            type="text"
-            fullWidth
-            variant="outlined"
-            value={username ?? ''}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <TextField
-            id="bodyweight"
-            name="bodyweight"
-            label={`Bodyweight (${weightUnit})`}
-            placeholder="(optional)"
-            type="number"
-            fullWidth
-            variant="outlined"
-            value={bodyWeight ?? ''}
-            onChange={handleBodyWeight}
-          />
-          <FormControl>
-            <FormLabel id="sign-up-weight-units">Weight Units</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="sign-up-weight-units"
-              name="sign-up-weight-group"
-              value={weightUnit}
-              onChange={handleWeightUnit}
-            >
-              {weightUnits.map(unit => (
-                <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
-              ))}
-            </RadioGroup>
-          </FormControl>
-          <FormControl>
-            <FormLabel id="sign-up-distance-units">Distance Units</FormLabel>
-            <RadioGroup
-              row
-              aria-labelledby="sign-up-distance-units"
-              name="sign-up-distance"
-              value={distanceUnit}
-              onChange={handleDistanceUnit}
-            >
-              {distanceUnits.map(unit => (
-                <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
-              ))}
-            </RadioGroup>
-          </FormControl>
+          <Paper
+            sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+            square={false}
+          >
+            <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
+              <Typography color="textDisabled">Required</Typography>
+              <TextField
+                id="new-email"
+                name="new-email"
+                label="Email"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <TextField
+                id="new-password"
+                name="new-password"
+                label="Password"
+                type="password"
+                fullWidth
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Stack>
+          </Paper>
+          <Paper
+            sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+            square={false}
+          >
+            <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
+              <Typography color="textDisabled">Optional</Typography>
+              <TextField
+                id="username"
+                name="username"
+                label="Username"
+                placeholder="(optional)"
+                type="text"
+                fullWidth
+                variant="outlined"
+                value={username ?? ''}
+                onChange={(e) => setUsername(e.target.value)}
+              />
+              <TextField
+                id="bodyweight"
+                name="bodyweight"
+                label={`Bodyweight (${weightUnit})`}
+                placeholder="(optional)"
+                type="number"
+                fullWidth
+                variant="outlined"
+                value={bodyWeight ?? ''}
+                onChange={handleBodyWeight}
+              />
+            </Stack>
+          </Paper>
+          <Paper
+            sx={{ width: '100%', display: 'flex', flexDirection: 'row', py: 2.5, bgcolor: bgBlue, borderRadius: 5 }}
+            square={false}
+          >
+            <Stack spacing={1.5} sx={{ flexGrow: 1, mx: 2 }}>
+              <Typography color="textDisabled">Preferences</Typography>
+              <Stack spacing={2} sx={{ flexGrow: 1 }}>
+                <FormControl>
+                  <FormLabel id="sign-up-weight-units">Weight</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="sign-up-weight-units"
+                    name="sign-up-weight-group"
+                    value={weightUnit}
+                    onChange={handleWeightUnit}
+                  >
+                    {weightUnits.map(unit => (
+                      <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel id="sign-up-distance-units">Distance</FormLabel>
+                  <RadioGroup
+                    row
+                    aria-labelledby="sign-up-distance-units"
+                    name="sign-up-distance"
+                    value={distanceUnit}
+                    onChange={handleDistanceUnit}
+                  >
+                    {distanceUnits.map(unit => (
+                      <FormControlLabel key={unit} value={unit} control={<Radio />} label={unit} />
+                    ))}
+                  </RadioGroup>
+                </FormControl>
+              </Stack>
+            </Stack>
+          </Paper>
           <Button
             variant="contained"
             type="submit"
@@ -231,6 +266,6 @@ export default function RegisterLogin() {
           </Button>
         </Stack>
       </Collapse>
-    </Box>
+    </Box >
   )
 }
