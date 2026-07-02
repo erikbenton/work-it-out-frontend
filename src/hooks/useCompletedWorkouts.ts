@@ -13,8 +13,12 @@ import { devConsole } from "../utils/debugLogger";
 import { useExercises } from "./useExercises";
 import type { ExerciseHistory } from "../types/exerciseHistory";
 import { calculateHistory } from "../workers/historyWorker";
+import { type WeightUnit } from "../types/weightUnit";
+import { type DistanceUnit } from "../types/distanceUnit";
+import { convertDistanceToUserUnits, convertWeightToUserUnits } from "../utils/unitConversions";
+import useUser from "./useUser";
 
-const queryKey = 'completedWorkouts';
+export const queryKey = 'completedWorkouts';
 
 export interface CompletedWorkoutServices {
   create: UseMutateFunction<CompletedWorkout, Error, CompletedWorkout, unknown>;
@@ -23,14 +27,48 @@ export interface CompletedWorkoutServices {
   getCompletedWorkoutById: (id: number) => CompletedWorkout;
 }
 
+async function getConvertedCompletedWorkouts(
+  weightUnit: WeightUnit,
+  distanceUnit: DistanceUnit): Promise<CompletedWorkout[]> {
+    const workouts = await getCompletedWorkouts();
+    return convertCompletedWorkouts(workouts, weightUnit, distanceUnit);
+}
+
+export function convertCompletedWorkouts(
+  workouts: CompletedWorkout[],
+  weightUnit: WeightUnit,
+  distanceUnit: DistanceUnit): CompletedWorkout[] {
+    return workouts.map(w => {
+      return {
+        ...w,
+        completedExerciseGroups: w.completedExerciseGroups.map(g => {
+          return {
+            ...g,
+            completedExerciseSets: g.completedExerciseSets.map(s => {
+              const convertedWeight = convertWeightToUserUnits(s, weightUnit);
+              const convertedDistance = convertDistanceToUserUnits(s, distanceUnit);
+              return {
+                ...s,
+                ...convertedWeight,
+                ...convertedDistance
+              }
+            })
+          }
+        })
+      }
+    });
+}
+
 export function useCompletedWorkouts() {
   const { services: exerciseServices } = useExercises();
+  const { user, defaultUserInfo } = useUser();
+  const info = user.userInfo ?? defaultUserInfo;
   const queryClient = useQueryClient();
   const { data: completedWorkouts, isError } = useSuspenseQuery<CompletedWorkout[]>({
     queryKey: [queryKey],
     staleTime: cacheTimes.week,
     gcTime: cacheTimes.week * 2,
-    queryFn: getCompletedWorkouts
+    queryFn: async () => getConvertedCompletedWorkouts(info.weightUnit, info.distanceUnit)
   });
 
   const getCompletedWorkoutById = (id: number) => {
@@ -142,8 +180,10 @@ export function useCompletedWorkouts() {
                 maxReps: s.maxReps,
                 targetDuration: s.targetDuration,
                 targetDistance: s.targetDistance,
+                weightUnit: info.weightUnit,
+                distanceUnit: info.distanceUnit,
                 setTagId: s.setTagId,
-                sort: index,
+                sort: index
               };
             })
         };

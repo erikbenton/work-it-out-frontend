@@ -7,6 +7,13 @@ import type LoginInfo from "../types/loginInfo";
 import type RegistrationRequest from "../types/registrationRequest";
 import type UserInfo from "../types/userInfo";
 import { updateUserInfo } from "../requests/userInfo";
+import { queryKey as completedWorkoutsQueryKey, convertCompletedWorkouts } from "../hooks/useCompletedWorkouts";
+import { queryKey as exerciseHistoryKey } from "../hooks/useExerciseHistory";
+import { queryKey as userStatsKey } from "../hooks/useUserStats";
+import { devConsole } from "../utils/debugLogger";
+import type CompletedWorkout from "../types/completedWorkout";
+import type { WeightUnit } from "../types/weightUnit";
+import type { DistanceUnit } from "../types/distanceUnit";
 
 export const queryKey = 'userInfo';
 
@@ -14,7 +21,8 @@ export type UserServices = {
   registerUser: UseMutateFunction<AuthenticationResponse, Error, RegistrationRequest, unknown>,
   loginUser: UseMutateFunction<AuthenticationResponse, Error, AuthenticationRequest, unknown>,
   logoutUser: UseMutateFunction<boolean, Error, void, unknown>,
-  updateUser: UseMutateFunction<UserInfo, Error, UserInfo, unknown>
+  updateUser: UseMutateFunction<UserInfo, Error, UserInfo, unknown>,
+  updateCachedWorkouts: (weightUnit: WeightUnit, distanceUnit: DistanceUnit) => void
 }
 
 export default function useUserInfo() {
@@ -91,6 +99,19 @@ export default function useUserInfo() {
     }
   }).mutate;
 
+  const updateCachedWorkouts = (weightUnit: WeightUnit, distanceUnit: DistanceUnit) => {
+    devConsole('updating completed workouts');
+    const workouts = (queryClient.getQueryData([completedWorkoutsQueryKey]) ?? []) as CompletedWorkout[];
+    // Only convert & set the data if there is any
+    if (workouts.length > 0) {
+      const convertedWorkouts = convertCompletedWorkouts(workouts, weightUnit, distanceUnit);
+      queryClient.setQueryData([completedWorkoutsQueryKey], convertedWorkouts);
+    }
+    // Remove the calc'd cached queries so they can re-calc
+    queryClient.removeQueries({ queryKey: [exerciseHistoryKey], exact: false });
+    queryClient.removeQueries({ queryKey: [userStatsKey], exact: false });
+  }
+
   return {
     userInfo,
     isError,
@@ -98,7 +119,8 @@ export default function useUserInfo() {
       registerUser,
       loginUser,
       logoutUser,
-      updateUser
+      updateUser,
+      updateCachedWorkouts
     }
   };
 }

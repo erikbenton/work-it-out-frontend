@@ -26,6 +26,8 @@ export function UserInfoProvider({ children }: Props) {
   const [loading, setLoading] = useState(false);
   const [userMessages, setUserMessages] = useState<string[]>([]);
   const navigate = useNavigate();
+  const weightUnit = user.userInfo?.weightUnit ?? defaultUserInfo.weightUnit;
+  const distanceUnit = user.userInfo?.distanceUnit ?? defaultUserInfo.distanceUnit;
 
   const handleRegisterAttempt = (
     email: string,
@@ -112,6 +114,8 @@ export function UserInfoProvider({ children }: Props) {
 
   const userInfoContext = {
     user,
+    weightUnit,
+    distanceUnit,
     defaultUserInfo,
     services,
     loading,

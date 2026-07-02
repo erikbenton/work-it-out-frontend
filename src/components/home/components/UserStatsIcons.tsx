@@ -11,6 +11,7 @@ import StatIcon from "../../layout/StatIcon";
 import { checkPluralization, formatLargeNumber } from "../../../utils/formatters";
 import useUser from "../../../hooks/useUser";
 import type UserInfo from "../../../types/userInfo";
+import { LB_TO_KG } from "../../../utils/unitConversions";
 
 type Props = {
   numberOfDays: number
@@ -26,7 +27,7 @@ const getUserWeightKg = (userInfo: UserInfo) => {
   }
 
   if (weightUnit === 'lb') {
-    return bodyWeight / 2.205;
+    return bodyWeight * LB_TO_KG;
   }
 
   return defaultKgWeight;

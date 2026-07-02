@@ -9,6 +9,7 @@ import FitnessCenterIcon from '@mui/icons-material/FitnessCenter';
 import EmojiEventsSharpIcon from '@mui/icons-material/EmojiEventsSharp';
 import { type LiftStats, type StretchStats, type TimedStats } from "../../../utils/exerciseStats";
 import type { ExerciseHistory } from "../../../types/exerciseHistory";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   history: ExerciseHistory
@@ -45,6 +46,7 @@ const touchDelay = 0;
 
 export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
   const { totalReps, totalVolume, oneRepMax } = history.stats as LiftStats;
+  const { weightUnit } = useUser();
 
   return (
     <ListItemText id={`list-label-${history.group.id}`} className='px-3' primary={
@@ -77,7 +79,7 @@ export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
               size="small"
               label={
                 <Typography variant="body2">
-                  <FitnessCenterIcon fontSize="small" sx={{ mr: 0.75 }} />{`${Math.round(totalVolume)} lbs`}
+                  <FitnessCenterIcon fontSize="small" sx={{ mr: 0.75 }} />{`${Math.round(totalVolume)} ${weightUnit}`}
                 </Typography>
               }
               variant='filled'
@@ -95,7 +97,7 @@ export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
               size="small"
               label={
                 <Typography variant="body2">
-                  <EmojiEventsSharpIcon fontSize="small" sx={{ mr: 0.5 }} />{`${Math.round(oneRepMax)} lbs`}
+                  <EmojiEventsSharpIcon fontSize="small" sx={{ mr: 0.5 }} />{`${Math.round(oneRepMax)} ${weightUnit}`}
                 </Typography>
               }
               variant='filled'
@@ -109,6 +111,7 @@ export function ExerciseHistoryLiftGroupStats({ history }: HistoryStatProps) {
 }
 
 export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
+  const { distanceUnit } = useUser();
   const { totalDistance, totalSeconds, bestPaceSeconds } = history.stats as TimedStats;
   const totalTime = totalSeconds ? secondsToDuration(totalSeconds) : undefined;
   const bestPace = bestPaceSeconds ? secondsToDuration(bestPaceSeconds) : undefined;
@@ -126,7 +129,7 @@ export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
               size="small"
               label={
                 <Typography variant="body2">
-                  <RoomSharpIcon fontSize="small" sx={{ mr: 0.5 }} />{`${totalDistance.toFixed(2)} mi`}
+                  <RoomSharpIcon fontSize="small" sx={{ mr: 0.5 }} />{`${totalDistance.toFixed(2)} ${distanceUnit}`}
                 </Typography>
               }
               variant='filled'
@@ -163,7 +166,7 @@ export function ExerciseHistoryTimedGroupStats({ history }: HistoryStatProps) {
               size="small"
               label={
                 <Typography variant="body2">
-                  <TimerIcon fontSize="small" sx={{ mr: 0.25 }} />{`${durationToHhMmSs(bestPace, 'short')} / mi`}
+                  <TimerIcon fontSize="small" sx={{ mr: 0.25 }} />{`${durationToHhMmSs(bestPace, 'short')} / ${distanceUnit}`}
                 </Typography>
               }
               variant='filled'

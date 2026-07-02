@@ -13,6 +13,7 @@ import EventAvailableIcon from '@mui/icons-material/EventAvailable';
 import { checkPluralization, durationToHhMmSs, getShortDate, secondsToDuration } from "../../../utils/formatters";
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import { useExercises } from "../../../hooks/useExercises";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   workout: CompletedWorkout
@@ -39,6 +40,7 @@ const initializeWorkoutStats = (workout: CompletedWorkout): WorkoutStats => {
 
 export default function CompletedWorkoutStats({ workout }: Props) {
   const { services: exerciseServices } = useExercises();
+  const { weightUnit, distanceUnit } = useUser();
 
   const stats = initializeWorkoutStats(workout);
   workout.completedExerciseGroups.forEach(group => {
@@ -111,7 +113,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
           <Avatar sx={{ bgcolor: cyan[700] }}>
             <FitnessCenterIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{stats.volume} lbs</Typography>
+          <Typography variant="body1" noWrap>{stats.volume} {weightUnit}</Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Volume</Typography>
         </Stack>
       }
@@ -120,7 +122,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
           <Avatar sx={{ bgcolor: teal[700] }}>
             <RoomSharpIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{stats.distance} mi</Typography>
+          <Typography variant="body1" noWrap>{stats.distance} {distanceUnit}</Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Distance</Typography>
         </Stack>
       }

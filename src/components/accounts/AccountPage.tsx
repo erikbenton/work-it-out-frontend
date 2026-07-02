@@ -32,7 +32,7 @@ export default function AccountsPage() {
     setDistanceUnit(user.userInfo?.distanceUnit ?? distanceUnits[0]);
   }
 
-  const submitUserInfo = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const submitUserInfo = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     if (e) {
       e.preventDefault();
     }
@@ -44,6 +44,8 @@ export default function AccountsPage() {
         bodyWeight,
         username: username === '' ? undefined : username
       }
+      const oldWeightUnit = user.userInfo?.weightUnit;
+      const oldDistanceUnit = user.userInfo?.distanceUnit;
       setSaving(true);
       services.updateUser(newUserInfo, {
         onSuccess: (userInfo) => {
@@ -52,6 +54,11 @@ export default function AccountsPage() {
           setWeightUnit(userInfo.weightUnit);
           setDistanceUnit(userInfo.distanceUnit);
           setEditing(false);
+          // if the user changed their unit preference
+          // invalidate the completed workouts to trigger recalcs
+          if (oldWeightUnit !== userInfo.weightUnit || oldDistanceUnit !== userInfo.distanceUnit) {
+            services.updateCachedWorkouts(userInfo.weightUnit, userInfo.distanceUnit);
+          }
         },
         onSettled: () => {
           setSaving(false);

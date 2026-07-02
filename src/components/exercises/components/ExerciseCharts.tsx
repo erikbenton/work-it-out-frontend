@@ -12,6 +12,7 @@ import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { useExercises } from "../../../hooks/useExercises";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
 import type { ExerciseHistory } from "../../../types/exerciseHistory";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   history: ExerciseHistory[],
@@ -146,6 +147,7 @@ const SmallMark = (props: MarkElementProps) => {
 };
 
 export function LiftExerciseCharts({ historyPoints }: ChartProps) {
+  const { weightUnit } = useUser();
   const dates = historyPoints.map(({ date }) => new Date(date));
   const maxWeight = historyPoints.map(({ value }) => value ? calculateMaxWeight(value) : null);
   const oneRepMax = historyPoints.map(({ value }) => value ? calculateEstimatedOneRepMax(value) : null);
@@ -169,8 +171,8 @@ export function LiftExerciseCharts({ historyPoints }: ChartProps) {
           color: indigo[700],
           area: true,
           baseline: 'min',
-          label: 'Max Weight (lbs)',
-          valueFormatter: (val) => val ? `${Math.round(val)} lbs` : null,
+          label: `Max Weight (${weightUnit})`,
+          valueFormatter: (val) => val ? `${Math.round(val)} ${weightUnit}` : null,
           connectNulls: true
         }]}
         xAxis={[{
@@ -187,8 +189,8 @@ export function LiftExerciseCharts({ historyPoints }: ChartProps) {
           color: pink[700],
           area: true,
           baseline: 'min',
-          label: 'Est. 1RM (lbs)',
-          valueFormatter: (val) => val ? `${Math.round(val)} lbs` : null,
+          label: `Est. 1RM (${weightUnit})`,
+          valueFormatter: (val) => val ? `${Math.round(val)} ${weightUnit}` : null,
           connectNulls: true
         }]}
         xAxis={[{
@@ -205,8 +207,8 @@ export function LiftExerciseCharts({ historyPoints }: ChartProps) {
           color: deepPurple[700],
           area: true,
           baseline: 'min',
-          label: 'Volume (lbs)',
-          valueFormatter: (val) => val ? `${Math.round(val)} lbs` : null,
+          label: `Volume (${weightUnit})`,
+          valueFormatter: (val) => val ? `${Math.round(val)} ${weightUnit}` : null,
           connectNulls: true
         }]}
         xAxis={[{
@@ -222,6 +224,7 @@ export function LiftExerciseCharts({ historyPoints }: ChartProps) {
 }
 
 function TimedExerciseCharts({ historyPoints }: ChartProps) {
+  const { distanceUnit } = useUser();
   const dates = historyPoints.map(({ date }) => new Date(date));
   const totalDistance = historyPoints.map(({ value }) => value ? calculateTotalDistance(value) : null);
   const totalSeconds = historyPoints.map(({ value }) => value ? calculateTotalSeconds(value) : null);
@@ -245,8 +248,8 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           color: indigo[700],
           area: true,
           baseline: 'min',
-          label: 'Total Distance (mi)',
-          valueFormatter: (val) => val ? `${val.toFixed(2)} mi` : null,
+          label: `Total Distance (${distanceUnit})`,
+          valueFormatter: (val) => val ? `${val.toFixed(2)} ${distanceUnit}` : null,
           connectNulls: true
         }]}
         xAxis={[{
@@ -286,8 +289,8 @@ function TimedExerciseCharts({ historyPoints }: ChartProps) {
           color: deepPurple[700],
           area: true,
           baseline: 'min',
-          label: 'Fastest Pace (min)',
-          valueFormatter: (val) => val ? `${secondsToHhMmDd(val, 'short')} / mi` : null,
+          label: `Fastest Pace (min / ${distanceUnit})`,
+          valueFormatter: (val) => val ? `${secondsToHhMmDd(val, 'short')} / ${distanceUnit}` : null,
           connectNulls: true
         }]}
         xAxis={[{

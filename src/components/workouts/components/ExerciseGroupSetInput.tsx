@@ -30,6 +30,7 @@ import MinRepsInput from "./inputs/MinRepsInput";
 import MaxRepsInput from "./inputs/MaxRepsInput";
 import TargetDurationInput from "./inputs/TargetDurationInput";
 import TargetDistanceInput from "./inputs/TargetDistanceInput";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   exerciseGroup: ExerciseGroup,
@@ -43,6 +44,7 @@ export type SetInputProps = {
 }
 
 export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
+  const { distanceUnit } = useUser();
   const { editing, dispatch, setTags = [] } = useWorkoutForm();
   const { services } = useExercises();
   const [values, setValues] = useState<ExerciseSet>(set);
@@ -224,7 +226,7 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           <ListItemText
             primary={
               <Typography>
-                {formattedSetTargetsText(set, exercise.category)}
+                {formattedSetTargetsText(set, exercise.category, distanceUnit)}
               </Typography>
             }
             slotProps={{ primary: { fontSize: 16 } }}

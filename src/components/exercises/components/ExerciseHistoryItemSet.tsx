@@ -11,6 +11,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { formattedSetCompletedText } from "../../../utils/formatters";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   set: CompletedExerciseSet,
@@ -20,6 +21,7 @@ type Props = {
 }
 
 export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, category }: Props) {
+  const { weightUnit, distanceUnit } = useUser();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
 
@@ -53,7 +55,10 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, 
             </Badge>
           </Tooltip>
         </ListItemAvatar>
-        <ListItemText id={`list-label-${set.id}`} primary={formattedSetCompletedText(set, category)} />
+        <ListItemText
+          id={`list-label-${set.id}`}
+          primary={formattedSetCompletedText(set, category, weightUnit, distanceUnit)}
+        />
       </ListItemButton>
     </ListItem>
   );

@@ -13,6 +13,7 @@ import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import { badgeStyle, bgDarkBlue, generalAvatarStyle } from "../../../utils/styling";
 import { useExercises } from "../../../hooks/useExercises";
 import { formattedSetCompletedText, formattedSetTargetsText } from "../../../utils/formatters";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   index: number,
@@ -25,6 +26,7 @@ interface CompletedProps extends Props {
 }
 
 export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }: CompletedProps) {
+  const { weightUnit, distanceUnit } = useUser();
   const { dispatch, setEditing, setTags = [] } = useActiveWorkout();
   const { services: exerciseServices } = useExercises();
   const setTag = setTags.find(tag => tag.id === set.setTagId);
@@ -54,7 +56,7 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
     onDoubleClick(set)
   }
 
-  const placeholderText = formattedSetCompletedText(set, exercise.category);
+  const placeholderText = formattedSetCompletedText(set, exercise.category, weightUnit, distanceUnit);
 
   return (
     <ListItem
@@ -103,12 +105,13 @@ export function CompletedActiveSet({ index, set, exerciseGroup, onDoubleClick }:
 }
 
 export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
+  const { distanceUnit } = useUser();
   const { services: exerciseServices } = useExercises();
   const { setEditing, dispatch, setTags = [] } = useActiveWorkout();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
   const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
-  const placeholderText = formattedSetTargetsText(set, exercise.category);
+  const placeholderText = formattedSetTargetsText(set, exercise.category, distanceUnit);
 
   const menuItems = [
     {
@@ -167,12 +170,13 @@ export function CurrentActiveSet({ index, set, exerciseGroup }: Props) {
 }
 
 export function ActiveGroupSet({ index, set, exerciseGroup }: Props) {
+  const { distanceUnit } = useUser();
   const { dispatch, setTags = [] } = useActiveWorkout();
   const { services: exerciseServices } = useExercises();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
   const exercise = exerciseServices.getExerciseById(exerciseGroup.exerciseId);
 
-  const placeholderText = formattedSetTargetsText(set, exercise.category);
+  const placeholderText = formattedSetTargetsText(set, exercise.category, distanceUnit);
 
   const menuItems = [
     {

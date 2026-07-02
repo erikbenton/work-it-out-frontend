@@ -6,10 +6,14 @@ import type AuthenticationResponse from "../types/authenticationResponse";
 import type AuthenticationRequest from "../types/authenticationRequest";
 import type RegistrationRequest from "../types/registrationRequest";
 import type UserInfo from "../types/userInfo";
+import type { WeightUnit } from "../types/weightUnit";
+import type { DistanceUnit } from "../types/distanceUnit";
 
 export type UserInfoContext = {
   user: LoginInfo,
   defaultUserInfo: UserInfo,
+  weightUnit: WeightUnit,
+  distanceUnit: DistanceUnit,
   services: UserServices,
   loading: boolean,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,

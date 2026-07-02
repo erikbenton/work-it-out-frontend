@@ -12,6 +12,7 @@ import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
 import { checkPluralization, durationToHhMmSs, formatLargeNumber, secondsToDuration } from "../../../utils/formatters";
 import type { ExerciseHistory } from "../../../types/exerciseHistory";
+import useUser from "../../../hooks/useUser";
 
 type Props = {
   history: ExerciseHistory[]
@@ -30,6 +31,7 @@ type ExerciseStats = {
 }
 
 export default function ExerciseStatsBar({ history }: Props) {
+  const { weightUnit, distanceUnit } = useUser();
   const stats: ExerciseStats = { sets: 0 };
 
   history.forEach(h => {
@@ -104,7 +106,7 @@ export default function ExerciseStatsBar({ history }: Props) {
             <EmojiEventsSharpIcon />
           </Avatar>
           <Typography variant="body1">
-            {Math.round(stats.oneRepMax)} lbs
+            {Math.round(stats.oneRepMax)} {weightUnit}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Est. 1RM</Typography>
         </Stack>
@@ -115,7 +117,7 @@ export default function ExerciseStatsBar({ history }: Props) {
             <FitnessCenterIcon />
           </Avatar>
           <Typography variant="body1">
-            {formatLargeNumber(stats.volume, stats.volume >= 10_000)} lbs
+            {formatLargeNumber(stats.volume, stats.volume >= 10_000)} {weightUnit}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Volume</Typography>
         </Stack>
@@ -126,7 +128,7 @@ export default function ExerciseStatsBar({ history }: Props) {
             <RoomSharpIcon />
           </Avatar>
           <Typography variant="body1" noWrap>
-            {formatLargeNumber(Math.round(stats.distance * 100) / 100)} mi
+            {formatLargeNumber(Math.round(stats.distance * 100) / 100)} {distanceUnit}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Distance</Typography>
         </Stack>
@@ -145,7 +147,7 @@ export default function ExerciseStatsBar({ history }: Props) {
           <Avatar sx={{ bgcolor: pink[700] }}>
             <WatchLaterRoundedIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{`${durationToHhMmSs(stats.bestPace, 'short')} / mi`}</Typography>
+          <Typography variant="body1" noWrap>{`${durationToHhMmSs(stats.bestPace, 'short')} / ${distanceUnit}`}</Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Best Pace</Typography>
         </Stack>
       }

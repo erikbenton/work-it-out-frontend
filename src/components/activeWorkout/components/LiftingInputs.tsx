@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 import type ActiveExerciseSet from "../../../types/activeExerciseSet";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
+import useUser from "../../../hooks/useUser";
 
 export type ActiveSetInputProps = {
   values?: ActiveExerciseSet,
@@ -67,6 +68,7 @@ export default function LiftingInputs(inputProps: ActiveSetInputProps) {
 
 function WeightInput({ values, setValues, size }: ActiveSetInputProps) {
   const { saving } = useActiveWorkout();
+  const { weightUnit } = useUser();
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
@@ -79,7 +81,7 @@ function WeightInput({ values, setValues, size }: ActiveSetInputProps) {
     <TextField
       id="weight"
       name="weight"
-      label="Weight (lbs)"
+      label={`Weight (${weightUnit})`}
       type="number"
       disabled={saving}
       fullWidth
@@ -124,6 +126,8 @@ function RepInput({ values, setValues, size }: ActiveSetInputProps) {
 }
 
 function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
+  const { saving } = useActiveWorkout();
+  const { distanceUnit } = useUser();
   const distance = values?.distance;
   const handleDistanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const distance = Number(e.target.value);
@@ -136,8 +140,9 @@ function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
     <TextField
       id="distance"
       name="distance"
-      label='Distance (mi)'
+      label={`Distance (${distanceUnit})`}
       type="number"
+      disabled={saving}
       fullWidth
       variant="filled"
       value={distance ?? ""}
@@ -152,6 +157,7 @@ function DistanceInput({ values, setValues, size }: ActiveSetInputProps) {
 }
 
 function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
+  const { saving } = useActiveWorkout();
   const duration = values?.duration;
 
   const handleDurationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -216,6 +222,7 @@ function DurationInput({ values, setValues, size }: ActiveSetInputProps) {
       name="duration"
       label='Duration'
       type="text"
+      disabled={saving}
       fullWidth
       variant="filled"
       value={duration ?? ''}

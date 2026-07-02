@@ -1,7 +1,9 @@
 import type ActiveExerciseSet from "../types/activeExerciseSet";
 import type { CompletedExerciseSet } from "../types/completedExerciseSet";
+import type { DistanceUnit } from "../types/distanceUnit";
 import type { ExerciseCategory } from "../types/exerciseCategory";
 import type ExerciseSet from "../types/exerciseSet";
+import type { WeightUnit } from "../types/weightUnit";
 type DurationOptions = {
   format: ('always-hours' | 'no-hours' | 'include-hours')
 }
@@ -203,8 +205,8 @@ export function formattedTargetRepsText(set: ExerciseSet | ActiveExerciseSet): s
     `${set.maxReps ?? ""} ${repText}`);
 }
 
-export function formattedTargetDistanceText(set: ExerciseSet | ActiveExerciseSet): string {
-  const distanceText = set.targetDistance ? `${set.targetDistance} ${checkPluralization('mile', set.targetDistance)}` : undefined;
+export function formattedTargetDistanceText(set: ExerciseSet | ActiveExerciseSet, distanceUnit: DistanceUnit): string {
+  const distanceText = set.targetDistance ? `${set.targetDistance} ${distanceUnit}` : undefined;
   const durationText = durationToHhMmSs(set.targetDuration);
   return (`${distanceText ?? ""}` +
     `${distanceText && durationText ? " in " : ""}` +
@@ -219,15 +221,15 @@ export function formattedTargetStretchText(set: ExerciseSet | ActiveExerciseSet)
     `${durationText ?? ""}`);
 }
 
-export function formattedCompletedRepsText(set: ActiveExerciseSet | CompletedExerciseSet): string {
+export function formattedCompletedRepsText(set: ActiveExerciseSet | CompletedExerciseSet, weightUnit: WeightUnit): string {
   if (!set.weight && !set.reps) return '';
-  const weight = set.weight ? `${set.weight} lbs x ` : '';
+  const weight = set.weight ? `${set.weight} ${weightUnit} x ` : '';
   const reps = `${set.reps ?? 0} ${checkPluralization('rep', set.reps)}`
   return `${weight} ${reps}`;
 }
 
-export function formattedCompletedDistanceText(set: ActiveExerciseSet | CompletedExerciseSet): string {
-  const distanceText = set.distance ? `${set.distance} ${checkPluralization('mile', set.distance)}` : undefined;
+export function formattedCompletedDistanceText(set: ActiveExerciseSet | CompletedExerciseSet, distanceUnit: DistanceUnit): string {
+  const distanceText = set.distance ? `${set.distance} ${distanceUnit}` : undefined;
   const durationText = durationToHhMmSs(set.duration);
   return (`${distanceText ?? ""}` +
     `${distanceText && durationText ? " in " : ""}` +
@@ -242,14 +244,17 @@ export function formattedCompletedStretchText(set: ActiveExerciseSet | Completed
     `${durationText ?? ""}`);
 }
 
-export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, category: ExerciseCategory): string {
+export function formattedSetTargetsText(
+  set: ExerciseSet | ActiveExerciseSet,
+  category: ExerciseCategory,
+  distanceUnit: DistanceUnit): string {
   switch (category) {
     case 'lift': {
       return formattedTargetRepsText(set);
     }
 
     case 'timed': {
-      return formattedTargetDistanceText(set);
+      return formattedTargetDistanceText(set, distanceUnit);
     }
 
     case 'stretch':
@@ -262,14 +267,18 @@ export function formattedSetTargetsText(set: ExerciseSet | ActiveExerciseSet, ca
   }
 }
 
-export function formattedSetCompletedText(set: ActiveExerciseSet | CompletedExerciseSet, category: ExerciseCategory): string {
+export function formattedSetCompletedText(
+  set: ActiveExerciseSet | CompletedExerciseSet,
+  category: ExerciseCategory,
+  weightUnit: WeightUnit,
+  distanceUnit: DistanceUnit): string {
   switch (category) {
     case 'lift': {
-      return formattedCompletedRepsText(set);
+      return formattedCompletedRepsText(set, weightUnit);
     }
 
     case 'timed': {
-      return formattedCompletedDistanceText(set);
+      return formattedCompletedDistanceText(set, distanceUnit);
     }
 
     case 'stretch':

@@ -1,7 +1,9 @@
 import TextField from "@mui/material/TextField";
 import type { SetInputProps } from "../ExerciseGroupSetInput";
+import useUser from "../../../../hooks/useUser";
 
 export default function TargetDistanceInput({ values, setValues, label }: SetInputProps) {
+  const { distanceUnit } = useUser();
   const handleDistanceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const targetDistance = Number(e.target.value);
     if (targetDistance < 0) return;
@@ -13,7 +15,7 @@ export default function TargetDistanceInput({ values, setValues, label }: SetInp
     <TextField
       id="targetDistance"
       name="targetDistance"
-      label={label ?? 'Distance (mi)'}
+      label={label ?? `Distance (${distanceUnit})`}
       type="number"
       fullWidth
       variant="standard"
