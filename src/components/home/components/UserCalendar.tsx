@@ -15,6 +15,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
 import { getMaxMuscleGroup } from '../../../utils/muscles';
 import { useExercises } from '../../../hooks/useExercises';
+import useSwipe from '../../../hooks/useSwipe';
 
 function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
   const navigate = useNavigate();
@@ -71,7 +72,13 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
           }
         }}
       >
-        <PickerDay {...other} outsideCurrentMonth={outsideCurrentMonth} day={day} />
+        <PickerDay
+          {...other}
+          disableHighlightToday={true}
+          selected={false}
+          outsideCurrentMonth={outsideCurrentMonth}
+          day={day}
+        />
       </Badge>
       <Menu
         id="long-menu"
@@ -127,6 +134,14 @@ function getWorkoutsByDate(date: dayjs.Dayjs, datesMap: Map<number, Map<number, 
 export default function UserCalendar() {
   const { completedWorkouts } = useCompletedWorkouts();
   const [numWeeks, setNumWeeks] = useState(() => calculateNumberOfWeeks(dayjs()));
+  const [viewDate, setViewDate] = useState(dayjs());
+  const handleMonthShift = (monthShift: number) => {
+    setViewDate(prev => prev.add(monthShift, "month"));
+  }
+  const swipeHandlers = useSwipe({
+    onSwipedLeft: () => handleMonthShift(1),
+    onSwipedRight: () => handleMonthShift(-1)
+  });
 
   const completedWorkoutsByDate = useMemo(() => {
     devConsole('running calendar memo');
@@ -162,6 +177,7 @@ export default function UserCalendar() {
         History
       </Typography>
       <DateCalendar
+        {...swipeHandlers}
         sx={{
           '&.MuiDateCalendar-root': {
             width: '100%',
@@ -236,6 +252,8 @@ export default function UserCalendar() {
             completedWorkoutsByDate,
           } as (PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }),
         }}
+        value={viewDate}
+
       />
     </LocalizationProvider>
   );
