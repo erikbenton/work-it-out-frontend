@@ -39,7 +39,7 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
     };
   }
 
-  const handleEditSaveClick = () => {
+  const handleSaveClick = () => {
     if (editing) {
       setSaving(true);
       if (newWorkout) {
@@ -63,8 +63,26 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
           }
         });
       }
-    } else {
-      setEditing(!editing);
+    }
+  }
+
+  const handleEditClick = () => {
+    setEditing(true);
+  }
+
+  const handleCancelClick = () => {
+    if (editing) {
+      setEditing(false);
+      if (workout.id) {
+        dispatch({
+          type: 'setWorkout',
+          payload: {
+            workout: services.getWorkoutById(workout.id)
+          }
+        });
+      } else {
+        navigate('/workouts');
+      }
     }
   }
 
@@ -177,7 +195,9 @@ export function WorkoutFormProvider({ initWorkout, children }: Props) {
     setReplacementKey,
     expanded,
     handleExpandClick,
-    handleEditSaveClick,
+    handleSaveClick,
+    handleEditClick,
+    handleCancelClick,
     getTitleMenuOptions,
     addExercises,
     replaceExercise,

@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import useUser from "../../../hooks/useUser";
+import LogoutIcon from '@mui/icons-material/Logout';
 
 
 export default function HomePageTitle() {
@@ -25,7 +26,7 @@ export default function HomePageTitle() {
           onClick={() => handleLogoutAttempt()}
           sx={{ borderRadius: 5, textTransform: 'capitalize' }}
         >
-          Logout
+          Logout <LogoutIcon sx={{ ml: 1 }} />
         </Button>
       }
     </Stack>

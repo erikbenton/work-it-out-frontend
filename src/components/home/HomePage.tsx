@@ -75,7 +75,7 @@ function WelcomePage() {
         <Grid size={{ xs: 12, md: 6 }}>
           <Stack direction='column' spacing={1} sx={{ width: '100%' }}>
             <Typography fontSize='1.5rem' variant='h6'>
-              A workout log for all athletes
+              Work hard, see results
             </Typography>
             <Typography>
               Work-It-Out is a workout tracker built to help visualize an athlete's progress without adding work on top of their training.

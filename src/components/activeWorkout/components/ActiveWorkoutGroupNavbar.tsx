@@ -10,6 +10,8 @@ import { Stack } from "@mui/material";
 import ElapsedTimer from "./ElapsedTimer";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useCompletedWorkouts } from "../../../hooks/useCompletedWorkouts";
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 type Props = {
   groupIndex: number,
@@ -45,16 +47,6 @@ export default function ActiveWorkoutGroupNavbar({ groupIndex, groupShift }: Pro
       label: "Cancel Workout",
       handleClick: handleClearWorkout,
       sx: { color: 'error.main' }
-    },
-    {
-      label: 'Next exercise',
-      disabled: groupIndex !== -1 && groupIndex >= workout.exerciseGroups.length - 1,
-      handleClick: () => groupShift(1)
-    },
-    {
-      label: 'Prev exercise',
-      disabled: groupIndex < 1,
-      handleClick: () => groupShift(-1)
     }
   ];
 
@@ -94,7 +86,23 @@ export default function ActiveWorkoutGroupNavbar({ groupIndex, groupShift }: Pro
               </IconButton>
               <ElapsedTimer startTime={workout.startTime} />
             </Stack>
-            <VerticalIconMenu menuItems={menuItems} buttonId={`${workout.id}`} />
+            <Stack direction='row' sx={{ alignItems: 'center' }}>
+              <IconButton
+                aria-label="last-exercise-group"
+                disabled={groupIndex < 1}
+                onClick={() => groupShift(-1)}
+              >
+                <ChevronLeftIcon />
+              </IconButton>
+              <IconButton
+                aria-label="next-exercise-group"
+                disabled={groupIndex !== -1 && groupIndex >= workout.exerciseGroups.length - 1}
+                onClick={() => groupShift(1)}
+              >
+                <ChevronRightIcon />
+              </IconButton>
+              <VerticalIconMenu menuItems={menuItems} buttonId={`${workout.id}`} />
+            </Stack>
           </Stack>
         </Toolbar>
       </AppBar>

@@ -109,7 +109,6 @@ export default function AccountsPage() {
           square={false}
         >
           <Stack spacing={2} sx={{ flexGrow: 1, mx: 2 }}>
-
             <TextField
               id="user-email"
               name="user-email"
