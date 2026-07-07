@@ -57,7 +57,7 @@ export default function DemoImagesCarousel() {
               right: 0,
               marginInline: 'auto',
               width: 'fit-content',
-              maxWidth: '450px',
+              maxWidth: { xs: '300px', lg: '350px' },
               pb: '10vh',
             }}
           >
@@ -67,10 +67,24 @@ export default function DemoImagesCarousel() {
           </Box>
         </Slide>
       ))}
-      <IconButton onClick={() => imageShift(-1, 'right')} sx={{ position: 'absolute', top: '400px', left: '0px' }}>
+      <IconButton
+        onClick={() => imageShift(-1, 'right')}
+        sx={{
+          position: 'absolute',
+          top: { xs: '300px', lg: '350px' },
+          left: { xs: 0, sm: '10%', md: 0 },
+        }}
+      >
         <ChevronLeftIcon />
       </IconButton>
-      <IconButton onClick={() => imageShift(1, 'left')} sx={{ position: 'absolute', top: '400px', right: '0px' }}>
+      <IconButton
+        onClick={() => imageShift(1, 'left')}
+        sx={{
+          position: 'absolute',
+          top: { xs: '300px', lg: '350px' },
+          right: { xs: 0, sm: '10%', md: 0 }
+        }}
+      >
         <ChevronRightIcon />
       </IconButton>
     </Box>

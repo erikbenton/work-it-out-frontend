@@ -43,7 +43,7 @@ export default function CompletedWorkoutList() {
   const headerOffsetPixels = 121.98; // yes, .98 matters
 
   return (
-    <Box className="w-full md:w-2/3" sx={{ mt: 1 }}>
+    <Box className="w-full md:w-2/3 border-x border-blue-100 h-full" sx={{ minHeight: `calc(100dvh - 64px - 8px)`, mt: 1 }}>
       <Typography variant="h4" component="h2" sx={{ px: 1 }}>
         History
       </Typography>
