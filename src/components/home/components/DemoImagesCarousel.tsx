@@ -13,12 +13,12 @@ export default function DemoImagesCarousel() {
   const [containerNode, setContainerNode] = useState<HTMLElement | null>(null);
   const [imageIndex, setImageIndex] = useState<ImageIndex>({ index: 0, direction: 'left' });
   const welcomeImages = [
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373574/workitout/HomePage.png',
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373574/workitout/Program.png',
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373575/workitout/Workout.png',
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373575/workitout/Training.png',
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373574/workitout/CompletedWorkout.png',
-    'https://res.cloudinary.com/the-lawlz/image/upload/v1783373574/workitout/Exercise.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/HomePage-portrait.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/Program-portrait.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/Workout-portrait.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/Training-portrait.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/CompletedWorkout-portrait.png',
+    'https://res.cloudinary.com/the-lawlz/image/upload/v1783438537/workitout/Exercise-portrait.png',
   ]
   const imageShift = (shift: number, direction: 'left' | 'right') => {
     const newIndex = imageIndex.index + shift;
@@ -50,7 +50,17 @@ export default function DemoImagesCarousel() {
           direction={index === imageIndex.index ? imageIndex.direction : oppositeDirection}
           container={containerNode}
         >
-          <Box sx={{ position: 'absolute', width: '100%', justifyContent: 'center', display: 'flex', pb: '10vh' }}>
+          <Box
+            sx={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              marginInline: 'auto',
+              width: 'fit-content',
+              maxWidth: '450px',
+              pb: '10vh',
+            }}
+          >
             <img
               src={image}
             />
