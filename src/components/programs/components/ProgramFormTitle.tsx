@@ -1,15 +1,16 @@
 import Stack from "@mui/material/Stack";
 import ProgramNameInput from "./ProgramNameInput";
 import IconButton from "@mui/material/IconButton";
-import Grow from "@mui/material/Grow";
 import useProgramForm from "../../../hooks/useProgramForm";
 import CheckIcon from '@mui/icons-material/Check';
 import EditIcon from '@mui/icons-material/Edit';
+import CloseIcon from '@mui/icons-material/Close';
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
+import Collapse from "@mui/material/Collapse";
 
 
 export default function ProgramFormTitle() {
-  const { editing, handleEditSaveClick, getProgramOptions } = useProgramForm();
+  const { editing, handleSaveClick, handleEditClick, handleCancelClick, getProgramOptions } = useProgramForm();
 
   const programOptions = getProgramOptions();
 
@@ -23,14 +24,21 @@ export default function ProgramFormTitle() {
       }}
     >
       <ProgramNameInput />
-      <IconButton color="primary" sx={{ mx: 1 }} onClick={handleEditSaveClick}>
-        <Grow in={editing}>
-          <CheckIcon fontSize="medium" sx={{ position: 'absolute' }} />
-        </Grow>
-        <Grow in={!editing}>
+      <Collapse in={editing} orientation="horizontal">
+        <Stack direction='row' spacing={2} sx={{ alignItems: 'center', ml: 1 }}>
+          <IconButton color="primary" onClick={handleSaveClick}>
+            <CheckIcon fontSize="medium" sx={{ position: 'absolute' }} />
+          </IconButton>
+          <IconButton color="error" onClick={handleCancelClick}>
+            <CloseIcon fontSize="medium" sx={{ position: 'absolute' }} />
+          </IconButton>
+        </Stack>
+      </Collapse>
+      <Collapse in={!editing} orientation="horizontal">
+        <IconButton color="primary" sx={{ mx: 1 }} onClick={handleEditClick}>
           <EditIcon fontSize="medium" sx={{ position: 'absolute' }} />
-        </Grow>
-      </IconButton>
+        </IconButton>
+      </Collapse>
       <VerticalIconMenu
         buttonId={"program-options"}
         menuItems={programOptions}

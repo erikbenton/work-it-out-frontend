@@ -38,7 +38,7 @@ export default function WelcomePage() {
               variant='contained'
               sx={{ alignSelf: 'center', borderRadius: 5, width: '33%', maxWidth: '200px', minWidth: '100px', textTransform: 'none' }}
             >
-              Join/Login
+              Join or Login
             </Button>
           </Stack>
           <Stack direction='column' spacing={1} sx={{ width: '100%', mt: 2 }}>

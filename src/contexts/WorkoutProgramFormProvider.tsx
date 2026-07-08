@@ -132,7 +132,7 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     return editing ? editingOptions : notEditingOptions;
   }
 
-  const handleEditSaveClick = () => {
+  const handleSaveClick = () => {
     if (editing) {
       setSaving(true);
       if (newProgram) {
@@ -156,8 +156,26 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
           }
         });
       }
-    } else {
-      setEditing(!editing);
+    }
+  }
+
+  const handleEditClick = () => {
+    setEditing(true);
+  }
+
+  const handleCancelClick = () => {
+    if (editing) {
+      setEditing(false);
+      if (program.id) {
+        dispatch({
+          type: 'setProgram',
+          payload: {
+            program: programServices.getProgramById(program.id)
+          }
+        });
+      } else {
+        navigate('/programs');
+      }
     }
   }
 
@@ -180,7 +198,9 @@ export default function WorktouProgramFormProvider({ initProgram, children }: Pr
     setSaving,
     setEditing,
     handleExpandClick,
-    handleEditSaveClick,
+    handleSaveClick,
+    handleEditClick,
+    handleCancelClick,
     handleStartSelectingWorkouts,
     handleStopSelectingWorkouts,
     getProgramOptions,
