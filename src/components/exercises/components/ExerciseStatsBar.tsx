@@ -117,7 +117,7 @@ export default function ExerciseStatsBar({ history }: Props) {
             <FitnessCenterIcon />
           </Avatar>
           <Typography variant="body1">
-            {formatLargeNumber(stats.volume, stats.volume >= 10_000)} {weightUnit}
+            {formatLargeNumber(Math.round(stats.volume), stats.volume >= 10_000)} {weightUnit}
           </Typography>
           <Typography variant="body2" sx={{ color: 'gray' }} textAlign='center'>Volume</Typography>
         </Stack>

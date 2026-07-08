@@ -10,7 +10,7 @@ import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import RoomSharpIcon from '@mui/icons-material/RoomSharp';
 import EventAvailableIcon from '@mui/icons-material/EventAvailable';
-import { checkPluralization, durationToHhMmSs, getShortDate, secondsToDuration } from "../../../utils/formatters";
+import { checkPluralization, durationToHhMmSs, formatLargeNumber, getShortDate, secondsToDuration } from "../../../utils/formatters";
 import { calculateLiftStats, calculateStretchStats, calculateTimedStats } from "../../../utils/exerciseStats";
 import { useExercises } from "../../../hooks/useExercises";
 import useUser from "../../../hooks/useUser";
@@ -113,7 +113,7 @@ export default function CompletedWorkoutStats({ workout }: Props) {
           <Avatar sx={{ bgcolor: cyan[700] }}>
             <FitnessCenterIcon />
           </Avatar>
-          <Typography variant="body1" noWrap>{stats.volume} {weightUnit}</Typography>
+          <Typography variant="body1" noWrap>{formatLargeNumber(Math.round(stats.volume))} {weightUnit}</Typography>
           <Typography variant="body2" sx={{ color: 'gray' }}>Volume</Typography>
         </Stack>
       }

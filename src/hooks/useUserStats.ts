@@ -68,6 +68,9 @@ function calculateUserStats(
   // update the stats duration time
   stats.duration = secondsToDuration(stats.durationInSeconds);
 
+  // make the volume an int
+  stats.totalVolume = Math.round(stats.totalVolume);
+
   return stats;
 }
 
