@@ -4,6 +4,8 @@ export default interface ActiveWorkout {
   id: number,
   workoutId?: number,
   name: string,
+  colorRgb?: string,
+  tag?: string,
   description?: string,
   note?: string,
   duration?: string,

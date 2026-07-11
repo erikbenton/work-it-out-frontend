@@ -1,17 +1,23 @@
 import Stack from "@mui/material/Stack";
-import useProgramForm from "../../../hooks/useProgramForm";
 import { Avatar, Collapse, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField } from "@mui/material";
 import programColors from "../../../types/programColors";
 import { bgBlue } from "../../../utils/styling";
 import ExpandMoreButton from "../../layout/ExpandMoreButton";
 import { useState } from "react";
+import useWorkoutForm from "../../../hooks/useWorkoutForm";
+import { devConsole } from "../../../utils/debugLogger";
 
-export default function ProgramFormColorInput() {
-  const { editing, program, dispatch } = useProgramForm();
+export default function WorkoutFormColorInput() {
+  const { editing, workout, dispatch } = useWorkoutForm();
   const [expandColors, setExpandColors] = useState(false);
 
   const handleColorChange = (_event: React.ChangeEvent<HTMLInputElement, Element>, colorRgb: string) => {
+    devConsole(colorRgb);
     dispatch({ type: 'setColor', payload: { colorRgb } });
+  }
+
+  const handleExpandColorsClick = () => {
+    setExpandColors(!expandColors);
   }
 
   const handleTagChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,10 +29,6 @@ export default function ProgramFormColorInput() {
         dispatch({ type: 'setTag', payload: { tag } });
       }
     }
-  }
-
-  const handleExpandColorsClick = () => {
-    setExpandColors(!expandColors);
   }
 
   return (
@@ -44,18 +46,18 @@ export default function ProgramFormColorInput() {
             <Stack direction='row' spacing={2} alignItems='center' sx={{ ml: 1 }}>
               <TextField
                 onChange={handleTagChange}
-                value={program.tag ?? ''}
+                value={workout.tag ?? ''}
                 label='Tag'
                 sx={{ maxWidth: '75px' }}
               />
               <Avatar
                 sx={{
                   alignContent: 'center',
-                  bgcolor: program.colorRgb,
-                  fontSize: (program.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
+                  bgcolor: workout.colorRgb ?? programColors[0],
+                  fontSize: (workout.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
                 }}
               >
-                {(program.tag ?? ' ')}
+                {(workout.tag ?? ' ')}
               </Avatar>
             </Stack>
             <ExpandMoreButton
@@ -67,9 +69,9 @@ export default function ProgramFormColorInput() {
           <Collapse in={expandColors}>
             <RadioGroup
               row
-              aria-labelledby="program-color-group-label"
-              name="program-color-group"
-              value={program.colorRgb ?? programColors[0]}
+              aria-labelledby="workout-color-group-label"
+              name="workout-color-group"
+              value={workout.colorRgb ?? programColors[0]}
               onChange={handleColorChange}
               sx={{ flexWrap: 'wrap', mb: 2, justifyContent: 'space-evenly', width: '100%' }}
             >

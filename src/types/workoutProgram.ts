@@ -3,5 +3,6 @@ export default interface WorkoutProgram {
   name: string,
   description?: string,
   colorRgb: string,
+  tag?: string,
   workoutIds: number[]
 }

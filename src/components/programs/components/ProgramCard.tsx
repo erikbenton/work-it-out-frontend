@@ -38,8 +38,14 @@ export default function ProgramCard({ program }: Props) {
       <CardHeader
         avatar={
           <Link to={`/programs/${program.id}`}>
-            <Avatar aria-label="workout" sx={{ bgcolor: program.colorRgb }}>
-              {program.name[0].toUpperCase()}
+            <Avatar
+              aria-label="workout"
+              sx={{
+                bgcolor: program.colorRgb,
+                fontSize: (program.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
+              }}
+            >
+              {program.tag ?? '?'}
             </Avatar>
           </Link>
         }

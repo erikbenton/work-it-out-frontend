@@ -23,9 +23,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import ListItemText from "@mui/material/ListItemText";
 import { checkPluralization } from "../../../utils/formatters";
-import { useExercises } from "../../../hooks/useExercises";
 import type Workout from "../../../types/workout";
-import { getMaxMuscleGroup } from "../../../utils/muscles";
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
@@ -107,8 +105,14 @@ export function ProgramWorkoutsCard({ program }: CardProps) {
     <Card sx={{ bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
         avatar={
-          <Avatar aria-label="workout" sx={{ bgcolor: program.colorRgb }}>
-            {program.name[0].toUpperCase()}
+          <Avatar
+            aria-label="program"
+            sx={{
+              bgcolor: program.colorRgb,
+              fontSize: (program.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
+            }}
+          >
+            {program.tag ?? '?'}
           </Avatar>
         }
         title={program.name}
@@ -147,10 +151,8 @@ type ItemProps = {
 }
 
 function ProgramWorkoutItem({ workout }: ItemProps) {
-  const { services: exercises } = useExercises();
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
-  const maxMuscle = getMaxMuscleGroup(workout.exerciseGroups, exercises);
 
   const handleStartWorkout = () => {
     dispatch({ type: 'initializeWorkout', payload: { initialWorkout: workout } });
@@ -172,8 +174,8 @@ function ProgramWorkoutItem({ workout }: ItemProps) {
       }
     >
       <ListItemAvatar>
-        <Avatar aria-label={`${workout.name}`} sx={{ bgcolor: maxMuscle.colorRgb }}>
-          {maxMuscle.name[0].toUpperCase()}
+        <Avatar aria-label={`${workout.name}`} sx={{ bgcolor: workout.colorRgb }}>
+          {workout.tag ?? '?'}
         </Avatar>
       </ListItemAvatar>
       <ListItemText

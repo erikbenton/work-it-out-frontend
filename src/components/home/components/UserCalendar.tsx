@@ -13,13 +13,11 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useNavigate } from 'react-router-dom';
-import { getMaxMuscleGroup } from '../../../utils/muscles';
-import { useExercises } from '../../../hooks/useExercises';
 import useSwipe from '../../../hooks/useSwipe';
 
 function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<number, Map<number, CompletedWorkout[]>> }) {
   const navigate = useNavigate();
-  const { services } = useExercises();
+  // const { services } = useExercises();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { completedWorkoutsByDate = new Map<number, Map<number, CompletedWorkout[]>>(), day, outsideCurrentMonth, ...other } = props;
@@ -43,10 +41,6 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
     };
   }
 
-  const maxMuscle = isSelected
-    ? getMaxMuscleGroup(highlightedDays[0].completedExerciseGroups, services)
-    : null;
-
   const options = isSelected
     ? highlightedDays.map(w => ({
       label: `View ${w.name}`,
@@ -68,7 +62,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
         sx={{
           "& .MuiBadge-badge": {
             color: isSelected ? "white" : undefined,
-            backgroundColor: isSelected ? maxMuscle?.colorRgb : undefined
+            backgroundColor: isSelected ? highlightedDays[0]?.colorRgb : undefined
           }
         }}
       >

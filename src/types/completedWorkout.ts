@@ -7,5 +7,7 @@ export default interface CompletedWorkout {
   note?: string,
   duration: string,
   createdAt?: string,
+  colorRgb?: string,
+  tag?: string,
   completedExerciseGroups: CompletedExerciseGroup[]
 }

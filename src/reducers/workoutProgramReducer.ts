@@ -5,6 +5,7 @@ export type WorkoutProgramAction =
   | { type: 'setProgram', payload: { program: WorkoutProgram } }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setColor', payload: { colorRgb: string } }
+  | { type: 'setTag', payload: { tag: string | undefined } }
   | { type: 'setDescription', payload: { description: string | undefined } }
   | { type: 'setWorkouts', payload: { workoutIds: number[] } }
   | { type: 'removeWorkout', payload: { workoutId: number } }
@@ -25,6 +26,11 @@ export default function workoutProgramReducer(program: WorkoutProgram, action: W
     case 'setColor': {
       const { colorRgb } = action.payload;
       return { ...program, colorRgb };
+    }
+
+    case 'setTag': {
+      const { tag } = action.payload;
+      return { ...program, tag };
     }
 
     case 'setDescription': {

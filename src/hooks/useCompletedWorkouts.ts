@@ -154,6 +154,8 @@ export function useCompletedWorkouts() {
       name: activeWorkout.name,
       description: activeWorkout.description,
       note: activeWorkout.note,
+      colorRgb: activeWorkout.colorRgb,
+      tag: activeWorkout.tag,
       duration: msToDuration(Date.now() - activeWorkout.startTime),
       // convert exercise groups
       completedExerciseGroups: activeWorkout.exerciseGroups.map((g, index) => {

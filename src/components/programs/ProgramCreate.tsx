@@ -8,6 +8,7 @@ const newProgram: WorkoutProgram = {
   id: 0,
   name: 'New Program',
   colorRgb: programColors[0],
+  tag: '?',
   workoutIds: []
 }
 

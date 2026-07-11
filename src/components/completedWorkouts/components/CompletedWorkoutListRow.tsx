@@ -8,6 +8,8 @@ import { getDateTime } from "../../../utils/dateTime";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { bgBlue } from "../../../utils/styling";
+import { devConsole } from "../../../utils/debugLogger";
+import programColors from "../../../types/programColors";
 
 type Props = {
   workout: CompletedWorkout
@@ -21,6 +23,8 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
   const maxMuscle = getMaxMuscleGroup(workout.completedExerciseGroups, services);
   const dateTime = getDateTime(workout.createdAt);
 
+  devConsole('(', workout.id, ',', maxMuscle.name[0].toUpperCase(), ')');
+
   return (
     <Stack spacing={2} direction='row' flex={1} flexGrow={1} alignItems='center' sx={{ px: 2 }}>
       <Stack sx={{ width: '32px' }}>
@@ -31,8 +35,14 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
         <CardHeader
           sx={{ overflow: 'hidden' }}
           avatar={
-            <Avatar sx={{ bgcolor: maxMuscle.colorRgb }} aria-label="exercise group">
-              {maxMuscle.name[0].toUpperCase()}
+            <Avatar
+              sx={{
+                bgcolor: workout.colorRgb ?? programColors[0],
+                fontSize: (workout.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
+              }}
+              aria-label="exercise group"
+            >
+              {workout.tag ?? '?'}
             </Avatar>
           }
           title={workout.name}

@@ -11,6 +11,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import ExerciseSelect from "../../exercises/components/ExerciseSelect";
 import Collapse from "@mui/material/Collapse";
+import WorkoutFormColorInput from "./WorkoutFormColorInput";
 
 export default function WorkoutFormTitle() {
   const {
@@ -76,6 +77,7 @@ export default function WorkoutFormTitle() {
           size="medium"
         />
       </Stack >
+      <WorkoutFormColorInput />
       <Stack
         direction="row"
         spacing={2}

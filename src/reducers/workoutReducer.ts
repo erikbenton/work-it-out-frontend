@@ -9,6 +9,8 @@ export type WorkoutAction =
   | { type: 'setWorkout', payload: { workout: Workout } }
   | { type: 'setName', payload: { name: string } }
   | { type: 'setDescription', payload: { description: string | undefined } }
+  | { type: 'setColor', payload: { colorRgb: string } }
+  | { type: 'setTag', payload: { tag: string | undefined } }
   | { type: 'addGroupSet', payload: { group: ExerciseGroup } }
   | { type: 'removeGroupSet', payload: { group: ExerciseGroup, set: ExerciseSet | undefined } }
   | { type: 'updateGroup', payload: { group: ExerciseGroup } }
@@ -25,6 +27,16 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
 
     case 'setName':
       return { ...workout, name: action.payload.name.trim() };
+
+    case 'setColor': {
+      const { colorRgb } = action.payload;
+      return { ...workout, colorRgb };
+    }
+
+    case 'setTag': {
+      const { tag } = action.payload;
+      return { ...workout, tag };
+    }
 
     case 'setDescription':
       return {

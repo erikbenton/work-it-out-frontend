@@ -9,6 +9,8 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
 import { getMaxMuscleGroup } from "../../../utils/muscles";
 import { bgBlue } from "../../../utils/styling";
+import { devConsole } from "../../../utils/debugLogger";
+import programColors from "../../../types/programColors";
 
 type Props = {
   workout: Workout
@@ -23,6 +25,8 @@ export default function WorkoutListCard({ workout }: Props) {
   const exerciseNames = workout.exerciseGroups
     .map(group => exercises.getExerciseById(group.exerciseId).name)
     .join(', ');
+
+  devConsole('(', workout.id, ',', maxMuscle.name[0].toUpperCase(), ')');
 
   const menuItems = [
     {
@@ -55,8 +59,14 @@ export default function WorkoutListCard({ workout }: Props) {
       <CardHeader
         avatar={
           <Link to={`/workouts/${workout.id}`}>
-            <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
-              {maxMuscle.name[0].toUpperCase()}
+            <Avatar
+              aria-label="workout"
+              sx={{
+                bgcolor: workout.colorRgb ?? programColors[0],
+                fontSize: (workout.tag?.length ?? 0) > 2 ? '1.125rem' : undefined
+              }}
+            >
+              {workout.tag ?? '?'}
             </Avatar>
           </Link>
         }

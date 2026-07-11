@@ -7,8 +7,6 @@ import { useNavigate } from "react-router-dom";
 import type Workout from "../../../types/workout";
 import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
-import { useExercises } from "../../../hooks/useExercises";
-import { getMaxMuscleGroup } from "../../../utils/muscles";
 import { bgBlue } from "../../../utils/styling";
 
 type Props = {
@@ -16,10 +14,8 @@ type Props = {
 }
 
 export default function StartWorkoutCard({ workout }: Props) {
-  const { services: exercises } = useExercises();
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
-  const maxMuscle = getMaxMuscleGroup(workout.exerciseGroups, exercises);
 
   const menuItems = [
     {
@@ -34,8 +30,8 @@ export default function StartWorkoutCard({ workout }: Props) {
     <Card sx={{ bgcolor: bgBlue, borderRadius: 5 }}>
       <CardHeader
         avatar={
-          <Avatar aria-label="workout" sx={{ bgcolor: maxMuscle.colorRgb }}>
-            {maxMuscle.name[0].toUpperCase()}
+          <Avatar aria-label="workout" sx={{ bgcolor: workout.colorRgb }}>
+            {workout.tag ?? '?'}
           </Avatar>
         }
         title={workout.name}
