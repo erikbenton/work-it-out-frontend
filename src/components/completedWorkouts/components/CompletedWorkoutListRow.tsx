@@ -3,12 +3,10 @@ import { useExercises } from "../../../hooks/useExercises";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import type CompletedWorkout from "../../../types/completedWorkout";
-import { getMaxMuscleGroup } from "../../../utils/muscles";
 import { getDateTime } from "../../../utils/dateTime";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import { bgBlue } from "../../../utils/styling";
-import { devConsole } from "../../../utils/debugLogger";
 import programColors from "../../../types/programColors";
 
 type Props = {
@@ -20,10 +18,7 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
   const exercises = workout.completedExerciseGroups
     .map(group => services.getExerciseById(group.exerciseId).name)
     .join(', ');
-  const maxMuscle = getMaxMuscleGroup(workout.completedExerciseGroups, services);
   const dateTime = getDateTime(workout.createdAt);
-
-  devConsole('(', workout.id, ',', maxMuscle.name[0].toUpperCase(), ')');
 
   return (
     <Stack spacing={2} direction='row' flex={1} flexGrow={1} alignItems='center' sx={{ px: 2 }}>

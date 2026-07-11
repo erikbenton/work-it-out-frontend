@@ -7,9 +7,7 @@ import VerticalIconMenu from "../../layout/VerticalIconMenu";
 import { useWorkouts } from "../../../hooks/useWorkouts";
 import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import { useExercises } from "../../../hooks/useExercises";
-import { getMaxMuscleGroup } from "../../../utils/muscles";
 import { bgBlue } from "../../../utils/styling";
-import { devConsole } from "../../../utils/debugLogger";
 import programColors from "../../../types/programColors";
 
 type Props = {
@@ -21,12 +19,9 @@ export default function WorkoutListCard({ workout }: Props) {
   const { services: exercises } = useExercises();
   const { dispatch } = useActiveWorkout();
   const navigate = useNavigate();
-  const maxMuscle = getMaxMuscleGroup(workout.exerciseGroups, exercises);
   const exerciseNames = workout.exerciseGroups
     .map(group => exercises.getExerciseById(group.exerciseId).name)
     .join(', ');
-
-  devConsole('(', workout.id, ',', maxMuscle.name[0].toUpperCase(), ')');
 
   const menuItems = [
     {

@@ -44,6 +44,8 @@ export default function CompletedWorkoutDetails() {
           id: 0,
           name: workout.name + ' (Copy)',
           description: workout.description,
+          colorRgb: workout.colorRgb,
+          tag: workout.tag,
           exerciseGroups: workout.completedExerciseGroups.map((g, i) => {
             const exerciseSets: ExerciseSet[] = g.completedExerciseSets.map((s, i) => {
               s = populateKey(s)
