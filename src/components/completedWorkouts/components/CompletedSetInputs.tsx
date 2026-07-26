@@ -1,36 +1,25 @@
 import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import type ActiveExerciseSet from "../../../types/activeExerciseSet";
-import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
-import useUser from "../../../hooks/useUser";
+import { DistanceInput, DurationInput, RepInput, WeightInput } from "../../activeWorkout/components/LiftingInputs";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
+import useCompletedWorkoutForm from "../../../hooks/useCompletedWorkoutForm";
 
-export type ActiveSetInputProps = {
-  values?: ActiveExerciseSet,
-  setValues: React.Dispatch<React.SetStateAction<ActiveExerciseSet | undefined>>,
+export type CompletedSetInputProps = {
+  values?: CompletedExerciseSet,
+  setValues: React.Dispatch<React.SetStateAction<CompletedExerciseSet>>,
   size?: 'small' | 'large',
   label?: string,
   category: ExerciseCategory,
 }
 
-type SetInputProps = {
-  values?: ActiveExerciseSet | CompletedExerciseSet,
-  saving: boolean,
-  size?: 'small' | 'large',
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void,
-  onBlur?: () => void,
-  variant?: "filled" | "outlined" | "standard"
-}
-
-export default function LiftingInputs({ category, size, values, setValues }: ActiveSetInputProps) {
-  const { saving } = useActiveWorkout();
-  const variant = "filled";
+export default function CompletedSetInputs({ category, size, values, setValues }: CompletedSetInputProps) {
+  const { saving } = useCompletedWorkoutForm();
+  const variant = "standard";
 
   const handleWeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const weight = Number(e.target.value);
     if (!values || weight < 0) return;
-    const newSet: ActiveExerciseSet = { ...values, weight }
+    const newSet = { ...values, weight }
     setValues(newSet);
   }
 
@@ -189,94 +178,5 @@ export default function LiftingInputs({ category, size, values, setValues }: Act
       {getFirstInput(category)}
       {getSecondInput(category)}
     </Stack>
-  );
-}
-
-export function WeightInput({ size, onChange, values, saving, variant }: SetInputProps) {
-  const { weightUnit } = useUser();
-
-  return (
-    <TextField
-      id="weight"
-      name="weight"
-      label={`Weight (${weightUnit})`}
-      type="number"
-      disabled={saving}
-      fullWidth
-      variant={variant ? variant : "filled"}
-      value={values?.weight ? values.weight : ""}
-      onChange={onChange}
-      slotProps={{
-        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
-      }}
-    />
-  );
-}
-
-export function RepInput({ size, onChange, values, saving, variant }: SetInputProps) {
-
-  return (
-    <TextField
-      id="reps"
-      name="reps"
-      label="Repetitions"
-      type="number"
-      disabled={saving}
-      fullWidth
-      variant={variant ? variant : "filled"}
-      value={values?.reps ? values.reps : ""}
-      onChange={onChange}
-      slotProps={{
-        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
-      }}
-    />
-  );
-}
-
-export function DistanceInput({ size, onChange, values, saving, variant }: SetInputProps) {
-  const { distanceUnit } = useUser();
-
-  return (
-    <TextField
-      id="distance"
-      name="distance"
-      label={`Distance (${distanceUnit})`}
-      type="number"
-      disabled={saving}
-      fullWidth
-      variant={variant ? variant : "filled"}
-      value={values?.distance ?? ""}
-      onChange={onChange}
-      slotProps={{
-        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-        inputLabel: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' } },
-        htmlInput: { step: '0.001' }
-      }}
-    />
-  );
-}
-
-export function DurationInput({ size, onChange, onBlur, values, saving, variant }: SetInputProps) {
-
-  return (
-    <TextField
-      id="duration"
-      name="duration"
-      label='Duration'
-      type="text"
-      disabled={saving}
-      fullWidth
-      variant={variant ? variant : "filled"}
-      value={values?.duration ?? ''}
-      onChange={onChange}
-      onBlur={onBlur}
-      slotProps={{
-        htmlInput: { style: { textAlign: 'end' }, inputMode: 'numeric' },
-        input: { sx: { fontSize: size === 'small' ? '1.25rem' : '1.5rem' }, inputMode: 'numeric' },
-        inputLabel: { sx: { textAlign: 'end', fontSize: size === 'small' ? '1.25rem' : '1.5rem' } }
-      }}
-    />
   );
 }

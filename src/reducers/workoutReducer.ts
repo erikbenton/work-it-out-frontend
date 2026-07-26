@@ -95,7 +95,7 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
 
       const exerciseGroup = workout.exerciseGroups.find(g => g.key === group.key);
       if (!exerciseGroup) {
-        throw new Error('Unable to exercise group with key: ' + group.key);
+        throw new Error('Unable to find exercise group with key: ' + group.key);
       }
       const exerciseSets = exerciseGroup?.exerciseSets.concat(newSet) ?? [newSet];
       const updatedGroup = { ...exerciseGroup, exerciseSets };
@@ -119,7 +119,7 @@ export default function workoutReducer(workout: Workout, action: WorkoutAction):
       const { group, set } = action.payload;
       const exerciseGroup = workout.exerciseGroups.find(g => g.key === group.key);
       if (!exerciseGroup) {
-        throw new Error('Unable to exercise group with key: ' + group.key);
+        throw new Error('Unable to find exercise group with key: ' + group.key);
       }
       // do simple validations here 
       const validSet: ExerciseSet = {

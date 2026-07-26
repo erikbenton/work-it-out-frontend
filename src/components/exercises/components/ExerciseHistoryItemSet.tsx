@@ -17,10 +17,11 @@ type Props = {
   set: CompletedExerciseSet,
   onDoubleClick?: (completedSet: CompletedExerciseSet) => void,
   isCurrent?: boolean,
-  category: ExerciseCategory
+  category: ExerciseCategory,
+  onClick?: (completedSet: CompletedExerciseSet) => void,
 }
 
-export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, category }: Props) {
+export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, category, onClick }: Props) {
   const { weightUnit, distanceUnit } = useUser();
   const { setTags } = useSetTags();
   const setTag = setTags?.find(tag => tag.id === set.setTagId);
@@ -31,9 +32,15 @@ export default function ExerciseHistoryItemSet({ set, onDoubleClick, isCurrent, 
     }
   }
 
+  const handleClick = () => {
+    if (onClick) {
+      onClick(set);
+    }
+  }
+
   return (
     <ListItem disablePadding>
-      <ListItemButton onDoubleClick={handleDoubleClick}>
+      <ListItemButton onDoubleClick={handleDoubleClick} onClick={handleClick}>
         <ListItemAvatar>
           <Tooltip
             title={setTag?.name}

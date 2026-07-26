@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useReducer, useState, type ReactNode } from "react";
 import type CompletedWorkout from "../types/completedWorkout";
 import CompletedWorkoutFormContext from "./completedWorkoutFormContext";
 import { useCompletedWorkouts } from "../hooks/useCompletedWorkouts";
@@ -8,6 +8,8 @@ import type Workout from "../types/workout";
 import type ExerciseSet from "../types/exerciseSet";
 import { populateKey } from "../types/keyId";
 import type { VerticalMenuItemProps } from "../components/layout/VerticalIconMenu";
+import completedWorkoutReducer from "../reducers/completedWorkoutReducer";
+import useSetTags from "../hooks/useSetTags";
 
 type Props = {
   initWorkout: CompletedWorkout,
@@ -15,18 +17,44 @@ type Props = {
 };
 
 export function CompletedWorkoutFormProvider({ initWorkout, children }: Props) {
+  const [workout, dispatch] = useReducer(completedWorkoutReducer, initWorkout);
   const { services } = useCompletedWorkouts();
-  const { dispatch, workout: activeWorkout } = useActiveWorkout();
+  const { setTags } = useSetTags();
+  const { dispatch: activeDispatch, workout: activeWorkout } = useActiveWorkout();
   const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
-  const workout = initWorkout;
+  const [editing, setEditing] = useState(false);
+
+  const handleSaveClick = () => {
+    // update the workout
+  }
+
+  const handleEditClick = () => {
+    setEditing(true);
+  }
+
+  const handleCancelClick = () => {
+    if (editing) {
+      setEditing(false);
+      if (workout.id) {
+        dispatch({
+          type: 'setWorkout',
+          payload: {
+            workout: services.getCompletedWorkoutById(workout.id)
+          }
+        });
+      } else {
+        navigate('/history');
+      }
+    }
+  }
 
   const menuItems: VerticalMenuItemProps[] = [
     {
       label: "Redo",
       handleClick: () => {
         if (!workout) return;
-        dispatch({
+        activeDispatch({
           type: 'redoWorkout',
           payload: { completedWorkout: workout }
         });
@@ -95,9 +123,16 @@ export function CompletedWorkoutFormProvider({ initWorkout, children }: Props) {
 
   const completedWorkoutContext = {
     workout,
+    dispatch,
     saving,
     setSaving,
-    menuItems
+    editing,
+    setEditing,
+    handleSaveClick,
+    handleEditClick,
+    handleCancelClick,
+    menuItems,
+    setTags
   }
 
   return (
