@@ -5,6 +5,7 @@ import useActiveWorkout from "../../../hooks/useActiveWorkout";
 import type { ExerciseCategory } from "../../../types/exerciseCategory";
 import useUser from "../../../hooks/useUser";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
+import { devConsole } from "../../../utils/debugLogger";
 
 export type ActiveSetInputProps = {
   values?: ActiveExerciseSet,
@@ -101,6 +102,7 @@ export default function LiftingInputs({ category, size, values, setValues }: Act
       const updatedDuration = `${hours ? `${hours}:` : ''}${minutesText}${seconds < 10 ? `0${seconds}` : seconds}`;
       const newSet = { ...values, duration: updatedDuration === '' ? undefined : updatedDuration }
       setValues(newSet);
+      devConsole('updated time', newSet.duration);
     }
   }
 

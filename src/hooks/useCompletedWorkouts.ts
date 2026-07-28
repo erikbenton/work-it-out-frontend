@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient, useSuspenseQuery, type MutateOptions, type UseMutateFunction } from "@tanstack/react-query";
 import type CompletedWorkout from "../types/completedWorkout";
-import { createCompletedWorkout, deleteCompletedWorkout, getCompletedWorkouts } from "../requests/completedWorkouts";
+import { createCompletedWorkout, deleteCompletedWorkout, getCompletedWorkouts, updateCompletedWorkout } from "../requests/completedWorkouts";
 import type ActiveWorkout from "../types/activeWorkout";
 import { durationToSeconds, formatDuration, msToDuration, secondsToDuration } from "../utils/formatters";
 import { numberOfDaysKeys, queryKey as userStatsQueryKey } from "./useUserStats";
@@ -30,33 +30,33 @@ export interface CompletedWorkoutServices {
 async function getConvertedCompletedWorkouts(
   weightUnit: WeightUnit,
   distanceUnit: DistanceUnit): Promise<CompletedWorkout[]> {
-    const workouts = await getCompletedWorkouts();
-    return convertCompletedWorkouts(workouts, weightUnit, distanceUnit);
+  const workouts = await getCompletedWorkouts();
+  return convertCompletedWorkouts(workouts, weightUnit, distanceUnit);
 }
 
 export function convertCompletedWorkouts(
   workouts: CompletedWorkout[],
   weightUnit: WeightUnit,
   distanceUnit: DistanceUnit): CompletedWorkout[] {
-    return workouts.map(w => {
-      return {
-        ...w,
-        completedExerciseGroups: w.completedExerciseGroups.map(g => {
-          return {
-            ...g,
-            completedExerciseSets: g.completedExerciseSets.map(s => {
-              const convertedWeight = convertWeightToUserUnits(s, weightUnit);
-              const convertedDistance = convertDistanceToUserUnits(s, distanceUnit);
-              return {
-                ...s,
-                ...convertedWeight,
-                ...convertedDistance
-              }
-            })
-          }
-        })
-      }
-    });
+  return workouts.map(w => {
+    return {
+      ...w,
+      completedExerciseGroups: w.completedExerciseGroups.map(g => {
+        return {
+          ...g,
+          completedExerciseSets: g.completedExerciseSets.map(s => {
+            const convertedWeight = convertWeightToUserUnits(s, weightUnit);
+            const convertedDistance = convertDistanceToUserUnits(s, distanceUnit);
+            return {
+              ...s,
+              ...convertedWeight,
+              ...convertedDistance
+            }
+          })
+        }
+      })
+    }
+  });
 }
 
 export function useCompletedWorkouts() {
@@ -96,6 +96,13 @@ export function useCompletedWorkouts() {
     }
   }
 
+  const invalidateHistories = (completedWorkout: CompletedWorkout) => {
+    for (const group of completedWorkout.completedExerciseGroups) {
+      const key = [historyQueryKey, group.exerciseId]
+      queryClient.removeQueries({ queryKey: key });
+    }
+  }
+
   const removeHistories = (completedWorkout: CompletedWorkout) => {
     for (const group of completedWorkout.completedExerciseGroups) {
       const key = [historyQueryKey, group.exerciseId]
@@ -109,10 +116,7 @@ export function useCompletedWorkouts() {
   }
 
   const removeStats = () => {
-    for (const option of numberOfDaysKeys) {
-      const key = [userStatsQueryKey, option.numberOfDays];
-      queryClient.invalidateQueries({ queryKey: key });
-    }
+    queryClient.removeQueries({ queryKey: [userStatsQueryKey], exact: false });
   }
 
   const updateStats = (completedWorkout: CompletedWorkout) => {
@@ -202,6 +206,24 @@ export function useCompletedWorkouts() {
     create(convertedWorkout, options);
   }
 
+  // If any extra parsing is needed for the inputs
+  const prepareUpdatedWorkout = (updatedWorkout: CompletedWorkout): CompletedWorkout => {
+    return {
+      ...updatedWorkout,
+      completedExerciseGroups: updatedWorkout.completedExerciseGroups.map(group => {
+        return {
+          ...group,
+          completedExerciseSets: group.completedExerciseSets.map(set => {
+            return {
+              ...set,
+              duration: formatDuration(set.duration)
+            }
+          })
+        }
+      })
+    }
+  }
+
   const create = useMutation({
     mutationFn: async (newWorkout: CompletedWorkout) => createCompletedWorkout(newWorkout),
     onSuccess: (savedWorkout: CompletedWorkout) => {
@@ -210,6 +232,28 @@ export function useCompletedWorkouts() {
         queryClient.setQueryData([queryKey], [savedWorkout, ...prevWorkouts]); // put it at the top of the list
         updateHistories(savedWorkout);
         updateStats(savedWorkout);
+      } catch {
+        queryClient.invalidateQueries({ queryKey: [queryKey] });
+      }
+    }
+  }).mutate;
+
+  const update = useMutation({
+    mutationFn: async (workout: CompletedWorkout) => updateCompletedWorkout(prepareUpdatedWorkout(workout)),
+    onSuccess: (updatedWorkout: CompletedWorkout) => {
+      try {
+        const prevWorkouts: CompletedWorkout[] = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
+        // invalidate the histories & stats so they are recalc'd
+        invalidateHistories(updatedWorkout);
+        const oldWorkout = prevWorkouts.find(w => w.id === updatedWorkout.id);
+        if (oldWorkout) {
+          invalidateHistories(oldWorkout);
+        }
+        removeStats();
+        queryClient.setQueryData([queryKey], prevWorkouts?.map(w => (
+          w.id === updatedWorkout.id
+            ? updatedWorkout
+            : w)));
       } catch {
         queryClient.invalidateQueries({ queryKey: [queryKey] });
       }
@@ -240,6 +284,7 @@ export function useCompletedWorkouts() {
     convertActiveWorkout,
     services: {
       create,
+      update,
       remove,
       createFromActiveWorkout,
       getCompletedWorkoutById

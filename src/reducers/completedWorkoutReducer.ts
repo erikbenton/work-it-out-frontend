@@ -2,6 +2,7 @@ import type { CompletedExerciseGroup } from "../types/completedExerciseGroup";
 import type { CompletedExerciseSet } from "../types/completedExerciseSet";
 import type CompletedWorkout from "../types/completedWorkout";
 import { devConsole } from "../utils/debugLogger";
+import { formatDuration } from "../utils/formatters";
 
 export type CompletedWorkoutAction =
   { type: string, payload: never }
@@ -38,7 +39,8 @@ export default function completedWorkoutReducer(workout: CompletedWorkout, actio
       }
       // do simple validations here 
       const validSet: CompletedExerciseSet = {
-        ...set
+        ...set,
+        duration: formatDuration(set.duration)
       }
       const completedExerciseSets = exerciseGroup?.completedExerciseSets.map(s => s.id === set.id ? validSet : s) ?? [];
       const updatedGroup = { ...exerciseGroup, completedExerciseSets };

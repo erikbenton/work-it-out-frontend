@@ -85,9 +85,9 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
     handleClose();
   };
 
-  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | undefined) => {
-    if (!setTag) return;
-    const newSet = { ...values, setTagId: setTag.id };
+  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | null) => {
+    if (!values) return;
+    const newSet = { ...values, setTagId: setTag?.id };
     setValues(newSet);
   }
 
@@ -174,10 +174,10 @@ export default function ExerciseGroupSetInput({ exerciseGroup, set }: Props) {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel}>
+          <Button onClick={handleCancel} sx={{ textTransform: 'none' }}>
             Cancel
           </Button>
-          <Button type="submit" form="exercise-set-input-form">
+          <Button type="submit" form="exercise-set-input-form" sx={{ textTransform: 'none' }}>
             Save
           </Button>
         </DialogActions>

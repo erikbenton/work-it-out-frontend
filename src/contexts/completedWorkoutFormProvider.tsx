@@ -26,7 +26,18 @@ export function CompletedWorkoutFormProvider({ initWorkout, children }: Props) {
   const [editing, setEditing] = useState(false);
 
   const handleSaveClick = () => {
-    // update the workout
+    if (editing) {
+      setSaving(true);
+      services.update(workout, {
+        onSuccess: (savedWorkout) => {
+          setEditing(!editing);
+          navigate(`/history/${savedWorkout.id}`);
+        },
+        onSettled: () => {
+          setSaving(false);
+        }
+      });
+    }
   }
 
   const handleEditClick = () => {

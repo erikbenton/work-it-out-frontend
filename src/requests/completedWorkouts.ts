@@ -32,6 +32,27 @@ export async function createCompletedWorkout(newWorkout: CompletedWorkout): Prom
   return (await response.json()) as CompletedWorkout;
 }
 
+export async function updateCompletedWorkout(workout: CompletedWorkout): Promise<CompletedWorkout> {
+  devConsole('Updating completed workout ' + workout.id);
+
+  const config = {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(workout),
+  };
+
+  const response = await fetch(`${baseUrl}/completedWorkouts/${workout.id}`, config);
+
+  if (!response.ok) {
+    throw new Error('Failed to update completed workout with id: ' + (workout.id ?? "(no id found)"));
+  }
+
+  return (await response.json()) as CompletedWorkout;
+}
+
 export async function deleteCompletedWorkout(workoutId: number): Promise<number> {
   devConsole('Deleting completed workout ' + workoutId);
   const config = { method: 'DELETE' };

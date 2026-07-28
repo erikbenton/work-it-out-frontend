@@ -16,6 +16,8 @@ import useCompletedWorkoutForm from "../../../hooks/useCompletedWorkoutForm";
 import type SetTagOption from "../../../types/setTagOption";
 import type { CompletedExerciseGroup } from "../../../types/completedExerciseGroup";
 import CompletedSetInputs from "./CompletedSetInputs";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material";
 
 type Props = {
   group: CompletedExerciseGroup,
@@ -25,6 +27,8 @@ type Props = {
 
 export default function CompletedGroupSet({ group, set, category }: Props) {
   const { editing, dispatch, setTags = [] } = useCompletedWorkoutForm();
+  const theme = useTheme();
+  const mobileScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [values, setValues] = useState<CompletedExerciseSet>(set);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
@@ -48,16 +52,16 @@ export default function CompletedGroupSet({ group, set, category }: Props) {
       type: 'updateSet',
       payload: {
         group,
-        set: { ...values, targetDuration: parseDuration(values.targetDuration) }
+        set: { ...values, duration: parseDuration(values.duration) }
       }
     });
 
     handleClose();
   };
 
-  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | undefined) => {
-    if (!setTag) return;
-    const newSet = { ...values, setTagId: setTag.id };
+  const handleSetTypeChange = (_event: React.MouseEvent<HTMLElement>, setTag: SetTagOption | null) => {
+    if (!values) return;
+    const newSet = { ...values, setTagId: setTag?.id };
     setValues(newSet);
   }
 
@@ -65,10 +69,14 @@ export default function CompletedGroupSet({ group, set, category }: Props) {
     <>
       <Dialog fullWidth open={open} onClose={handleCancel} disableRestoreFocus>
         <DialogContent>
-          <form onSubmit={handleSubmit} id="exercise-set-input-form">
+          <form onSubmit={handleSubmit} id="completed-set-input-form">
             <Stack spacing={2}>
-              <FormLabel id="repetition-label">Targets</FormLabel>
-              <CompletedSetInputs category={category} setValues={setValues} values={values} />
+              <CompletedSetInputs
+                size={mobileScreen ? 'small' : 'large'}
+                category={category}
+                setValues={setValues}
+                values={values}
+              />
               <Stack sx={{ mt: 2 }}>
                 <FormLabel id="set-tag-group-label">Tag</FormLabel>
                 <ToggleButtonGroup
@@ -101,10 +109,10 @@ export default function CompletedGroupSet({ group, set, category }: Props) {
           </form>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCancel}>
+          <Button onClick={handleCancel} sx={{ textTransform: 'none' }}>
             Cancel
           </Button>
-          <Button type="submit" form="exercise-set-input-form">
+          <Button type="submit" form="completed-set-input-form" sx={{ textTransform: 'none' }}>
             Save
           </Button>
         </DialogActions>

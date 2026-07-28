@@ -3,6 +3,7 @@ import type { ExerciseCategory } from "../../../types/exerciseCategory";
 import { DistanceInput, DurationInput, RepInput, WeightInput } from "../../activeWorkout/components/LiftingInputs";
 import type { CompletedExerciseSet } from "../../../types/completedExerciseSet";
 import useCompletedWorkoutForm from "../../../hooks/useCompletedWorkoutForm";
+import { devConsole } from "../../../utils/debugLogger";
 
 export type CompletedSetInputProps = {
   values?: CompletedExerciseSet,
@@ -90,6 +91,7 @@ export default function CompletedSetInputs({ category, size, values, setValues }
       const updatedDuration = `${hours ? `${hours}:` : ''}${minutesText}${seconds < 10 ? `0${seconds}` : seconds}`;
       const newSet = { ...values, duration: updatedDuration === '' ? undefined : updatedDuration }
       setValues(newSet);
+      devConsole('updated time', newSet.duration);
     }
   }
 
