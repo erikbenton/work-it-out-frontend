@@ -71,14 +71,20 @@ export function useCompletedWorkouts() {
     queryFn: async () => getConvertedCompletedWorkouts(info.weightUnit, info.distanceUnit)
   });
 
-  const getCompletedWorkoutById = (id: number) => {
+  const getCompletedWorkoutByIdUnsafe = (id: number): CompletedWorkout | undefined => {
     const workouts = queryClient.getQueryData([queryKey]) as CompletedWorkout[];
     const workout = workouts.find(ex => ex.id === id);
 
+    if (!workout) return workout;
+
+    return { ...workout };
+  }
+
+  const getCompletedWorkoutById = (id: number) => {
+    const workout = getCompletedWorkoutByIdUnsafe(id);
     if (!workout) {
       throw new Error(`Unable to find completed workout with id: ${id}.`);
     }
-
     return workout;
   }
 
@@ -287,7 +293,8 @@ export function useCompletedWorkouts() {
       update,
       remove,
       createFromActiveWorkout,
-      getCompletedWorkoutById
+      getCompletedWorkoutById,
+      getCompletedWorkoutByIdUnsafe
     }
   }
 }

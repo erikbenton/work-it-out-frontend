@@ -3,7 +3,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { PickerDay, type PickerDayProps } from '@mui/x-date-pickers/PickerDay';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import { bgBlue } from '../../../utils/styling';
+import { bgBlue, primaryBlue } from '../../../utils/styling';
 import dayjs from 'dayjs';
 import { useMemo, useState } from 'react';
 import { useCompletedWorkouts } from '../../../hooks/useCompletedWorkouts';
@@ -52,6 +52,11 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
     }))
     : [];
 
+  const bgColor = isSelected
+    ? ((highlightedDays[0]?.colorRgb ?? '') === '')
+      ? primaryBlue : highlightedDays[0]?.colorRgb
+    : undefined;
+
   return (
     <>
       <Badge
@@ -62,7 +67,7 @@ function ServerDay(props: PickerDayProps & { completedWorkoutsByDate?: Map<numbe
         sx={{
           "& .MuiBadge-badge": {
             color: isSelected ? "white" : undefined,
-            backgroundColor: isSelected ? highlightedDays[0]?.colorRgb : undefined
+            backgroundColor: bgColor,
           }
         }}
       >

@@ -20,6 +20,10 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
     .join(', ');
   const dateTime = getDateTime(workout.createdAt);
 
+  const tag = ((workout.tag ?? '') === '')
+    ? '?'
+    : workout.tag;
+
   return (
     <Stack spacing={2} direction='row' flex={1} flexGrow={1} alignItems='center' sx={{ px: 2 }}>
       <Stack sx={{ width: '32px' }}>
@@ -37,7 +41,7 @@ export default function CompletedWorkoutListRow({ workout }: Props) {
               }}
               aria-label="exercise group"
             >
-              {workout.tag ?? '?'}
+              {tag}
             </Avatar>
           }
           title={workout.name}

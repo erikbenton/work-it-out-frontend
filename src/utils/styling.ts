@@ -1,5 +1,7 @@
 import type SetTagOption from "../types/setTagOption";
 
+export const primaryBlue = '#1976D2';
+
 export const bgBlue = '#F5FBFF';
 
 export const bgDarkBlue = '#E0E7F2';
