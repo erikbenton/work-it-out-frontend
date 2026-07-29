@@ -26,7 +26,11 @@ export default function HomePage() {
   return (
     <Box
       className="px-3 border-x border-blue-100 h-full"
-      sx={{ width: { xs: '100%', md: 'calc(4/5 * 100%)'}, minHeight: `calc(100dvh - 64px)`, pb: workout ? '10vh' : undefined }}
+      sx={{
+        width: { xs: '100%', md: user.isLoggedIn ? 'calc(2/3 * 100%)' : 'calc(4/5 * 100%)' },
+        minHeight: `calc(100dvh - 64px)`,
+        pb: workout ? '10vh' : undefined
+      }}
     >
       {userLoading
         ? <LoadingIcon />
