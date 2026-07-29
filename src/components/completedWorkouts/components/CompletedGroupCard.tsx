@@ -4,19 +4,20 @@ import type { CompletedExerciseGroup } from "../../../types/completedExerciseGro
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
 import { Link } from "react-router-dom";
-import { CardContent, List } from "@mui/material";
+import { Box, CardContent, Grow, List } from "@mui/material";
 import ExerciseHistoryItemStats from "../../exercises/components/ExerciseHistoryItemStats";
 import { calculateHistory } from "../../../workers/historyWorker";
 import { checkPluralization } from "../../../utils/formatters";
 import CompletedGroupSet from "./CompletedGroupSet";
 import useCompletedWorkoutForm from "../../../hooks/useCompletedWorkoutForm";
+import VerticalIconMenu from "../../layout/VerticalIconMenu";
 
 type Props = {
   group: CompletedExerciseGroup
 }
 
 export default function CompletedGroupCard({ group }: Props) {
-  const { editing } = useCompletedWorkoutForm();
+  const { editing, dispatch } = useCompletedWorkoutForm();
   const { services: exerciseServices } = useExercises();
   const exercise = exerciseServices.getExerciseById(group.exerciseId);
   const muscleAvatar = exercise.muscles
@@ -34,6 +35,34 @@ export default function CompletedGroupCard({ group }: Props) {
     }
   }
 
+  const menuItems = [
+    {
+      label: "Shift up",
+      handleClick: () => {
+        dispatch({ type: 'shiftGroup', payload: { group, shift: -1 } });
+      },
+    },
+    {
+      label: "Shift down",
+      handleClick: () => {
+        dispatch({ type: 'shiftGroup', payload: { group, shift: 1 } });
+      },
+    },
+    // {
+    //   label: "Replace",
+    //   handleClick: () => {
+    //     setReplacementKey(exerciseGroup.key);
+    //   },
+    // },
+    {
+      label: "Delete",
+      handleClick: () => {
+        dispatch({ type: 'removeGroup', payload: { group } });
+      },
+      sx: { color: 'error.main' }
+    },
+  ];
+
   return (
     <Card elevation={0} sx={{ width: '100%' }} >
       <CardHeader
@@ -42,6 +71,16 @@ export default function CompletedGroupCard({ group }: Props) {
           <Avatar sx={{ bgcolor: muscleColor ?? 'red' }} aria-label="exercise group">
             {muscleAvatar}
           </Avatar>
+        }
+        action={
+          <Grow in={editing}>
+            <Box>
+              <VerticalIconMenu
+                buttonId={(exercise?.name ?? 'exercise').split(' ').join('-').toLowerCase() + "-group-options"}
+                menuItems={menuItems}
+              />
+            </Box>
+          </Grow>
         }
         title={
           <Link onClick={handleExerciseClick}

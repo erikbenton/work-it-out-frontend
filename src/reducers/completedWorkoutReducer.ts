@@ -9,7 +9,10 @@ export type CompletedWorkoutAction =
   | { type: 'setWorkout', payload: { workout: CompletedWorkout } }
   | { type: 'setName', payload: { name: string } }
   | { type: 'updateGroup', payload: { group: CompletedExerciseGroup } }
-  | { type: 'updateSet', payload: { group: CompletedExerciseGroup, set: CompletedExerciseSet } };
+  | { type: 'updateSet', payload: { group: CompletedExerciseGroup, set: CompletedExerciseSet } }
+  | { type: 'shiftGroup', payload: { group: CompletedExerciseGroup, shift: number } }
+  | { type: 'removeGroup', payload: { group: CompletedExerciseGroup } }
+  | { type: 'addExercises', payload: { newExercises: number[] } };
 
 export default function completedWorkoutReducer(workout: CompletedWorkout, action: CompletedWorkoutAction) {
   switch (action.type) {
@@ -46,6 +49,50 @@ export default function completedWorkoutReducer(workout: CompletedWorkout, actio
       const updatedGroup = { ...exerciseGroup, completedExerciseSets };
       const completedExerciseGroups = workout.completedExerciseGroups.map(g => g.id === group.id ? updatedGroup : g);
       devConsole('updated groups', completedExerciseGroups);
+      return { ...workout, completedExerciseGroups };
+    }
+
+    case 'shiftGroup': {
+      const { group, shift } = action.payload;
+      const groupIndex = workout.completedExerciseGroups.findIndex(g => g.id === group.id);
+      const newIndex = groupIndex + shift;
+
+      if (newIndex < 0 || newIndex >= workout.completedExerciseGroups.length) {
+        return { ...workout };
+      }
+
+      const shiftGroups = [...workout.completedExerciseGroups];
+      const tempGroup = { ...shiftGroups[newIndex] };
+      shiftGroups[newIndex] = { ...group };
+      shiftGroups[groupIndex] = tempGroup;
+
+      const completedExerciseGroups = shiftGroups.map((g, index) => ({ ...g, sort: index }));
+
+      return { ...workout, completedExerciseGroups };
+    }
+
+    case 'addExercises': {
+      const { newExercises } = action.payload;
+
+      const numberOfExistingGroups = workout.completedExerciseGroups.length;
+
+      const newGroups: CompletedExerciseGroup[] = newExercises.map((exId, index) => {
+        return {
+          id: 0,
+          sort: numberOfExistingGroups + index,
+          exerciseId: exId,
+          completedExerciseSets: [],
+          completedWorkoutId: workout.id ?? 0
+        };
+      });
+
+      const completedExerciseGroups = workout.completedExerciseGroups.concat(newGroups);
+      return { ...workout, completedExerciseGroups };
+    }
+
+    case 'removeGroup': {
+      const { group } = action.payload;
+      const completedExerciseGroups = workout.completedExerciseGroups.filter(g => g.id !== group.id);
       return { ...workout, completedExerciseGroups };
     }
 
